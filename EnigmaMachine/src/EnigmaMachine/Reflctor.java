@@ -2,7 +2,7 @@ package EnigmaMachine;
 
 import java.util.*;
 
-public class Reflctor {
+public class Reflctor{
     private final String id;
     private final Map<Integer,Integer> reflectorPairs;
 
