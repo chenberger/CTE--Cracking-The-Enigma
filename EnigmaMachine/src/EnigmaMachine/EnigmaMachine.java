@@ -22,11 +22,11 @@ public class EnigmaMachine implements Decoder{
 
         RotateRotors();
 
-        currentCharIndex = pluginBoard.Decode();
+        currentCharIndex = pluginBoard.getPlugedPair(ABC.get(inputCharIndex));
         currentCharIndex = DecodeByDirection(currentCharIndex, Direction.FORWARD);
         currentCharIndex = currentReflector.SetIndex(currentCharIndex);
         currentCharIndex = DecodeByDirection(currentCharIndex, Direction.BACKWARD);
-        currentCharIndex = pluginBoard.Decode();
+        currentCharIndex = pluginBoard.getPlugedPair(ABC.get(inputCharIndex));
 
         return currentCharIndex;
     }
