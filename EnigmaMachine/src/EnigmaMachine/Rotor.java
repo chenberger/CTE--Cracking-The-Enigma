@@ -1,8 +1,6 @@
 package EnigmaMachine;
 
 import javafx.util.Pair;
-import jdk.nashorn.internal.runtime.arrays.ArrayData;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,18 +8,18 @@ import java.util.Objects;
 
 public class Rotor {
     private final Integer id;
-    private final Integer notch;
-    private Integer startingPosition;
+    private Integer notch;
+    private final Integer startingPosition;
     private Integer currentPosition;
     private final Boolean isFirstRotor;
     private final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
-    public Rotor(Integer i_Id, Integer i_Notch, Integer i_StartingPosition, Boolean i_FirstRotor){
+    public Rotor(Integer i_Id, Integer i_Notch, Boolean i_FirstRotor){
         mappingABC = new ArrayList<>();
         id = i_Id;
         notch = i_Notch;
-        startingPosition = i_StartingPosition;
+        startingPosition = 0;
         currentPosition = startingPosition;
         isFirstRotor = i_FirstRotor;
     }
@@ -75,12 +73,18 @@ public class Rotor {
 
     private void SpinRotator(int stepsToSpin) {
         Collections.rotate(mappingABC, stepsToSpin);
+         if(stepsToSpin <= notch) {
+             notch -= stepsToSpin;
+         }
+         else {
+             notch = mappingABC.size() - (stepsToSpin - notch);
+         }
+
    }
 
     private Boolean IsRotorNeedToMove() {
         return isFirstRotor || notch == startingPosition;
     }
-
 
     @Override
     public boolean equals(Object o) {
