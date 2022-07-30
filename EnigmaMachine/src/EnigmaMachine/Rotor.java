@@ -1,10 +1,8 @@
 package EnigmaMachine;
 
 import javafx.util.Pair;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 
 public class Rotor implements Decoder{
     private final Integer id;
@@ -26,10 +24,10 @@ public class Rotor implements Decoder{
         mappingABC.addAll(i_Words);
     }
 
-    public boolean Rotate(boolean isPreviewsRotorReachedToWindow) {
+    public boolean Rotate(boolean isPreviewsRotorNotchReachedTheWindow) {
         boolean result = notch == startingPosition;
 
-        if(IsRotorNeedToMove(isPreviewsRotorReachedToWindow)) {
+        if(IsRotorNeedToMove(isPreviewsRotorNotchReachedTheWindow)) {
             SpinRotor(ONE_STEP);
         }
 
@@ -86,8 +84,8 @@ public class Rotor implements Decoder{
          }
 }
 
-    private Boolean IsRotorNeedToMove(boolean isPreviewsRotorReachedToWindow) {
-        return isFirstRotor || isPreviewsRotorReachedToWindow;
+    private Boolean IsRotorNeedToMove(boolean isPreviewsRotorNotchReachedTheWindow) {
+        return isFirstRotor || isPreviewsRotorNotchReachedTheWindow;
     }
 
     @Override

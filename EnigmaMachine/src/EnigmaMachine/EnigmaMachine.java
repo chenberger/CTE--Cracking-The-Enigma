@@ -1,45 +1,57 @@
 package EnigmaMachine;
 
-import java.sql.Ref;
-import java.util.List;
+import java.util.*;
 
-public class EnigmaMachine implements Decoder{
+public class EnigmaMachine{
     private List<Rotor> rotors;
-    private List<Rotor> currentRotors;
-    private Reflctor currentReflector;
+    private List<Rotor> rotorsInUse;
+    private Reflctor reflectorInUse;
     private List<Reflctor> reflectors;
     private PluginBoard pluginBoard;
-    private List<Character> ABC;
+    private Map<Character, Integer> machineCharacters;
 
-    public EnigmaMachine(List<Rotor> i_Rotors, List<Reflctor> i_Reflectors) {
+    public EnigmaMachine(List<Rotor> i_Rotors, List<Reflctor> i_Reflectors, PluginBoard pluginBoard, Map<Character, Integer> machineCharacters) {
         rotors = i_Rotors;
         reflectors = i_Reflectors;
+        this.pluginBoard = pluginBoard;
+        this.machineCharacters = machineCharacters;
     }
 
-    @Override
-    public int Decode(int inputCharIndex, Direction direction) {
+    public int Decode(Character inputChar, Direction direction) {
         int currentCharIndex;
+        Character currentChar;
 
         RotateRotors();
 
-        currentCharIndex = pluginBoard.getPlugedPair(ABC.get(inputCharIndex));
+        currentChar = pluginBoard.getPlugedPair(inputChar);
+        currentCharIndex = machineCharacters.get(currentChar);
         currentCharIndex = DecodeByDirection(currentCharIndex, Direction.FORWARD);
-        currentCharIndex = currentReflector.SetIndex(currentCharIndex);
+        currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
         currentCharIndex = DecodeByDirection(currentCharIndex, Direction.BACKWARD);
-        currentCharIndex = pluginBoard.getPlugedPair(ABC.get(inputCharIndex));
+        currentChar = GetKeyByValue(machineCharacters, currentCharIndex);
+        currentCharIndex = pluginBoard.getPlugedPair(currentChar);
 
         return currentCharIndex;
     }
 
+    private Character GetKeyByValue(Map<Character, Integer> machineCharacters, int valueToSearch) {
+        for (Map.Entry<Character,Integer> entry : machineCharacters.entrySet())
+            if(entry.getValue() == valueToSearch) {
+                return entry.getKey();
+        }
+
+        return null;
+    }
+
     private void RotateRotors() {
-        boolean isPreviewsRotorReachedToWindow = false;
-        for(Rotor rotor : rotors) {
-            isPreviewsRotorReachedToWindow = rotor.Rotate(isPreviewsRotorReachedToWindow);
+        boolean isPreviewsRotorNotchReachedTheWindow = false;
+        for(Rotor rotor : rotorsInUse) {
+            isPreviewsRotorNotchReachedTheWindow = rotor.Rotate(isPreviewsRotorNotchReachedTheWindow);
         }
     }
 
     private int DecodeByDirection(int currentCharIndex, Direction direction) {
-        for(Rotor rotor : rotors) {
+        for(Rotor rotor : rotorsInUse) {
             currentCharIndex = rotor.Decode(currentCharIndex, direction);
         }
 
