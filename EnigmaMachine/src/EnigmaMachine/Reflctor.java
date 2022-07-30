@@ -6,7 +6,7 @@ public class Reflctor{
     private final String id;
     private final Map<Integer,Integer> reflectorPairs;
 
-    public Reflctor(String Id,Map<Integer,Integer> reflectedNumbers ){
+    public Reflctor(String Id, Map<Integer,Integer> reflectedNumbers ){
         //needs to fill the map, which means that I get a pair and needs to put the as key/value with each other
         //example: key = 5 -> value = 2 and key = 2 -> value = 5.
         id = Id;
@@ -18,6 +18,7 @@ public class Reflctor{
     }
 
     public String GetId(){
+
         return id;
     }
 
@@ -31,6 +32,7 @@ public class Reflctor{
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id);
     }
 }
