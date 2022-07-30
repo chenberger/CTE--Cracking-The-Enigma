@@ -46,7 +46,7 @@ public class EnigmaMachine{
     private void RotateRotors() {
         boolean isPreviewsRotorNotchReachedTheWindow = false;
         for(Rotor rotor : rotorsInUse) {
-            isPreviewsRotorNotchReachedTheWindow = rotor.Rotate(isPreviewsRotorNotchReachedTheWindow);
+            isPreviewsRotorNotchReachedTheWindow = rotor.rotate(isPreviewsRotorNotchReachedTheWindow);
         }
     }
 
@@ -57,7 +57,7 @@ public class EnigmaMachine{
             Collections.reverse(rotorsOrder);
         }
         for (Rotor rotor : rotorsOrder) {
-           currentCharIndex = rotor.Decode(currentCharIndex, direction);
+           currentCharIndex = rotor.decode(currentCharIndex, direction);
         }
 
         return currentCharIndex;

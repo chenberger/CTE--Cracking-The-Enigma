@@ -52,25 +52,5 @@ public class Main {
         Reflctor reflector = new Reflctor("I", reflectorPairs);
 
         EnigmaMachine enigmaMachine = new EnigmaMachine(rotors, reflector, pluginBoard, ABC);
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('D'));
-
-
     }
 }
