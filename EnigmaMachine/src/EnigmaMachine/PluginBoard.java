@@ -18,5 +18,4 @@ public class PluginBoard {
         }
         return plugedPairs.get(inputedChar);
     }
-
 }

@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Rotor {
+public class Rotor implements Decoder{
     private final Integer id;
     private Integer notch;
     private final Integer startingPosition;
-    private Integer currentPosition;
     private final Boolean isFirstRotor;
     private final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
@@ -20,7 +19,6 @@ public class Rotor {
         id = i_Id;
         notch = i_Notch;
         startingPosition = 0;
-        currentPosition = startingPosition;
         isFirstRotor = i_FirstRotor;
     }
 
@@ -28,12 +26,19 @@ public class Rotor {
         mappingABC.addAll(i_Words);
     }
 
-    public int Set(Integer inputCharIndex, Direction direction){
-        int outPutCharIndex = -1;
+    public boolean Rotate(boolean isPreviewsRotorReachedToWindow) {
+        boolean result = notch == startingPosition;
 
-        if(IsRotorNeedToMove()) {
-            SpinRotator(ONE_STEP);
+        if(IsRotorNeedToMove(isPreviewsRotorReachedToWindow)) {
+            SpinRotor(ONE_STEP);
         }
+
+        return result;
+    }
+
+    @Override
+    public int Decode(int inputCharIndex, Direction direction){
+        int outPutCharIndex = -1;
 
         if(direction == Direction.FORWARD) {
             outPutCharIndex = SearchKey(mappingABC.get(inputCharIndex).getValue());
@@ -45,45 +50,44 @@ public class Rotor {
         return outPutCharIndex;
     }
 
-    private int SearchValue(Character key) {
-        int valueIndex = -1;
+    private int SearchValue(Character left) {
+        int leftIndex = -1;
 
         for(int i = 0; i < mappingABC.size(); i++) {
-            if(mappingABC.get(i).getValue() == key) {
-                valueIndex = i;
+            if(mappingABC.get(i).getValue() == left) {
+                leftIndex = i;
                 break;
             }
         }
 
-        return valueIndex;
+        return leftIndex;
     }
 
-    private int SearchKey(Character value) {
-        int keyIndex = -1;
+    private int SearchKey(Character right) {
+        int rightIndex = -1;
 
         for(int i = 0; i < mappingABC.size(); i++) {
-            if(mappingABC.get(i).getKey() == value) {
-                keyIndex = i;
+            if(mappingABC.get(i).getKey() == right) {
+                rightIndex = i;
                 break;
             }
         }
 
-        return keyIndex;
+        return rightIndex;
     }
 
-    private void SpinRotator(int stepsToSpin) {
-        Collections.rotate(mappingABC, stepsToSpin);
+    private void SpinRotor(int stepsToSpin) {
+        Collections.rotate(mappingABC, stepsToSpin);  //[1,2,3] - > [2,3,1]
          if(stepsToSpin <= notch) {
              notch -= stepsToSpin;
          }
          else {
              notch = mappingABC.size() - (stepsToSpin - notch);
          }
+}
 
-   }
-
-    private Boolean IsRotorNeedToMove() {
-        return isFirstRotor || notch == startingPosition;
+    private Boolean IsRotorNeedToMove(boolean isPreviewsRotorReachedToWindow) {
+        return isFirstRotor || isPreviewsRotorReachedToWindow;
     }
 
     @Override
