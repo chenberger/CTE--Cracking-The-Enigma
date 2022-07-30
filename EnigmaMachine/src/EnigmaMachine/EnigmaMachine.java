@@ -10,14 +10,14 @@ public class EnigmaMachine{
     private PluginBoard pluginBoard;
     private Map<Character, Integer> machineCharacters;
 
-    public EnigmaMachine(List<Rotor> i_Rotors, List<Reflctor> i_Reflectors, PluginBoard pluginBoard, Map<Character, Integer> machineCharacters) {
-        rotors = i_Rotors;
-        reflectors = i_Reflectors;
-        this.pluginBoard = pluginBoard;
-        this.machineCharacters = machineCharacters;
+    public EnigmaMachine(List<Rotor> i_Rotors, Reflctor i_Reflectors, PluginBoard PluginBoard, Map<Character, Integer> i_MachineCharacters) {
+        rotorsInUse = i_Rotors;
+        reflectorInUse = i_Reflectors;
+        pluginBoard = PluginBoard;
+        machineCharacters = i_MachineCharacters;
     }
 
-    public int Decode(Character inputChar, Direction direction) {
+    public Character Decode(Character inputChar) {
         int currentCharIndex;
         Character currentChar;
 
@@ -29,9 +29,9 @@ public class EnigmaMachine{
         currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
         currentCharIndex = DecodeByDirection(currentCharIndex, Direction.BACKWARD);
         currentChar = GetKeyByValue(machineCharacters, currentCharIndex);
-        currentCharIndex = pluginBoard.getPlugedPair(currentChar);
+        currentChar = pluginBoard.getPlugedPair(currentChar);
 
-        return currentCharIndex;
+        return currentChar;
     }
 
     private Character GetKeyByValue(Map<Character, Integer> machineCharacters, int valueToSearch) {
@@ -51,8 +51,13 @@ public class EnigmaMachine{
     }
 
     private int DecodeByDirection(int currentCharIndex, Direction direction) {
-        for(Rotor rotor : rotorsInUse) {
-            currentCharIndex = rotor.Decode(currentCharIndex, direction);
+        List<Rotor> rotorsOrder = new ArrayList<>(rotorsInUse);
+
+        if(direction == Direction.BACKWARD) {
+            Collections.reverse(rotorsOrder);
+        }
+        for (Rotor rotor : rotorsOrder) {
+           currentCharIndex = rotor.Decode(currentCharIndex, direction);
         }
 
         return currentCharIndex;

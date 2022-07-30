@@ -1,9 +1,14 @@
 package EnigmaMachine;
 
+import com.sun.org.slf4j.internal.LoggerFactory;
 import javafx.util.Pair;
+import jdk.nashorn.internal.runtime.logging.Logger;
 
 import java.util.*;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+
+@Logger
 public class Rotor implements Decoder{
     private final Integer id;
     private Integer notch;
@@ -11,6 +16,8 @@ public class Rotor implements Decoder{
     private final Boolean isFirstRotor;
     private final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
+
+    //private static final Logger logger = LoggerFactory.getLogger();
 
     public Rotor(Integer i_Id, Integer i_Notch, Boolean i_FirstRotor, List<Pair<Character, Character>> i_MappingABC, Character startingCharToWindow){
         mappingABC = i_MappingABC;
@@ -36,13 +43,11 @@ public class Rotor implements Decoder{
     }
 
     public boolean Rotate(boolean isPreviewsRotorNotchReachedTheWindow) {
-        boolean result = notch == startingPosition;
-
         if(IsRotorNeedToMove(isPreviewsRotorNotchReachedTheWindow)) {
             SpinRotor(ONE_STEP);
         }
 
-        return result;
+        return notch == startingPosition;
     }
 
     @Override
@@ -86,7 +91,7 @@ public class Rotor implements Decoder{
     }
 
     private void SpinRotor(int stepsToSpin) {
-        Collections.rotate(mappingABC, stepsToSpin);  //[1,2,3] - > [2,3,1]
+        Collections.rotate(mappingABC, stepsToSpin * -1);
          if(stepsToSpin <= notch) {
              notch -= stepsToSpin;
          }
