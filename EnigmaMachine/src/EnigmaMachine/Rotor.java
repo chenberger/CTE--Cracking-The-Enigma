@@ -12,12 +12,23 @@ public class Rotor implements Decoder{
     private final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
-    public Rotor(Integer i_Id, Integer i_Notch, Boolean i_FirstRotor){
-        mappingABC = new ArrayList<>();
+    public Rotor(Integer i_Id, Integer i_Notch, Boolean i_FirstRotor, List<Pair<Character, Character>> i_MappingABC, Character startingCharToWindow){
+        mappingABC = i_MappingABC;
         id = i_Id;
         notch = i_Notch;
         startingPosition = 0;
         isFirstRotor = i_FirstRotor;
+        SpinRotor(GetIndexByValue(startingCharToWindow));
+    }
+
+    private int GetIndexByValue(Character startingCharToWindow) {
+        for(int i = 0; i < mappingABC.size(); i++) {
+            if(mappingABC.get(i).getValue() == startingCharToWindow) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public void Initialize(List<Pair<Character, Character>> i_Words) {
