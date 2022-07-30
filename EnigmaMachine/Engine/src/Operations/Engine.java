@@ -22,8 +22,12 @@ public class Engine implements OperationsMachine{
     }
 
     @Override
-    public void viewMachineDetails() {
-
+    public MachineDetails getMachineDetails() throws Exception {
+        if(enigmaMachine != null)
+            return new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
+        else {
+            throw new Exception("There is no exists Machine");
+        }
     }
 
     @Override

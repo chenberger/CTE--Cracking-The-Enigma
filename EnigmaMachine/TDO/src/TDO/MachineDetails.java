@@ -15,19 +15,16 @@ public class MachineDetails {
     private final List<Rotor> rotorsInUse;
     private final List<Reflctor> reflectors;
     private final Reflctor reflectorInUse;
-    private final List<Character> keyboard;
+    private final Set<Character> keyboard;
     private final PluginBoard pluginBoard;
-    private boolean isMachineExsists;
 
-
-    public MachineDetails(List<Rotor> rotors, List<Rotor> rotorsInUse, List<Reflctor> reflectors, Reflctor reflectorInUse, List<Character> keyboard, PluginBoard pluginBoard, boolean isMachineExists) {
+    public MachineDetails(List<Rotor> rotors, List<Rotor> rotorsInUse, List<Reflctor> reflectors, Reflctor reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard) {
         this.rotors = rotors;
         this.rotorsInUse = rotorsInUse;
         this.reflectors = reflectors;
         this.reflectorInUse = reflectorInUse;
         this.keyboard = keyboard;
         this.pluginBoard = pluginBoard;
-        this.isMachineExsists = isMachineExists;
     }
     public List<Pair<Integer, Integer>> getNotchPositionsInRotorsInUse() {
         List<Pair<Integer, Integer>> notchPositions = new ArrayList<>();
@@ -40,14 +37,9 @@ public class MachineDetails {
     }
 
     public String machineSettings() throws Exception {
-        if(isMachineExsists) {
-            return getCurrentRotorsInUseFormat() +
+        return getCurrentRotorsInUseFormat() +
                    getCurrentReflectorFormat() +
                    getPluginBoardInUseFormat();
-        }
-        else {
-            throw  new Exception("There is no Machine in the System");
-        }
     }
 
     private String getPluginBoardInUseFormat() throws Exception {
@@ -113,7 +105,7 @@ public class MachineDetails {
     }
 
     public int getCountOfKeyboardCharacters() throws Exception {
-        return getCountOfComponent(keyboard);
+        return keyboard.size();
     }
 
     public int getCountOfTotalReflectors() throws Exception {
@@ -121,10 +113,6 @@ public class MachineDetails {
     }
 
     private <T> int getCountOfComponent(List<T> components) throws Exception {
-        if(!isMachineExsists) {
-            throw  new Exception("There is no Machine in the System");
-        }
-
         if(rotorsInUse == null) {
             return 0;
         }

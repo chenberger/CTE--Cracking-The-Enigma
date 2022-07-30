@@ -8,33 +8,33 @@ public class EnigmaMachine{
     private Reflctor reflectorInUse;
     private List<Reflctor> reflectors;
     private PluginBoard pluginBoard;
-    private Map<Character, Integer> machineCharacters;
+    private Map<Character, Integer> keyboard;
 
-    public EnigmaMachine(List<Rotor> i_Rotors, Reflctor i_Reflectors, PluginBoard PluginBoard, Map<Character, Integer> i_MachineCharacters) {
-        rotorsInUse = i_Rotors;
-        reflectorInUse = i_Reflectors;
-        pluginBoard = PluginBoard;
-        machineCharacters = i_MachineCharacters;
+    public EnigmaMachine(List<Rotor> rotors, Reflctor reflectors, PluginBoard pluginBoard, Map<Character, Integer> keyboard) {
+        this.rotorsInUse = rotors;
+        this.reflectorInUse = reflectors;
+        this.pluginBoard = pluginBoard;
+        this.keyboard = keyboard;
     }
 
-    public Character Decode(Character inputChar) {
+    public Character decode(Character inputtedChar) {
         int currentCharIndex;
         Character currentChar;
 
-        RotateRotors();
+        rotateRotors();
 
-        currentChar = pluginBoard.getPlugedPair(inputChar);
-        currentCharIndex = machineCharacters.get(currentChar);
-        currentCharIndex = DecodeByDirection(currentCharIndex, Direction.FORWARD);
+        currentChar = pluginBoard.getPlugedPair(inputtedChar);
+        currentCharIndex = keyboard.get(currentChar);
+        currentCharIndex = decodeByDirection(currentCharIndex, Direction.FORWARD);
         currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
-        currentCharIndex = DecodeByDirection(currentCharIndex, Direction.BACKWARD);
-        currentChar = GetKeyByValue(machineCharacters, currentCharIndex);
+        currentCharIndex = decodeByDirection(currentCharIndex, Direction.BACKWARD);
+        currentChar = getKeyByValue(keyboard, currentCharIndex);
         currentChar = pluginBoard.getPlugedPair(currentChar);
 
         return currentChar;
     }
 
-    private Character GetKeyByValue(Map<Character, Integer> machineCharacters, int valueToSearch) {
+    private Character getKeyByValue(Map<Character, Integer> machineCharacters, int valueToSearch) {
         for (Map.Entry<Character,Integer> entry : machineCharacters.entrySet())
             if(entry.getValue() == valueToSearch) {
                 return entry.getKey();
@@ -43,14 +43,14 @@ public class EnigmaMachine{
         return null;
     }
 
-    private void RotateRotors() {
+    private void rotateRotors() {
         boolean isPreviewsRotorNotchReachedTheWindow = false;
         for(Rotor rotor : rotorsInUse) {
             isPreviewsRotorNotchReachedTheWindow = rotor.rotate(isPreviewsRotorNotchReachedTheWindow);
         }
     }
 
-    private int DecodeByDirection(int currentCharIndex, Direction direction) {
+    private int decodeByDirection(int currentCharIndex, Direction direction) {
         List<Rotor> rotorsOrder = new ArrayList<>(rotorsInUse);
 
         if(direction == Direction.BACKWARD) {
@@ -62,4 +62,30 @@ public class EnigmaMachine{
 
         return currentCharIndex;
     }
+
+    //region Getters
+    public List<Rotor> getAllrotors() {
+        return rotors;
+    }
+
+    public List<Rotor> getCurrentRotorsInUse() {
+        return rotorsInUse;
+    }
+
+    public List<Reflctor> getAllReflectors() {
+        return reflectors;
+    }
+
+    public Reflctor getCurrentReflectorInUse() {
+        return reflectorInUse;
+    }
+
+    public PluginBoard getPluginBoard() {
+        return pluginBoard;
+    }
+
+    public Set<Character> getKeyboard() {
+        return keyboard.keySet();
+    }
+    //endregion
 }
