@@ -1,19 +1,19 @@
 package Operations;
 
-
 import java.io.*;
+
 import EnigmaMachine.EnigmaMachine;
 import TDO.MachineDetails;
-import Jaxb.Schema.Generated;
 import Jaxb.Schema.Generated.CTEEnigma;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import EnigmaMachine.SettingsFormat;
 
 
 public class Engine implements OperationsMachine, Serializable {
     private EnigmaMachine enigmaMachine;
+    private MachineDetails machineDetails;
     public void setMachineDetails(String machineDetailsXmlFilePath) {
         // TODO implement here
             try {
@@ -24,14 +24,12 @@ public class Engine implements OperationsMachine, Serializable {
             catch (JAXBException | FileNotFoundException e) {
                 e.printStackTrace();
             }
+    }
 
-        }
-        public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
-            JAXBContext jc = JAXBContext.newInstance("Jaxb.Schema.Generated");
-            Unmarshaller u = jc.createUnmarshaller();
-            return (CTEEnigma) u.unmarshal(in);
-        }
-
+    public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
+        JAXBContext jc = JAXBContext.newInstance("Jaxb.Schema.Generated");
+        Unmarshaller u = jc.createUnmarshaller();
+        return (CTEEnigma) u.unmarshal(in);
     }
 
     @Override
@@ -40,22 +38,30 @@ public class Engine implements OperationsMachine, Serializable {
     }
 
     @Override
-    public void manualSettingsInitialize() {
+    public void manualSettingsInitialize(SettingsFormat settingsFormat) throws Exception {
+        if(enigmaMachine == null) {
+            throw new Exception("There is no exists Machine");
+        }
 
+        enigmaMachine.initializeSetting(settingsFormat);
     }
 
     @Override
-    public void setMachineDetails() {
+    public void resetMachineSettings() {
 
     }
 
     @Override
     public MachineDetails getMachineDetails() throws Exception {
-        if(enigmaMachine != null)
-            return new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
-        else {
+        if(enigmaMachine == null) {
             throw new Exception("There is no exists Machine");
+       }
+       else if (machineDetails == null) {
+            machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
+            machineDetails.initializeSettingFormat();
         }
+
+       return machineDetails;
     }
 
     @Override

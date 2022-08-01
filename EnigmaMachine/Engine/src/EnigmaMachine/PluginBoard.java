@@ -1,7 +1,7 @@
 package EnigmaMachine;
 
-import javafx.util.Pair;
 
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,19 +9,20 @@ import java.util.Map;
 public class PluginBoard {
 
     public static final Character PAIR_SEPARATOR = '|';
-    private final Map<Character,Character> pluggedPairs = new HashMap<>();
+    private final Map<Character,Character> pluggedPairs;
     PluginBoard(String inputtedPluggedPairs){
-        String[] pairs = inputtedPluggedPairs.split(",");
-        for(String pair : pairs){
-            pluggedPairs.put(pair.charAt(0),pair.charAt(1));
-            pluggedPairs.put(pair.charAt(1),pair.charAt(0));
-        }
+        pluggedPairs = new HashMap<>();
     }
-    public Character getPlugedPair(Character inputedChar){
-        if(!pluggedPairs.containsKey(inputedChar)){
-            return inputedChar;
+
+    public Character getPluggedPair(Character inputtedChar){
+        if(!pluggedPairs.containsKey(inputtedChar)){
+            return inputtedChar;
         }
-        return pluggedPairs.get(inputedChar);
+        return pluggedPairs.get(inputtedChar);
+    }
+
+    public void addPlugginPair(Pair<Character, Character> plugginPair) {
+        pluggedPairs.put(plugginPair.getKey(), plugginPair.getValue());
     }
 
     //region Getters

@@ -3,14 +3,11 @@ package EnigmaMachine;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
+/*        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
         ABC.put('A', 0);
         ABC.put('B', 1);
         ABC.put('C', 2);
@@ -53,25 +50,43 @@ public class Main {
 
         EnigmaMachine enigmaMachine = new EnigmaMachine(rotors, reflector, pluginBoard, ABC);
 
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('D'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('D'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('D'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('D'));*/
+        //region Format test
+        List<Integer> rotorId = new ArrayList<>(Arrays.asList(1, 2, 3));
+        char openSector = '<';
+        char closeSector = '>';
+        CharSequence delimiter = ",";
+        CharSequence delimiterPair = "|";
 
+        RotorIDSector rotorIDSector = new RotorIDSector(rotorId);
+        //InitialRotorPositionSector initialRotorPositionSector = new InitialRotorPositionSector(rotorId.toArray());
+        ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.IV)));
+        PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('A', 'D'))));
 
+        SettingsFormat test = new SettingsFormat();
+        test.addSector(rotorIDSector);
+        //test.addSector(initialRotorPositionSector);
+        test.addSector(reflectorIdSector);
+        test.addSector(pluginPairSector);
+
+        System.out.println(test);
+        //endregion
     }
 }
