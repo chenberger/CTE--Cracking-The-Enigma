@@ -1,10 +1,12 @@
 package Operations;
 
+import TDO.MachineDetails;
+
 public interface OperationsMachine {
-    public void automaticSettingsInitialize(AutomaticSettingsInitializer automaticSettingsInitializer);
-    public void manualSettingsInitialize(ManualSettingsInitializer manualSettingsInitializer);
+    public void automaticSettingsInitialize();
+    public void manualSettingsInitialize();
     public void setMachineDetails();
-    public void viewMachineDetails(MachineDetailsViewer machineDetailsViewer);
+    public MachineDetails getMachineDetails() throws Exception;
     public void analyzeMachineHistoryAndStatistics();
     public void processInput();
 }

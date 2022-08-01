@@ -13,8 +13,9 @@ public class Reflctor{
         reflectorPairs = reflectedNumbers;
     }
 
-    public Integer SetIndex(Integer inputedInex){
-        return reflectorPairs.get(inputedInex);
+
+    public Integer SetIndex(Integer inputtedIndex){
+        return reflectorPairs.get(inputtedIndex);
     }
 
     public String GetId(){
@@ -35,4 +36,13 @@ public class Reflctor{
 
         return Objects.hash(id);
     }
+
+    //region Getters
+    public String id() {
+        return id;
+    }
+    public int size() {
+        return reflectorPairs.size();
+    }
+    //endregion
 }

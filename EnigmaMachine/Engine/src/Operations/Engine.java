@@ -1,7 +1,9 @@
 package Operations;
 
-import java.io.*;
 
+import java.io.*;
+import EnigmaMachine.EnigmaMachine;
+import TDO.MachineDetails;
 import Jaxb.Schema.Generated;
 import Jaxb.Schema.Generated.CTEEnigma;
 
@@ -11,6 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 
 public class Engine implements OperationsMachine, Serializable {
+    private EnigmaMachine enigmaMachine;
     public void setMachineDetails(String machineDetailsXmlFilePath) {
         // TODO implement here
             try {
@@ -31,4 +34,37 @@ public class Engine implements OperationsMachine, Serializable {
 
     }
 
+    @Override
+    public void automaticSettingsInitialize() {
 
+    }
+
+    @Override
+    public void manualSettingsInitialize() {
+
+    }
+
+    @Override
+    public void setMachineDetails() {
+
+    }
+
+    @Override
+    public MachineDetails getMachineDetails() throws Exception {
+        if(enigmaMachine != null)
+            return new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
+        else {
+            throw new Exception("There is no exists Machine");
+        }
+    }
+
+    @Override
+    public void analyzeMachineHistoryAndStatistics() {
+
+    }
+
+    @Override
+    public void processInput() {
+
+    }
+  }

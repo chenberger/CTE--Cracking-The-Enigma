@@ -7,25 +7,26 @@ import java.util.*;
 
 @Logger
 public class Rotor implements Decoder{
-    private final Integer id;
+    private final int id;
     private Integer notch;
     private final Integer startingPosition;
+    private final Character startingRightCharToWindow;
     private final Boolean isFirstRotor;
-    private final Integer ONE_STEP = 1;
+    private static final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
-    //private static final Logger logger = LoggerFactory.getLogger();
+    public Rotor(Integer id, Integer notch, Boolean isFirstRotor, List<Pair<Character, Character>> mappingABC, Character startingRightCharToWindow){
+        this.mappingABC = mappingABC;
+        this.startingRightCharToWindow = startingRightCharToWindow;
+        this.id = id;
+        this.notch = notch;
+        this.startingPosition = 0;
+        this.isFirstRotor = isFirstRotor;
 
-    public Rotor(Integer i_Id, Integer i_Notch, Boolean i_FirstRotor, List<Pair<Character, Character>> i_MappingABC, Character startingCharToWindow){
-        mappingABC = i_MappingABC;
-        id = i_Id;
-        notch = i_Notch;
-        startingPosition = 0;
-        isFirstRotor = i_FirstRotor;
-        SpinRotor(GetIndexByValue(startingCharToWindow));
+        spinRotor(getIndexByValue(startingRightCharToWindow));
     }
 
-    private int GetIndexByValue(Character startingCharToWindow) {
+    private int getIndexByValue(Character startingCharToWindow) {
         for(int i = 0; i < mappingABC.size(); i++) {
             if(mappingABC.get(i).getValue() == startingCharToWindow) {
                 return i;
@@ -35,33 +36,29 @@ public class Rotor implements Decoder{
         return -1;
     }
 
-    public void Initialize(List<Pair<Character, Character>> i_Words) {
-        mappingABC.addAll(i_Words);
-    }
-
-    public boolean Rotate(boolean isPreviewsRotorNotchReachedTheWindow) {
-        if(IsRotorNeedToMove(isPreviewsRotorNotchReachedTheWindow)) {
-            SpinRotor(ONE_STEP);
+    public boolean rotate(boolean isPreviewsRotorNotchReachedTheWindow) {
+        if(isRotorNeedToSpin(isPreviewsRotorNotchReachedTheWindow)) {
+            spinRotor(ONE_STEP);
         }
 
         return notch == startingPosition;
     }
 
     @Override
-    public int Decode(int inputCharIndex, Direction direction){
+    public int decode(int inputCharIndex, Direction direction){
         int outPutCharIndex = -1;
 
         if(direction == Direction.FORWARD) {
-            outPutCharIndex = SearchKey(mappingABC.get(inputCharIndex).getValue());
+            outPutCharIndex = searchKey(mappingABC.get(inputCharIndex).getValue());
         }
         else if(direction == Direction.BACKWARD){
-            outPutCharIndex = SearchValue(mappingABC.get(inputCharIndex).getKey());
+            outPutCharIndex = searchValue(mappingABC.get(inputCharIndex).getKey());
         }
 
         return outPutCharIndex;
     }
 
-    private int SearchValue(Character left) {
+    private int searchValue(Character left) {
         int leftIndex = -1;
 
         for(int i = 0; i < mappingABC.size(); i++) {
@@ -74,7 +71,7 @@ public class Rotor implements Decoder{
         return leftIndex;
     }
 
-    private int SearchKey(Character right) {
+    private int searchKey(Character right) {
         int rightIndex = -1;
 
         for(int i = 0; i < mappingABC.size(); i++) {
@@ -87,17 +84,21 @@ public class Rotor implements Decoder{
         return rightIndex;
     }
 
-    private void SpinRotor(int stepsToSpin) {
+    private void spinRotor(int stepsToSpin) {
         Collections.rotate(mappingABC, stepsToSpin * -1);
-         if(stepsToSpin <= notch) {
-             notch -= stepsToSpin;
-         }
-         else {
-             notch = mappingABC.size() - (stepsToSpin - notch);
-         }
-}
+        spinNotch(stepsToSpin);
+    }
 
-    private Boolean IsRotorNeedToMove(boolean isPreviewsRotorNotchReachedTheWindow) {
+    private void spinNotch(int stepsToSpin) {
+        if(stepsToSpin <= notch) {
+            notch -= stepsToSpin;
+        }
+        else {
+            notch = mappingABC.size() - (stepsToSpin - notch);
+        }
+    }
+
+    private Boolean isRotorNeedToSpin(boolean isPreviewsRotorNotchReachedTheWindow) {
         return isFirstRotor || isPreviewsRotorNotchReachedTheWindow;
     }
 
@@ -113,4 +114,18 @@ public class Rotor implements Decoder{
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    //region Getters
+    public int notch() {
+        return notch;
+    }
+
+    public int id(){
+        return id;
+    }
+
+    public Character startingRightCharToWindow() {
+        return startingRightCharToWindow;
+    }
+    //endregion
 }
