@@ -8,6 +8,7 @@ public class EnigmaMachine{
     private Reflctor reflectorInUse;
     private List<Reflctor> reflectors;
     private PluginBoard pluginBoard;
+
     private Map<Character, Integer> keyboard;
 
     public EnigmaMachine(List<Rotor> rotors, Reflctor reflectors, PluginBoard pluginBoard, Map<Character, Integer> keyboard) {
@@ -29,12 +30,15 @@ public class EnigmaMachine{
         currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
         currentCharIndex = decodeByDirection(currentCharIndex, Direction.BACKWARD);
         currentChar = getKeyByValue(keyboard, currentCharIndex);
+
         currentChar = pluginBoard.getPlugedPair(currentChar);
 
         return currentChar;
     }
 
+
     private Character getKeyByValue(Map<Character, Integer> machineCharacters, int valueToSearch) {
+
         for (Map.Entry<Character,Integer> entry : machineCharacters.entrySet())
             if(entry.getValue() == valueToSearch) {
                 return entry.getKey();
@@ -42,6 +46,7 @@ public class EnigmaMachine{
 
         return null;
     }
+
 
     private void rotateRotors() {
         boolean isPreviewsRotorNotchReachedTheWindow = false;
@@ -51,6 +56,7 @@ public class EnigmaMachine{
     }
 
     private int decodeByDirection(int currentCharIndex, Direction direction) {
+
         List<Rotor> rotorsOrder = new ArrayList<>(rotorsInUse);
 
         if(direction == Direction.BACKWARD) {
@@ -62,6 +68,7 @@ public class EnigmaMachine{
 
         return currentCharIndex;
     }
+
 
     //region Getters
     public List<Rotor> getAllrotors() {

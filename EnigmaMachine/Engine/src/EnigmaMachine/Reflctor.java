@@ -13,6 +13,7 @@ public class Reflctor{
         reflectorPairs = reflectedNumbers;
     }
 
+
     public Integer SetIndex(Integer inputtedIndex){
         return reflectorPairs.get(inputtedIndex);
     }

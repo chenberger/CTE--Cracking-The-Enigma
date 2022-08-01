@@ -2,10 +2,12 @@ package EnigmaMachine;
 
 import javafx.util.Pair;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class PluginBoard {
+
     public static final Character PAIR_SEPARATOR = '|';
     private final Map<Character,Character> pluggedPairs = new HashMap<>();
     PluginBoard(String inputtedPluggedPairs){
@@ -31,4 +33,5 @@ public class PluginBoard {
         return pluggedPairs;
     }
     //endregion
+
 }
