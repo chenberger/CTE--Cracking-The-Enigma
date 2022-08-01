@@ -53,24 +53,24 @@ public class Main {
 
         EnigmaMachine enigmaMachine = new EnigmaMachine(rotors, reflector, pluginBoard, ABC);
 
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('F'));
-        System.out.println(enigmaMachine.Decode('C'));
-        System.out.println(enigmaMachine.Decode('E'));
-        System.out.println(enigmaMachine.Decode('D'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('A'));
-        System.out.println(enigmaMachine.Decode('B'));
-        System.out.println(enigmaMachine.Decode('D'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('D'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('F'));
+        System.out.println(enigmaMachine.decode('C'));
+        System.out.println(enigmaMachine.decode('E'));
+        System.out.println(enigmaMachine.decode('D'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('A'));
+        System.out.println(enigmaMachine.decode('B'));
+        System.out.println(enigmaMachine.decode('D'));
 
 
     }

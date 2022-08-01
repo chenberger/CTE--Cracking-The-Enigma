@@ -10,11 +10,21 @@ public class Rotor implements Decoder{
     private final int id;
     private Integer notch;
     private final Integer startingPosition;
-    private final Character startingRightCharToWindow;
-    private final Boolean isFirstRotor;
+    private Character startingRightCharToWindow;
+    private Boolean isFirstRotor;
     private static final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
+    public Rotor(int id, int notch, List<Pair<Character, Character>> mappingABC) {
+        this.id = id;
+        this.notch = notch;
+        this.mappingABC = mappingABC;
+        this.startingPosition = 0;
+    }
+
+    public void setIsFirstRotor(boolean isFirstRotor) {
+        this.isFirstRotor = isFirstRotor;
+    }
     public Rotor(Integer id, Integer notch, Boolean isFirstRotor, List<Pair<Character, Character>> mappingABC, Character startingRightCharToWindow){
         this.mappingABC = mappingABC;
         this.startingRightCharToWindow = startingRightCharToWindow;
@@ -115,6 +125,14 @@ public class Rotor implements Decoder{
         return Objects.hash(id);
     }
 
+    //region Setters
+    public void setStartingRightCharToWindow(Character startingRightCharToWindow) {
+        this.startingRightCharToWindow = startingRightCharToWindow;
+    }
+    public void setIsFirstRotor(Boolean isFirstRotor) {
+        this.isFirstRotor = isFirstRotor;
+    }
+    //endregion
     //region Getters
     public int notch() {
         return notch;
