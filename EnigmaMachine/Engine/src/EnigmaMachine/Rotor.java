@@ -1,12 +1,9 @@
 package EnigmaMachine;
 
-import com.sun.org.slf4j.internal.LoggerFactory;
 import javafx.util.Pair;
 import jdk.nashorn.internal.runtime.logging.Logger;
 
 import java.util.*;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
 @Logger
 public class Rotor implements Decoder{
