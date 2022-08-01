@@ -1,17 +1,17 @@
 package EnigmaMachine;
 
 import javafx.util.Pair;
-
+import Operations.RomanNumber;
 import java.util.*;
 
 public class EnigmaMachine{
     private Map<Integer, Rotor> rotors;
     private List<Rotor> rotorsInUse;
+    private Map<Integer,Rotor> allRotors;
     private Reflctor reflectorInUse;
     private Map<RomanNumber, Reflctor> reflectors;
     private PluginBoard pluginBoard;
-
-    private Map<Character, Integer> keyboard;
+    private final Map<Character, Integer> keyboard;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflctor> reflectors, PluginBoard pluginBoard, Map<Character, Integer> keyboard) {
         this.rotors = rotors;
@@ -197,8 +197,27 @@ public class EnigmaMachine{
 
         return currentCharIndex;
     }
+    private Reflctor findReflectorById(String reflectorInUseId) {
+        for(Reflctor reflector : allReflectors) {
+            if(reflector.id().equals(reflectorInUseId)) {
+                return reflector;
+            }
+        }
+        return null;
+    }
+    //region Setters
 
+    public void setPluginBoard(PluginBoard pluginBoard) {
+        this.pluginBoard = pluginBoard;
+    }
+    public void setRotorsInUse(List<Rotor> rotorsInUse) {
+        this.rotorsInUse = rotorsInUse;
+    }
+    public void setReflectorInUse(String id) {
+        this.reflectorInUse = findReflectorById(id);
+    }
 
+    //endregion
     //region Getters
     public Map<Integer, Rotor> getAllrotors() {
         return rotors;

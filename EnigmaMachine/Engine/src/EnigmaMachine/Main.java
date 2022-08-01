@@ -79,6 +79,7 @@ public class Main {
         //InitialRotorPositionSector initialRotorPositionSector = new InitialRotorPositionSector(rotorId.toArray());
         ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.IV)));
         PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('A', 'D'))));
+        System.out.println(enigmaMachine.decode('D'));
 
         SettingsFormat test = new SettingsFormat();
         test.addSector(rotorIDSector);
