@@ -1,15 +1,19 @@
 package EnigmaMachine;
 
+import Operations.RomanNumber;
+
 import java.util.*;
 
 public class EnigmaMachine{
     private List<Rotor> rotors;
     private List<Rotor> rotorsInUse;
+    private Map<Integer,Rotor> allRotors;
     private Reflctor reflectorInUse;
+
+    private Map<RomanNumber,Reflctor> allReflectors;
     private List<Reflctor> reflectors;
     private PluginBoard pluginBoard;
-
-    private Map<Character, Integer> keyboard;
+    private final Map<Character, Integer> keyboard;
 
     public EnigmaMachine(List<Rotor> rotors, Reflctor reflectors, PluginBoard pluginBoard, Map<Character, Integer> keyboard) {
         this.rotorsInUse = rotors;
@@ -17,7 +21,11 @@ public class EnigmaMachine{
         this.pluginBoard = pluginBoard;
         this.keyboard = keyboard;
     }
-
+    public EnigmaMachine(Map<Integer,Rotor> rotors, Map<RomanNumber,Reflctor> reflectors, Map<Character, Integer> keyboard) {
+        this.allRotors = rotors;
+        this.allReflectors = reflectors;
+        this.keyboard = keyboard;
+    }
     public Character decode(Character inputtedChar) {
         int currentCharIndex;
         Character currentChar;
@@ -68,8 +76,27 @@ public class EnigmaMachine{
 
         return currentCharIndex;
     }
+    private Reflctor findReflectorById(String reflectorInUseId) {
+        for(Reflctor reflector : allReflectors) {
+            if(reflector.id().equals(reflectorInUseId)) {
+                return reflector;
+            }
+        }
+        return null;
+    }
+    //region Setters
 
+    public void setPluginBoard(PluginBoard pluginBoard) {
+        this.pluginBoard = pluginBoard;
+    }
+    public void setRotorsInUse(List<Rotor> rotorsInUse) {
+        this.rotorsInUse = rotorsInUse;
+    }
+    public void setReflectorInUse(String id) {
+        this.reflectorInUse = findReflectorById(id);
+    }
 
+    //endregion
     //region Getters
     public List<Rotor> getAllrotors() {
         return rotors;
