@@ -11,7 +11,7 @@ public class Rotor implements Decoder{
     private Integer notch;
     private final Integer startingPosition;
     private Character startingRightCharToWindow;
-    private Boolean isFirstRotor;
+    private final Boolean isFirstRotor;
     private static final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
@@ -142,8 +142,15 @@ public class Rotor implements Decoder{
         return id;
     }
 
-    public Character startingRightCharToWindow() {
+    public Character getStartingRightCharToWindow() {
         return startingRightCharToWindow;
     }
+    //endregion
+
+    //region Setters
+    public void setStartingRightCharToWindow(Character startingCharacter) {
+        startingRightCharToWindow = startingCharacter;
+    }
+
     //endregion
 }
