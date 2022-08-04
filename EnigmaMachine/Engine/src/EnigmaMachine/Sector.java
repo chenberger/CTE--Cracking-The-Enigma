@@ -9,7 +9,6 @@ public abstract class Sector<T>  {
     protected SectorType type;
 
     public Sector(List<T> elements, SectorType type) {
-
         this.elements = elements;
         this.type = type;
     }

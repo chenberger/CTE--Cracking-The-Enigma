@@ -158,6 +158,8 @@ public class Engine implements OperationsMachine, Serializable {
 
     @Override
     public void resetMachineSettings() {
+        enigmaMachine.resetSettings();
+
 
     }
 
@@ -180,7 +182,27 @@ public class Engine implements OperationsMachine, Serializable {
     }
 
     @Override
-    public void processInput() {
+    public String processInput(String inputToProcess) {
+        return getProcessedInput(inputToProcess);
+    }
 
+    private String getProcessedInput(String inputToProcess) {
+        if(ContainsCharNotInMAchineKeyboaed(inputToProcess)){
+            throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
+        }
+        String processedInput = "";
+        for(char letter: inputToProcess.toCharArray()){
+            processedInput += enigmaMachine.decode(letter);
+        }
+        return processedInput;
+    }
+
+    private boolean ContainsCharNotInMAchineKeyboaed(String inputToProcess) {
+        for(char letter: inputToProcess.toCharArray()){
+            if(!enigmaMachine.getKeyboard().contains(letter)){
+                return true;
+            }
+        }
+        return false;
     }
 }

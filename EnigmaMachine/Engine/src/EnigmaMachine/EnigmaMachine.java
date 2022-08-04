@@ -205,6 +205,10 @@ public class EnigmaMachine{
         }
         return null;
     }
+
+    public void resetSettings() {
+        // TODO implement this method after changes //
+    }
     //region Setters
 
     public void setPluginBoard(PluginBoard pluginBoard) {
@@ -242,5 +246,7 @@ public class EnigmaMachine{
     public Set<Character> getKeyboard() {
         return keyboard.keySet();
     }
+
+
     //endregion
 }
