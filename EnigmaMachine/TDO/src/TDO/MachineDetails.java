@@ -1,6 +1,7 @@
 package TDO;
 
 import EnigmaMachine.*;
+import com.sun.corba.se.spi.orb.Operation;
 import javafx.util.Pair;
 
 import java.util.*;

@@ -1,7 +1,5 @@
 package EnigmaMachine;
 
-import Operations.RomanNumber;
-
 import java.util.*;
 
 public class Reflctor{

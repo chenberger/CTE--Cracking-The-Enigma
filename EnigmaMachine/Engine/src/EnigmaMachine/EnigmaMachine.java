@@ -1,7 +1,7 @@
 package EnigmaMachine;
 
 import javafx.util.Pair;
-import Operations.RomanNumber;
+
 import java.util.*;
 
 public class EnigmaMachine{
@@ -95,7 +95,7 @@ public class EnigmaMachine{
             throw new Exception("There amount of reflectors that was inserted in wrong! the amount is needed 1 and the amount was inserted is : " + reflectorIdSector.getElements().size());
         }
 
-        reflectorId = reflectorIdSector.getElements().get(0);
+        reflectorId = (RomanNumber) reflectorIdSector.getElements().get(0);
 
         for(RomanNumber romanNumber : RomanNumber.values()) {
             if(romanNumber == reflectorId) {
@@ -198,7 +198,7 @@ public class EnigmaMachine{
         return currentCharIndex;
     }
     private Reflctor findReflectorById(String reflectorInUseId) {
-        for(Reflctor reflector : allReflectors) {
+        for(Reflctor reflector : reflectors.values()) {
             if(reflector.id().equals(reflectorInUseId)) {
                 return reflector;
             }
