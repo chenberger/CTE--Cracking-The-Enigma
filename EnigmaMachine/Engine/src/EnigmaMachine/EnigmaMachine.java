@@ -13,11 +13,11 @@ public class EnigmaMachine{
     private PluginBoard pluginBoard;
     private final Map<Character, Integer> keyboard;
 
-    public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflctor> reflectors, PluginBoard pluginBoard, Map<Character, Integer> keyboard) {
+    public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflctor> reflectors, Map<Character, Integer> keyboard) {
         this.rotors = rotors;
         this.reflectors = reflectors;
-        this.pluginBoard = pluginBoard;
         this.keyboard = keyboard;
+
     }
 
     public void initializeSetting(SettingsFormat settingsFormat) throws Exception {

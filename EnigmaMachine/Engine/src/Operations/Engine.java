@@ -22,6 +22,7 @@ import javax.xml.bind.Unmarshaller;
 import EnigmaMachine.SettingsFormat;
 import EnigmaMachine.RomanNumber;
 import static java.lang.Integer.parseInt;
+import static javafx.application.Platform.exit;
 
 
 public class Engine implements OperationsMachine, Serializable {
@@ -37,7 +38,6 @@ public class Engine implements OperationsMachine, Serializable {
                 throw new NotXmlFileException();
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
-            System.out.println("name of first country is: " + enigma.getCTEMachine().getABC());
         }
         catch (JAXBException | FileNotFoundException | NotXmlFileException e) { //should catch the exception of the xml in the UI.
             e.printStackTrace();
@@ -201,5 +201,8 @@ public class Engine implements OperationsMachine, Serializable {
             }
         }
         return false;
+    }
+    public void finishSession(){
+        exit();
     }
 }
