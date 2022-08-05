@@ -25,6 +25,10 @@ public class PluginBoard {
         pluggedPairs.put(plugginPair.getKey(), plugginPair.getValue());
     }
 
+    public void clear() {
+        pluggedPairs.clear();
+    }
+
     //region Getters
     public int size() {
         return pluggedPairs.size();
@@ -33,6 +37,7 @@ public class PluginBoard {
     public Map<Character,Character> getAllPluggedPairs() {
         return pluggedPairs;
     }
+
     //endregion
 
 }

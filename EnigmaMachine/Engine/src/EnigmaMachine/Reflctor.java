@@ -13,6 +13,10 @@ public class Reflctor{
         reflectorPairs = reflectedNumbers;
     }
 
+    public void clear() {
+        reflectorPairs.clear();
+    }
+
 
     public Integer SetIndex(Integer inputtedIndex){
         return reflectorPairs.get(inputtedIndex);
@@ -39,5 +43,6 @@ public class Reflctor{
     public int size() {
         return reflectorPairs.size();
     }
+
     //endregion
 }
