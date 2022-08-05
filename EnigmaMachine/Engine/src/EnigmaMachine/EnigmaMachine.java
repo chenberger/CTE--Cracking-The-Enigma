@@ -13,42 +13,45 @@ public class EnigmaMachine{
     private PluginBoard pluginBoard;
     private final Map<Character, Integer> keyboard;
 
+    private boolean isMachineSettingInitialized;
+
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflctor> reflectors, Map<Character, Integer> keyboard) {
         this.rotors = rotors;
         this.reflectors = reflectors;
         this.keyboard = keyboard;
 
+        this.isMachineSettingInitialized = false;
     }
 
-    public void initializeSetting(SettingsFormat settingsFormat) throws Exception {
+    /*public void initializeSettings(SettingsFormat settingsFormat) throws Exception {
         for (Sector sector : settingsFormat.getSettingsFormat()) {
             if(sector.type == SectorType.ROTORS_ID) {
-                initializeRotorsInUse((RotorIDSector) sector);
+                initializeRotorsInUseSettings((RotorIDSector) sector);
             }
 
             if(sector.type == SectorType.START_POSITION_ROTORS) {
-                initializeStartingPositionRotors((InitialRotorPositionSector) sector, (RotorIDSector) settingsFormat.getSettingsFormat().get(0));
+                setStartingPositionRotorsSettings((InitialRotorPositionSector) sector, (RotorIDSector) settingsFormat.getSettingsFormat().get(0));
             }
 
             if(sector.type == SectorType.REFLECTOR) {
-                initializeReflector((ReflectorIdSector) sector);
+                setReflectorInUseSettings((ReflectorIdSector) sector);
             }
 
             if(sector.type == SectorType.PLUGIN_BOARD) {
-                initializePluginBoard((PluginBoardSector) sector);
+                setPluginBoardSettings((PluginBoardSector) sector);
             }
         }
-    }
+    }*/
 
-    private void initializePluginBoard(PluginBoardSector pluginBoardSector) throws Exception {
+    public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) throws Exception {
         Map<Character, Boolean> charactersUsingForPluginBoard = new HashMap<>();
         initializeCharactersUsingForPluggedBoard(charactersUsingForPluginBoard);
 
-        if(pluginBoardSector.getElements().size() > keyboard.size() / 2) {
+        if(pluginBoardSector.getElements().size() > getMaximumPairs()) {
             throw new Exception("Error in initializePluginBoard: The amount of pairs was inserted is : "
                     + pluginBoardSector.getElements().size()
                     + "The max amount of pairs is : "
-                    + keyboard.size() / 2);
+                    + getMaximumPairs());
         }
 
         for(Pair<Character, Character> pluginPair : pluginBoardSector.getElements()) {
@@ -87,7 +90,7 @@ public class EnigmaMachine{
         }
     }
 
-    private void initializeReflector(ReflectorIdSector reflectorIdSector) throws Exception {
+    public void setReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws Exception {
         boolean isReflectorFound = false;
         RomanNumber reflectorId;
 
@@ -109,7 +112,7 @@ public class EnigmaMachine{
         }
     }
 
-    private void initializeStartingPositionRotors(InitialRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws Exception {
+    public void setStartingPositionRotorsSettings(InitialRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws Exception {
         List<Character> reversedStartPositionsOfTheRotors = new ArrayList<Character>(startPositionsOfTheRotors.getElements());
         Collections.reverse(reversedStartPositionsOfTheRotors);
         int index = 0;
@@ -132,7 +135,9 @@ public class EnigmaMachine{
         }
     }
 
-    private void initializeRotorsInUse(RotorIDSector rotorIDSector) throws Exception {
+    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws Exception {
+        //TODO check duplicates id
+
         List<Integer> reversedRotorsId = new ArrayList<Integer>(rotorIDSector.getElements());
         Collections.reverse(reversedRotorsId);
         rotorsInUse.clear();
@@ -145,6 +150,10 @@ public class EnigmaMachine{
                 throw new Exception("There is no any rotor found with the id: " + rotorId);
             }
         }
+    }
+
+    public int getMaximumPairs() {
+        return pluginBoard.size() / 2;
     }
 
     public Character decode(Character inputtedChar) {
@@ -214,14 +223,15 @@ public class EnigmaMachine{
     public void setPluginBoard(PluginBoard pluginBoard) {
         this.pluginBoard = pluginBoard;
     }
-    public void setRotorsInUse(List<Rotor> rotorsInUse) {
-        this.rotorsInUse = rotorsInUse;
-    }
-    public void setReflectorInUse(String id) {
+    public void setReflectorInUseSettings(String id) {
         this.reflectorInUse = findReflectorById(id);
+    }
+    public void setMachineSettingInitialized(boolean machineSettingInitialized) {
+        isMachineSettingInitialized = machineSettingInitialized;
     }
 
     //endregion
+
     //region Getters
     public Map<Integer, Rotor> getAllrotors() {
         return rotors;
@@ -247,6 +257,9 @@ public class EnigmaMachine{
         return keyboard.keySet();
     }
 
+    public boolean isMachineSettingInitialized() {
+        return isMachineSettingInitialized;
+    }
 
     //endregion
 }

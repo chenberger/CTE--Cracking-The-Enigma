@@ -5,31 +5,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import EnigmaMachine.EnigmaMachine;
-import EnigmaMachine.EnigmaMachine.*;
-import EnigmaMachine.Reflctor;
-import EnigmaMachine.Rotor;
+import EnigmaMachine.*;
 import EnigmaMachineException.GeneralEnigmaMachineException;
 import EnigmaMachineException.NotXmlFileException;
 import Jaxb.Schema.Generated.*;
 import TDO.MachineDetails;
 import Jaxb.Schema.Generated.CTEEnigma;
 import javafx.util.Pair;
-import javax.swing.*;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import EnigmaMachine.SettingsFormat;
+
 import EnigmaMachine.RomanNumber;
 import static java.lang.Integer.parseInt;
 import static javafx.application.Platform.exit;
 
 
-public class Engine implements OperationsMachine, Serializable {
+abstract public class Engine implements MachineOperations, Serializable {
+
+    //region private data members
     private EnigmaMachine enigmaMachine;
     private MachineDetails machineDetails;
     private final GeneralEnigmaMachineException enigmaMachineException = new GeneralEnigmaMachineException();
 
+    //endregion
+
+    //region JAXB Translation
     public void setMachineDetails(String machineDetailsXmlFilePath) {
         // TODO implement here also validation.(the file exist)
         try {
@@ -52,7 +54,6 @@ public class Engine implements OperationsMachine, Serializable {
         return (CTEEnigma) u.unmarshal(in);
     }
 
-    //region JAXB Translation
     private void transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
         // TODO implement here also validation.(the file exist),exceptions.
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
@@ -138,42 +139,67 @@ public class Engine implements OperationsMachine, Serializable {
 
     //endregion
 
+    //region Operations implements
     @Override
-    public void automaticSettingsInitialize() {
+    public void setSettingsAutomatically() throws Exception {
+        //TODO get random data
+        //setSettings();
 
     }
 
-    @Override
-    public void manualSettingsInitialize(SettingsFormat settingsFormat) throws Exception {
-        if(enigmaMachine == null) {
+/*    @Override
+    public void setSettingsManually() throws Exception {
+        setSettings();
+        enigmaMachine.initializeSettings(settingsFormat);
+    }
+
+    private void setSettings() throws Exception {
+        if(!isMachineExsists()) {
             throw new Exception("There is no exists Machine");
         }
 
-        enigmaMachine.initializeSetting(settingsFormat);
+        setRotorsInUse(rotorIdSector);
+        setStartingPositionRotors(rotorIdSector);
+        setReflectorInUse(rotorIdSector);
+        setPluginBoard(rotorIdSector);
+        enigmaMachine.setMachineSettingInitialized(true);
+    }*/
+     public void setRotorsInUse(RotorIDSector rotorIDSector) throws Exception {
+        enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
+     }
+
+    public void setStartingPositionRotors(InitialRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws Exception {
+        enigmaMachine.setStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
     }
 
+    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws Exception {
+        enigmaMachine.setReflectorInUseSettings(reflectorInUse);
+    }
+
+    public void setPluginBoard(PluginBoardSector pluginBoardSector) throws Exception {
+        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+    }
+
+
     @Override
-    public void resetMachineSettings() {
+    public void resetSettings() {
         enigmaMachine.resetSettings();
-
-
     }
 
     @Override
-    public MachineDetails getMachineDetails() throws Exception {
-        if(enigmaMachine == null) {
+    public MachineDetails displaySpecifications() throws Exception {
+        if(!isMachineExists()) {
             throw new Exception("There is no exists Machine");
        }
-       else if (machineDetails == null) {
-            machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
-            machineDetails.initializeSettingFormat();
-        }
+
+       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
+       machineDetails.initializeSettingFormat();
 
        return machineDetails;
     }
 
     @Override
-    public void analyzeMachineHistoryAndStatistics() {
+    public void analyzeHistoryAndStatistics() {
 
     }
 
@@ -184,7 +210,8 @@ public class Engine implements OperationsMachine, Serializable {
 
     private String getProcessedInput(String inputToProcess) {
         //TODO you need to initialize the machine first before decoding !
-        if(ContainsCharNotInMAchineKeyboaed(inputToProcess)){
+        // also maybe there is no any machine? or the xml file didnt loaded, or the setting didnt initialize?
+        if(containsCharNotInMAMachineKeyboard(inputToProcess)){
             throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
         }
         String processedInput = "";
@@ -194,7 +221,7 @@ public class Engine implements OperationsMachine, Serializable {
         return processedInput;
     }
 
-    private boolean ContainsCharNotInMAchineKeyboaed(String inputToProcess) {
+    private boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
         for(char letter: inputToProcess.toCharArray()){
             if(!enigmaMachine.getKeyboard().contains(letter)){
                 return true;
@@ -204,5 +231,11 @@ public class Engine implements OperationsMachine, Serializable {
     }
     public void finishSession(){
         exit();
+
+
+    //endregion
+
+    boolean isMachineExists() {
+        return enigmaMachine != null;
     }
 }
