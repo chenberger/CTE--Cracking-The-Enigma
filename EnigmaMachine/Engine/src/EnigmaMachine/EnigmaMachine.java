@@ -19,6 +19,7 @@ public class EnigmaMachine{
         this.rotors = rotors;
         this.reflectors = reflectors;
         this.keyboard = keyboard;
+
         this.isMachineSettingInitialized = false;
     }
 
