@@ -1,7 +1,6 @@
 package TDO;
 
 import EnigmaMachine.*;
-import com.sun.corba.se.spi.orb.Operation;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -106,7 +105,7 @@ public class MachineDetails {
                 .collect(Collectors.toList()));
     }
 
-    private InitialRotorPositionSector getCurrentInitialRotorPositionRotorsInUseSector() throws Exception {
+    private StartingRotorPositionSector getCurrentInitialRotorPositionRotorsInUseSector() throws Exception {
         List<Rotor> reversedRotorsInUse = new ArrayList<Rotor>(rotorsInUse);
         Collections.reverse(reversedRotorsInUse);
 
@@ -114,7 +113,7 @@ public class MachineDetails {
             throw new Exception("There is no Rotor in the Machine");
         }
 
-        return new InitialRotorPositionSector(reversedRotorsInUse
+        return new StartingRotorPositionSector(reversedRotorsInUse
                 .stream()
                 .map(rotor -> rotor.getStartingRightCharToWindow())
                 .collect(Collectors.toList()));

@@ -130,7 +130,7 @@ public class EnigmaMachine{
         }
     }
 
-    public void setStartingPositionRotorsSettings(InitialRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
+    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
         StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
         List<Character> reversedStartPositionsOfTheRotors = new ArrayList<Character>(startPositionsOfTheRotors.getElements());
         Collections.reverse(reversedStartPositionsOfTheRotors);
@@ -161,7 +161,7 @@ public class EnigmaMachine{
         }
     }
 
-    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws Exception {
+    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
         //TODO check if the size of the count rotors equal to rotorIDSector size
         RotorsInUseSettingsException rotorsInUseSettingsException = new RotorsInUseSettingsException();
         List<Integer> reversedRotorsId = new ArrayList<Integer>(rotorIDSector.getElements());

@@ -3,10 +3,10 @@ package EnigmaMachine;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InitialRotorPositionSector extends Sector<Character>{
+public class StartingRotorPositionSector extends Sector<Character>{
 
-    public InitialRotorPositionSector(List<Character> initialPosition) {
-        super(initialPosition, SectorType.START_POSITION_ROTORS);
+    public StartingRotorPositionSector(List<Character> startingPosition) {
+        super(startingPosition, SectorType.START_POSITION_ROTORS);
     }
 
     @Override
