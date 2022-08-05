@@ -24,9 +24,15 @@ import static java.lang.Integer.parseInt;
 abstract public class Engine implements MachineOperations, Serializable {
 
     //region private data members
+    private SettingsFormat settingsFormat;
     private EnigmaMachine enigmaMachine;
     private MachineDetails machineDetails;
-    private final GeneralEnigmaMachineException enigmaMachineException = new GeneralEnigmaMachineException();
+    private final GeneralEnigmaMachineException enigmaMachineException;
+
+    public Engine(){
+        this.settingsFormat = new SettingsFormat();
+        this.enigmaMachineException = new GeneralEnigmaMachineException();
+    }
 
     //endregion
 
@@ -125,7 +131,7 @@ abstract public class Engine implements MachineOperations, Serializable {
         int indexToMappingTOInKeyboard = 0;
 
         if (cteKeyboard.length % 2 != 0) {
-            enigmaMachineException.setIsoddLength();
+            enigmaMachineException.setIsOddLength();
         }
         for (Character letter : cteKeyboard) {
             if (machineKeyBoard.containsKey(Character.toUpperCase(letter))) {
@@ -166,18 +172,22 @@ abstract public class Engine implements MachineOperations, Serializable {
     }*/
      public void setRotorsInUse(RotorIDSector rotorIDSector) throws Exception {
         enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
+         settingsFormat.addSector(rotorIDSector);
      }
 
     public void setStartingPositionRotors(InitialRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws Exception {
         enigmaMachine.setStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
+        settingsFormat.addSector(startingPositionTheRotors);
     }
 
     public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws Exception {
         enigmaMachine.setReflectorInUseSettings(reflectorInUse);
+        settingsFormat.addSector(reflectorInUse);
     }
 
     public void setPluginBoard(PluginBoardSector pluginBoardSector) throws Exception {
         enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+        settingsFormat.addSector(pluginBoardSector);
     }
 
 
