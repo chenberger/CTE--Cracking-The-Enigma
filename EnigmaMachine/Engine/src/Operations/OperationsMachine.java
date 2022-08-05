@@ -9,5 +9,5 @@ public interface OperationsMachine {
     public void resetMachineSettings();
     public MachineDetails getMachineDetails() throws Exception;
     public void analyzeMachineHistoryAndStatistics();
-    public void processInput();
+    public String processInput(String inputToProcess);
 }

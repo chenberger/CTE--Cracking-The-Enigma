@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import EnigmaMachine.SettingsFormat;
+import EnigmaMachine.RomanNumber;
 import static java.lang.Integer.parseInt;
 
 
@@ -50,12 +51,14 @@ public class Engine implements OperationsMachine, Serializable {
         Unmarshaller u = jc.createUnmarshaller();
         return (CTEEnigma) u.unmarshal(in);
     }
+
+    //region JAXB Translation
     private void transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
         // TODO implement here also validation.(the file exist),exceptions.
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         Map<Integer,Rotor> machineRotors;
-        Map<RomanNumber ,Reflctor> machineReflectors;
+        Map<RomanNumber,Reflctor> machineReflectors;
         Map<Character,Integer> machineKeyBoard;
 
         machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
@@ -90,19 +93,10 @@ public class Engine implements OperationsMachine, Serializable {
                 currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
             }
             Reflctor currentReflector = new Reflctor(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
-            machineReflectors.put(convertStringToRomanNumber(reflector.getId()),currentReflector);
+            machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);
         }
 
         return machineReflectors;
-    }
-    private RomanNumber convertStringToRomanNumber(String romanNumberString){
-        RomanNumber convertedRomanNumber = null;
-        for(RomanNumber romanNumber: RomanNumber.values()){
-            if(romanNumber.toString().equals(romanNumberString)){
-                convertedRomanNumber = romanNumber;
-            }
-        }
-        return convertedRomanNumber;
     }
     private Map<Integer,Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors) {
         Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
@@ -141,6 +135,8 @@ public class Engine implements OperationsMachine, Serializable {
             }
             return machineKeyBoard;
     }
+
+    //endregion
 
     @Override
     public void automaticSettingsInitialize() {
@@ -187,6 +183,7 @@ public class Engine implements OperationsMachine, Serializable {
     }
 
     private String getProcessedInput(String inputToProcess) {
+        //TODO you need to initialize the machine first before decoding !
         if(ContainsCharNotInMAchineKeyboaed(inputToProcess)){
             throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
         }
