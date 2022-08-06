@@ -1,13 +1,11 @@
 package Operations;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import EnigmaMachine.*;
-import EnigmaMachineException.GeneralEnigmaMachineException;
-import EnigmaMachineException.NotXmlFileException;
+import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
 import TDO.MachineDetails;
 import Jaxb.Schema.Generated.CTEEnigma;
@@ -22,15 +20,70 @@ import static java.lang.Integer.parseInt;
 import static javafx.application.Platform.exit;
 
 
-abstract public class Engine implements MachineOperations, Serializable {
+public class Engine implements MachineOperations, Serializable {
 
     //region private data members
+    private SettingsFormat settingsFormat;
     private EnigmaMachine enigmaMachine;
     private SettingsFormat settingsFormat;
     private MachineDetails machineDetails;
-    private final GeneralEnigmaMachineException enigmaMachineException = new GeneralEnigmaMachineException();
+    private final GeneralEnigmaMachineException enigmaMachineException;
 
     //endregion
+
+    public Engine(){
+        this.settingsFormat = new SettingsFormat();
+        this.enigmaMachineException = new GeneralEnigmaMachineException();
+
+        //region test
+        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
+        ABC.put('A', 0);
+        ABC.put('B', 1);
+        ABC.put('C', 2);
+        ABC.put('D', 3);
+        ABC.put('E', 4);
+        ABC.put('F', 5);
+
+        ArrayList<Pair<Character, Character>> mappingABC1 = new ArrayList<>();
+        List<Pair<Character, Character>> mappingABC2 = new ArrayList<>();
+        mappingABC1.add(new Pair<Character, Character>('F', 'A'));
+        mappingABC1.add(new Pair<Character, Character>('E', 'B'));
+        mappingABC1.add(new Pair<Character, Character>('D', 'C'));
+        mappingABC1.add(new Pair<Character, Character>('C', 'D'));
+        mappingABC1.add(new Pair<Character, Character>('B', 'E'));
+        mappingABC1.add(new Pair<Character, Character>('A', 'F'));
+
+        mappingABC2.add(new Pair<Character, Character>('E', 'A'));
+        mappingABC2.add(new Pair<Character, Character>('B', 'B'));
+        mappingABC2.add(new Pair<Character, Character>('D', 'C'));
+        mappingABC2.add(new Pair<Character, Character>('F', 'D'));
+        mappingABC2.add(new Pair<Character, Character>('C', 'E'));
+        mappingABC2.add(new Pair<Character, Character>('A', 'F'));
+
+        Rotor rotor1 = new Rotor(1, 3,true, mappingABC1, 'C');
+        Rotor rotor2 = new Rotor(2, 0, false, mappingABC2, 'C');
+
+        Map<Integer, Rotor> rotors = new HashMap<Integer, Rotor>();
+        rotors.put(rotor1.id(), rotor1);
+        rotors.put(rotor2.id(), rotor2);
+
+        Map<Integer, Integer> reflectorPairs = new HashMap<Integer, Integer>();
+        reflectorPairs.put(0, 3);
+        reflectorPairs.put(3, 0);
+        reflectorPairs.put(4, 1);
+        reflectorPairs.put(1, 4);
+        reflectorPairs.put(2, 5);
+        reflectorPairs.put(5, 2);
+        Reflector reflector = new Reflector(RomanNumber.I, reflectorPairs);
+        Map<RomanNumber, Reflector> reflectors = new HashMap<RomanNumber, Reflector>();
+        reflectors.put(reflector.id(), reflector);
+
+        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC);
+
+        //endregion
+    }
+
+
 
     //region JAXB Translation
     public void setMachineDetails(String machineDetailsXmlFilePath) {
@@ -43,12 +96,14 @@ abstract public class Engine implements MachineOperations, Serializable {
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
             transformJAXBClassesToEnigmaMachine(engima);
+ 
+
         }
-        catch (JAXBException | FileNotFoundException | NotXmlFileException e) { //should catch the exception of the xml in the UI.
+        catch (JAXBException | FileNotFoundException | NotXmlFileException | GeneralEnigmaMachineException e) { //should catch the exception to the xml in the UI.
             e.printStackTrace();
         }
 
-    }
+   }
 
     public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance("Jaxb.Schema.Generated");
@@ -62,7 +117,7 @@ abstract public class Engine implements MachineOperations, Serializable {
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         Map<Integer,Rotor> machineRotors;
-        Map<RomanNumber,Reflctor> machineReflectors;
+        Map<RomanNumber, Reflector> machineReflectors;
         Map<Character,Integer> machineKeyBoard;
         int rotorsCount = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
 
@@ -97,9 +152,8 @@ abstract public class Engine implements MachineOperations, Serializable {
         return false;
     }
 
-
-    private Map<RomanNumber ,Reflctor> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
-        Map<RomanNumber,Reflctor> machineReflectors = new HashMap<>();
+    private Map<RomanNumber , Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
+        Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
         for(CTEReflector reflector: cteReflectors){
             if(parseInt(reflector.getId()) > 4 && parseInt(reflector.getId())< 0){
                 enigmaMachineException.setReflectorNotFound();
@@ -116,7 +170,7 @@ abstract public class Engine implements MachineOperations, Serializable {
                 currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
                 currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
             }
-            Reflctor currentReflector = new Reflctor(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
+            Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
             machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);
         }
 
@@ -168,7 +222,7 @@ abstract public class Engine implements MachineOperations, Serializable {
         int indexToMappingTOInKeyboard = 0;
 
         if (cteKeyboard.length % 2 != 0) {
-            enigmaMachineException.setIsoddLength();
+            enigmaMachineException.setIsOddLength();
         }
         for (Character letter : cteKeyboard) {
             if (machineKeyBoard.containsKey(Character.toUpperCase(letter))) {
@@ -183,45 +237,146 @@ abstract public class Engine implements MachineOperations, Serializable {
     //endregion
 
     //region Operations implements
+    //region set automatic settings
     @Override
-    public void setSettingsAutomatically() throws Exception {
-        //TODO get random data
-        //setSettings();
-
-    }
-
-/*    @Override
-    public void setSettingsManually() throws Exception {
+    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException {
         setSettings();
-        enigmaMachine.initializeSettings(settingsFormat);
+        RotorIDSector rotorIDSector = getRandomRotorsIdSector();
+
+        setRotorsInUse(rotorIDSector);
+        setStartingPositionRotors(getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size()), rotorIDSector);
+        setReflectorInUse(getRandomReflectorSector());
+        setPluginBoard(getRandomPluginBoardSector());
+        checkIfTheSettingsInitialized();
     }
 
-    private void setSettings() throws Exception {
-        if(!isMachineExsists()) {
-            throw new Exception("There is no exists Machine");
+    private PluginBoardSector getRandomPluginBoardSector() {
+        List<Pair<Character, Character>> pluginPairs = new ArrayList<>();
+        Random randomGenerator = new Random();
+        int amountOfPairs = randomGenerator.nextInt(enigmaMachine.getMaximumPairs() + 1);
+
+        for (int i = 0; i < amountOfPairs; i++) {
+            pluginPairs.add(getRandomPluginPair(pluginPairs));
         }
 
-        setRotorsInUse(rotorIdSector);
-        setStartingPositionRotors(rotorIdSector);
-        setReflectorInUse(rotorIdSector);
-        setPluginBoard(rotorIdSector);
+        return new PluginBoardSector(pluginPairs);
+    }
+
+    private Pair<Character, Character> getRandomPluginPair(List<Pair<Character, Character>> pluginPairs) {
+        Pair<Character, Character> randomPluginPair = new Pair<>(
+                getRandomCharacterFromTheKeyboard(), getRandomCharacterFromTheKeyboard());
+
+        while(!isValidPair(randomPluginPair, pluginPairs))
+        {
+            randomPluginPair = new Pair<>(
+                    getRandomCharacterFromTheKeyboard(), getRandomCharacterFromTheKeyboard());
+        }
+
+        return randomPluginPair;
+    }
+
+    private boolean isValidPair(Pair<Character, Character> randomPair, List<Pair<Character, Character>> pluginPairs) {
+        if(randomPair.getKey() == randomPair.getValue()) {
+            return false;
+        }
+
+        //check if left char or right char already exists in any other plugged pair
+        if(pluginPairs.stream().map(Pair::getKey).collect(Collectors.toSet()).contains(randomPair.getValue()) ||
+           pluginPairs.stream().map(Pair::getKey).collect(Collectors.toSet()).contains(randomPair.getKey()) ||
+           pluginPairs.stream().map(Pair::getValue).collect(Collectors.toSet()).contains(randomPair.getValue()) ||
+           pluginPairs.stream().map(Pair::getValue).collect(Collectors.toSet()).contains(randomPair.getKey())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private ReflectorIdSector getRandomReflectorSector() {
+        Random randomGenerator = new Random();
+        RomanNumber[] reflectorIdArr = enigmaMachine.getAllReflectors().keySet().toArray(new RomanNumber[enigmaMachine.getAllReflectors().keySet().size()]);
+        List<RomanNumber> reflectorId = new ArrayList<RomanNumber>();
+
+        reflectorId.add(reflectorIdArr[randomGenerator.nextInt(reflectorIdArr.length)]);
+
+        return new ReflectorIdSector(reflectorId);
+    }
+
+    private StartingRotorPositionSector getRandomStartingPositionRotorsSector(int rotorsInUseSize) {
+        List<Character> startingPositionsOfTheRotors = new ArrayList<>();
+
+        for (int i = 0; i < rotorsInUseSize; i++) {
+            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard());
+        }
+
+        return new StartingRotorPositionSector(startingPositionsOfTheRotors);
+    }
+
+    private Character getRandomCharacterFromTheKeyboard() {
+        Random randomGenerator = new Random();
+        Character[] keyboardArr = enigmaMachine.getKeyboard().toArray(new Character[enigmaMachine.getKeyboard().size()]);
+
+        return keyboardArr[randomGenerator.nextInt(keyboardArr.length)];
+    }
+
+    private RotorIDSector getRandomRotorsIdSector() {
+        List<Integer> rotorsId = new ArrayList<>();
+        Random randomGenerator = new Random();
+        int amountOfRotors = randomGenerator.nextInt(enigmaMachine.getAllrotors().size()) + 1;
+
+        for (int i = 0; i < amountOfRotors; i++) {
+              rotorsId.add(getRandomRotorId(rotorsId));
+        }
+
+        return new RotorIDSector(rotorsId);
+    }
+
+    private Integer getRandomRotorId(List<Integer> rotorsId) {
+        Random randomGenerator = new Random();
+        int randomRotorId = enigmaMachine.getAllrotors().get(randomGenerator.nextInt(enigmaMachine.getAllrotors().size())).id();
+
+        while(rotorsId.contains(randomRotorId))
+        {
+            randomRotorId = enigmaMachine.getAllrotors().get(randomGenerator.nextInt(enigmaMachine.getAllrotors().size())).id();
+        }
+
+        return randomRotorId;
+    }
+
+    //endregion
+
+    public void setSettings() {
+        if(!isMachineExists()) {
+            throw new IllegalArgumentException("Error: There machine is no exists, go back to operation 1 and then run this operation");
+        }
+
+        settingsFormat.clear();
+    }
+    public void checkIfTheSettingsInitialized() throws SettingsFormatException {
+        if(!settingsFormat.isSettingsInitialized()) {
+            throw new SettingsFormatException(settingsFormat);
+        }
+
         enigmaMachine.setMachineSettingInitialized(true);
-    }*/
-     public void setRotorsInUse(RotorIDSector rotorIDSector) throws Exception {
+    }
+    public void setRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
         enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
-        settings.put(Rotors)
-     }
 
-    public void setStartingPositionRotors(InitialRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws Exception {
+        settingsFormat.addSector(rotorIDSector);
+    }
+
+    public void setStartingPositionRotors(StartingRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
         enigmaMachine.setStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
+        settingsFormat.addSector(startingPositionTheRotors);
     }
 
-    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws Exception {
+    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException {
         enigmaMachine.setReflectorInUseSettings(reflectorInUse);
+        settingsFormat.addSector(reflectorInUse);
     }
 
-    public void setPluginBoard(PluginBoardSector pluginBoardSector) throws Exception {
+    public void setPluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
         enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+        settingsFormat.addSector(pluginBoardSector);
     }
 
 
@@ -236,8 +391,7 @@ abstract public class Engine implements MachineOperations, Serializable {
             throw new Exception("There is no exists Machine");
        }
 
-       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
-       machineDetails.initializeSettingFormat();
+       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard(), settingsFormat);
 
        return machineDetails;
     }
@@ -273,14 +427,13 @@ abstract public class Engine implements MachineOperations, Serializable {
         }
         return false;
     }
-    public void finishSession(){
+    public void finishSession() {
         exit();
-
-
+    }
     //endregion
 
-    private boolean isMachineExists() {
-        return
+    public boolean isMachineExists() {
+        return enigmaMachine != null;
     }
 
 }
