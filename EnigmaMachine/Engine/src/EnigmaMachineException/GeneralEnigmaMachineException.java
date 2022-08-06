@@ -1,7 +1,5 @@
 package EnigmaMachineException;
 
-import EnigmaMachine.Rotor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +20,16 @@ public class GeneralEnigmaMachineException extends Exception {
     public boolean noExceptionRaised() {
         return !reflectorNotFound && !oddLength && DuplicateChars.isEmpty() && sameMappingInOneRotor.isEmpty() && sameMappingInOneReflector.isEmpty() && numberOfRotorsToAdd == 0;
     }
-    public void addCharToDuplicateChars(Character inputedChar) {
-        DuplicateChars.add(inputedChar);
+    public void addCharToDuplicateChars(Character inputtedChar) {
+        DuplicateChars.add(inputtedChar);
     }
-    public void addRotorToRotorsWithSameId(int inputedId) {
-        RotorsWithSameId.put(inputedId, RotorsWithSameId.getOrDefault(inputedId, 1) + 1);
+    public void addRotorToRotorsWithSameId(int inputtedId) {
+        RotorsWithSameId.put(inputtedId, RotorsWithSameId.getOrDefault(inputtedId, 1) + 1);
     }
 
-    public void addValuesWithSameMappingInOneReflector(int inputedId, int firstValueMappedTo, int secondValueMappedTo) {
-        sameMappingInOneReflector.putIfAbsent(inputedId, new ArrayList<>(Arrays.asList(firstValueMappedTo, secondValueMappedTo)));
-        sameMappingInOneReflector.get(inputedId).add(firstValueMappedTo);
+    public void addValuesWithSameMappingInOneReflector(int inputtedId, int firstValueMappedTo, int secondValueMappedTo) {
+        sameMappingInOneReflector.putIfAbsent(inputtedId, new ArrayList<>(Arrays.asList(firstValueMappedTo, secondValueMappedTo)));
+        sameMappingInOneReflector.get(inputtedId).add(firstValueMappedTo);
     }
 
     public void addValuesWithSameMappingInOneRotor(Character charMappedIntoMoreThenOneChar, Character FirstCharMappedInto, Character SecondCharMappedInto) {
@@ -47,7 +45,7 @@ public class GeneralEnigmaMachineException extends Exception {
     public void setReflectorNotFound() {
         this.reflectorNotFound = true;
     }
-    public void setIsoddLength() {
+    public void setIsOddLength() {
         this.oddLength = true;
     }
     //end region

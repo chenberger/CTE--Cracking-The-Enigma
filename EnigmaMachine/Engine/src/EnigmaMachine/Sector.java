@@ -6,7 +6,7 @@ public abstract class Sector<T>  {
     protected final char openSector = '<';
     protected final char closeSector = '>';
     protected List<T> elements;
-    protected SectorType type;
+    public SectorType type;
 
     public Sector(List<T> elements, SectorType type) {
         this.elements = elements;

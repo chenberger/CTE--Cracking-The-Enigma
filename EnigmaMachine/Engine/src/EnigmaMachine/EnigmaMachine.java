@@ -1,5 +1,9 @@
 package EnigmaMachine;
 
+import EnigmaMachineException.PluginBoardSettingsException;
+import EnigmaMachineException.ReflectorSettingsException;
+import EnigmaMachineException.RotorsInUseSettingsException;
+import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -8,11 +12,11 @@ public class EnigmaMachine{
     private Map<Integer, Rotor> rotors;
     private int numOfActiveRotors;
     private List<Rotor> rotorsInUse;
-    private Map<Integer,Rotor> allRotors;
-    private Reflctor reflectorInUse;
-    private Map<RomanNumber, Reflctor> reflectors;
+    private Reflector reflectorInUse;
+    private Map<RomanNumber, Reflector> reflectors;
     private PluginBoard pluginBoard;
     private final Map<Character, Integer> keyboard;
+
 
     private boolean isMachineSettingInitialized;
 
@@ -24,65 +28,55 @@ public class EnigmaMachine{
         this.isMachineSettingInitialized = false;
     }
 
-    /*public void initializeSettings(SettingsFormat settingsFormat) throws Exception {
-        for (Sector sector : settingsFormat.getSettingsFormat()) {
-            if(sector.type == SectorType.ROTORS_ID) {
-                initializeRotorsInUseSettings((RotorIDSector) sector);
-            }
-
-            if(sector.type == SectorType.START_POSITION_ROTORS) {
-                setStartingPositionRotorsSettings((InitialRotorPositionSector) sector, (RotorIDSector) settingsFormat.getSettingsFormat().get(0));
-            }
-
-            if(sector.type == SectorType.REFLECTOR) {
-                setReflectorInUseSettings((ReflectorIdSector) sector);
-            }
-
-            if(sector.type == SectorType.PLUGIN_BOARD) {
-                setPluginBoardSettings((PluginBoardSector) sector);
-            }
-        }
-    }*/
-
-    public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) throws Exception {
+    public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
+        PluginBoardSettingsException pluginBoardSettingsException = new PluginBoardSettingsException();
         Map<Character, Boolean> charactersUsingForPluginBoard = new HashMap<>();
         initializeCharactersUsingForPluggedBoard(charactersUsingForPluginBoard);
+        pluginBoard.clear();
+        boolean isValidKey;
 
         if(pluginBoardSector.getElements().size() > getMaximumPairs()) {
-            throw new Exception("Error in initializePluginBoard: The amount of pairs was inserted is : "
-                    + pluginBoardSector.getElements().size()
-                    + "The max amount of pairs is : "
-                    + getMaximumPairs());
+            pluginBoardSettingsException.addIllegalPairsSize(pluginBoardSector.getElements().size(), getMaximumPairs());
         }
 
         for(Pair<Character, Character> pluginPair : pluginBoardSector.getElements()) {
+            isValidKey = true;
             if(pluginPair.getKey() == pluginPair.getValue()) {
-                throw new Exception("Error in initializePluginBoard: The character " + pluginPair.getKey() + "cannot plugged to himself");
+                isValidKey = false;
+                pluginBoardSettingsException.addValuePluggedToHimself(pluginPair.getKey());
             }
 
-            if(keyboard.containsKey(pluginPair.getKey())) {
-                if(keyboard.containsKey(pluginPair.getValue())) {
-                    if(!charactersUsingForPluginBoard.get(pluginPair.getKey())) {
-                        if(!charactersUsingForPluginBoard.get(pluginPair.getValue())) {
-                            pluginBoard.addPlugginPair(pluginPair);
-                        }
-                        else {
-                            throw new Exception("Error in initializePluginBoard: The character " + pluginPair.getValue() + "cannot plugged to more then one character");
-                        }
-                    }
-                    else {
-                        throw new Exception("Error in initializePluginBoard: The character " + pluginPair.getKey() + "cannot plugged to more then one character");
-                    }
-                }
-                else {
-                    throw new Exception("Error in initializePluginBoard: The character " + pluginPair.getKey() + "is illegal");
-                }
+            if(!keyboard.containsKey(pluginPair.getKey())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getKey(), keyboard.keySet());
             }
-            else {
-                throw new Exception("Error in initializePluginBoard: The character " + pluginPair.getValue() + "is illegal");
+
+            if(!keyboard.containsKey(pluginPair.getValue())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getValue(), keyboard.keySet());
+            }
+
+            if(charactersUsingForPluginBoard.containsKey(pluginPair.getKey()) && charactersUsingForPluginBoard.get(pluginPair.getKey())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getKey());
+            }
+
+            if(charactersUsingForPluginBoard.containsKey(pluginPair.getValue()) && charactersUsingForPluginBoard.get(pluginPair.getValue())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getValue());
+            }
+
+            if(isValidKey) {
+                pluginBoard.addPluginPair(pluginPair);
+                charactersUsingForPluginBoard.put(pluginPair.getValue(),true);
+                charactersUsingForPluginBoard.put(pluginPair.getKey(),true);
             }
         }
 
+        if(pluginBoardSettingsException.isExceptionNeedToThrown()) {
+            pluginBoard.clear();
+            throw pluginBoardSettingsException;
+        }
     }
 
     private void initializeCharactersUsingForPluggedBoard(Map<Character, Boolean> charactersUsingForPluginBoard) {
@@ -91,17 +85,22 @@ public class EnigmaMachine{
         }
     }
 
-    public void setReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws Exception {
+    public void setReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws ReflectorSettingsException {
+        ReflectorSettingsException reflectorSettingsException = new ReflectorSettingsException();
         boolean isReflectorFound = false;
         RomanNumber reflectorId;
 
-        if(reflectorIdSector.getElements().size() != 1) {
-            throw new Exception("There amount of reflectors that was inserted in wrong! the amount is needed 1 and the amount was inserted is : " + reflectorIdSector.getElements().size());
+        if(reflectorInUse != null) {
+            reflectorInUse.clear();
         }
+
+        if(reflectorIdSector.getElements().size() != 1) {
+            reflectorSettingsException.addIllegalReflectorsSize(reflectorIdSector.getElements().size());
+         }
 
         reflectorId = (RomanNumber) reflectorIdSector.getElements().get(0);
 
-        for(RomanNumber romanNumber : RomanNumber.values()) {
+        for(RomanNumber romanNumber : reflectors.keySet()) {
             if(romanNumber == reflectorId) {
                 reflectorInUse = reflectors.get(romanNumber);
                 isReflectorFound = true;
@@ -109,52 +108,92 @@ public class EnigmaMachine{
         }
 
         if(!isReflectorFound) {
-            throw new Exception("There is no any reflector found with the id : " + reflectorId);
+            reflectorSettingsException.addIllegalReflectorId(reflectorId, reflectors.keySet());
+        }
+
+        if(reflectorSettingsException.isExceptionNeedToThrown()) {
+            if(reflectorInUse != null) {
+                reflectorInUse.clear();
+            }
+
+            throw reflectorSettingsException;
         }
     }
 
-    public void setStartingPositionRotorsSettings(InitialRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws Exception {
-        List<Character> reversedStartPositionsOfTheRotors = new ArrayList<Character>(startPositionsOfTheRotors.getElements());
-        Collections.reverse(reversedStartPositionsOfTheRotors);
+    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
+        StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
         int index = 0;
         boolean isCharacterFound;
-        rotorsInUse.clear();
 
-        for(Character startingRightCharToWindow : reversedStartPositionsOfTheRotors) {
+        if (startPositionsOfTheRotors.getElements().size() != rotorIDSector.getElements().size()) {
+            startingPositionsOfTheRotorException.addIllegalPositionsSize(startPositionsOfTheRotors.getElements().size(), rotorIDSector.getElements().size());
+        }
+
+        for (Character startingRightCharToWindow : startPositionsOfTheRotors.getElements()) {
             isCharacterFound = false;
-            for(Character character : keyboard.keySet()) {
-                if(character == startingRightCharToWindow) {
-                    rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+            for (Character character : keyboard.keySet()) {
+                if (character == startingRightCharToWindow) {
+                    if(index < rotorIDSector.getElements().size()) {
+                        rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+                    }
+
                     isCharacterFound = true;
+                    break;
                 }
             }
 
-            if(!isCharacterFound) {
-                throw new Exception("There character " + startingRightCharToWindow + "is not matching to any char from the keyboard characters");
+            if (!isCharacterFound) {
+                startingPositionsOfTheRotorException.addIllegalCharacter(startingRightCharToWindow, keyboard.keySet());
             }
             index++;
         }
+
+        if (startingPositionsOfTheRotorException.isExceptionNeedToThrown()) {
+            throw startingPositionsOfTheRotorException;
+        }
     }
 
-    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws Exception {
-        //TODO check duplicates id
-
-        List<Integer> reversedRotorsId = new ArrayList<Integer>(rotorIDSector.getElements());
-        Collections.reverse(reversedRotorsId);
+    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
+        //TODO check if the size of the count rotors equal to rotorIDSector size
+        RotorsInUseSettingsException rotorsInUseSettingsException = new RotorsInUseSettingsException();
+        //List<Integer> reversedRotorsId = new ArrayList<Integer>(rotorIDSector.getElements());
+        Map<Integer, Boolean> rotorsUsingForTheMachine = new HashMap<>();
+        initializeRotorsUsingForTheMachine(rotorsUsingForTheMachine, rotorIDSector.getElements());
+        //Collections.reverse(reversedRotorsId);
         rotorsInUse.clear();
 
-        for(Integer rotorId : reversedRotorsId) {
+        if(rotorIDSector.getElements().size() > rotors.size()) {
+            rotorsInUseSettingsException.addIllegalAmountOfRotors(rotorIDSector.getElements().size(), rotors.size());
+        }
+
+        for(Integer rotorId : rotorIDSector.getElements()) {
+            if(rotorsUsingForTheMachine.get(rotorId)) {
+                rotorsInUseSettingsException.addRotorIdDuplicates(rotorId);
+            }
+
             if(rotors.containsKey(rotorId)) {
                     rotorsInUse.add(rotors.get(rotorId));
+                    rotorsUsingForTheMachine.put(rotorId, true);
             }
             else {
-                throw new Exception("There is no any rotor found with the id: " + rotorId);
+                rotorsInUseSettingsException.addIllegalRotorId(rotorId, rotors.keySet());
             }
+        }
+
+        if (rotorsInUseSettingsException.isExceptionNeedToThrown()) {
+            rotorsInUse.clear();
+            throw rotorsInUseSettingsException;
+        }
+    }
+
+    private void initializeRotorsUsingForTheMachine(Map<Integer, Boolean> rotorsUsingForTheMachine, List<Integer> rotors) {
+        for(Integer rotorId : rotors) {
+            rotorsUsingForTheMachine.put(rotorId, false);
         }
     }
 
     public int getMaximumPairs() {
-        return pluginBoard.size() / 2;
+        return keyboard.size() / 2;
     }
 
     public Character decode(Character inputtedChar) {
@@ -207,8 +246,8 @@ public class EnigmaMachine{
 
         return currentCharIndex;
     }
-    private Reflctor findReflectorById(String reflectorInUseId) {
-        for(Reflctor reflector : reflectors.values()) {
+    private Reflector findReflectorById(String reflectorInUseId) {
+        for(Reflector reflector : reflectors.values()) {
             if(reflector.id().equals(reflectorInUseId)) {
                 return reflector;
             }
@@ -242,11 +281,11 @@ public class EnigmaMachine{
         return rotorsInUse;
     }
 
-    public Map<RomanNumber, Reflctor> getAllReflectors() {
+    public Map<RomanNumber, Reflector> getAllReflectors() {
         return reflectors;
     }
 
-    public Reflctor getCurrentReflectorInUse() {
+    public Reflector getCurrentReflectorInUse() {
         return reflectorInUse;
     }
 
