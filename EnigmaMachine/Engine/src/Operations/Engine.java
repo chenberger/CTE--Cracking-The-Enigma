@@ -26,6 +26,7 @@ abstract public class Engine implements MachineOperations, Serializable {
 
     //region private data members
     private EnigmaMachine enigmaMachine;
+    private SettingsFormat settingsFormat;
     private MachineDetails machineDetails;
     private final GeneralEnigmaMachineException enigmaMachineException = new GeneralEnigmaMachineException();
 
@@ -34,17 +35,18 @@ abstract public class Engine implements MachineOperations, Serializable {
     //region JAXB Translation
     public void setMachineDetails(String machineDetailsXmlFilePath) {
         // TODO implement here also validation.(the file exist)
+        is
         try {
             InputStream inputStream = new FileInputStream(new File(machineDetailsXmlFilePath));
             if(!machineDetailsXmlFilePath.endsWith(".xml")){
                 throw new NotXmlFileException();
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
+            transformJAXBClassesToEnigmaMachine(engima);
         }
         catch (JAXBException | FileNotFoundException | NotXmlFileException e) { //should catch the exception of the xml in the UI.
             e.printStackTrace();
         }
-        transformJAXBClassesToEnigmaMachine(engima);
 
     }
 
@@ -55,25 +57,46 @@ abstract public class Engine implements MachineOperations, Serializable {
     }
 
     private void transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
-        // TODO implement here also validation.(the file exist),exceptions.
+        // TODO implement here also validation.(the file exist),exceptions. also change the init settings to false.
+        checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC());
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         Map<Integer,Rotor> machineRotors;
         Map<RomanNumber,Reflctor> machineReflectors;
         Map<Character,Integer> machineKeyBoard;
+        int rotorsCount = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
 
         machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
-        machineRotors = getMachineRotorsFromCTERotors(CTERotors);
+        machineRotors = getMachineRotorsFromCTERotors(CTERotors, JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
         machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors);
 
         if(enigmaMachineException.noExceptionRaised()) {
-            enigmaMachine = new EnigmaMachine(machineRotors, machineReflectors, machineKeyBoard);
+            enigmaMachine = new EnigmaMachine(machineRotors, machineReflectors, machineKeyBoard,rotorsCount);
         }
         else {
             throw enigmaMachineException;
         }
-
     }
+
+    private void checkIfABCIsValid(String abc) {
+        if(abc.length() == 0 || abcContainsDuplications(abc)){
+            throw new IllegalArgumentException("the xml abc contains duplications or is empty");
+        }
+    }
+
+    private boolean abcContainsDuplications(String abc) {
+        Map<Character, Integer> abcMap = new HashMap<>();
+        for(int i = 0; i < abc.length(); i++){
+            if(abcMap.containsKey(abc.charAt(i))){
+                return true;
+            }
+            else{
+                abcMap.put(abc.charAt(i), 1);
+            }
+        }
+        return false;
+    }
+
 
     private Map<RomanNumber ,Reflctor> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
         Map<RomanNumber,Reflctor> machineReflectors = new HashMap<>();
@@ -99,17 +122,19 @@ abstract public class Engine implements MachineOperations, Serializable {
 
         return machineReflectors;
     }
-    private Map<Integer,Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors) {
-        Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
+    private Map<Integer, Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors, char[] cteABC) {
+        Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();//TODO check if rotors id are numbers, left, right from abc. length is as the length of abc and each shows once, that the notch is in the length of the abc.
+        //TODO check that the rotors count which the number of rotors in use is between 2 and 99, return the rotors count to erez.
         for(CTERotor rotor: cteRotors){
             Map<Character,Character> currentRotorMap = new HashMap<>();
             List<Pair<Character,Character>> currentRotorPairs = new ArrayList<>();
             for(CTEPositioning position: rotor.getCTEPositioning()){
+                checkIfPositionLettersInABC(position, cteABC);
                 if(currentRotorMap.containsKey(position.getLeft().charAt(0))){
                     enigmaMachineException.addValuesWithSameMappingInOneRotor(position.getLeft().charAt(0),position.getRight().charAt(0), currentRotorMap.get(position.getLeft().charAt(0)));
                 }
                 Pair<Character,Character> currentPair = new Pair<>(position.getLeft().charAt(0),position.getRight().charAt(0));
-                // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side.
+                // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side where ever there are numbers, check that they are ints.
                 currentRotorPairs.add(currentPair);
                 currentRotorMap.put(position.getLeft().charAt(0),position.getRight().charAt(0));
             }
@@ -119,6 +144,24 @@ abstract public class Engine implements MachineOperations, Serializable {
         }
         return machineRotors;
     }
+
+    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC) {
+        //TODO add length validation.
+        for(Character charInAbc: cteABC){
+        }
+            if(position.getLeft().charAt(0) == charInAbc){
+                break;
+            }
+        }
+        enigmaMachineException.addLettersToNotInABC(position.getLeft());
+        for (Character charInAbc : cteABC) {
+            if (position.getRight().charAt(0) == charInAbc) {
+                break;
+            }
+        }
+        enigmaMachineException.addLettersToNotInABC(position.getRight().charAt(0));
+    }
+
 
     private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(char[] cteKeyboard) {
         Map<Character, Integer> machineKeyBoard = new HashMap<>();
@@ -166,6 +209,7 @@ abstract public class Engine implements MachineOperations, Serializable {
     }*/
      public void setRotorsInUse(RotorIDSector rotorIDSector) throws Exception {
         enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
+        settings.put(Rotors)
      }
 
     public void setStartingPositionRotors(InitialRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws Exception {
@@ -235,7 +279,8 @@ abstract public class Engine implements MachineOperations, Serializable {
 
     //endregion
 
-    boolean isMachineExists() {
-        return enigmaMachine != null;
+    private boolean isMachineExists() {
+        return
     }
+
 }
