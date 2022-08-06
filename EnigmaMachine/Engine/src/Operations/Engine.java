@@ -66,8 +66,6 @@ public class Engine implements MachineOperations, Serializable {
         rotors.put(rotor1.id(), rotor1);
         rotors.put(rotor2.id(), rotor2);
 
-        PluginBoard pluginBoard = new PluginBoard("CB");
-
         Map<Integer, Integer> reflectorPairs = new HashMap<Integer, Integer>();
         reflectorPairs.put(0, 3);
         reflectorPairs.put(3, 0);
