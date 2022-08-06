@@ -38,7 +38,7 @@ public class StartingPositionsOfTheRotorException extends Exception{
     public void addIllegalPositionsSize(int positionsSize, int rotorsSize) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
         + ": There amount of the starting positions for the rotors that was inserted is not matching the amount of the rotors inserted" + System.lineSeparator()
-        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The illegal starting positions that was inserted is: " + positionsSize + System.lineSeparator()
+        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The amount of starting positions that was inserted is: " + positionsSize + System.lineSeparator()
         + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The amount of rotors that was inserted is: " + rotorsSize + System.lineSeparator()));
     }
 

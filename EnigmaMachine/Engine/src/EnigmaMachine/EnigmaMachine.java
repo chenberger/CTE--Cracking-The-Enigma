@@ -33,38 +33,43 @@ public class EnigmaMachine{
         Map<Character, Boolean> charactersUsingForPluginBoard = new HashMap<>();
         initializeCharactersUsingForPluggedBoard(charactersUsingForPluginBoard);
         pluginBoard.clear();
+        boolean isValidKey;
 
         if(pluginBoardSector.getElements().size() > getMaximumPairs()) {
             pluginBoardSettingsException.addIllegalPairsSize(pluginBoardSector.getElements().size(), getMaximumPairs());
         }
 
         for(Pair<Character, Character> pluginPair : pluginBoardSector.getElements()) {
+            isValidKey = true;
             if(pluginPair.getKey() == pluginPair.getValue()) {
+                isValidKey = false;
                 pluginBoardSettingsException.addValuePluggedToHimself(pluginPair.getKey());
             }
 
-            if(keyboard.containsKey(pluginPair.getKey())) {
-                if(keyboard.containsKey(pluginPair.getValue())) {
-                    if(!charactersUsingForPluginBoard.get(pluginPair.getKey())) {
-                        if(!charactersUsingForPluginBoard.get(pluginPair.getValue())) {
-                            pluginBoard.addPluginPair(pluginPair);
-                            charactersUsingForPluginBoard.put(pluginPair.getValue(),true);
-                            charactersUsingForPluginBoard.put(pluginPair.getKey(),true);
-                        }
-                        else {
-                            pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getValue());
-                        }
-                    }
-                    else {
-                        pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getKey());
-                    }
-                }
-                else {
-                    pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getKey(), keyboard.keySet());
-                }
+            if(!keyboard.containsKey(pluginPair.getKey())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getKey(), keyboard.keySet());
             }
-            else {
+
+            if(!keyboard.containsKey(pluginPair.getValue())) {
+                isValidKey = false;
                 pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getValue(), keyboard.keySet());
+            }
+
+            if(charactersUsingForPluginBoard.containsKey(pluginPair.getKey()) && charactersUsingForPluginBoard.get(pluginPair.getKey())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getKey());
+            }
+
+            if(charactersUsingForPluginBoard.containsKey(pluginPair.getValue()) && charactersUsingForPluginBoard.get(pluginPair.getValue())) {
+                isValidKey = false;
+                pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getValue());
+            }
+
+            if(isValidKey) {
+                pluginBoard.addPluginPair(pluginPair);
+                charactersUsingForPluginBoard.put(pluginPair.getValue(),true);
+                charactersUsingForPluginBoard.put(pluginPair.getKey(),true);
             }
         }
 
@@ -72,7 +77,6 @@ public class EnigmaMachine{
             pluginBoard.clear();
             throw pluginBoardSettingsException;
         }
-
     }
 
     private void initializeCharactersUsingForPluggedBoard(Map<Character, Boolean> charactersUsingForPluginBoard) {
@@ -118,8 +122,6 @@ public class EnigmaMachine{
 
     public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
         StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
-        //List<Character> reversedStartPositionsOfTheRotors = new ArrayList<Character>(startPositionsOfTheRotors.getElements());
-        //Collections.reverse(reversedStartPositionsOfTheRotors);
         int index = 0;
         boolean isCharacterFound;
 
@@ -131,8 +133,12 @@ public class EnigmaMachine{
             isCharacterFound = false;
             for (Character character : keyboard.keySet()) {
                 if (character == startingRightCharToWindow) {
-                    rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+                    if(index < rotorIDSector.getElements().size()) {
+                        rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+                    }
+
                     isCharacterFound = true;
+                    break;
                 }
             }
 
@@ -167,6 +173,7 @@ public class EnigmaMachine{
 
             if(rotors.containsKey(rotorId)) {
                     rotorsInUse.add(rotors.get(rotorId));
+                    rotorsUsingForTheMachine.put(rotorId, true);
             }
             else {
                 rotorsInUseSettingsException.addIllegalRotorId(rotorId, rotors.keySet());

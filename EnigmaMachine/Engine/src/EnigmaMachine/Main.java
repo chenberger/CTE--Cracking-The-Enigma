@@ -14,12 +14,12 @@ public class Main {
             Engine engine = new Engine();
 
             List<Integer> rotorId = new ArrayList<>(Arrays.asList(1, 2));
-            List<Character> rotorPositions = new ArrayList<>(Arrays.asList('C', 'C'));
+            List<Character> rotorPositions = new ArrayList<>(Arrays.asList('!', 'C', 'C'));
 
             RotorIDSector rotorIDSector = new RotorIDSector(rotorId);
             StartingRotorPositionSector initialRotorPositionSector = new StartingRotorPositionSector(rotorPositions);
-            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.I)));
-            PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('C', 'B'))));
+            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.C, RomanNumber.I)));
+            PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('C', 'B'), new Pair<>('C', 'C'), new Pair<>('!', 'B'))));
 
             engine.setRotorsInUse(rotorIDSector);
             engine.setStartingPositionRotors(initialRotorPositionSector, rotorIDSector);

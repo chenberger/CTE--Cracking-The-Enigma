@@ -29,7 +29,7 @@ public class PluginBoardSettingsException extends Exception{
 
     public void addValuePluggedToHimself(Character character) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                + ": The character " + character + "cannot plugged to himself" + System.lineSeparator()));
+                + ": The character " + character + " cannot plugged to himself" + System.lineSeparator()));
     }
 
     public void clear() {
@@ -38,12 +38,12 @@ public class PluginBoardSettingsException extends Exception{
 
     public void addValuePluggedToMoreThenOneChar(Character character) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-        + ": The character " + character + "cannot plugged to more then one character" + System.lineSeparator()));
+        + ": The character " + character + " cannot plugged to more then one character" + System.lineSeparator()));
     }
 
     public void addIllegalCharNotFromTheKeyboard(Character character, Set<Character> keyboardCharacters) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-        + ": The character " + character + "is illegal and not from the characters keyboard" + System.lineSeparator()
+        + ": The character " + character + " is illegal and not from the characters keyboard" + System.lineSeparator()
         + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The possible characters that can be used are:" + System.lineSeparator()
         + EXCEPTION_IDENTATION + INDEX_IDENTATION + keyboardCharacters + System.lineSeparator()));
     }
