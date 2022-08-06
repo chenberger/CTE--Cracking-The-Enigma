@@ -20,7 +20,7 @@ import static java.lang.Integer.parseInt;
 import static javafx.application.Platform.exit;
 
 
-abstract public class Engine implements MachineOperations, Serializable {
+public class Engine implements MachineOperations, Serializable {
 
     //region private data members
     private SettingsFormat settingsFormat;
@@ -28,12 +28,63 @@ abstract public class Engine implements MachineOperations, Serializable {
     private MachineDetails machineDetails;
     private final GeneralEnigmaMachineException enigmaMachineException;
 
+    //endregion
+
     public Engine(){
         this.settingsFormat = new SettingsFormat();
         this.enigmaMachineException = new GeneralEnigmaMachineException();
+
+        //region test
+        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
+        ABC.put('A', 0);
+        ABC.put('B', 1);
+        ABC.put('C', 2);
+        ABC.put('D', 3);
+        ABC.put('E', 4);
+        ABC.put('F', 5);
+
+        ArrayList<Pair<Character, Character>> mappingABC1 = new ArrayList<>();
+        List<Pair<Character, Character>> mappingABC2 = new ArrayList<>();
+        mappingABC1.add(new Pair<Character, Character>('F', 'A'));
+        mappingABC1.add(new Pair<Character, Character>('E', 'B'));
+        mappingABC1.add(new Pair<Character, Character>('D', 'C'));
+        mappingABC1.add(new Pair<Character, Character>('C', 'D'));
+        mappingABC1.add(new Pair<Character, Character>('B', 'E'));
+        mappingABC1.add(new Pair<Character, Character>('A', 'F'));
+
+        mappingABC2.add(new Pair<Character, Character>('E', 'A'));
+        mappingABC2.add(new Pair<Character, Character>('B', 'B'));
+        mappingABC2.add(new Pair<Character, Character>('D', 'C'));
+        mappingABC2.add(new Pair<Character, Character>('F', 'D'));
+        mappingABC2.add(new Pair<Character, Character>('C', 'E'));
+        mappingABC2.add(new Pair<Character, Character>('A', 'F'));
+
+        Rotor rotor1 = new Rotor(1, 3,true, mappingABC1, 'C');
+        Rotor rotor2 = new Rotor(2, 0, false, mappingABC2, 'C');
+
+        Map<Integer, Rotor> rotors = new HashMap<Integer, Rotor>();
+        rotors.put(rotor1.id(), rotor1);
+        rotors.put(rotor2.id(), rotor2);
+
+        PluginBoard pluginBoard = new PluginBoard("CB");
+
+        Map<Integer, Integer> reflectorPairs = new HashMap<Integer, Integer>();
+        reflectorPairs.put(0, 3);
+        reflectorPairs.put(3, 0);
+        reflectorPairs.put(4, 1);
+        reflectorPairs.put(1, 4);
+        reflectorPairs.put(2, 5);
+        reflectorPairs.put(5, 2);
+        Reflector reflector = new Reflector(RomanNumber.I, reflectorPairs);
+        Map<RomanNumber, Reflector> reflectors = new HashMap<RomanNumber, Reflector>();
+        reflectors.put(reflector.id(), reflector);
+
+        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC);
+
+        //endregion
     }
 
-    //endregion
+
 
     //region JAXB Translation
     public void setMachineDetails(String machineDetailsXmlFilePath) {
@@ -44,13 +95,12 @@ abstract public class Engine implements MachineOperations, Serializable {
                 throw new NotXmlFileException();
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
+            transformJAXBClassesToEnigmaMachine(enigma);
         }
-        catch (JAXBException | FileNotFoundException | NotXmlFileException e) { //should catch the exception of the xml in the UI.
+        catch (JAXBException | FileNotFoundException | NotXmlFileException | GeneralEnigmaMachineException e) { //should catch the exception to the xml in the UI.
             e.printStackTrace();
         }
-        transformJAXBClassesToEnigmaMachine(engima);
-
-    }
+   }
 
     public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance("Jaxb.Schema.Generated");
@@ -63,7 +113,7 @@ abstract public class Engine implements MachineOperations, Serializable {
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         Map<Integer,Rotor> machineRotors;
-        Map<RomanNumber,Reflctor> machineReflectors;
+        Map<RomanNumber, Reflector> machineReflectors;
         Map<Character,Integer> machineKeyBoard;
 
         machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
@@ -79,8 +129,8 @@ abstract public class Engine implements MachineOperations, Serializable {
 
     }
 
-    private Map<RomanNumber ,Reflctor> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
-        Map<RomanNumber,Reflctor> machineReflectors = new HashMap<>();
+    private Map<RomanNumber , Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
+        Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
         for(CTEReflector reflector: cteReflectors){
             if(parseInt(reflector.getId()) > 4 && parseInt(reflector.getId())< 0){
                 enigmaMachineException.setReflectorNotFound();
@@ -97,7 +147,7 @@ abstract public class Engine implements MachineOperations, Serializable {
                 currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
                 currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
             }
-            Reflctor currentReflector = new Reflctor(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
+            Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
             machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);
         }
 
@@ -146,19 +196,15 @@ abstract public class Engine implements MachineOperations, Serializable {
     //region Operations implements
     //region set automatic settings
     @Override
-    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException {
-        //TODO get random data
-        if(!isMachineExists()) {
-            throw new IllegalArgumentException("Error: There machine is no exists, go back to operation 1 and the run this operation");
-        }
-
-        RotorIDSector rotorIDSector= getRandomRotorsIdSector();
+    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException {
+        setSettings();
+        RotorIDSector rotorIDSector = getRandomRotorsIdSector();
 
         setRotorsInUse(rotorIDSector);
         setStartingPositionRotors(getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size()), rotorIDSector);
         setReflectorInUse(getRandomReflectorSector());
         setPluginBoard(getRandomPluginBoardSector());
-        enigmaMachine.setMachineSettingInitialized(true);
+        checkIfTheSettingsInitialized();
     }
 
     private PluginBoardSector getRandomPluginBoardSector() {
@@ -255,6 +301,20 @@ abstract public class Engine implements MachineOperations, Serializable {
 
     //endregion
 
+    public void setSettings() {
+        if(!isMachineExists()) {
+            throw new IllegalArgumentException("Error: There machine is no exists, go back to operation 1 and then run this operation");
+        }
+
+        settingsFormat.clear();
+    }
+    public void checkIfTheSettingsInitialized() throws SettingsFormatException {
+        if(!settingsFormat.isSettingsInitialized()) {
+            throw new SettingsFormatException(settingsFormat);
+        }
+
+        enigmaMachine.setMachineSettingInitialized(true);
+    }
     public void setRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
         enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
         settingsFormat.addSector(rotorIDSector);
@@ -271,7 +331,6 @@ abstract public class Engine implements MachineOperations, Serializable {
     }
 
     public void setPluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
-        //TODO enigmaMachine.setMachineSettingInitialized(true) when finish all sets
         enigmaMachine.setPluginBoardSettings(pluginBoardSector);
         settingsFormat.addSector(pluginBoardSector);
     }
@@ -288,8 +347,7 @@ abstract public class Engine implements MachineOperations, Serializable {
             throw new Exception("There is no exists Machine");
        }
 
-       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard());
-       machineDetails.initializeSettingFormat();
+       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard(), settingsFormat);
 
        return machineDetails;
     }
