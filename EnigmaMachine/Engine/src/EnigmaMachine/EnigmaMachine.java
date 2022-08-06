@@ -15,8 +15,6 @@ public class EnigmaMachine{
     private Map<RomanNumber, Reflector> reflectors;
     private PluginBoard pluginBoard;
     private final Map<Character, Integer> keyboard;
-
-
     private boolean isMachineSettingInitialized;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard) {
@@ -273,7 +271,7 @@ public class EnigmaMachine{
     //endregion
 
     //region Getters
-    public Map<Integer, Rotor> getAllrotors() {
+    public Map<Integer, Rotor> getAllRotors() {
         return rotors;
     }
 
