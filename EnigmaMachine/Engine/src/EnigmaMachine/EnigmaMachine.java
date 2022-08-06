@@ -10,6 +10,7 @@ import java.util.*;
 
 public class EnigmaMachine{
     private Map<Integer, Rotor> rotors;
+    private int numOfActiveRotors;
     private List<Rotor> rotorsInUse;
     private Reflector reflectorInUse;
     private Map<RomanNumber, Reflector> reflectors;
@@ -19,12 +20,12 @@ public class EnigmaMachine{
 
     private boolean isMachineSettingInitialized;
 
-    public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard) {
+    public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflctor> reflectors, Map<Character, Integer> keyboard, int numOfActiveRotors){
         this.rotors = rotors;
         this.reflectors = reflectors;
         this.keyboard = keyboard;
-        this.rotorsInUse = new ArrayList<Rotor>();
-        this.pluginBoard = new PluginBoard();
+        this.numOfActiveRotors = numOfActiveRotors;
+
         this.isMachineSettingInitialized = false;
     }
 
