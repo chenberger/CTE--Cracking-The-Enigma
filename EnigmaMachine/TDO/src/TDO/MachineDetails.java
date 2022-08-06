@@ -11,18 +11,19 @@ public class MachineDetails {
     private SettingsFormat settingsFormat;
     private final Map<Integer, Rotor> rotors;
     private final List<Rotor> rotorsInUse;
-    private final Map<RomanNumber, Reflctor> reflectors;
-    private final Reflctor reflectorInUse;
+    private final Map<RomanNumber, Reflector> reflectors;
+    private final Reflector reflectorInUse;
     private final Set<Character> keyboard;
     private final PluginBoard pluginBoard;
 
-    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflctor> reflectors, Reflctor reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard) {
+    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, SettingsFormat settingsFormat) {
         this.rotors = rotors;
         this.rotorsInUse = rotorsInUse;
         this.reflectors = reflectors;
         this.reflectorInUse = reflectorInUse;
         this.keyboard = keyboard;
         this.pluginBoard = pluginBoard;
+        this.settingsFormat = settingsFormat;
     }
 
     public void initializeSettingFormat() throws Exception {
@@ -38,7 +39,7 @@ public class MachineDetails {
     }
 
     public List<Pair<Integer, Integer>> getNotchPositionsInRotorsInUse() {
-        return rotorsInUse.stream().map(rotor -> new Pair<>(rotor.id(), rotor.notch())).collect(Collectors.toList());
+        return rotorsInUse.stream().map(rotor -> new Pair<>(rotor.id(), rotor.notch() + 1)).collect(Collectors.toList());
     }
 
     public int getAmountCurrentRotorsInUse() throws Exception {
@@ -92,31 +93,30 @@ public class MachineDetails {
     }
 
     private RotorIDSector getCurrentIdRotorsInUseSector() throws Exception {
-        List<Rotor> reversedRotorsInUse = new ArrayList<Rotor>(rotorsInUse);
-        Collections.reverse(reversedRotorsInUse);
-
         if (rotorsInUse == null || rotorsInUse.size() <= 0) {
             throw  new Exception("There is no Rotor in the Machine");
         }
 
-        return new RotorIDSector(reversedRotorsInUse
+        return new RotorIDSector(rotorsInUse
                 .stream()
                 .map(rotor -> rotor.id())
                 .collect(Collectors.toList()));
     }
 
     private StartingRotorPositionSector getCurrentInitialRotorPositionRotorsInUseSector() throws Exception {
-        List<Rotor> reversedRotorsInUse = new ArrayList<Rotor>(rotorsInUse);
-        Collections.reverse(reversedRotorsInUse);
 
         if (rotorsInUse == null || rotorsInUse.size() <= 0) {
             throw new Exception("There is no Rotor in the Machine");
         }
 
-        return new StartingRotorPositionSector(reversedRotorsInUse
+        return new StartingRotorPositionSector(rotorsInUse
                 .stream()
                 .map(rotor -> rotor.getStartingRightCharToWindow())
                 .collect(Collectors.toList()));
     }
     //endregion
+
+    public SettingsFormat getSettingsFormat() {
+        return settingsFormat;
+    }
 }

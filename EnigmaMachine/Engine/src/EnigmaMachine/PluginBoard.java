@@ -10,7 +10,11 @@ public class PluginBoard {
 
     public static final Character PAIR_SEPARATOR = '|';
     private final Map<Character,Character> pluggedPairs;
-    PluginBoard(String inputtedPluggedPairs){
+    public PluginBoard(String inputtedPluggedPairs){
+        pluggedPairs = new HashMap<>();
+    }
+
+    public PluginBoard(){
         pluggedPairs = new HashMap<>();
     }
 
@@ -21,8 +25,8 @@ public class PluginBoard {
         return pluggedPairs.get(inputtedChar);
     }
 
-    public void addPlugginPair(Pair<Character, Character> plugginPair) {
-        pluggedPairs.put(plugginPair.getKey(), plugginPair.getValue());
+    public void addPluginPair(Pair<Character, Character> pluginPair) {
+        pluggedPairs.put(pluginPair.getKey(), pluginPair.getValue());
     }
 
     public void clear() {

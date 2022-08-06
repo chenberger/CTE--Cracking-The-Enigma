@@ -1,5 +1,7 @@
 package EnigmaMachine;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,8 @@ public class StartingRotorPositionSector extends Sector<Character>{
 
     @Override
     public String toString() {
-        return super.openSector + super.elements.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
+        List<Character> reversedId = new ArrayList<>(elements);
+        Collections.reverse(reversedId);
+        return super.openSector + reversedId.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
     }
 }
