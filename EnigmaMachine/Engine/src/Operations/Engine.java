@@ -252,24 +252,34 @@ public class Engine implements MachineOperations, Serializable {
 
     private PluginBoardSector getRandomPluginBoardSector() {
         List<Pair<Character, Character>> pluginPairs = new ArrayList<>();
+        Set<Character> optionalCharacters = new HashSet<>(enigmaMachine.getKeyboard());
         Random randomGenerator = new Random();
         int amountOfPairs = randomGenerator.nextInt(enigmaMachine.getMaximumPairs() + 1);
+        Pair<Character, Character> randomPair;
 
         for (int i = 0; i < amountOfPairs; i++) {
-            pluginPairs.add(getRandomPluginPair(pluginPairs));
+            randomPair = getRandomPluginPair(optionalCharacters.stream().collect(Collectors.toList()), pluginPairs);
+            pluginPairs.add(randomPair);
+            optionalCharacters.remove(randomPair.getKey());
+            optionalCharacters.remove(randomPair.getValue());
         }
 
         return new PluginBoardSector(pluginPairs);
     }
 
-    private Pair<Character, Character> getRandomPluginPair(List<Pair<Character, Character>> pluginPairs) {
-        Pair<Character, Character> randomPluginPair = new Pair<>(
-                getRandomCharacterFromTheKeyboard(), getRandomCharacterFromTheKeyboard());
+    private Pair<Character, Character> getRandomPluginPair(List<Character> optionalCharacters, List<Pair<Character, Character>> pluginPairs) {
+        Character leftCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
+        optionalCharacters.remove(leftCharacter);
+        Character rightCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
+        Pair<Character, Character> randomPluginPair = new Pair<>(leftCharacter, rightCharacter);
 
         while(!isValidPair(randomPluginPair, pluginPairs))
         {
-            randomPluginPair = new Pair<>(
-                    getRandomCharacterFromTheKeyboard(), getRandomCharacterFromTheKeyboard());
+            optionalCharacters.add(leftCharacter);
+            leftCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
+            optionalCharacters.remove(leftCharacter);
+            rightCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
+            randomPluginPair = new Pair<>(leftCharacter, rightCharacter);
         }
 
         return randomPluginPair;
@@ -305,38 +315,42 @@ public class Engine implements MachineOperations, Serializable {
         List<Character> startingPositionsOfTheRotors = new ArrayList<>();
 
         for (int i = 0; i < rotorsInUseSize; i++) {
-            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard());
+            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard(enigmaMachine.getKeyboard().stream().collect(Collectors.toList())));
         }
 
         return new StartingRotorPositionSector(startingPositionsOfTheRotors);
     }
 
-    private Character getRandomCharacterFromTheKeyboard() {
+    private Character getRandomCharacterFromTheKeyboard(List<Character> optionalCharacters) {
         Random randomGenerator = new Random();
-        Character[] keyboardArr = enigmaMachine.getKeyboard().toArray(new Character[enigmaMachine.getKeyboard().size()]);
 
-        return keyboardArr[randomGenerator.nextInt(keyboardArr.length)];
+        return optionalCharacters.get(randomGenerator.nextInt(optionalCharacters.size()));
     }
 
     private RotorIDSector getRandomRotorsIdSector() {
         List<Integer> rotorsId = new ArrayList<>();
+        Set<Integer> optionalRotorsId = new HashSet<>(enigmaMachine.getAllRotors().keySet());
         Random randomGenerator = new Random();
-        int amountOfRotors = randomGenerator.nextInt(enigmaMachine.getAllrotors().size()) + 1;
+        int amountOfRotors = randomGenerator.nextInt(enigmaMachine.getAllRotors().size()) + 1;
+        Integer randomId;
 
         for (int i = 0; i < amountOfRotors; i++) {
-              rotorsId.add(getRandomRotorId(rotorsId));
+            randomId =  getRandomRotorId(optionalRotorsId.stream().collect(Collectors.toList()));
+            rotorsId.add(randomId);
+            optionalRotorsId.remove(randomId);
         }
 
         return new RotorIDSector(rotorsId);
     }
 
-    private Integer getRandomRotorId(List<Integer> rotorsId) {
-        Random randomGenerator = new Random();
-        int randomRotorId = enigmaMachine.getAllrotors().get(randomGenerator.nextInt(enigmaMachine.getAllrotors().size())).id();
 
-        while(rotorsId.contains(randomRotorId))
+    private Integer getRandomRotorId(List<Integer> optionalRotorsId) {
+        Random randomGenerator = new Random();
+        int randomRotorId = optionalRotorsId.get(randomGenerator.nextInt(optionalRotorsId.size()));
+
+        while(!enigmaMachine.getAllRotors().containsKey(randomRotorId))
         {
-            randomRotorId = enigmaMachine.getAllrotors().get(randomGenerator.nextInt(enigmaMachine.getAllrotors().size())).id();
+            randomRotorId = optionalRotorsId.get(randomGenerator.nextInt(optionalRotorsId.size()));
         }
 
         return randomRotorId;
@@ -375,10 +389,15 @@ public class Engine implements MachineOperations, Serializable {
     }
 
     public void setPluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
-        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
-        settingsFormat.addSector(pluginBoardSector);
+        if(pluginBoardSector.getElements().size() > 0) {
+            enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+            settingsFormat.addSector(pluginBoardSector);
+            settingsFormat.isPluginBoardSet(true);
+        }
+        else {
+            settingsFormat.isPluginBoardSet(false);
+        }
     }
-
 
     @Override
     public void resetSettings() {
@@ -391,7 +410,7 @@ public class Engine implements MachineOperations, Serializable {
             throw new Exception("There is no exists Machine");
        }
 
-       machineDetails = new MachineDetails(enigmaMachine.getAllrotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard(), settingsFormat);
+       machineDetails = new MachineDetails(enigmaMachine.getAllRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard(), settingsFormat);
 
        return machineDetails;
     }

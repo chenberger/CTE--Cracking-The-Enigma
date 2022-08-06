@@ -5,6 +5,7 @@ import java.util.List;
 
 public class SettingsFormat {
     private List<Sector> settingsFormat;
+    private Boolean isPluginBoardSet;
     public SettingsFormat() {
         this.settingsFormat = new ArrayList<Sector>();
     }
@@ -25,10 +26,19 @@ public class SettingsFormat {
     }
 
     public boolean isSettingsInitialized() {
-        return settingsFormat.size() == SectorType.values().length;
+        if(isPluginBoardSet) {
+            return settingsFormat.size() == SectorType.values().length;
+        }
+        else {
+            return settingsFormat.size() == SectorType.values().length - 1;
+        }
     }
 
     public void clear() {
         settingsFormat.clear();
+    }
+
+    public void isPluginBoardSet(boolean pluginBoardSet) {
+        isPluginBoardSet = pluginBoardSet;
     }
 }

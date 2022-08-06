@@ -14,14 +14,14 @@ public class Main {
             Engine engine = new Engine();
 
             List<Integer> rotorId = new ArrayList<>(Arrays.asList(1, 2));
-            List<Character> rotorPositions = new ArrayList<>(Arrays.asList('!', 'C', 'C'));
+            List<Character> rotorPositions = new ArrayList<>(Arrays.asList('A', 'C'));
 
             RotorIDSector rotorIDSector = new RotorIDSector(rotorId);
             StartingRotorPositionSector initialRotorPositionSector = new StartingRotorPositionSector(rotorPositions);
-            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.C, RomanNumber.I)));
-            PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('C', 'B'), new Pair<>('C', 'C'), new Pair<>('!', 'B'))));
+            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.I)));
+            PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>());
 
-            engine.setRotorsInUse(rotorIDSector);
+/*            engine.setRotorsInUse(rotorIDSector);
             engine.setStartingPositionRotors(initialRotorPositionSector, rotorIDSector);
             engine.setReflectorInUse(reflectorIdSector);
             engine.setPluginBoard(pluginPairSector);
@@ -34,9 +34,18 @@ public class Main {
             System.out.println("Machine settings: " + details.getMachineSettings());
             System.out.println("Decode : " + engine.processInput("C"));
             System.out.println("Decode : " + engine.processInput("D"));
-            System.out.println("Decode : " + engine.processInput("A"));
+            System.out.println("Decode : " + engine.processInput("A"));*/
 
-            //engine.setSettingsAutomatically();
+          //TODO check why somtimes the pluginboard get null
+            engine.setSettingsAutomatically();
+            MachineDetails details = engine.displaySpecifications();
+            System.out.println("Auto:" + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
+            System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
+            System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
+            System.out.println("Machine settings: " + details.getMachineSettings());
+            System.out.println("Decode : " + engine.processInput("C"));
+            System.out.println("Decode : " + engine.processInput("D"));
+            System.out.println("Decode : " + engine.processInput("A"));
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
