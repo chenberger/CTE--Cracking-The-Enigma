@@ -1,12 +1,11 @@
 package EnigmaMachineException;
 
-import EnigmaMachine.Sector;
-import EnigmaMachine.SectorType;
-import EnigmaMachine.SettingsFormat;
+import Operations.Sector;
+import Operations.SectorType;
+import Operations.SettingsFormat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SettingsFormatException extends Exception{
     private final String EXCEPTION_IDENTATION = "       ";

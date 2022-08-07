@@ -1,4 +1,4 @@
-package EnigmaMachine;
+package Operations;
 
 import javafx.util.Pair;
 

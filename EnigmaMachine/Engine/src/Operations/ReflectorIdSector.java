@@ -1,4 +1,6 @@
-package EnigmaMachine;
+package Operations;
+
+import EnigmaMachine.RomanNumber;
 
 import java.util.List;
 import java.util.stream.Collectors;

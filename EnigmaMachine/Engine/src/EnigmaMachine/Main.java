@@ -1,9 +1,7 @@
 package EnigmaMachine;
 
-import EnigmaMachineException.PluginBoardSettingsException;
-import Operations.Engine;
+import Operations.*;
 import TDO.MachineDetails;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.*;
@@ -21,7 +19,8 @@ public class Main {
             ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.I)));
             PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>());
 
-/*            engine.setRotorsInUse(rotorIDSector);
+            engine.clearSettings();
+            engine.setRotorsInUse(rotorIDSector);
             engine.setStartingPositionRotors(initialRotorPositionSector, rotorIDSector);
             engine.setReflectorInUse(reflectorIdSector);
             engine.setPluginBoard(pluginPairSector);
@@ -32,46 +31,44 @@ public class Main {
             System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
             System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
             System.out.println("Machine settings: " + details.getMachineSettings());
-            System.out.println("Decode : " + engine.processInput("C"));
+            System.out.println("Decode : " + engine.processInput("CDA"));
             System.out.println("Decode : " + engine.processInput("D"));
-            System.out.println("Decode : " + engine.processInput("A"));*/
+            engine.resetSettings();
+            System.out.println("Decode : " + engine.processInput("CDA"));
+            System.out.println("Decode : " + engine.processInput("D"));
+            System.out.println(engine.analyzeHistoryAndStatistics());
 
-          //TODO check why somtimes the pluginboard get null
-            engine.setSettingsAutomatically();
-            MachineDetails details = engine.displaySpecifications();
-            System.out.println("Auto:" + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
-            System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
-            System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-            System.out.println("Machine settings: " + details.getMachineSettings());
-            System.out.println("Decode : " + engine.processInput("C"));
-            System.out.println("Decode : " + engine.processInput("D"));
-            System.out.println("Decode : " + engine.processInput("A"));
+/*            for (int i = 1; i < 5; i++) {
+                if(i == 1) {
+                    engine.setSettingsAutomatically();
+                    details = engine.displaySpecifications();
+                    System.out.println("Auto " + i + ": " + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
+                    System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
+                    System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
+                    System.out.println("Machine settings: " + details.getMachineSettings());
+                    System.out.println("Decode : " + engine.processInput("C"));
+                    System.out.println("Decode : " + engine.processInput("D"));
+                    System.out.println("Messages counter: " + engine.displaySpecifications().getMessagesCounter() + System.lineSeparator());
+
+                }
+
+                if(i == 2)
+                {
+                    engine.setSettingsAutomatically();
+                    details = engine.displaySpecifications();
+                    System.out.println("Auto " + i + ": " + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
+                    System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
+                    System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
+                    System.out.println("Machine settings: " + details.getMachineSettings());
+                    System.out.println("Decode : " + engine.processInput("A"));
+                    System.out.println("Decode : " + engine.processInput("B"));
+                    System.out.println("Messages counter: " + engine.displaySpecifications().getMessagesCounter() + System.lineSeparator());
+                    System.out.println(engine.analyzeHistoryAndStatistics());
+                }
+            }*/
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
-        //region Format test
-        /*List<Integer> rotorId = new ArrayList<>(Arrays.asList(1, 2, 3));
-        char openSector = '<';
-        char closeSector = '>';
-        CharSequence delimiter = ",";
-        CharSequence delimiterPair = "|";
-
-        RotorIDSector rotorIDSector = new RotorIDSector(rotorId);
-        //InitialRotorPositionSector initialRotorPositionSector = new InitialRotorPositionSector(rotorId.toArray());
-        ReflectorIdSector reflectorIdSector = new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(RomanNumber.IV)));
-        PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('A', 'D'))));
-        System.out.println(enigmaMachine.decode('D'));
-
-        SettingsFormat test = new SettingsFormat();
-        test.addSector(rotorIDSector);
-        //test.addSector(initialRotorPositionSector);
-        test.addSector(reflectorIdSector);
-        test.addSector(pluginPairSector);
-
-        System.out.println(test);*/
-        //endregion
     }
 }

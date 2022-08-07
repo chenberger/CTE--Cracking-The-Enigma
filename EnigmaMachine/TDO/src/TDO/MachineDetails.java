@@ -1,6 +1,7 @@
 package TDO;
 
 import EnigmaMachine.*;
+import Operations.*;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -15,8 +16,9 @@ public class MachineDetails {
     private final Reflector reflectorInUse;
     private final Set<Character> keyboard;
     private final PluginBoard pluginBoard;
+    private int messagesCounter;
 
-    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, SettingsFormat settingsFormat) {
+    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, int messagesCounter, SettingsFormat settingsFormat) {
         this.rotors = rotors;
         this.rotorsInUse = rotorsInUse;
         this.reflectors = reflectors;
@@ -24,6 +26,7 @@ public class MachineDetails {
         this.keyboard = keyboard;
         this.pluginBoard = pluginBoard;
         this.settingsFormat = settingsFormat;
+        this.messagesCounter = messagesCounter;
     }
 
     public void initializeSettingFormat() throws Exception {
@@ -118,5 +121,9 @@ public class MachineDetails {
 
     public SettingsFormat getSettingsFormat() {
         return settingsFormat;
+    }
+
+    public int getMessagesCounter() {
+        return messagesCounter;
     }
 }
