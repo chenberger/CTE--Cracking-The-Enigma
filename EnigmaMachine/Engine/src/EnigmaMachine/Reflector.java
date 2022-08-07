@@ -2,7 +2,7 @@ package EnigmaMachine;
 
 import java.util.*;
 
-public class Reflector {
+public class Reflector implements Cloneable{
     private final RomanNumber id;
     private final Map<Integer,Integer> reflectorPairs;
 
@@ -39,6 +39,11 @@ public class Reflector {
     public int hashCode() {
 
         return Objects.hash(id);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Reflector(id, new HashMap<Integer, Integer>(reflectorPairs));
     }
 
     //region Getters

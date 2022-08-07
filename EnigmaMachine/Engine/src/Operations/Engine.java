@@ -1,6 +1,8 @@
 package Operations;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,17 +25,15 @@ import static javafx.application.Platform.exit;
 public class Engine implements MachineOperations, Serializable {
 
     //region private data members
-    private SettingsFormat settingsFormat;
     private EnigmaMachine enigmaMachine;
-    private SettingsFormat settingsFormat;
-    private MachineDetails machineDetails;
+    private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private final GeneralEnigmaMachineException enigmaMachineException;
 
     //endregion
 
     public Engine(){
-        this.settingsFormat = new SettingsFormat();
         this.enigmaMachineException = new GeneralEnigmaMachineException();
+        this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
 
         //region test
         Map<Character, Integer> ABC = new HashMap<Character, Integer>();
@@ -78,31 +78,26 @@ public class Engine implements MachineOperations, Serializable {
         Map<RomanNumber, Reflector> reflectors = new HashMap<RomanNumber, Reflector>();
         reflectors.put(reflector.id(), reflector);
 
-        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC);
+        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC, 2);
 
         //endregion
     }
 
-
-
     //region JAXB Translation
     public void setMachineDetails(String machineDetailsXmlFilePath) {
         // TODO implement here also validation.(the file exist)
-        is
         try {
             InputStream inputStream = new FileInputStream(new File(machineDetailsXmlFilePath));
             if(!machineDetailsXmlFilePath.endsWith(".xml")){
                 throw new NotXmlFileException();
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
-            transformJAXBClassesToEnigmaMachine(engima);
- 
+            transformJAXBClassesToEnigmaMachine(enigma);
 
-        }
+         }
         catch (JAXBException | FileNotFoundException | NotXmlFileException | GeneralEnigmaMachineException e) { //should catch the exception to the xml in the UI.
             e.printStackTrace();
         }
-
    }
 
     public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
@@ -183,7 +178,7 @@ public class Engine implements MachineOperations, Serializable {
             Map<Character,Character> currentRotorMap = new HashMap<>();
             List<Pair<Character,Character>> currentRotorPairs = new ArrayList<>();
             for(CTEPositioning position: rotor.getCTEPositioning()){
-                checkIfPositionLettersInABC(position, cteABC);
+                //checkIfPositionLettersInABC(position, cteABC);
                 if(currentRotorMap.containsKey(position.getLeft().charAt(0))){
                     enigmaMachineException.addValuesWithSameMappingInOneRotor(position.getLeft().charAt(0),position.getRight().charAt(0), currentRotorMap.get(position.getLeft().charAt(0)));
                 }
@@ -199,7 +194,7 @@ public class Engine implements MachineOperations, Serializable {
         return machineRotors;
     }
 
-    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC) {
+/*    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC) {
         //TODO add length validation.
         for(Character charInAbc: cteABC){
         }
@@ -214,7 +209,7 @@ public class Engine implements MachineOperations, Serializable {
             }
         }
         enigmaMachineException.addLettersToNotInABC(position.getRight().charAt(0));
-    }
+    }*/
 
 
     private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(char[] cteKeyboard) {
@@ -239,14 +234,17 @@ public class Engine implements MachineOperations, Serializable {
     //region Operations implements
     //region set automatic settings
     @Override
-    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException {
-        setSettings();
+    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException {
         RotorIDSector rotorIDSector = getRandomRotorsIdSector();
+        setSettings(rotorIDSector, getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size()), getRandomReflectorSector(), getRandomPluginBoardSector());
+    }
 
+    private void setSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException {
+        clearSettings();
         setRotorsInUse(rotorIDSector);
-        setStartingPositionRotors(getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size()), rotorIDSector);
-        setReflectorInUse(getRandomReflectorSector());
-        setPluginBoard(getRandomPluginBoardSector());
+        setStartingPositionRotors(startingPositionRotorsSector, rotorIDSector);
+        setReflectorInUse(reflectorSector);
+        setPluginBoard(pluginBoardSector);
         checkIfTheSettingsInitialized();
     }
 
@@ -358,76 +356,104 @@ public class Engine implements MachineOperations, Serializable {
 
     //endregion
 
-    public void setSettings() {
+    //region set Settings
+    public void clearSettings() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new IllegalArgumentException("Error: There machine is no exists, go back to operation 1 and then run this operation");
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
         }
 
-        settingsFormat.clear();
+        enigmaMachine.clearSettings();
     }
-    public void checkIfTheSettingsInitialized() throws SettingsFormatException {
-        if(!settingsFormat.isSettingsInitialized()) {
-            throw new SettingsFormatException(settingsFormat);
+    public void checkIfTheSettingsInitialized() throws SettingsFormatException, CloneNotSupportedException {
+        if(!enigmaMachine.isMachineSettingInitialized()) {
+            throw new SettingsFormatException(enigmaMachine.getSettingsFormat());
         }
 
-        enigmaMachine.setMachineSettingInitialized(true);
+        statisticsAndHistoryAnalyzer.addSettingConfiguration((SettingsFormat) enigmaMachine.getSettingsFormat().clone());
     }
     public void setRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
         enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
-
-        settingsFormat.addSector(rotorIDSector);
     }
 
     public void setStartingPositionRotors(StartingRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
         enigmaMachine.setStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
-        settingsFormat.addSector(startingPositionTheRotors);
     }
 
-    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException {
+    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException, CloneNotSupportedException {
         enigmaMachine.setReflectorInUseSettings(reflectorInUse);
-        settingsFormat.addSector(reflectorInUse);
     }
 
     public void setPluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
-        if(pluginBoardSector.getElements().size() > 0) {
-            enigmaMachine.setPluginBoardSettings(pluginBoardSector);
-            settingsFormat.addSector(pluginBoardSector);
-            settingsFormat.isPluginBoardSet(true);
-        }
-        else {
-            settingsFormat.isPluginBoardSet(false);
-        }
+        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
     }
+    //endregion
 
     @Override
-    public void resetSettings() {
-        enigmaMachine.resetSettings();
+    public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+        if(!isMachineExists()) {
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
+        }
+        if(!enigmaMachine.isMachineSettingInitialized()) {
+            throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
+        }
+
+        setSettings((RotorIDSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.ROTORS_ID),
+                    (StartingRotorPositionSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.START_POSITION_ROTORS),
+                    (ReflectorIdSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.REFLECTOR),
+                    (PluginBoardSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.PLUGIN_BOARD));
     }
 
     @Override
     public MachineDetails displaySpecifications() throws Exception {
         if(!isMachineExists()) {
-            throw new Exception("There is no exists Machine");
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
        }
 
-       machineDetails = new MachineDetails(enigmaMachine.getAllRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.getAllReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.getKeyboard(), enigmaMachine.getPluginBoard(), settingsFormat);
-
-       return machineDetails;
+       return new MachineDetails(enigmaMachine.getAllRotors(),
+                                           enigmaMachine.getCurrentRotorsInUse(),
+                                           enigmaMachine.getAllReflectors(),
+                                           enigmaMachine.getCurrentReflectorInUse(),
+                                           enigmaMachine.getKeyboard(),
+                                           enigmaMachine.getPluginBoard(),
+                                           statisticsAndHistoryAnalyzer.getMessagesCounter(),
+                                           enigmaMachine.getSettingsFormat());
     }
 
     @Override
-    public void analyzeHistoryAndStatistics() {
+    public String analyzeHistoryAndStatistics() throws Exception {
+        if(!isMachineExists()) {
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
+        }
 
+        return statisticsAndHistoryAnalyzer.toString();
     }
 
     @Override
-    public String processInput(String inputToProcess) {
-        return getProcessedInput(inputToProcess);
+    public String processInput(String inputToProcess) throws Exception {
+        if(!isMachineExists()) {
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
+        }
+        if(!enigmaMachine.isMachineSettingInitialized()) {
+            throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
+        }
+
+        OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
+        Instant start = Instant.now();
+        String encryptedString = getProcessedInput(inputToProcess);
+        Instant end = Instant.now();
+        long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
+        EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
+        ProcessedStringsFormat processedStringsFormat = new ProcessedStringsFormat(new ArrayList<>(Arrays.asList(originalStringFormat, encryptedStringFormat)),
+                durationEncryptedTimeInNanoSeconds, enigmaMachine.getSettingsFormat().getIndexFormat());
+        enigmaMachine.getSettingsFormat().advanceIndexFormat();
+        statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getSettingsFormat(), processedStringsFormat);
+        statisticsAndHistoryAnalyzer.advancedMessagesCounter();
+
+        return encryptedString;
     }
 
     private String getProcessedInput(String inputToProcess) {
-        //TODO you need to initialize the machine first before decoding !
-        // also maybe there is no any machine? or the xml file didnt loaded, or the setting didnt initialize?
+        //TODO chen: throw exception with more info: what are the illegal char and send the legal keyboard chars
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
             throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
         }
