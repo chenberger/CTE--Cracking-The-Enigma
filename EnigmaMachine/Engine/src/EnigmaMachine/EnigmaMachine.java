@@ -19,6 +19,7 @@ public class EnigmaMachine{
     private final Map<Character, Integer> keyboard;
 
     private SettingsFormat settingsFormat;
+    private boolean isMachineSettingInitialized;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard, int numOfActiveRotors){
         this.rotors = rotors;
