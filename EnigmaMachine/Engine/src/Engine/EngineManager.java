@@ -1,4 +1,4 @@
-package Operations;
+package Engine;
 
 import java.io.*;
 import java.time.Duration;
@@ -22,7 +22,7 @@ import static java.lang.Integer.parseInt;
 import static javafx.application.Platform.exit;
 
 
-public class Engine implements MachineOperations, Serializable {
+public class EngineManager implements MachineOperations, Serializable {
 
     //region private data members
     private EnigmaMachine enigmaMachine;
@@ -31,7 +31,7 @@ public class Engine implements MachineOperations, Serializable {
 
     //endregion
 
-    public Engine(){
+    public EngineManager(){
         this.enigmaMachineException = new GeneralEnigmaMachineException();
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
 
@@ -246,6 +246,7 @@ public class Engine implements MachineOperations, Serializable {
         setReflectorInUse(reflectorSector);
         setPluginBoard(pluginBoardSector);
         checkIfTheSettingsInitialized();
+        resetSettings();
     }
 
     private PluginBoardSector getRandomPluginBoardSector() {
@@ -397,10 +398,7 @@ public class Engine implements MachineOperations, Serializable {
             throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
         }
 
-        setSettings((RotorIDSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.ROTORS_ID),
-                    (StartingRotorPositionSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.START_POSITION_ROTORS),
-                    (ReflectorIdSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.REFLECTOR),
-                    (PluginBoardSector) enigmaMachine.getSettingsFormat().getSectorByType(SectorType.PLUGIN_BOARD));
+        enigmaMachine.resetSettings();
     }
 
     @Override

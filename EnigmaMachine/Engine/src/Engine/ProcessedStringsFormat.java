@@ -1,7 +1,6 @@
-package Operations;
+package Engine;
 
 import java.util.List;
-import java.util.Timer;
 import java.util.stream.Collectors;
 
 public class ProcessedStringsFormat {

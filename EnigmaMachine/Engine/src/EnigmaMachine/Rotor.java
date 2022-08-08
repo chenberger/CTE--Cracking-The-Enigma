@@ -32,7 +32,10 @@ public class Rotor implements Decoder{
         this.notch = notch;
         this.startingPosition = 0;
         this.isFirstRotor = isFirstRotor;
+        reset();
+    }
 
+    public void reset() {
         spinRotor(getIndexByValue(startingRightCharToWindow));
     }
 
