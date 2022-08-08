@@ -4,7 +4,7 @@ import EnigmaMachineException.PluginBoardSettingsException;
 import EnigmaMachineException.ReflectorSettingsException;
 import EnigmaMachineException.RotorsInUseSettingsException;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
-import Operations.*;
+import Engine.*;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -30,6 +30,7 @@ public class EnigmaMachine{
         this.settingsFormat = new SettingsFormat();
     }
 
+    //region set settings
     public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
         PluginBoardSettingsException pluginBoardSettingsException = new PluginBoardSettingsException();
         Map<Character, Boolean> charactersUsingForPluginBoard = new HashMap<>();
@@ -214,6 +215,8 @@ public class EnigmaMachine{
         }
     }
 
+    //endregion
+
     public int getMaximumPairs() {
         return keyboard.size() / 2;
     }
@@ -279,7 +282,11 @@ public class EnigmaMachine{
     }
 
     public void resetSettings() {
-        // TODO implement this method after changes //
+        if(settingsFormat.isSettingsInitialized()) {
+            for(Rotor rotor : rotorsInUse) {
+                rotor.reset();
+            }
+        }
     }
     //region Setters
 
@@ -305,6 +312,7 @@ public class EnigmaMachine{
     public Set<Character> getKeyboard() { return keyboard.keySet(); }
 
     public SettingsFormat getSettingsFormat() { return settingsFormat; }
+    //endregion
 
     public boolean isMachineSettingInitialized() {
         return settingsFormat.isSettingsInitialized();
@@ -313,6 +321,4 @@ public class EnigmaMachine{
     public void clearSettings() {
         settingsFormat.clear();
     }
-
-    //endregion
 }

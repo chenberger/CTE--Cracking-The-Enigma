@@ -1,7 +1,7 @@
 package TDO;
 
 import EnigmaMachine.*;
-import Operations.*;
+import Engine.*;
 import javafx.util.Pair;
 
 import java.util.*;

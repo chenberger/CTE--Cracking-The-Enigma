@@ -1,13 +1,12 @@
-package Operations;
+package Engine;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OriginalStringFormat extends Sector<Character>{
+public class EncryptedStringFormat extends Sector<Character>{
 
-
-    public OriginalStringFormat(List<Character> originalString) {
-        super(originalString, SectorType.ORIGINAL_STRING);
+    public EncryptedStringFormat(List<Character> elements) {
+        super(elements, SectorType.ENCRYPTED_STRING);
     }
 
     @Override
