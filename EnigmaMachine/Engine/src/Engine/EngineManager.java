@@ -29,6 +29,7 @@ public class EngineManager implements MachineOperations, Serializable {
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private final GeneralEnigmaMachineException enigmaMachineException;
 
+
     //endregion
 
     public EngineManager(){
@@ -93,8 +94,7 @@ public class EngineManager implements MachineOperations, Serializable {
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
             transformJAXBClassesToEnigmaMachine(enigma);
-
-         }
+        }
         catch (JAXBException | FileNotFoundException | NotXmlFileException | GeneralEnigmaMachineException e) { //should catch the exception to the xml in the UI.
             e.printStackTrace();
         }
@@ -108,33 +108,47 @@ public class EngineManager implements MachineOperations, Serializable {
 
     private void transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
         // TODO implement here also validation.(the file exist),exceptions. also change the init settings to false.
-        checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC());
+        ABCNotValidException abcNotValidException = new ABCNotValidException();
+        checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
+        abcNotValidException.addExceptionsToTheList();
+
+        if(abcNotValidException.shouldThrowException()){
+            enigmaMachineException.addException(abcNotValidException);
+            throw enigmaMachineException;
+        }
+
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         Map<Integer,Rotor> machineRotors;
         Map<RomanNumber, Reflector> machineReflectors;
         Map<Character,Integer> machineKeyBoard;
-        int rotorsCount = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
+        int rotorsInUseCounter = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
 
-        machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
+        machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray(), abcNotValidException);
+        if(abcNotValidException.shouldThrowException()){
+            enigmaMachineException.addException(abcNotValidException);
+            throw enigmaMachineException;
+        }
+
         machineRotors = getMachineRotorsFromCTERotors(CTERotors, JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
-        machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors);
+        machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors,JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
 
-        if(enigmaMachineException.noExceptionRaised()) {
-            enigmaMachine = new EnigmaMachine(machineRotors, machineReflectors, machineKeyBoard,rotorsCount);
+        if(!enigmaMachineException.isExceptionNeedToThrown()) {
+            enigmaMachine = new EnigmaMachine(machineRotors, machineReflectors, machineKeyBoard, rotorsInUseCounter);
         }
         else {
             throw enigmaMachineException;
         }
     }
 
-    private void checkIfABCIsValid(String abc) {
-        if(abc.length() == 0 || abcContainsDuplications(abc)){
-            throw new IllegalArgumentException("the xml abc contains duplications or is empty");
+    private void checkIfABCIsValid(String abc,ABCNotValidException abcNotValidException ) {
+        if(abc.length() == 0) {
+            abcNotValidException.setABCempty();
         }
+        checkIfKeyBoardContainsDuplications(abc,abcNotValidException);
     }
 
-    private boolean abcContainsDuplications(String abc) {
+    private boolean checkIfKeyBoardContainsDuplications(String abc,ABCNotValidException abcNotValidException) {
         Map<Character, Integer> abcMap = new HashMap<>();
         for(int i = 0; i < abc.length(); i++){
             if(abcMap.containsKey(abc.charAt(i))){
@@ -144,84 +158,191 @@ public class EngineManager implements MachineOperations, Serializable {
                 abcMap.put(abc.charAt(i), 1);
             }
         }
-        return false;
-    }
-
-    private Map<RomanNumber , Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors) {
-        Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
-        for(CTEReflector reflector: cteReflectors){
-            if(parseInt(reflector.getId()) > 4 && parseInt(reflector.getId())< 0){
-                enigmaMachineException.setReflectorNotFound();
+        for(Character charInABC : abcMap.keySet()){
+            if(abcMap.get(charInABC) > 1){
+                abcNotValidException.addCharToDuplicateChars(charInABC);
             }
-            Map<Integer,Integer> currentReflectorMapping = new HashMap<>();
-            for(CTEReflect reflect:reflector.getCTEReflect()){
-                // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side
-                if(currentReflectorMapping.containsKey(reflect.getInput())){
-                    enigmaMachineException.addValuesWithSameMappingInOneReflector(reflect.getInput(), reflect.getOutput(), currentReflectorMapping.get(reflect.getInput()));
-                }
-                if(currentReflectorMapping.containsValue(reflect.getOutput())){
-                    enigmaMachineException.addValuesWithSameMappingInOneReflector(reflect.getInput(),reflect.getOutput(),currentReflectorMapping.get(reflect.getOutput()));
-                }
-                currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
-                currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
-            }
-            Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
-            machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);
         }
 
+        return false;
+    }
+    private Map<RomanNumber, Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors, char[] CTEAbc) {
+        Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
+
+        ReflectorNotValidException reflectorNotValidException = new ReflectorNotValidException();
+        if(cteReflectors.size() == 0) {
+            reflectorNotValidException.setReflectorsEmpty();
+        }
+        else if(cteReflectors.size() > 5) {
+            reflectorNotValidException.setToManyReflectors();
+        }
+        for(CTEReflector reflector: cteReflectors){
+             if(IsReflectorIdIsValid(reflector, reflectorNotValidException) && numberOfPairsInReflectorValid(reflector,CTEAbc,reflectorNotValidException)) {
+             Map<Integer,Integer> currentReflectorMapping = new HashMap<>();
+             for(CTEReflect reflect:reflector.getCTEReflect()){
+                 Map<Integer,Integer> outPutColMap = new HashMap<>();
+                 Map<Integer,Integer> inputColMap = new HashMap<>();
+                 if(indexOutOfRange(reflect.getInput(), CTEAbc)){
+                     reflectorNotValidException.addReflectorIndexOutOfRange(reflector.getId(),reflect.getInput());
+                 }
+
+                 else if(indexOutOfRange(reflect.getOutput(), CTEAbc)) {
+                     reflectorNotValidException.addReflectorIndexOutOfRange(reflector.getId(), reflect.getOutput());
+                 }
+                 // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side, check that the numbers in the reflector are in the length of, and that the index map to another one.
+                 if(outPutColMap.containsKey(reflect.getOutput())){
+                        reflectorNotValidException.addReflectorDuplicateOutput(reflector.getId(),reflect.getOutput());
+                    }
+                 if(inputColMap.containsKey(reflect.getInput())){
+                        reflectorNotValidException.addReflectorDuplicateInput(reflector.getId(),reflect.getInput());
+                    }
+                outPutColMap.put(reflect.getOutput(),1);
+                inputColMap.put(reflect.getInput(),1);
+
+                 if(reflect.getInput() == reflect.getOutput()){
+                     reflectorNotValidException.addIndexMappedToHimSelf(reflect.getInput(),reflector.getId());
+                 }
+                 currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
+                 currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
+             }
+             Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
+             machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);}
+        }
+        reflectorNotValidException.addExceptionsToTheList();
+        if(reflectorNotValidException.shouldThrowException()){
+            enigmaMachineException.addException(reflectorNotValidException);
+        }
         return machineReflectors;
     }
+
+    private boolean indexOutOfRange(int input, char[] cteAbc) {
+        return input > cteAbc.length / 2;
+    }
+
+    private boolean numberOfPairsInReflectorValid(CTEReflector reflector, char[] CTEAbc,ReflectorNotValidException reflectorNotValidException) {
+        if(reflector.getCTEReflect().size() != CTEAbc.length/2) {
+            reflectorNotValidException.setNumberOfPairsInReflectorInvalid(reflector,CTEAbc);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean IsReflectorIdIsValid(CTEReflector reflector,ReflectorNotValidException reflectorNotValidException) {
+        if(parseInt(reflector.getId()) > 4 && parseInt(reflector.getId())< 0){
+            reflectorNotValidException.addReflectorsToOutOfRangeList(reflector.getId());
+            return false;
+        }
+        return true;
+    }
+
     private Map<Integer, Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors, char[] cteABC) {
-        Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();//TODO check if rotors id are numbers, left, right from abc. length is as the length of abc and each shows once, that the notch is in the length of the abc.
+        Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
+        RotorNotValidException rotorNotValidException = new RotorNotValidException();
+        checkIfRotorsIdsAreValid(cteRotors, rotorNotValidException);
+        if(cteRotors.size() < 2) {
+            rotorNotValidException.setNumberOfRotorsToAdd(2 - cteRotors.size());
+        }
+
+        checkThatRotorsIdsAreValid(cteRotors, rotorNotValidException);
+        //TODO check if rotors id are numbers, left, right from abc. length is as the length of abc and each shows once, that the notch is in the length of the abc.
         //TODO check that the rotors count which the number of rotors in use is between 2 and 99, return the rotors count to erez.
         for(CTERotor rotor: cteRotors){
             Map<Character,Character> currentRotorMap = new HashMap<>();
+            if(rotor.getNotch() > cteABC.length || rotor.getNotch() < 0){
+                rotorNotValidException.addNotchOutOfRange(rotor.getId(),rotor.getNotch());
+            }
+            if(rotor.getCTEPositioning().size() != cteABC.length){
+                rotorNotValidException.setNumberOfPairsInRotorInvalid(rotor,cteABC);
+            }
+
             List<Pair<Character,Character>> currentRotorPairs = new ArrayList<>();
             for(CTEPositioning position: rotor.getCTEPositioning()){
-                //checkIfPositionLettersInABC(position, cteABC);
-                if(currentRotorMap.containsKey(position.getLeft().charAt(0))){
-                    enigmaMachineException.addValuesWithSameMappingInOneRotor(position.getLeft().charAt(0),position.getRight().charAt(0), currentRotorMap.get(position.getLeft().charAt(0)));
+
+                checkIfPositionLettersInABC(position, cteABC, rotorNotValidException, rotor.getId());
+                Map<Character,Integer> leftColInRotor = new HashMap<>();
+                Map<Character,Integer> rightColInRotor = new HashMap<>();
+                if(leftColInRotor.containsKey(position.getLeft())){
+                    rotorNotValidException.addDUplicatedCharToLeftCol(rotor.getId(),position.getLeft());
                 }
+                if(rightColInRotor.containsKey(position.getRight())){
+                    rotorNotValidException.addDUplicatedCharToRightCol(rotor.getId(),position.getRight());
+                }
+                leftColInRotor.put(position.getLeft().charAt(0),1);
+                rightColInRotor.put(position.getRight().charAt(0),1);
+
                 Pair<Character,Character> currentPair = new Pair<>(position.getLeft().charAt(0),position.getRight().charAt(0));
                 // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side where ever there are numbers, check that they are ints.
                 currentRotorPairs.add(currentPair);
                 currentRotorMap.put(position.getLeft().charAt(0),position.getRight().charAt(0));
             }
-
+            rotorNotValidException.addExceptionsToTheList();
+            if(rotorNotValidException.shouldThrowException()){
+                enigmaMachineException.addException(rotorNotValidException);
+            }
             Rotor currentRotor = new Rotor(rotor.getId(), rotor.getNotch() - 1, currentRotorPairs);
             machineRotors.put(rotor.getId(),currentRotor);
         }
         return machineRotors;
     }
 
-/*    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC) {
+
+    private void checkIfRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
+        int numberOfRotors = cteRotors.size();
+        Map<Integer,Boolean> rotorsIds = new HashMap<>();
+        for(CTERotor rotor: cteRotors){
+            if(rotor.getId() < 0 || rotor.getId() > numberOfRotors){
+                rotorNotValidException.addRotorsToOutOfRangeList(rotor.getId());
+            }
+            if(rotorsIds.containsKey(rotor.getId())){
+                rotorNotValidException.addDuplicatedRotorId(rotor.getId());
+            }
+            rotorsIds.put(rotor.getId(),true);
+        }
+
+    }
+
+    private void checkThatRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
+    }
+
+    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
         //TODO add length validation.
         for(Character charInAbc: cteABC){
-        }
+            if(position.getLeft().length() != 1){
+                rotorNotValidException.addNotValidLetter(position.getLeft(),rotorId);
+            }
             if(position.getLeft().charAt(0) == charInAbc){
                 break;
             }
         }
-        enigmaMachineException.addLettersToNotInABC(position.getLeft());
-        for (Character charInAbc : cteABC) {
-            if (position.getRight().charAt(0) == charInAbc) {
+        if(position.getLeft().length() == 1){
+            rotorNotValidException.addNotValidLetter(position.getLeft(),rotorId);
+        }
+
+        for(Character charInAbc: cteABC){
+            if(position.getRight().length() != 1){
+                rotorNotValidException.addNotValidLetter(position.getRight(),rotorId);
+                break;
+            }
+            if(position.getRight().charAt(0) == charInAbc){
                 break;
             }
         }
-        enigmaMachineException.addLettersToNotInABC(position.getRight().charAt(0));
-    }*/
+        if(position.getRight().length() == 1){
+            rotorNotValidException.addNotValidLetter(position.getRight(),rotorId);
+        }
 
+    }
 
-    private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(char[] cteKeyboard) {
+    private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(char[] cteKeyboard,ABCNotValidException abcNotValidException) {
         Map<Character, Integer> machineKeyBoard = new HashMap<>();
         int indexToMappingTOInKeyboard = 0;
 
         if (cteKeyboard.length % 2 != 0) {
-            enigmaMachineException.setIsOddLength();
+            abcNotValidException.setIsOddLength();
         }
         for (Character letter : cteKeyboard) {
             if (machineKeyBoard.containsKey(Character.toUpperCase(letter))) {
-                enigmaMachineException.addCharToDuplicateChars(letter);
+                abcNotValidException.addCharToDuplicateChars(letter);
             }
             machineKeyBoard.put(Character.toUpperCase(letter), indexToMappingTOInKeyboard);
             indexToMappingTOInKeyboard++;
