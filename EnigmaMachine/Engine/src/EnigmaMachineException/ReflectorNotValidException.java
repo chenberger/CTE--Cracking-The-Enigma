@@ -135,7 +135,7 @@ public class ReflectorNotValidException extends Exception {
         this.tooManyReflectors = true;
     }
 
-    public void setNumberOfPairsInReflectorInvalid(CTEReflector reflector, char[] cteAbc) {
+    public void setNumberOfPairsInReflectorInvalid(CTEReflector reflector, List<Character> cteAbc) {
         invalidSizedReflectors.put(reflector.getId(), reflector.getCTEReflect().size());
     }
 
