@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             EngineManager engineManager = new EngineManager();
-
+            engineManager.setMachineDetails("C:\\Chen Berger\\Java exercises\\Ex1\\Enigma-Machine\\EnigmaMachine\\Engine\\src\\Resources\\ex1-sanity-small.xml");
             List<Integer> rotorId = new ArrayList<>(Arrays.asList(1, 2));
             List<Character> rotorPositions = new ArrayList<>(Arrays.asList('C', 'C'));
 

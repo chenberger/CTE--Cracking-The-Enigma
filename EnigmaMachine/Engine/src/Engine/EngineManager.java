@@ -108,8 +108,9 @@ public class EngineManager implements MachineOperations, Serializable {
 
     private void transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
         // TODO implement here also validation.(the file exist),exceptions. also change the init settings to false.
+        List<Character> generatedABC = new ArrayList<>();
         ABCNotValidException abcNotValidException = new ABCNotValidException();
-        checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
+        checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException, generatedABC);
         abcNotValidException.addExceptionsToTheList();
 
         if(abcNotValidException.shouldThrowException()){
@@ -124,14 +125,14 @@ public class EngineManager implements MachineOperations, Serializable {
         Map<Character,Integer> machineKeyBoard;
         int rotorsInUseCounter = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
 
-        machineKeyBoard = getMachineKeyboardFromCTEKeyboard(JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray(), abcNotValidException);
+        machineKeyBoard = getMachineKeyboardFromCTEKeyboard(generatedABC, abcNotValidException);
         if(abcNotValidException.shouldThrowException()){
             enigmaMachineException.addException(abcNotValidException);
             throw enigmaMachineException;
         }
 
-        machineRotors = getMachineRotorsFromCTERotors(CTERotors, JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
-        machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors,JAXBGeneratedEnigma.getCTEMachine().getABC().toCharArray());
+        machineRotors = getMachineRotorsFromCTERotors(CTERotors, generatedABC);
+        machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors,generatedABC);
 
         if(!enigmaMachineException.isExceptionNeedToThrown()) {
             enigmaMachine = new EnigmaMachine(machineRotors, machineReflectors, machineKeyBoard, rotorsInUseCounter);
@@ -141,32 +142,37 @@ public class EngineManager implements MachineOperations, Serializable {
         }
     }
 
-    private void checkIfABCIsValid(String abc,ABCNotValidException abcNotValidException ) {
+    private void checkIfABCIsValid(String abc,ABCNotValidException abcNotValidException,List<Character> generatedABC ) {
         if(abc.length() == 0) {
             abcNotValidException.setABCempty();
         }
-        checkIfKeyBoardContainsDuplications(abc,abcNotValidException);
+        checkIfKeyBoardContainsDuplications(abc,abcNotValidException,generatedABC);
     }
 
-    private boolean checkIfKeyBoardContainsDuplications(String abc,ABCNotValidException abcNotValidException) {
+    private boolean checkIfKeyBoardContainsDuplications(String abc, ABCNotValidException abcNotValidException, List<Character> generatedABC) {
         Map<Character, Integer> abcMap = new HashMap<>();
         for(int i = 0; i < abc.length(); i++){
             if(abcMap.containsKey(abc.charAt(i))){
                 return true;
             }
             else{
-                abcMap.put(abc.charAt(i), 1);
+                if(abc.charAt(i) != ' ' && abc.charAt(i) != '\n'){
+                    abcMap.put(abc.charAt(i), 1);
+                }
             }
         }
         for(Character charInABC : abcMap.keySet()){
             if(abcMap.get(charInABC) > 1){
                 abcNotValidException.addCharToDuplicateChars(charInABC);
             }
+            else {
+                generatedABC.add(charInABC);
+            }
         }
 
         return false;
     }
-    private Map<RomanNumber, Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors, char[] CTEAbc) {
+    private Map<RomanNumber, Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors, List<Character> CTEAbc) {
         Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
 
         ReflectorNotValidException reflectorNotValidException = new ReflectorNotValidException();
@@ -215,12 +221,12 @@ public class EngineManager implements MachineOperations, Serializable {
         return machineReflectors;
     }
 
-    private boolean indexOutOfRange(int input, char[] cteAbc) {
-        return input > cteAbc.length / 2;
+    private boolean indexOutOfRange(int input, List<Character> cteAbc) {
+        return input > cteAbc.size();
     }
 
-    private boolean numberOfPairsInReflectorValid(CTEReflector reflector, char[] CTEAbc,ReflectorNotValidException reflectorNotValidException) {
-        if(reflector.getCTEReflect().size() != CTEAbc.length/2) {
+    private boolean numberOfPairsInReflectorValid(CTEReflector reflector, List<Character> CTEAbc,ReflectorNotValidException reflectorNotValidException) {
+        if(reflector.getCTEReflect().size() != CTEAbc.size()/2) {
             reflectorNotValidException.setNumberOfPairsInReflectorInvalid(reflector,CTEAbc);
             return false;
         }
@@ -228,14 +234,23 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     private boolean IsReflectorIdIsValid(CTEReflector reflector,ReflectorNotValidException reflectorNotValidException) {
-        if(parseInt(reflector.getId()) > 4 && parseInt(reflector.getId())< 0){
+        if(!isValidRomanNumber(reflector.getId())) {
             reflectorNotValidException.addReflectorsToOutOfRangeList(reflector.getId());
             return false;
         }
         return true;
     }
+    private boolean isValidRomanNumber(String romanNumberString){
+        boolean isValid = false;
+        for(RomanNumber romanNumber: RomanNumber.values()){
+            if(romanNumber.toString().equals(romanNumberString)){
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
 
-    private Map<Integer, Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors, char[] cteABC) {
+    private Map<Integer, Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors, List<Character> cteABC) {
         Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
         RotorNotValidException rotorNotValidException = new RotorNotValidException();
         checkIfRotorsIdsAreValid(cteRotors, rotorNotValidException);
@@ -248,10 +263,10 @@ public class EngineManager implements MachineOperations, Serializable {
         //TODO check that the rotors count which the number of rotors in use is between 2 and 99, return the rotors count to erez.
         for(CTERotor rotor: cteRotors){
             Map<Character,Character> currentRotorMap = new HashMap<>();
-            if(rotor.getNotch() > cteABC.length || rotor.getNotch() < 0){
+            if(rotor.getNotch() > cteABC.size() || rotor.getNotch() < 0){
                 rotorNotValidException.addNotchOutOfRange(rotor.getId(),rotor.getNotch());
             }
-            if(rotor.getCTEPositioning().size() != cteABC.length){
+            if(rotor.getCTEPositioning().size() != cteABC.size()){
                 rotorNotValidException.setNumberOfPairsInRotorInvalid(rotor,cteABC);
             }
 
@@ -304,7 +319,7 @@ public class EngineManager implements MachineOperations, Serializable {
     private void checkThatRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
     }
 
-    private void checkIfPositionLettersInABC(CTEPositioning position, char[] cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
+    private void checkIfPositionLettersInABC(CTEPositioning position, List<Character> cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
         //TODO add length validation.
         for(Character charInAbc: cteABC){
             if(position.getLeft().length() != 1){
@@ -314,7 +329,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 break;
             }
         }
-        if(position.getLeft().length() == 1){
+        if(position.getLeft().length() != 1){
             rotorNotValidException.addNotValidLetter(position.getLeft(),rotorId);
         }
 
@@ -327,17 +342,17 @@ public class EngineManager implements MachineOperations, Serializable {
                 break;
             }
         }
-        if(position.getRight().length() == 1){
+        if(position.getRight().length() != 1){
             rotorNotValidException.addNotValidLetter(position.getRight(),rotorId);
         }
 
     }
 
-    private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(char[] cteKeyboard,ABCNotValidException abcNotValidException) {
+    private Map<Character, Integer> getMachineKeyboardFromCTEKeyboard(List<Character> cteKeyboard,ABCNotValidException abcNotValidException) {
         Map<Character, Integer> machineKeyBoard = new HashMap<>();
         int indexToMappingTOInKeyboard = 0;
 
-        if (cteKeyboard.length % 2 != 0) {
+        if (cteKeyboard.size() % 2 != 0) {
             abcNotValidException.setIsOddLength();
         }
         for (Character letter : cteKeyboard) {
