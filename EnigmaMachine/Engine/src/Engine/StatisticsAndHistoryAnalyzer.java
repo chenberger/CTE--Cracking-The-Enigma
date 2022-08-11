@@ -42,10 +42,15 @@ public class StatisticsAndHistoryAnalyzer {
 
     @Override
     public String toString() {
-        return startingMessage + statisticsAndHistoryFormat.entrySet().stream()
-                                         .map(pair -> startingCodeConfigurationsMessage + pair.getKey().toString() + System.lineSeparator() + pair.getValue()
-                                         .stream().map(Object::toString).collect(Collectors.joining(System.lineSeparator())) + System.lineSeparator())
-                                         .collect(Collectors.joining(System.lineSeparator()));
+        if(statisticsAndHistoryFormat.size() == 0) {
+            return "As no initialization or encryption in the system was performed, there are no history or statistics to display for the machine." + System.lineSeparator();
+        }
+        else {
+            return startingMessage + statisticsAndHistoryFormat.entrySet().stream()
+                    .map(pair -> startingCodeConfigurationsMessage + pair.getKey().toString() + System.lineSeparator() + pair.getValue()
+                            .stream().map(Object::toString).collect(Collectors.joining(System.lineSeparator())) + System.lineSeparator())
+                    .collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 
     public int getMessagesCounter() {

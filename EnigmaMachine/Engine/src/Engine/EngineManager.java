@@ -35,7 +35,7 @@ public class EngineManager implements MachineOperations, Serializable {
     public EngineManager(){
         this.enigmaMachineException = new GeneralEnigmaMachineException();
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
-
+        this.enigmaMachine = null;
         //region test
         Map<Character, Integer> ABC = new HashMap<Character, Integer>();
         ABC.put('A', 0);
@@ -526,7 +526,7 @@ public class EngineManager implements MachineOperations, Serializable {
     //endregion
 
     @Override
-    public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    public void resetSettings() throws MachineNotExistsException, IllegalArgumentException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
         }
@@ -538,7 +538,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public MachineDetails displaySpecifications() throws Exception {
+    public MachineDetails displaySpecifications() throws MachineNotExistsException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
        }
@@ -554,7 +554,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public String analyzeHistoryAndStatistics() throws Exception {
+    public String analyzeHistoryAndStatistics() throws MachineNotExistsException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
         }
@@ -563,12 +563,9 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public String processInput(String inputToProcess) throws Exception {
+    public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
-        }
-        if(!enigmaMachine.isMachineSettingInitialized()) {
-            throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
         }
 
         OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
@@ -586,7 +583,7 @@ public class EngineManager implements MachineOperations, Serializable {
         return encryptedString;
     }
 
-    private String getProcessedInput(String inputToProcess) {
+    private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
         //TODO chen: throw exception with more info: what are the illegal char and send the legal keyboard chars
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
             throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
@@ -615,4 +612,7 @@ public class EngineManager implements MachineOperations, Serializable {
         return enigmaMachine != null;
     }
 
+    public boolean isMachineSettingInitialized() {
+        return enigmaMachine.isMachineSettingInitialized();
+    }
 }

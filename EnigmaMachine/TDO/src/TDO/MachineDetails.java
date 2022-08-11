@@ -45,27 +45,15 @@ public class MachineDetails {
         return rotorsInUse.stream().map(rotor -> new Pair<>(rotor.id(), rotor.notch() + 1)).collect(Collectors.toList());
     }
 
-    public int getAmountCurrentRotorsInUse() throws Exception {
-        if(rotorsInUse == null || rotorsInUse.size() <= 0) {
-            throw new Exception("There is no Rotor in the Machine");
-        }
-
-        return rotorsInUse.size();
+    public int getAmountCurrentRotorsInUse() {
+        return isMachineSettingsInitialized() ? rotorsInUse.size() : 0;
     }
 
-    public int getAmountOfTotalRotors() throws Exception {
-        if(rotors == null || rotors.size() <= 0) {
-            throw new Exception("There is no Rotor in the Machine");
-        }
-
+    public int getAmountOfTotalRotors() {
         return rotors.size();
     }
 
-    public int getAmountOfTotalReflectors() throws Exception {
-        if(reflectors == null || reflectors.size() <= 0) {
-            throw new Exception("There is no Reflector in the Machine");
-        }
-
+    public int getAmountOfTotalReflectors(){
         return reflectors.size();
     }
 
@@ -73,10 +61,7 @@ public class MachineDetails {
 
     //region Get Sector Methods
     private PluginBoardSector getPluginBoardSector() throws Exception {
-        if(pluginBoard == null) {
-            throw  new Exception("There is no Plugin Board in the Machine");
-        }
-        else if(pluginBoard.size() <= 0) {
+        if(pluginBoard.size() <= 0) {
             throw  new Exception("There is no plugged pairs in the plugin board");
         }
 
@@ -87,35 +72,27 @@ public class MachineDetails {
                     .collect(Collectors.toList()));
     }
 
-    private ReflectorIdSector getCurrentReflectorSector() throws Exception {
-        if(reflectorInUse == null) {
-            throw new Exception("There is no Reflector in the Machine");
-        }
-
+    private ReflectorIdSector getCurrentReflectorSector() {
         return new ReflectorIdSector(new ArrayList<RomanNumber>(Arrays.asList(reflectorInUse.id())));
     }
 
-    private RotorIDSector getCurrentIdRotorsInUseSector() throws Exception {
-        if (rotorsInUse == null || rotorsInUse.size() <= 0) {
-            throw  new Exception("There is no Rotor in the Machine");
-        }
-
+    private RotorIDSector getCurrentIdRotorsInUseSector() {
         return new RotorIDSector(rotorsInUse
                 .stream()
                 .map(rotor -> rotor.id())
                 .collect(Collectors.toList()));
     }
 
-    private StartingRotorPositionSector getCurrentInitialRotorPositionRotorsInUseSector() throws Exception {
-
-        if (rotorsInUse == null || rotorsInUse.size() <= 0) {
-            throw new Exception("There is no Rotor in the Machine");
-        }
-
+    private StartingRotorPositionSector getCurrentInitialRotorPositionRotorsInUseSector() {
         return new StartingRotorPositionSector(rotorsInUse
                 .stream()
                 .map(rotor -> rotor.getStartingRightCharToWindow())
                 .collect(Collectors.toList()));
+    }
+
+    public boolean isMachineSettingsInitialized() {
+        return settingsFormat.isSettingsInitialized();
+
     }
     //endregion
 

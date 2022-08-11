@@ -6,12 +6,13 @@ import java.util.Objects;
 
 public class SettingsFormat {
     private List<Sector> settingsFormat;
-    private Boolean isPluginBoardSet;
+    private boolean isPluginBoardSet;
     private int indexFormat;
 
     public SettingsFormat() {
         this.indexFormat = 1;
         this.settingsFormat = new ArrayList<Sector>();
+        this.isPluginBoardSet = false;
     }
 
     public void advanceIndexFormat() {
@@ -51,7 +52,7 @@ public class SettingsFormat {
         if (this == o) return true;
         if (!(o instanceof SettingsFormat)) return false;
         SettingsFormat that = (SettingsFormat) o;
-        return settingsFormat.equals(that.settingsFormat) && isPluginBoardSet.equals(that.isPluginBoardSet);
+        return settingsFormat.equals(that.settingsFormat) && (isPluginBoardSet == that.isPluginBoardSet);
     }
 
     @Override
