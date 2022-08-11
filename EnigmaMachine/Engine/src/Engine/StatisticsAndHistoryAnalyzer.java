@@ -35,6 +35,11 @@ public class StatisticsAndHistoryAnalyzer {
             statisticsAndHistoryFormat.put(settingsFormat, new ArrayList<>(Arrays.asList(processedStringsFormat)));
         }
     }
+
+    public void clear() {
+        statisticsAndHistoryFormat.clear();
+    }
+
     @Override
     public String toString() {
         return startingMessage + statisticsAndHistoryFormat.entrySet().stream()
