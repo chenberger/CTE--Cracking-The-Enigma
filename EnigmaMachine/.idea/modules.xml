@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/EnigmaMachine.iml" filepath="$PROJECT_DIR$/EnigmaMachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/TDO/TDO.iml" filepath="$PROJECT_DIR$/TDO/TDO.iml" />
-      <module fileurl="file://$PROJECT_DIR$/User Interface/User Interface.iml" filepath="$PROJECT_DIR$/User Interface/User Interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UserInterface/UserInterface.iml" filepath="$PROJECT_DIR$/UserInterface/UserInterface.iml" />
     </modules>
   </component>
 </project>
