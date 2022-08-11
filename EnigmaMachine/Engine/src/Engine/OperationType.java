@@ -10,7 +10,7 @@ public enum OperationType implements ActivateOperation {
     LOAD_MACHINE(1, "Load machine specification from file") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
-            //consoleUserInterface.loadMachineFromXML();
+            consoleUserInterface.loadMachineFromXML();
         }
     },
     DISPLAY_MACHINE_SPECIFICATION(2, "Display machine specification"){
@@ -22,7 +22,7 @@ public enum OperationType implements ActivateOperation {
     SET_SETTINGS_MANUAL(3, "Set machine settings manually ") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
-            //consoleUserInterface.setMachineSettingsManually();
+            consoleUserInterface.setMachineSettingsManually();
         }
     },
     SET_SETTINGS_AUTOMATIC(4, "Set machine settings automatically ") {
