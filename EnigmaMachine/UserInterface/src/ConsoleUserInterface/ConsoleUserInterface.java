@@ -201,14 +201,15 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
 
         if(!enigmaMachineEngine.isMachineSettingInitialized()) {
-            System.out.println("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
+            System.out.println("Error: The initial code configuration has not been configured for the machine," +
+                    " you must return to operation 3 or 4 and then return to this operation" + System.lineSeparator());
         }
         else {
             try {
-                System.out.println("Please enter a message that you want to encrypt: ");
+                System.out.println("Please enter a message that you want to encrypt/decrypt: ");
                 userInputToEncrypt = scanner.nextLine();
                 encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase(Locale.ROOT));
-                System.out.println("The encrypted message is: " + encryptedMessage + System.lineSeparator());
+                System.out.println("The processed message is: " + encryptedMessage + System.lineSeparator());
             } catch (MachineNotExistsException  | IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
             }
