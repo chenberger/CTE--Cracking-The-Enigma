@@ -21,7 +21,7 @@ public class StartingPositionsOfTheRotorException extends Exception{
 
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
+        return System.lineSeparator()
                 + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 

@@ -21,20 +21,19 @@ public class Main {
             PluginBoardSector pluginPairSector = new PluginBoardSector(new ArrayList<>(Arrays.asList(new Pair<>('C', 'B'))));
 
             engineManager.clearSettings();
-            engineManager.setRotorsInUse(rotorIDSector);
-            engineManager.setStartingPositionRotors(initialRotorPositionSector, rotorIDSector);
-            engineManager.setReflectorInUse(reflectorIdSector);
-            engineManager.setPluginBoard(pluginPairSector);
-            engineManager.checkIfTheSettingsInitialized();
+            engineManager.validateRotorsInUse(rotorIDSector);
+            engineManager.validateStartingPositionRotors(initialRotorPositionSector, rotorIDSector);
+            engineManager.validateReflectorInUse(reflectorIdSector);
+            engineManager.validatePluginBoard(pluginPairSector);
+            engineManager.checkIfTheSettingsFormatInitialized();
 
             MachineDetails details = engineManager.displaySpecifications();
             System.out.println("Before:");
             System.out.println("Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
             System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
             System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-            System.out.println("Machine settings: " + details.getMachineSettings());
+            System.out.println("Machine settings: " + details.getOriginalMachineSettings());
             System.out.println("Decode : " + engineManager.processInput("CDA"));
-            //TODO erez: fix reset bug
             engineManager.resetSettings();
             System.out.println("After:");
 /*            engine.clearSettings();
@@ -48,7 +47,7 @@ public class Main {
             System.out.println("Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
             System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
             System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-            System.out.println("Machine settings: " + details.getMachineSettings());
+            System.out.println("Machine settings: " + details.getOriginalMachineSettings());
             System.out.println("After: Decode : " + engineManager.processInput("CDA"));
             System.out.println(engineManager.analyzeHistoryAndStatistics());
 
@@ -59,7 +58,7 @@ public class Main {
                     System.out.println("Auto " + i + ": " + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
                     System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
                     System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-                    System.out.println("Machine settings: " + details.getMachineSettings());
+                    System.out.println("Machine settings: " + details.getOriginalMachineSettings());
                     System.out.println("Decode : " + engineManager.processInput("CDA"));
                     System.out.println("Messages counter: " + engineManager.displaySpecifications().getMessagesCounter() + System.lineSeparator());
                     engineManager.resetSettings();
@@ -67,7 +66,7 @@ public class Main {
                     System.out.println("Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
                     System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
                     System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-                    System.out.println("Machine settings: " + details.getMachineSettings());
+                    System.out.println("Machine settings: " + details.getOriginalMachineSettings());
                     System.out.println("After: Decode : " + engineManager.processInput("CDA"));
                 }
 
@@ -78,7 +77,7 @@ public class Main {
                     System.out.println("Auto " + i + ": " + System.lineSeparator() + "Total rotors: " + details.getAmountOfTotalRotors() + ", Current rotors: " + details.getAmountCurrentRotorsInUse());
                     System.out.println("Notch positions: " + details.getNotchPositionsInRotorsInUse());
                     System.out.println("Reflectors amount: " + details.getAmountOfTotalReflectors());
-                    System.out.println("Machine settings: " + details.getMachineSettings());
+                    System.out.println("Machine settings: " + details.getOriginalMachineSettings());
                     System.out.println("Decode : " + engineManager.processInput("A"));
                     System.out.println("Decode : " + engineManager.processInput("B"));
                     System.out.println("Messages counter: " + engineManager.displaySpecifications().getMessagesCounter() + System.lineSeparator());

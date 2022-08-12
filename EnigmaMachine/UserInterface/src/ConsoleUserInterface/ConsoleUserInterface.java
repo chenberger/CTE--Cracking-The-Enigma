@@ -1,18 +1,19 @@
 package ConsoleUserInterface;
 
 
-import Engine.EngineManager;
-import Engine.OperationType;
+import Engine.*;
+import EnigmaMachine.RomanNumber;
 import EnigmaMachineException.*;
 import TDO.MachineDetails;
+import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class ConsoleUserInterface {
     private final EngineManager enigmaMachineEngine;
@@ -29,7 +30,6 @@ public class ConsoleUserInterface {
         } while (!wantToQuitFromTheProgram);
     }
 
-
     private void showMenu() {
         printMenu();
         OperationType operationToActivate = getOperationFromTheUser();
@@ -37,6 +37,17 @@ public class ConsoleUserInterface {
 
         if(!wantToQuitFromTheProgram) {
             returnToMainMenu();
+        }
+    }
+
+    private void returnToMainMenu(){
+        System.out.println("Press any key to return to the main menu...");
+
+        try {
+            System.in.read();
+        }
+        catch(IOException e) {
+            System.out.println(System.lineSeparator());
         }
     }
 
@@ -108,6 +119,7 @@ public class ConsoleUserInterface {
         return openingMessage;
     }
 
+    //region Operations implementation
     public void exit() {
         this.wantToQuitFromTheProgram = true;
         System.out.println("Thank you for using our machine! see you next time");
@@ -120,7 +132,7 @@ public class ConsoleUserInterface {
             machineDetails = enigmaMachineEngine.displaySpecifications();
             printMachineSpecifications(machineDetails);
         }
-        catch(MachineNotExistsException ex) {
+        catch(MachineNotExistsException  | CloneNotSupportedException ex) {
             System.out.println(ex.getMessage() + System.lineSeparator());
         }
     }
@@ -135,34 +147,26 @@ public class ConsoleUserInterface {
                              .append("The current amount of rotors in use in the machine is: ")
                              .append(machineDetails.getAmountCurrentRotorsInUse())
                              .append(System.lineSeparator())
-                             //.append("The current notch positions are : (by using the format: [rotor_number:notch_position])")
-                             //.append(machineDetails.getNotchPositionsInRotorsInUse())
-                             //.append(System.lineSeparator())
                              .append("The total amount of reflectors that can be use in the machine is: ")
                              .append(machineDetails.getAmountOfTotalReflectors())
+                             .append(System.lineSeparator())
+                             .append("The total amount of messages have been processed by the machine so far, in total, since the file was loaded, for all the codes defined in it is: ")
+                             .append(machineDetails.getMessagesCounter())
                              .append(System.lineSeparator());
         if(machineDetails.isMachineSettingsInitialized()) {
-            machineSpecifications.append("The current code machine settings is: ")
-                                 .append(machineDetails.getMachineSettings())
+            machineSpecifications.append("The original code machine settings is: ")
+                                 .append(machineDetails.getOriginalMachineSettings())
+                                 .append(System.lineSeparator())
+                                 .append("The current code machine settings is: ")
+                                 .append(machineDetails.getCurrentMachineSettings())
                                  .append(System.lineSeparator());
         }
         else {
-            machineSpecifications.append("Note: The machine settings code has not yet been defined");
+            machineSpecifications.append("Note: The machine settings code has not been defined yet");
         }
 
         machineSpecifications.append(System.lineSeparator());
         System.out.println(machineSpecifications);
-    }
-
-    private void returnToMainMenu(){
-        System.out.println("Press any key to return to the main menu...");
-
-        try {
-            System.in.read();
-        }
-        catch(IOException e) {
-            System.out.println(System.lineSeparator());
-        }
     }
 
     public void setMachineSettingsAutomatically() {
@@ -211,8 +215,9 @@ public class ConsoleUserInterface {
             try {
                 System.out.println("Please enter a message that you want to encrypt/decrypt: ");
                 userInputToEncrypt = scanner.nextLine();
-                encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase(Locale.ROOT));
-                System.out.println("The processed message is: " + encryptedMessage + System.lineSeparator());
+                encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase());
+                System.out.println("The message have been processed successfully" + System.lineSeparator() +
+                                   "The processed message is: " + encryptedMessage + System.lineSeparator());
             } catch (MachineNotExistsException  | IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -253,4 +258,196 @@ public class ConsoleUserInterface {
         } while (!validInput);
         return continueOperation;
     }
+
+    //region set settings manually
+    public void setMachineSettingsManually() {
+       try {
+            Optional<RotorIDSector> rotorIDSector = Optional.ofNullable(getRotorIDSector());
+            rotorIDSector.orElseThrow(ExceptionInInitializerError::new);
+
+            Optional<StartingRotorPositionSector> startingRotorPositionSector = Optional.of(getInitialRotorPositionForTheRotorsSector(rotorIDSector.get()));
+            startingRotorPositionSector.orElseThrow(ExceptionInInitializerError::new);
+
+            Optional<ReflectorIdSector> reflectorIdSector = Optional.ofNullable(getReflectorIdSector());
+            reflectorIdSector.orElseThrow(ExceptionInInitializerError::new);
+
+            Optional<PluginBoardSector> pluginBoardSector = Optional.ofNullable(getPluginPairSector());
+            pluginBoardSector.orElseThrow(ExceptionInInitializerError::new);
+
+            enigmaMachineEngine.initializeSettings(rotorIDSector.get(), startingRotorPositionSector.get(), reflectorIdSector.get(), pluginBoardSector.get());
+        }
+        catch (MachineNotExistsException  | SettingsFormatException | CloneNotSupportedException  |RotorsInUseSettingsException |
+               StartingPositionsOfTheRotorException | ReflectorSettingsException | PluginBoardSettingsException ex) {
+
+            System.out.println(ex.getMessage());
+        }
+        catch (ExceptionInInitializerError ignored) {
+        }
+    }
+
+    private PluginBoardSector getPluginPairSector() {
+        PluginBoardSector pluginBoardSector = null;
+        String userInput;
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = false;
+
+        System.out.println("Please enter a continuous string of characters that make up all the pairs required by the machine." + System.lineSeparator() +
+                          "The pairs will appear close together, without any separator of one kind or another. When finished, type enter to complete the insertion of the string." + System.lineSeparator() +
+                          "(Note: you must make sure that the length of the string is even, in addition an empty string is a valid input - it means that there are no plugin pairs at all in the machine." + System.lineSeparator() +
+                          "Also, do not use the same character in more than one mapping pair, and there is no character mapping to itself.)");
+
+        do {
+            userInput = scanner.nextLine();
+            if(isLengthIsEven(userInput.length())) {
+                try {
+                    pluginBoardSector = convertStringToPluginPairsSector(userInput.toUpperCase());
+                    enigmaMachineEngine.validatePluginBoard(pluginBoardSector);
+                    validInput = true;
+                    System.out.println("The plugin board settings have been successfully loaded" + System.lineSeparator());
+                }
+                catch(PluginBoardSettingsException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            else {
+                System.out.println("Error: The length of the characters that was inserted is odd!" + System.lineSeparator() +
+                                   "(Reminder: Due to the fact that the characters represents are pairs, the length of the string must be even)");
+            }
+
+            if(!validInput) {
+                System.out.println("Please try again:");
+            }
+
+        } while(!validInput);
+
+        return pluginBoardSector;
+    }
+
+    private PluginBoardSector convertStringToPluginPairsSector(String stringToConvert) {
+        List<Pair<Character, Character>> pluginPairs = new ArrayList<>();
+
+        for (int i = 0; i < stringToConvert.length(); i+=2) {
+            pluginPairs.add(new Pair<>(stringToConvert.charAt(i), stringToConvert.charAt(i + 1)));
+        }
+
+        return new PluginBoardSector(pluginPairs);
+    }
+
+    private boolean isLengthIsEven(int length) {
+        return length % 2 == 0;
+    }
+
+    private ReflectorIdSector getReflectorIdSector() {
+        int userInput;
+        Scanner scanner = new Scanner(System.in);
+        ReflectorIdSector reflectorIdSector = null;
+        boolean validInput = false;
+
+        System.out.println("Please select the reflector that will be in the Enigma machine" + System.lineSeparator() +
+                           "(Note: choose a number between " + RomanNumber.minRomanValue() + " to " + RomanNumber.maxRomanValue() + ")");
+
+        for(RomanNumber romanNumber : RomanNumber.values()) {
+            System.out.println(romanNumber.getDecimalRepresentation() + ". " + romanNumber);
+        }
+
+        do{
+            try {
+                userInput = scanner.nextInt();
+                if(userInput >= RomanNumber.minRomanValue() && userInput <= RomanNumber.maxRomanValue()) {
+                    reflectorIdSector = new ReflectorIdSector(new ArrayList<>(Arrays.asList(RomanNumber.convertIntToRomanNumber(userInput))));
+                    enigmaMachineEngine.validateReflectorInUse(reflectorIdSector);
+                    validInput = true;
+                    System.out.println("The reflector settings have been successfully loaded" + System.lineSeparator());
+                }
+                else {
+                    System.out.println("Error: the number was inserted is out of range!" + System.lineSeparator()
+                                       + "The correct range is between " + RomanNumber.minRomanValue() + " to " + RomanNumber.maxRomanValue());
+                }
+            }
+            catch(InputMismatchException ex) {
+                System.out.println("Error: The value that was inserted is is not a integer!");
+                scanner.nextLine();
+            }
+            catch(ReflectorSettingsException | CloneNotSupportedException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            if(!validInput) {
+                System.out.println("Please try again:");
+            }
+
+        } while(!validInput);
+
+        return reflectorIdSector;
+    }
+
+    private StartingRotorPositionSector getInitialRotorPositionForTheRotorsSector(RotorIDSector rotorIDSector) {
+        StartingRotorPositionSector startingRotorPositionSector = null;
+        List<Character> rotorsPositionsAsList;
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+        boolean validInput = false;
+        System.out.println("Please enter the starting positions of the rotors without any separator" + System.lineSeparator() +
+                "(Note: you have to insert " + rotorIDSector.getElements().size() + " positions exactly!" +
+                " In addition, note that the positions you will enter are characters from the system's ABC)");
+
+        do {
+            userInput = scanner.nextLine();
+            rotorsPositionsAsList = userInput.toUpperCase().chars().mapToObj(character -> (char)character).collect(Collectors.toList());
+            try {
+                Collections.reverse(rotorsPositionsAsList);
+                startingRotorPositionSector = new StartingRotorPositionSector(rotorsPositionsAsList);
+                enigmaMachineEngine.validateStartingPositionRotors(startingRotorPositionSector, rotorIDSector);
+                validInput = true;
+                System.out.println("The rotor starting positions were moved successfully according to the right column" + System.lineSeparator());
+            }
+            catch(StartingPositionsOfTheRotorException ex) {
+                System.out.println(ex.getMessage());
+                System.out.println("Please try again:");
+            }
+
+        } while(!validInput);
+
+        return startingRotorPositionSector;
+    }
+
+    private RotorIDSector getRotorIDSector() {
+        RotorIDSector rotorIDSector = null;
+        List<Integer> rotorsIdAsIntList;
+        List<String> rotorsIdAsStringList;
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+        boolean validInput = false;
+        System.out.println("Please enter the numbers id of rotors that will be in the Enigma machine separated by a comma." + System.lineSeparator() +
+                "(Note: you have to insert " + enigmaMachineEngine.getAmountOfActiveRotors() + " rotors exactly!)");
+
+        do {
+            userInput = scanner.nextLine();
+            rotorsIdAsStringList = Stream.of(userInput.split(",")).collect(Collectors.toList());
+            try {
+                rotorsIdAsIntList = rotorsIdAsStringList.stream().map(Integer::parseInt).collect(Collectors.toList());
+                Collections.reverse(rotorsIdAsIntList);
+                rotorIDSector = new RotorIDSector(rotorsIdAsIntList);
+                enigmaMachineEngine.validateRotorsInUse(rotorIDSector);
+                validInput = true;
+                System.out.println("The selected rotors have been successfully inserted into the machine" + System.lineSeparator());
+            }
+            catch(NumberFormatException ex) {
+                System.out.println("Error: Failed to initialize the rotors that need to be use in the machine settings because of the following reasons: "
+                                + System.lineSeparator() + "       1.Could not convert the rotor number " + ex.getMessage() + " to integer");
+            }
+            catch(RotorsInUseSettingsException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            if(!validInput) {
+                System.out.println("Please try again:");
+            }
+
+        } while(!validInput);
+
+        return rotorIDSector;
+    }
+    //endregion
+    //endregion
 }
