@@ -19,12 +19,12 @@ public enum OperationType implements ActivateOperation {
             consoleUserInterface.displayMachineSpecification();
         }
     },
-    //SET_SETTINGS_MANUAL(3, "Set machine settings manually ") {
-    //    @Override
-    //    public void activate(ConsoleUserInterface consoleUserInterface) {
-    //        consoleUserInterface.setMachineSettingsManually();
-    //    }
-    //},
+    SET_SETTINGS_MANUAL(3, "Set machine settings manually ") {
+        @Override
+        public void activate(ConsoleUserInterface consoleUserInterface) {
+            consoleUserInterface.setMachineSettingsManually();
+        }
+    },
     SET_SETTINGS_AUTOMATIC(4, "Set machine settings automatically ") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
