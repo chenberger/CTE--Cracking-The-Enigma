@@ -178,5 +178,16 @@ public class RotorNotValidException extends Exception {
     public List<Exception> getExceptions() {
         return exceptions;
     }
+
+    public boolean isGeneratedRotorsIdsInOrder(Map<Integer, Boolean> generatedRotorsIds) {
+        return generatedRotorsIds.values().stream().allMatch(b -> b);
+    }
+
+    public Exception addRotorIdsNotInOrder(Map<Integer, Boolean> generatedRotorsIds) {
+        Exception rotorsNotInOrder = new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
+                + " The rotor ids are not in the right order(missing Ids in the sequence): " + System.lineSeparator());
+        errorIndex++;
+        return rotorsNotInOrder;
+    }
 }
 

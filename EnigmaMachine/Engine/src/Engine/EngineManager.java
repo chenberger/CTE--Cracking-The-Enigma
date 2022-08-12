@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.jar.JarException;
 import java.util.stream.Collectors;
 
 import EnigmaMachine.*;
@@ -11,6 +12,7 @@ import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
 import TDO.MachineDetails;
 import Jaxb.Schema.Generated.CTEEnigma;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -36,68 +38,29 @@ public class EngineManager implements MachineOperations, Serializable {
         this.enigmaMachineException = new GeneralEnigmaMachineException();
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.enigmaMachine = null;
-        //region test
-        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
-        ABC.put('A', 0);
-        ABC.put('B', 1);
-        ABC.put('C', 2);
-        ABC.put('D', 3);
-        ABC.put('E', 4);
-        ABC.put('F', 5);
 
-        ArrayList<Pair<Character, Character>> mappingABC1 = new ArrayList<>();
-        List<Pair<Character, Character>> mappingABC2 = new ArrayList<>();
-        mappingABC1.add(new Pair<Character, Character>('F', 'A'));
-        mappingABC1.add(new Pair<Character, Character>('E', 'B'));
-        mappingABC1.add(new Pair<Character, Character>('D', 'C'));
-        mappingABC1.add(new Pair<Character, Character>('C', 'D'));
-        mappingABC1.add(new Pair<Character, Character>('B', 'E'));
-        mappingABC1.add(new Pair<Character, Character>('A', 'F'));
-
-        mappingABC2.add(new Pair<Character, Character>('E', 'A'));
-        mappingABC2.add(new Pair<Character, Character>('B', 'B'));
-        mappingABC2.add(new Pair<Character, Character>('D', 'C'));
-        mappingABC2.add(new Pair<Character, Character>('F', 'D'));
-        mappingABC2.add(new Pair<Character, Character>('C', 'E'));
-        mappingABC2.add(new Pair<Character, Character>('A', 'F'));
-
-        Rotor rotor1 = new Rotor(1, 3,true, mappingABC1, 'C');
-        Rotor rotor2 = new Rotor(2, 0, false, mappingABC2, 'C');
-
-        Map<Integer, Rotor> rotors = new HashMap<Integer, Rotor>();
-        rotors.put(rotor1.id(), rotor1);
-        rotors.put(rotor2.id(), rotor2);
-
-        Map<Integer, Integer> reflectorPairs = new HashMap<Integer, Integer>();
-        reflectorPairs.put(0, 3);
-        reflectorPairs.put(3, 0);
-        reflectorPairs.put(4, 1);
-        reflectorPairs.put(1, 4);
-        reflectorPairs.put(2, 5);
-        reflectorPairs.put(5, 2);
-        Reflector reflector = new Reflector(RomanNumber.I, reflectorPairs);
-        Map<RomanNumber, Reflector> reflectors = new HashMap<RomanNumber, Reflector>();
-        reflectors.put(reflector.id(), reflector);
-
-        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC, 2);
 
         //endregion
     }
 
     //region JAXB Translation
-    public void setMachineDetails(String machineDetailsXmlFilePath) {
+    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException {
         // TODO implement here also validation.(the file exist)
         try {
             InputStream inputStream = new FileInputStream(new File(machineDetailsXmlFilePath));
-            if(!machineDetailsXmlFilePath.endsWith(".xml")){
+            if (!machineDetailsXmlFilePath.endsWith(".xml")) {
                 throw new NotXmlFileException();
             }
             CTEEnigma enigma = deserializeFrom(inputStream);
             transformJAXBClassesToEnigmaMachine(enigma);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException();
+        }catch (JAXBException e){
+            throw new RuntimeException();
         }
-        catch (JAXBException | FileNotFoundException | NotXmlFileException | GeneralEnigmaMachineException e) { //should catch the exception to the xml in the UI.
-            e.printStackTrace();
-        }
+
+
+
    }
 
     public CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
@@ -146,6 +109,7 @@ public class EngineManager implements MachineOperations, Serializable {
         if(abc.length() == 0) {
             abcNotValidException.setABCempty();
         }
+        abc = abc.trim();
         checkIfKeyBoardContainsDuplications(abc,abcNotValidException,generatedABC);
     }
 
@@ -156,9 +120,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 return true;
             }
             else{
-                if(abc.charAt(i) != ' ' && abc.charAt(i) != '\n'){
-                    abcMap.put(abc.charAt(i), 1);
-                }
+                abcMap.put(abc.charAt(i), 1);
             }
         }
         for(Character charInABC : abcMap.keySet()){
@@ -174,6 +136,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
     private Map<RomanNumber, Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors, List<Character> CTEAbc) {
         Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
+        Map<String, Boolean> insertedReflectorsIds = fillReflectorMapIdsMapWithFalseValues(cteReflectors.size());
 
         ReflectorNotValidException reflectorNotValidException = new ReflectorNotValidException();
         if(cteReflectors.size() == 0) {
@@ -211,9 +174,11 @@ public class EngineManager implements MachineOperations, Serializable {
                  currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
                  currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
              }
+             insertedReflectorsIds.put(reflector.getId(),true);
              Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
              machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);}
         }
+        reflectorNotValidException.checkIfReflectorsIdsInOrder(insertedReflectorsIds);
         reflectorNotValidException.addExceptionsToTheList();
         if(reflectorNotValidException.shouldThrowException()){
             enigmaMachineException.addException(reflectorNotValidException);
@@ -249,9 +214,24 @@ public class EngineManager implements MachineOperations, Serializable {
         }
         return isValid;
     }
+    private Map<String, Boolean> fillReflectorMapIdsMapWithFalseValues(int size){
+        Map<String , Boolean> idsMap = new HashMap<>(size);
+        for(RomanNumber romanNumber: RomanNumber.values()){
+            idsMap.put(romanNumber.toString(),false);
+        }
+        return idsMap;
+    }
+    private Map<Integer,Boolean> fillRotorsMapWithFalseValues(int size){
+        Map<Integer,Boolean> idsMap = new HashMap<>(size);
+        for(int i = 0; i < size; i++){
+            idsMap.put(i,false);
+        }
+        return idsMap;
+    }
 
     private Map<Integer, Rotor> getMachineRotorsFromCTERotors(List<CTERotor> cteRotors, List<Character> cteABC) {
         Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
+        Map<Integer,Boolean> generatedRotorsIds = fillRotorsMapWithFalseValues(cteRotors.size());
         RotorNotValidException rotorNotValidException = new RotorNotValidException();
         checkIfRotorsIdsAreValid(cteRotors, rotorNotValidException);
         if(cteRotors.size() < 2) {
@@ -290,15 +270,21 @@ public class EngineManager implements MachineOperations, Serializable {
                 currentRotorPairs.add(currentPair);
                 currentRotorMap.put(position.getLeft().charAt(0),position.getRight().charAt(0));
             }
+
             rotorNotValidException.addExceptionsToTheList();
             if(rotorNotValidException.shouldThrowException()){
                 enigmaMachineException.addException(rotorNotValidException);
             }
+            generatedRotorsIds.put(rotor.getId() ,true);
             Rotor currentRotor = new Rotor(rotor.getId(), rotor.getNotch() - 1, currentRotorPairs);
             machineRotors.put(rotor.getId(),currentRotor);
         }
+        if(rotorNotValidException.isGeneratedRotorsIdsInOrder(generatedRotorsIds)){
+            enigmaMachineException.addException(rotorNotValidException.addRotorIdsNotInOrder(generatedRotorsIds));
+        }
         return machineRotors;
     }
+
 
 
     private void checkIfRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
@@ -317,6 +303,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     private void checkThatRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
+        
     }
 
     private void checkIfPositionLettersInABC(CTEPositioning position, List<Character> cteABC, RotorNotValidException rotorNotValidException, int rotorId) {

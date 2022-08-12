@@ -21,6 +21,7 @@ public class ReflectorNotValidException extends Exception {
     private boolean tooManyReflectors = false;
     private final Map<String,Integer> invalidSizedReflectors = new HashMap<>();
     private final List<String> outOfRangeReflectors = new ArrayList<>();
+    private boolean reflectorsNotInOrder = false;
     public ReflectorNotValidException() {
         this.errorIndex = 1;
         this.exceptions = new ArrayList<>();
@@ -31,6 +32,7 @@ public class ReflectorNotValidException extends Exception {
                 + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
     public void addExceptionsToTheList() {
+        addReflectorsNotInOrderException();
         addReflectorsWithIndexesOutOfRangeException();
         addInputColDuplicateIndexesException();
         addOutputColDuplicateIndexesException();
@@ -120,12 +122,27 @@ public class ReflectorNotValidException extends Exception {
         }
     }
 
+    private void addReflectorsNotInOrderException() {
+        if(reflectorsNotInOrder) {
+            exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
+                    + ": The reflectors in the file are not in order(missing Ids in the sequence)!!" + System.lineSeparator()));
+            errorIndex++;
+        }
+    }
     //endregion
     public boolean shouldThrowException() {
         return exceptions.size() > 0;// no exceptions to throw
     }
     // TODO implement check that the id's are in runnings order.
     // TODO input output are integers.
+    public void checkIfReflectorsIdsInOrder(Map<String, Boolean> reflectorsIdsInOrder) {
+        for(Map.Entry<String, Boolean> entry : reflectorsIdsInOrder.entrySet()) {
+            if (!entry.getValue()) {
+                reflectorsNotInOrder = true;
+                break;
+            }
+        }
+    }
 
     public void addReflectorsToOutOfRangeList(String reflectorToAdd) {
         outOfRangeReflectors.add(reflectorToAdd);
