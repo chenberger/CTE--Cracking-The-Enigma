@@ -19,6 +19,7 @@ public class RotorNotValidException extends Exception {
     private final Map<Integer,List<Character>> leftColDuplicateChars;
     private final Map<Integer,List<Character>> RightColDuplicateChars;
     private int numberOfRotorsToAdd;
+    List<Integer> MissingRotorsIdsInSequenceList;
 
     private boolean oddLength = false;
     private Map<Character, List<Character>> sameMappingInOneRotor;
@@ -35,6 +36,7 @@ public class RotorNotValidException extends Exception {
         numberOfRotorsToAdd = 0;
         errorIndex = 1;
         oddLength = false;
+        MissingRotorsIdsInSequenceList = new ArrayList<>();
 
     }
 
@@ -45,6 +47,7 @@ public class RotorNotValidException extends Exception {
         addRotorsWithNotValidLettersException();
         addDuplicateleftColException();
         addDuplicateRightColException();
+        addMissingRotorsIdsException();
     }
     public boolean shouldThrowException() {
         return exceptions.size() > 0;
@@ -149,6 +152,15 @@ public class RotorNotValidException extends Exception {
             }
         }
     }
+    private void addMissingRotorsIdsException(){
+        if(!MissingRotorsIdsInSequenceList.isEmpty()) {
+            for(Integer id : MissingRotorsIdsInSequenceList) {
+                exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
+                        + ": The rotor " + id + " is missing from the desired sequence." + System.lineSeparator())));
+                errorIndex++;
+            }
+        }
+    }
     //end region
     public void addDUplicatedCharToLeftCol(int id, String left) {
         if(leftColDuplicateChars.containsKey(id)) {
@@ -188,6 +200,14 @@ public class RotorNotValidException extends Exception {
                 + " The rotor ids are not in the right order(missing Ids in the sequence): " + System.lineSeparator());
         errorIndex++;
         return rotorsNotInOrder;
+    }
+
+    public void setRotorsIdsNotInSequenceList(Map<Integer,Boolean> IdsMap) {
+        for(Map.Entry<Integer, Boolean> entry : IdsMap.entrySet()) {
+            if(!entry.getValue()) {
+                MissingRotorsIdsInSequenceList.add(entry.getKey());
+            }
+        }
     }
 }
 

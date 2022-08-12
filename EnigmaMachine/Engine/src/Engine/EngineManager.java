@@ -4,7 +4,6 @@ import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.jar.JarException;
 import java.util.stream.Collectors;
 
 import EnigmaMachine.*;
@@ -12,7 +11,6 @@ import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
 import TDO.MachineDetails;
 import Jaxb.Schema.Generated.CTEEnigma;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -145,16 +143,20 @@ public class EngineManager implements MachineOperations, Serializable {
         else if(cteReflectors.size() > 5) {
             reflectorNotValidException.setToManyReflectors();
         }
+        fillMapByInsertedReflectors(cteReflectors, insertedReflectorsIds);
+        if(!allReflectorsIdsInSequence(insertedReflectorsIds,cteReflectors.size())){
+                reflectorNotValidException.setMissingReflectorsIdsFromSequenceList(insertedReflectorsIds);
+        }
         for(CTEReflector reflector: cteReflectors){
              if(IsReflectorIdIsValid(reflector, reflectorNotValidException) && numberOfPairsInReflectorValid(reflector,CTEAbc,reflectorNotValidException)) {
              Map<Integer,Integer> currentReflectorMapping = new HashMap<>();
              for(CTEReflect reflect:reflector.getCTEReflect()){
                  Map<Integer,Integer> outPutColMap = new HashMap<>();
                  Map<Integer,Integer> inputColMap = new HashMap<>();
+
                  if(indexOutOfRange(reflect.getInput(), CTEAbc)){
                      reflectorNotValidException.addReflectorIndexOutOfRange(reflector.getId(),reflect.getInput());
                  }
-
                  else if(indexOutOfRange(reflect.getOutput(), CTEAbc)) {
                      reflectorNotValidException.addReflectorIndexOutOfRange(reflector.getId(), reflect.getOutput());
                  }
@@ -178,12 +180,29 @@ public class EngineManager implements MachineOperations, Serializable {
              Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
              machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);}
         }
-        reflectorNotValidException.checkIfReflectorsIdsInOrder(insertedReflectorsIds);
+
         reflectorNotValidException.addExceptionsToTheList();
         if(reflectorNotValidException.shouldThrowException()){
             enigmaMachineException.addException(reflectorNotValidException);
         }
         return machineReflectors;
+    }
+
+    private void fillMapByInsertedReflectors(List<CTEReflector> cteReflectors, Map<String, Boolean> insertedReflectorsIds) {
+        for(CTEReflector reflector: cteReflectors){
+            insertedReflectorsIds.put(reflector.getId(),true);
+        }
+    }
+
+    private boolean allReflectorsIdsInSequence(Map<String, Boolean> insertedReflectorsIds, int size) {
+        int numberOfInsertedReflectorsIdsCounter = 0;
+        for(RomanNumber id : RomanNumber.values()){
+            if(!insertedReflectorsIds.get(id.toString()) && numberOfInsertedReflectorsIdsCounter < size){
+                return false;
+            }
+            numberOfInsertedReflectorsIdsCounter++;
+        }
+        return true;
     }
 
     private boolean indexOutOfRange(int input, List<Character> cteAbc) {
@@ -223,7 +242,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
     private Map<Integer,Boolean> fillRotorsMapWithFalseValues(int size){
         Map<Integer,Boolean> idsMap = new HashMap<>(size);
-        for(int i = 0; i < size; i++){
+        for(int i = 1; i <= size; i++){
             idsMap.put(i,false);
         }
         return idsMap;
@@ -233,12 +252,16 @@ public class EngineManager implements MachineOperations, Serializable {
         Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
         Map<Integer,Boolean> generatedRotorsIds = fillRotorsMapWithFalseValues(cteRotors.size());
         RotorNotValidException rotorNotValidException = new RotorNotValidException();
+
+        fillIdsMapByInsertedRotors(cteRotors, generatedRotorsIds);
         checkIfRotorsIdsAreValid(cteRotors, rotorNotValidException);
         if(cteRotors.size() < 2) {
             rotorNotValidException.setNumberOfRotorsToAdd(2 - cteRotors.size());
         }
 
-        checkThatRotorsIdsAreValid(cteRotors, rotorNotValidException);
+        if(!AllRotorsIdsInSequence(generatedRotorsIds)) {
+            rotorNotValidException.setRotorsIdsNotInSequenceList(generatedRotorsIds);
+        }
         //TODO check if rotors id are numbers, left, right from abc. length is as the length of abc and each shows once, that the notch is in the length of the abc.
         //TODO check that the rotors count which the number of rotors in use is between 2 and 99, return the rotors count to erez.
         for(CTERotor rotor: cteRotors){
@@ -279,14 +302,19 @@ public class EngineManager implements MachineOperations, Serializable {
             Rotor currentRotor = new Rotor(rotor.getId(), rotor.getNotch() - 1, currentRotorPairs);
             machineRotors.put(rotor.getId(),currentRotor);
         }
-        if(rotorNotValidException.isGeneratedRotorsIdsInOrder(generatedRotorsIds)){
-            enigmaMachineException.addException(rotorNotValidException.addRotorIdsNotInOrder(generatedRotorsIds));
-        }
         return machineRotors;
     }
 
-
-
+    private void fillIdsMapByInsertedRotors(List<CTERotor> cteRotors, Map<Integer, Boolean> generatedRotorsIds) {
+        for(CTERotor rotor: cteRotors){
+            generatedRotorsIds.put(rotor.getId(),true);
+        }
+    }
+    private void fiilIdsMapByInsertedReflectors(List<CTEReflector> cteReflectors, Map<String, Boolean> generatedReflectorsIds) {
+        for(CTEReflector reflector: cteReflectors){
+            generatedReflectorsIds.put(reflector.getId(),true);
+        }
+    }
     private void checkIfRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
         int numberOfRotors = cteRotors.size();
         Map<Integer,Boolean> rotorsIds = new HashMap<>();
@@ -302,8 +330,15 @@ public class EngineManager implements MachineOperations, Serializable {
 
     }
 
-    private void checkThatRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
-        
+    private boolean AllRotorsIdsInSequence(Map<Integer,Boolean> generatedRotorsIds) {
+        boolean allRotorsIdsInSequence = true;
+        for(int i = 1; i <= generatedRotorsIds.size(); i++){
+            if(!generatedRotorsIds.get(i)){
+                allRotorsIdsInSequence = false;
+                break;
+            }
+        }
+        return allRotorsIdsInSequence;
     }
 
     private void checkIfPositionLettersInABC(CTEPositioning position, List<Character> cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
