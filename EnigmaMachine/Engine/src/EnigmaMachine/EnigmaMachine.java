@@ -8,18 +8,18 @@ import Engine.*;
 import javafx.util.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EnigmaMachine{
-    private Map<Integer, Rotor> rotors;
-    private int numOfActiveRotors;
-    private List<Rotor> rotorsInUse;
+    private final Map<Integer, Rotor> rotors;
+    private final int numOfActiveRotors;
+    private final List<Rotor> rotorsInUse;
     private Reflector reflectorInUse;
-    private Map<RomanNumber, Reflector> reflectors;
+    private final Map<RomanNumber, Reflector> reflectors;
     private PluginBoard pluginBoard;
     private final Map<Character, Integer> keyboard;
-
-    private SettingsFormat settingsFormat;
-    private boolean isMachineSettingInitialized;
+    private boolean isTheInitialCodeDefined;
+    private final SettingsFormat originalSettingsFormat;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard, int numOfActiveRotors){
         this.rotors = rotors;
@@ -28,15 +28,22 @@ public class EnigmaMachine{
         this.numOfActiveRotors = numOfActiveRotors;
         this.rotorsInUse = new ArrayList<Rotor>();
         this.pluginBoard = new PluginBoard();
-        this.settingsFormat = new SettingsFormat();
+        this.originalSettingsFormat = new SettingsFormat();
+        this.isTheInitialCodeDefined = false;
     }
 
     //region set settings
-    public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
+    public void setPluginBoardSettings(PluginBoardSector pluginBoardSector) {
+        pluginBoard.clear();
+
+        for (Pair<Character, Character> pluginPair : pluginBoardSector.getElements()) {
+            pluginBoard.addPluginPair(pluginPair);
+        }
+    }
+    public void validatePluginBoardSettings(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
         PluginBoardSettingsException pluginBoardSettingsException = new PluginBoardSettingsException();
         Map<Character, Boolean> charactersUsingForPluginBoard = new HashMap<>();
         initializeCharactersUsingForPluggedBoard(charactersUsingForPluginBoard);
-        pluginBoard.clear();
 
         if(pluginBoardSector != null && pluginBoardSector.getElements().size() > 0) {
             if(pluginBoardSector.getElements().size() > getMaximumPairs()) {
@@ -46,16 +53,15 @@ public class EnigmaMachine{
             checkValidPluggedPair(pluginBoardSector, pluginBoardSettingsException, charactersUsingForPluginBoard);
 
             if (pluginBoardSettingsException.isExceptionNeedToThrown()) {
-                pluginBoard.clear();
                 throw pluginBoardSettingsException;
             }
             else {
-                settingsFormat.addSector(pluginBoardSector);
-                settingsFormat.isPluginBoardSet(true);
+                originalSettingsFormat.addSector(pluginBoardSector);
+                originalSettingsFormat.isPluginBoardSet(true);
             }
         }
         else {
-            settingsFormat.isPluginBoardSet(false);
+            originalSettingsFormat.isPluginBoardSet(false);
         }
     }
 
@@ -90,7 +96,6 @@ public class EnigmaMachine{
             }
 
             if (isValidKey) {
-                pluginBoard.addPluginPair(pluginPair);
                 charactersUsingForPluginBoard.put(pluginPair.getValue(), true);
                 charactersUsingForPluginBoard.put(pluginPair.getKey(), true);
             }
@@ -103,24 +108,32 @@ public class EnigmaMachine{
         }
     }
 
-    public void setReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws ReflectorSettingsException, CloneNotSupportedException {
-        ReflectorSettingsException reflectorSettingsException = new ReflectorSettingsException();
-        boolean isReflectorFound = false;
-        RomanNumber reflectorId;
-
+    public void setReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws CloneNotSupportedException {
         if(reflectorInUse != null) {
             reflectorInUse.clear();
         }
+
+        for(RomanNumber romanNumber : reflectors.keySet()) {
+            if(romanNumber == reflectorIdSector.getElements().get(0)) {
+                reflectorInUse = (Reflector) reflectors.get(romanNumber).clone();
+                break;
+            }
+        }
+    }
+
+    public void validateReflectorInUseSettings(ReflectorIdSector reflectorIdSector) throws ReflectorSettingsException {
+        ReflectorSettingsException reflectorSettingsException = new ReflectorSettingsException();
+        boolean isReflectorFound = false;
+        RomanNumber reflectorId;
 
         if(reflectorIdSector.getElements().size() != 1) {
             reflectorSettingsException.addIllegalReflectorsSize(reflectorIdSector.getElements().size());
          }
 
-        reflectorId = (RomanNumber) reflectorIdSector.getElements().get(0);
+        reflectorId = reflectorIdSector.getElements().get(0);
 
         for(RomanNumber romanNumber : reflectors.keySet()) {
             if(romanNumber == reflectorId) {
-                reflectorInUse = (Reflector) reflectors.get(romanNumber).clone();
                 isReflectorFound = true;
             }
         }
@@ -130,19 +143,20 @@ public class EnigmaMachine{
         }
 
         if(reflectorSettingsException.isExceptionNeedToThrown()) {
-            if(reflectorInUse != null) {
-                reflectorInUse.clear();
-            }
             throw reflectorSettingsException;
-        }
-        else {
-            settingsFormat.addSector(reflectorIdSector);
         }
     }
 
-    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
-        StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
+    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) {
         int index = 0;
+        for (Character startingRightCharToWindow : startPositionsOfTheRotors.getElements()) {
+                rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+                index++;
+        }
+    }
+
+    public void validateStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
+        StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
         boolean isCharacterFound;
 
         if (startPositionsOfTheRotors.getElements().size() != rotorIDSector.getElements().size()) {
@@ -153,10 +167,6 @@ public class EnigmaMachine{
             isCharacterFound = false;
             for (Character character : keyboard.keySet()) {
                 if (character == startingRightCharToWindow) {
-                    if(index < rotorIDSector.getElements().size()) {
-                        rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
-                    }
-
                     isCharacterFound = true;
                     break;
                 }
@@ -165,26 +175,28 @@ public class EnigmaMachine{
             if (!isCharacterFound) {
                 startingPositionsOfTheRotorException.addIllegalCharacter(startingRightCharToWindow, keyboard.keySet());
             }
-            index++;
         }
 
         if (startingPositionsOfTheRotorException.isExceptionNeedToThrown()) {
             throw startingPositionsOfTheRotorException;
         }
-        else {
-            settingsFormat.addSector(startPositionsOfTheRotors);
+    }
+
+    public void setRotorsInUseSettings(RotorIDSector rotorIDSector) {
+        rotorsInUse.clear();
+
+        for(Integer rotorId : rotorIDSector.getElements()) {
+            rotorsInUse.add(rotors.get(rotorId));
         }
     }
 
-    public void initializeRotorsInUseSettings(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
-        //TODO Erez: check if the size of the count rotors equal to rotorIDSector size
+    public void validateRotorsInUseSettings(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
         RotorsInUseSettingsException rotorsInUseSettingsException = new RotorsInUseSettingsException();
         Map<Integer, Boolean> rotorsUsingForTheMachine = new HashMap<>();
         initializeRotorsUsingForTheMachine(rotorsUsingForTheMachine, rotorIDSector.getElements());
-        rotorsInUse.clear();
 
-        if(rotorIDSector.getElements().size() > rotors.size()) {
-            rotorsInUseSettingsException.addIllegalAmountOfRotors(rotorIDSector.getElements().size(), rotors.size());
+        if(rotorIDSector.getElements().size() != numOfActiveRotors) {
+            rotorsInUseSettingsException.addIllegalAmountOfRotors(rotorIDSector.getElements().size(), numOfActiveRotors);
         }
 
         for(Integer rotorId : rotorIDSector.getElements()) {
@@ -193,7 +205,6 @@ public class EnigmaMachine{
             }
 
             if(rotors.containsKey(rotorId)) {
-                    rotorsInUse.add(rotors.get(rotorId));
                     rotorsUsingForTheMachine.put(rotorId, true);
             }
             else {
@@ -202,11 +213,7 @@ public class EnigmaMachine{
         }
 
         if (rotorsInUseSettingsException.isExceptionNeedToThrown()) {
-            rotorsInUse.clear();
             throw rotorsInUseSettingsException;
-        }
-        else {
-            settingsFormat.addSector(rotorIDSector);
         }
     }
 
@@ -283,7 +290,7 @@ public class EnigmaMachine{
     }
 
     public void resetSettings() {
-        if(settingsFormat.isSettingsInitialized()) {
+        if(isTheInitialCodeDefined) {
             for(Rotor rotor : rotorsInUse) {
                 rotor.reset();
             }
@@ -294,12 +301,15 @@ public class EnigmaMachine{
     public void setPluginBoard(PluginBoard pluginBoard) {
         this.pluginBoard = pluginBoard;
     }
-    public void setReflectorInUseSettings(String id) {
+    public void validateReflectorInUseSettings(String id) {
         this.reflectorInUse = findReflectorById(id);
     }
     //endregion
 
     //region Getters
+    public int getNumOfActiveRotors() {
+        return numOfActiveRotors;
+    }
     public Map<Integer, Rotor> getAllRotors() { return rotors; }
 
     public List<Rotor> getCurrentRotorsInUse() { return rotorsInUse; }
@@ -312,14 +322,28 @@ public class EnigmaMachine{
 
     public Set<Character> getKeyboard() { return keyboard.keySet(); }
 
-    public SettingsFormat getSettingsFormat() { return settingsFormat; }
+    public SettingsFormat getOriginalSettingsFormat() { return originalSettingsFormat; }
+
+    public SettingsFormat getCurrentSettingsFormat() throws CloneNotSupportedException {
+        SettingsFormat currentSettingsFormat = (SettingsFormat) originalSettingsFormat.clone();
+        if(isTheInitialCodeDefined) {
+            RotorIDSector rotorIDSector = (RotorIDSector) (currentSettingsFormat.getSectorByType(SectorType.ROTORS_ID));
+            rotorIDSector.setCurrentNotchPositions(rotorsInUse.stream().map(rotor -> rotor.notch()).collect(Collectors.toList()));
+        }
+
+        return currentSettingsFormat;
+    }
     //endregion
 
-    public boolean isMachineSettingInitialized() {
-        return settingsFormat.isSettingsInitialized();
+    public void clearSettings() {
+        originalSettingsFormat.clear();
     }
 
-    public void clearSettings() {
-        settingsFormat.clear();
+    public boolean isTheInitialCodeDefined() {
+        return isTheInitialCodeDefined;
+    }
+
+    public void setTheInitialCodeDefined(boolean theInitialCodeDefined) {
+        isTheInitialCodeDefined = theInitialCodeDefined;
     }
 }

@@ -13,6 +13,11 @@ public abstract class Sector<T>  {
         this.type = type;
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     //region Getters
     public List<T> getElements() {
         return elements;

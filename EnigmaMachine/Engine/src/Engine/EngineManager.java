@@ -359,17 +359,12 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException {
         RotorIDSector rotorIDSector = getRandomRotorsIdSector();
-        setSettings(rotorIDSector, getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size()), getRandomReflectorSector(), getRandomPluginBoardSector());
-    }
+        StartingRotorPositionSector startingRotorPositionSector = getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size());
+        ReflectorIdSector reflectorIdSector = getRandomReflectorSector();
+        PluginBoardSector pluginBoardSector = getRandomPluginBoardSector();
 
-    private void setSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException {
-        clearSettings();
-        setRotorsInUse(rotorIDSector);
-        setStartingPositionRotors(startingPositionRotorsSector, rotorIDSector);
-        setReflectorInUse(reflectorSector);
-        setPluginBoard(pluginBoardSector);
-        checkIfTheSettingsInitialized();
-        resetSettings();
+        validateMachineSettings(rotorIDSector, startingRotorPositionSector, reflectorIdSector, pluginBoardSector);
+        initializeSettings(rotorIDSector, startingRotorPositionSector, reflectorIdSector, pluginBoardSector);
     }
 
     private PluginBoardSector getRandomPluginBoardSector() {
@@ -452,11 +447,9 @@ public class EngineManager implements MachineOperations, Serializable {
     private RotorIDSector getRandomRotorsIdSector() {
         List<Integer> rotorsId = new ArrayList<>();
         Set<Integer> optionalRotorsId = new HashSet<>(enigmaMachine.getAllRotors().keySet());
-        Random randomGenerator = new Random();
-        int amountOfRotors = randomGenerator.nextInt(enigmaMachine.getAllRotors().size()) + 1;
         Integer randomId;
 
-        for (int i = 0; i < amountOfRotors; i++) {
+        for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
             randomId =  getRandomRotorId(optionalRotorsId.stream().collect(Collectors.toList()));
             rotorsId.add(randomId);
             optionalRotorsId.remove(randomId);
@@ -481,6 +474,44 @@ public class EngineManager implements MachineOperations, Serializable {
     //endregion
 
     //region set Settings
+    public void initializeSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException {
+        setMachineSettings(rotorIDSector, startingPositionRotorsSector, reflectorSector, pluginBoardSector);
+        enigmaMachine.setTheInitialCodeDefined(true);
+        resetSettings();
+        setSettingsFormat(rotorIDSector, startingPositionRotorsSector, reflectorSector, pluginBoardSector);
+        checkIfTheSettingsFormatInitialized();
+    }
+
+    private void setSettingsFormat(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) {
+        enigmaMachine.clearSettings();
+        rotorIDSector.setCurrentNotchPositions(enigmaMachine.getCurrentRotorsInUse().stream().map(rotor -> rotor.getStartingNotchPosition()).collect(Collectors.toList()));
+        enigmaMachine.getOriginalSettingsFormat().addSector(rotorIDSector);
+        enigmaMachine.getOriginalSettingsFormat().addSector(startingPositionRotorsSector);
+        enigmaMachine.getOriginalSettingsFormat().addSector(reflectorSector);
+        enigmaMachine.getOriginalSettingsFormat().addSector(pluginBoardSector);
+
+        if (pluginBoardSector.getElements().size() > 0) {
+            enigmaMachine.getOriginalSettingsFormat().isPluginBoardSet(true);
+        } else {
+            enigmaMachine.getOriginalSettingsFormat().isPluginBoardSet(false);
+        }
+    }
+
+    private void setMachineSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws CloneNotSupportedException, MachineNotExistsException {
+        clearSettings();
+        enigmaMachine.setRotorsInUseSettings(rotorIDSector);
+        enigmaMachine.setStartingPositionRotorsSettings(startingPositionRotorsSector, rotorIDSector);
+        enigmaMachine.setReflectorInUseSettings(reflectorSector);
+        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+    }
+
+    private void validateMachineSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
+        enigmaMachine.validateRotorsInUseSettings(rotorIDSector);
+        enigmaMachine.validateStartingPositionRotorsSettings(startingPositionRotorsSector, rotorIDSector);
+        enigmaMachine.validateReflectorInUseSettings(reflectorSector);
+        enigmaMachine.validatePluginBoardSettings(pluginBoardSector);
+    }
+
     public void clearSettings() throws MachineNotExistsException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
@@ -488,36 +519,36 @@ public class EngineManager implements MachineOperations, Serializable {
 
         enigmaMachine.clearSettings();
     }
-    public void checkIfTheSettingsInitialized() throws SettingsFormatException, CloneNotSupportedException {
-        if(!enigmaMachine.isMachineSettingInitialized()) {
-            throw new SettingsFormatException(enigmaMachine.getSettingsFormat());
+    public void checkIfTheSettingsFormatInitialized() throws SettingsFormatException, CloneNotSupportedException {
+        if(!enigmaMachine.isTheInitialCodeDefined()) {
+            throw new SettingsFormatException(enigmaMachine.getOriginalSettingsFormat());
         }
 
-        statisticsAndHistoryAnalyzer.addSettingConfiguration((SettingsFormat) enigmaMachine.getSettingsFormat().clone());
+        statisticsAndHistoryAnalyzer.addSettingConfiguration((SettingsFormat) enigmaMachine.getOriginalSettingsFormat().clone());
     }
-    public void setRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
-        enigmaMachine.initializeRotorsInUseSettings(rotorIDSector);
-    }
-
-    public void setStartingPositionRotors(StartingRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
-        enigmaMachine.setStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
+    public void validateRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
+        enigmaMachine.validateRotorsInUseSettings(rotorIDSector);
     }
 
-    public void setReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException, CloneNotSupportedException {
-        enigmaMachine.setReflectorInUseSettings(reflectorInUse);
+    public void validateStartingPositionRotors(StartingRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
+        enigmaMachine.validateStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
     }
 
-    public void setPluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
-        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+    public void validateReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException, CloneNotSupportedException {
+        enigmaMachine.validateReflectorInUseSettings(reflectorInUse);
+    }
+
+    public void validatePluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
+        enigmaMachine.validatePluginBoardSettings(pluginBoardSector);
     }
     //endregion
 
     @Override
     public void resetSettings() throws MachineNotExistsException, IllegalArgumentException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
+            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
         }
-        if(!enigmaMachine.isMachineSettingInitialized()) {
+        if(!enigmaMachine.isTheInitialCodeDefined()) {
             throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
         }
 
@@ -525,7 +556,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public MachineDetails displaySpecifications() throws MachineNotExistsException {
+    public MachineDetails displaySpecifications() throws MachineNotExistsException, CloneNotSupportedException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
        }
@@ -537,7 +568,8 @@ public class EngineManager implements MachineOperations, Serializable {
                                            enigmaMachine.getKeyboard(),
                                            enigmaMachine.getPluginBoard(),
                                            statisticsAndHistoryAnalyzer.getMessagesCounter(),
-                                           enigmaMachine.getSettingsFormat());
+                                           enigmaMachine.getOriginalSettingsFormat(),
+                                           enigmaMachine.getCurrentSettingsFormat());
     }
 
     @Override
@@ -562,9 +594,9 @@ public class EngineManager implements MachineOperations, Serializable {
         long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         ProcessedStringsFormat processedStringsFormat = new ProcessedStringsFormat(new ArrayList<>(Arrays.asList(originalStringFormat, encryptedStringFormat)),
-                durationEncryptedTimeInNanoSeconds, enigmaMachine.getSettingsFormat().getIndexFormat());
-        enigmaMachine.getSettingsFormat().advanceIndexFormat();
-        statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getSettingsFormat(), processedStringsFormat);
+                durationEncryptedTimeInNanoSeconds, enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
+        enigmaMachine.getOriginalSettingsFormat().advanceIndexFormat();
+        statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
         statisticsAndHistoryAnalyzer.advancedMessagesCounter();
 
         return encryptedString;
@@ -600,6 +632,10 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     public boolean isMachineSettingInitialized() {
-        return enigmaMachine.isMachineSettingInitialized();
+        return enigmaMachine.isTheInitialCodeDefined();
+    }
+
+    public int getAmountOfActiveRotors() {
+        return enigmaMachine.getNumOfActiveRotors();
     }
 }

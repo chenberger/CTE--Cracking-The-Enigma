@@ -20,7 +20,7 @@ public class SettingsFormatException extends Exception{
 
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
+        return System.lineSeparator()
                 + startingMessage + getMissingSettings();
     }
 

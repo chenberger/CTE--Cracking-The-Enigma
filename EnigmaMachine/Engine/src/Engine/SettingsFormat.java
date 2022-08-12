@@ -38,9 +38,16 @@ public class SettingsFormat {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         SettingsFormat clonedSettings =  new SettingsFormat();
-        clonedSettings.settingsFormat = new ArrayList<>(this.settingsFormat);
+        clonedSettings.settingsFormat = new ArrayList<>();
+        settingsFormat.forEach(sector -> {
+            try {
+                clonedSettings.addSector((Sector) sector.clone());
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+        });
         clonedSettings.indexFormat = this.indexFormat;
         clonedSettings.isPluginBoardSet = this.isPluginBoardSet;
 

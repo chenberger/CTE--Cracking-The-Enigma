@@ -17,4 +17,9 @@ public class StartingRotorPositionSector extends Sector<Character>{
         Collections.reverse(reversedId);
         return super.openSector + reversedId.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new StartingRotorPositionSector(new ArrayList<>(getElements()));
+    }
 }

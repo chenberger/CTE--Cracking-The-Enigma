@@ -19,7 +19,7 @@ public class RotorsInUseSettingsException extends Exception{
 
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
+        return System.lineSeparator()
                 + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 
@@ -32,11 +32,11 @@ public class RotorsInUseSettingsException extends Exception{
         errorIndex++;
     }
 
-    public void addIllegalAmountOfRotors(int illegalRotorsAmount, int maximumRotorsAmount) {
+    public void addIllegalAmountOfRotors(int illegalRotorsAmount, int activeRotorsAmount) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-        + ": The amount of the rotors that was inserted is bigger then the maximum" + System.lineSeparator()
+        + ": The amount of the rotors that was inserted is illegal" + System.lineSeparator()
         + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The illegal amount that was inserted is : " + illegalRotorsAmount + System.lineSeparator()
-        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The maximum amount of rotors that can be insert is: " + maximumRotorsAmount + System.lineSeparator()));
+        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The amount of rotors that need to be insert is: " + activeRotorsAmount + System.lineSeparator()));
     }
 
     public void addRotorIdDuplicates(Integer rotorId) {

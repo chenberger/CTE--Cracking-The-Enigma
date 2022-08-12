@@ -9,17 +9,19 @@ import java.util.*;
 public class Rotor implements Decoder{
     private final int id;
     private Integer notch;
-    private final Integer startingPosition;
+    private final Integer WINDOW_POSITION;
     private Character startingRightCharToWindow;
     private Boolean isFirstRotor;
     private static final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
 
+    private int startingNotchPosition;
+
     public Rotor(int id, int notch, List<Pair<Character, Character>> mappingABC) {
         this.id = id;
         this.notch = notch;
         this.mappingABC = mappingABC;
-        this.startingPosition = 0;
+        this.WINDOW_POSITION = 0;
     }
 
     public void setIsFirstRotor(boolean isFirstRotor) {
@@ -30,13 +32,14 @@ public class Rotor implements Decoder{
         this.startingRightCharToWindow = startingRightCharToWindow;
         this.id = id;
         this.notch = notch;
-        this.startingPosition = 0;
+        this.WINDOW_POSITION = 0;
         this.isFirstRotor = isFirstRotor;
         reset();
     }
 
     public void reset() {
         spinRotor(getIndexByValue(startingRightCharToWindow));
+        this.startingNotchPosition = notch;
     }
 
     private int getIndexByValue(Character startingCharToWindow) {
@@ -54,7 +57,7 @@ public class Rotor implements Decoder{
             spinRotor(ONE_STEP);
         }
 
-        return notch == startingPosition;
+        return notch == WINDOW_POSITION;
     }
 
     @Override
@@ -150,6 +153,10 @@ public class Rotor implements Decoder{
     //region Setters
     public void setStartingRightCharToWindow(Character startingCharacter) {
         startingRightCharToWindow = startingCharacter;
+    }
+
+    public int getStartingNotchPosition() {
+        return startingNotchPosition;
     }
 
     //endregion

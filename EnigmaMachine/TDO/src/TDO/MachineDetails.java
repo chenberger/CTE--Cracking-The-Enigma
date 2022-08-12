@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 
 public class MachineDetails {
 
-    private SettingsFormat settingsFormat;
+    private SettingsFormat originalSettingsFormat;
+    private SettingsFormat currentSettingsFormat;
     private final Map<Integer, Rotor> rotors;
     private final List<Rotor> rotorsInUse;
     private final Map<RomanNumber, Reflector> reflectors;
@@ -18,28 +19,28 @@ public class MachineDetails {
     private final PluginBoard pluginBoard;
     private int messagesCounter;
 
-    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, int messagesCounter, SettingsFormat settingsFormat) {
+    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, int messagesCounter, SettingsFormat originalSettingsFormat, SettingsFormat currentSettingsFormat) {
         this.rotors = rotors;
         this.rotorsInUse = rotorsInUse;
         this.reflectors = reflectors;
         this.reflectorInUse = reflectorInUse;
         this.keyboard = keyboard;
         this.pluginBoard = pluginBoard;
-        this.settingsFormat = settingsFormat;
+        this.originalSettingsFormat = originalSettingsFormat;
+        this.currentSettingsFormat = currentSettingsFormat;
         this.messagesCounter = messagesCounter;
     }
 
     public void initializeSettingFormat() throws Exception {
-        settingsFormat = new SettingsFormat();
-        settingsFormat.addSector(getCurrentIdRotorsInUseSector());
-        settingsFormat.addSector(getCurrentInitialRotorPositionRotorsInUseSector());
-        settingsFormat.addSector(getCurrentReflectorSector());
-        settingsFormat.addSector(getPluginBoardSector());
+        originalSettingsFormat = new SettingsFormat();
+        originalSettingsFormat.addSector(getCurrentIdRotorsInUseSector());
+        originalSettingsFormat.addSector(getCurrentInitialRotorPositionRotorsInUseSector());
+        originalSettingsFormat.addSector(getCurrentReflectorSector());
+        originalSettingsFormat.addSector(getPluginBoardSector());
     }
 
-    public String getMachineSettings() {
-        return settingsFormat.toString();
-    }
+    public String getOriginalMachineSettings() { return originalSettingsFormat.toString(); }
+    public String getCurrentMachineSettings() { return currentSettingsFormat.toString(); }
 
     public List<Pair<Integer, Integer>> getNotchPositionsInRotorsInUse() {
         return rotorsInUse.stream().map(rotor -> new Pair<>(rotor.id(), rotor.notch() + 1)).collect(Collectors.toList());
@@ -91,13 +92,13 @@ public class MachineDetails {
     }
 
     public boolean isMachineSettingsInitialized() {
-        return settingsFormat.isSettingsInitialized();
+        return originalSettingsFormat.isSettingsInitialized();
 
     }
     //endregion
 
-    public SettingsFormat getSettingsFormat() {
-        return settingsFormat;
+    public SettingsFormat getOriginalSettingsFormat() {
+        return originalSettingsFormat;
     }
 
     public int getMessagesCounter() {

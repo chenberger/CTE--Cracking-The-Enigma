@@ -2,6 +2,7 @@ package Engine;
 
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PluginBoardSector extends Sector<Pair<Character, Character>>{
@@ -26,5 +27,10 @@ public class PluginBoardSector extends Sector<Pair<Character, Character>>{
 
         result.append(super.closeSector);
         return result.toString();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new PluginBoardSector(new ArrayList<>(getElements()));
     }
 }
