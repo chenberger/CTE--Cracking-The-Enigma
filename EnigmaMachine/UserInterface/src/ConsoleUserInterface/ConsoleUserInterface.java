@@ -6,6 +6,8 @@ import Engine.OperationType;
 import EnigmaMachineException.*;
 import TDO.MachineDetails;
 
+import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -26,6 +28,7 @@ public class ConsoleUserInterface {
             showMenu();
         } while (!wantToQuitFromTheProgram);
     }
+
 
     private void showMenu() {
         printMenu();
@@ -214,5 +217,40 @@ public class ConsoleUserInterface {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    public void loadMachineFromXML() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
+        boolean operationSuccessful = false;
+        boolean continueOperation = true;
+        while (!operationSuccessful && continueOperation) {
+            String Path = scanner.nextLine();
+            try {
+                enigmaMachineEngine.setMachineDetailsFromXmlFile(Path);
+                System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
+            } catch (GeneralEnigmaMachineException | FileNotFoundException | NotXmlFileException | JAXBException ex) {
+                System.out.println(ex.getMessage());
+                continueOperation = shouldcontinueInOperation();
+            }
+        }
+    }
+    public boolean shouldcontinueInOperation() {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueOperation = false;
+        boolean validInput = false;
+        do {
+            System.out.println("To continue and try again this operation, please press 1, to return to the main operations menu, please press 2: ");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("1")) {
+                continueOperation = true;
+                validInput = true;
+            } else if (userInput.equals("2")) {
+                validInput = true;
+            } else {
+                System.out.println("Invalid input, please try again...");
+            }
+        } while (!validInput);
+        return continueOperation;
     }
 }
