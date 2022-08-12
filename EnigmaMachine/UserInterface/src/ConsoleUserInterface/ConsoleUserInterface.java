@@ -236,11 +236,11 @@ public class ConsoleUserInterface {
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
             } catch (GeneralEnigmaMachineException | FileNotFoundException | NotXmlFileException | JAXBException ex) {
                 System.out.println(ex.getMessage());
-                continueOperation = shouldcontinueInOperation();
+                continueOperation = shouldContinueInOperation();
             }
         }
     }
-    public boolean shouldcontinueInOperation() {
+    public boolean shouldContinueInOperation() {
         Scanner scanner = new Scanner(System.in);
         boolean continueOperation = false;
         boolean validInput = false;

@@ -22,6 +22,7 @@ public class ReflectorNotValidException extends Exception {
     private final Map<String,Integer> invalidSizedReflectors = new HashMap<>();
     private final List<String> outOfRangeReflectors = new ArrayList<>();
     private boolean reflectorsNotInOrder = false;
+    private List<String> missingReflectorsIdsFromSequenceList = new ArrayList<>();
     public ReflectorNotValidException() {
         this.errorIndex = 1;
         this.exceptions = new ArrayList<>();
@@ -32,7 +33,7 @@ public class ReflectorNotValidException extends Exception {
                 + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
     public void addExceptionsToTheList() {
-        addReflectorsNotInOrderException();
+        addMissingReflectorsIdsFromSequenceList();
         addReflectorsWithIndexesOutOfRangeException();
         addInputColDuplicateIndexesException();
         addOutputColDuplicateIndexesException();
@@ -122,10 +123,12 @@ public class ReflectorNotValidException extends Exception {
         }
     }
 
-    private void addReflectorsNotInOrderException() {
-        if(reflectorsNotInOrder) {
+    private void addMissingReflectorsIdsFromSequenceList() {
+        if(missingReflectorsIdsFromSequenceList.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The reflectors in the file are not in order(missing Ids in the sequence)!!" + System.lineSeparator()));
+                    + ": The following reflectors are missing Ids in the desired sequence" + System.lineSeparator()
+                    + EXCEPTION_IDENTATION + INDEX_IDENTATION
+                    + String.join(", ", missingReflectorsIdsFromSequenceList) + System.lineSeparator()));
             errorIndex++;
         }
     }
@@ -135,7 +138,7 @@ public class ReflectorNotValidException extends Exception {
     }
     // TODO implement check that the id's are in runnings order.
     // TODO input output are integers.
-    public void checkIfReflectorsIdsInOrder(Map<String, Boolean> reflectorsIdsInOrder) {
+    public void checkIfReflectorsIdsInSequence(Map<String, Boolean> reflectorsIdsInOrder) {
         for(Map.Entry<String, Boolean> entry : reflectorsIdsInOrder.entrySet()) {
             if (!entry.getValue()) {
                 reflectorsNotInOrder = true;
@@ -197,6 +200,14 @@ public class ReflectorNotValidException extends Exception {
         }
         else {
             inputColDuplicateIndexes.put(id, new ArrayList<>(Arrays.asList((char) input)));
+        }
+    }
+
+    public void setMissingReflectorsIdsFromSequenceList(Map<String, Boolean> insertedReflectorsIds) {
+        for(Map.Entry<String, Boolean> entry : insertedReflectorsIds.entrySet()) {
+            if(!entry.getValue()) {
+                missingReflectorsIdsFromSequenceList.add(entry.getKey());
+            }
         }
     }
 }
