@@ -13,26 +13,24 @@ public class RotorNotValidException extends Exception {
     private final String startingMessage = "Rotors Sector:" + System.lineSeparator();
     private List<Exception> exceptions;
     private Map<Integer, Integer> RotorsWithSameId;
+    private int maxRotorId;
     private final Map<Integer,List<String>>RotorsWithnotValidLetters;
     private final Map<Integer,Integer> rotorsWithNotEnoghPositions;
     private final Map<Integer, Integer> rotorsWithNotchOutOfRange;
     private final Map<Integer,List<Character>> leftColDuplicateChars;
     private final Map<Integer,List<Character>> RightColDuplicateChars;
+    private final List<Integer> rotorsWithIdsOutOfRange;
     private int numberOfRotorsToAdd;
     List<Integer> MissingRotorsIdsInSequenceList;
 
     private boolean oddLength = false;
     private Map<Character, List<Character>> sameMappingInOneRotor;
-    public void clearPreviousExceptions() {
-        if(exceptions.size() > 0){
-            exceptions.clear();
-        }
-    }
 
     public RotorNotValidException(){
         exceptions = new ArrayList<>();
         RotorsWithSameId = new HashMap<>();
         RotorsWithnotValidLetters = new HashMap<>();
+        rotorsWithIdsOutOfRange = new ArrayList<>();
         rotorsWithNotEnoghPositions = new HashMap<>();
         rotorsWithNotchOutOfRange = new HashMap<>();
         leftColDuplicateChars = new HashMap<>();
@@ -44,6 +42,12 @@ public class RotorNotValidException extends Exception {
         MissingRotorsIdsInSequenceList = new ArrayList<>();
 
     }
+    public void setMaxAlphabetLength(int maxAlphabetLength) {
+        this.maxAlphabetLength = maxAlphabetLength;
+    }
+    public void setMaxRotorId(int maxRotorId) {
+        this.maxRotorId = maxRotorId;
+    }
 
     public void addExceptionsToTheList(){
         addRotorsDuplicateException();
@@ -53,7 +57,9 @@ public class RotorNotValidException extends Exception {
         addDuplicateleftColException();
         addDuplicateRightColException();
         addMissingRotorsIdsException();
+        addRotorsToOutOfRangeIdsListException();
     }
+
     public boolean shouldThrowException() {
         return exceptions.size() > 0;
     }
@@ -99,11 +105,19 @@ public class RotorNotValidException extends Exception {
         rotorsWithNotchOutOfRange.put(id, notch);
     }
     //addException region
+    private void addRotorsToOutOfRangeIdsListException() {
+        if(rotorsWithIdsOutOfRange.size() > 0) {
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString() + ": Rotors with Ids out of range:" + System.lineSeparator()
+                     + EXCEPTION_IDENTATION + INDEX_IDENTATION + rotorsWithIdsOutOfRange
+                     + ", all Ids Should be between 1 and " + maxRotorId + System.lineSeparator()));
+            errorIndex++;
+    }
+    }
     private void addRotorsDuplicateException(){
-
         if(!RotorsWithSameId.isEmpty()){
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-            + ": The following rotors appear more then once: " + RotorsWithSameId + System.lineSeparator()));
+            + ": The following rotors appear more then once: " + RotorsWithSameId.keySet() + System.lineSeparator()
+                    + EXCEPTION_IDENTATION + INDEX_IDENTATION + System.lineSeparator()));
             errorIndex++;
         }
     }
@@ -130,9 +144,9 @@ public class RotorNotValidException extends Exception {
     private void addRotorsWithNotchOutOfRangeException(){
         if(!rotorsWithNotchOutOfRange.isEmpty()){
         for(Map.Entry<Integer, Integer> entry : rotorsWithNotchOutOfRange.entrySet()) {
-           exceptions.add(new Exception( EXCEPTION_IDENTATION + errorIndex.toString() +
-                   INDEX_IDENTATION + ": The Rotor " + entry.getKey() + " has a notch at "
-                   + entry.getValue() + ", should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
+           exceptions.add(new Exception( EXCEPTION_IDENTATION + errorIndex.toString()
+                   + ": The Rotor " + entry.getKey() + " has his notch in position "
+                   + entry.getValue() + ",the notch position should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
            errorIndex++;
         }
     }
@@ -168,7 +182,7 @@ public class RotorNotValidException extends Exception {
         }
     }
     //end region
-    public void addDUplicatedCharToLeftCol(int id, String left) {
+    public void addDuplicatedCharToLeftCol(int id, String left) {
         if(leftColDuplicateChars.containsKey(id)) {
             leftColDuplicateChars.get(id).add(left.charAt(0));
         } else {
@@ -189,8 +203,7 @@ public class RotorNotValidException extends Exception {
     }
 
     public void addRotorsToOutOfRangeList(int id) {
-        rotorsWithNotchOutOfRange.put(id, rotorsWithNotchOutOfRange.getOrDefault(id, 1) + 1);
-
+        rotorsWithIdsOutOfRange.add(id);
     }
 
     public List<Exception> getExceptions() {
