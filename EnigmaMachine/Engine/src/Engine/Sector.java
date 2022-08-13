@@ -1,6 +1,7 @@
 package Engine;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Sector<T>  {
     protected final char openSector = '<';
@@ -16,6 +17,19 @@ public abstract class Sector<T>  {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sector)) return false;
+        Sector<?> sector = (Sector<?>) o;
+        return elements.equals(sector.elements) && type == sector.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(elements, type);
     }
 
     //region Getters

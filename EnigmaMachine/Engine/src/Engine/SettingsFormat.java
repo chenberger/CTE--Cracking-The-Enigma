@@ -59,6 +59,7 @@ public class SettingsFormat {
         if (this == o) return true;
         if (!(o instanceof SettingsFormat)) return false;
         SettingsFormat that = (SettingsFormat) o;
+        boolean test = settingsFormat.equals(that.settingsFormat);
         return settingsFormat.equals(that.settingsFormat) && (isPluginBoardSet == that.isPluginBoardSet);
     }
 
