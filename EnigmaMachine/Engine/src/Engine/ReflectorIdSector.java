@@ -1,6 +1,8 @@
 package Engine;
 
+import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.RomanNumber;
+import EnigmaMachineException.ReflectorSettingsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +22,20 @@ public class ReflectorIdSector extends Sector<RomanNumber>{
     @Override
     public Object clone() throws CloneNotSupportedException {
         return new ReflectorIdSector(new ArrayList<>(getElements()));
+    }
+
+    @Override
+    public void validateSector(EnigmaMachine enigmaMachine) throws ReflectorSettingsException {
+        enigmaMachine.validateReflectorInUseSettings(this);
+    }
+
+    @Override
+    public void setSectorInTheMachine(EnigmaMachine enigmaMachine) throws CloneNotSupportedException {
+        enigmaMachine.setReflectorInUseSettings(this);
+    }
+
+    @Override
+    public void addSectorToSettingsFormat(EnigmaMachine enigmaMachine) {
+        enigmaMachine.getOriginalSettingsFormat().addSector(this);
     }
 }

@@ -3,10 +3,11 @@ package Engine;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EncryptedStringFormat extends Sector<Character>{
+public class EncryptedStringFormat extends StringFormat<Character>{
 
     public EncryptedStringFormat(List<Character> elements) {
-        super(elements, SectorType.ENCRYPTED_STRING);
+
+        super(elements, StringFormatType.ENCRYPTED_STRING);
     }
 
     @Override

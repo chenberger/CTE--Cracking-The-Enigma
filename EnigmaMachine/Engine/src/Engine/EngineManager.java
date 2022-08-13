@@ -1,24 +1,23 @@
 package Engine;
 
+import EnigmaMachine.EnigmaMachine;
+import EnigmaMachine.Reflector;
+import EnigmaMachine.RomanNumber;
+import EnigmaMachine.Rotor;
+import EnigmaMachineException.*;
+import Jaxb.Schema.Generated.*;
+import TDO.MachineDetails;
+import javafx.util.Pair;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import EnigmaMachine.*;
-import EnigmaMachineException.*;
-import Jaxb.Schema.Generated.*;
-import TDO.MachineDetails;
-import Jaxb.Schema.Generated.CTEEnigma;
-import javafx.util.Pair;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
-import EnigmaMachine.RomanNumber;
-import static java.lang.Integer.parseInt;
 import static javafx.application.Platform.exit;
 
 
@@ -36,54 +35,6 @@ public class EngineManager implements MachineOperations, Serializable {
         this.enigmaMachineException = new GeneralEnigmaMachineException();
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.enigmaMachine = null;
-
-        //region test
-        Map<Character, Integer> ABC = new HashMap<Character, Integer>();
-        ABC.put('A', 0);
-        ABC.put('B', 1);
-        ABC.put('C', 2);
-        ABC.put('D', 3);
-        ABC.put('E', 4);
-        ABC.put('F', 5);
-
-        ArrayList<Pair<Character, Character>> mappingABC1 = new ArrayList<>();
-        List<Pair<Character, Character>> mappingABC2 = new ArrayList<>();
-        mappingABC1.add(new Pair<Character, Character>('F', 'A'));
-        mappingABC1.add(new Pair<Character, Character>('E', 'B'));
-        mappingABC1.add(new Pair<Character, Character>('D', 'C'));
-        mappingABC1.add(new Pair<Character, Character>('C', 'D'));
-        mappingABC1.add(new Pair<Character, Character>('B', 'E'));
-        mappingABC1.add(new Pair<Character, Character>('A', 'F'));
-
-        mappingABC2.add(new Pair<Character, Character>('E', 'A'));
-        mappingABC2.add(new Pair<Character, Character>('B', 'B'));
-        mappingABC2.add(new Pair<Character, Character>('D', 'C'));
-        mappingABC2.add(new Pair<Character, Character>('F', 'D'));
-        mappingABC2.add(new Pair<Character, Character>('C', 'E'));
-        mappingABC2.add(new Pair<Character, Character>('A', 'F'));
-
-        Rotor rotor1 = new Rotor(1, 3,true, mappingABC1, 'C');
-        Rotor rotor2 = new Rotor(2, 0, false, mappingABC2, 'C');
-
-        Map<Integer, Rotor> rotors = new HashMap<Integer, Rotor>();
-        rotors.put(rotor1.id(), rotor1);
-        rotors.put(rotor2.id(), rotor2);
-
-        Map<Integer, Integer> reflectorPairs = new HashMap<Integer, Integer>();
-        reflectorPairs.put(0, 3);
-        reflectorPairs.put(3, 0);
-        reflectorPairs.put(4, 1);
-        reflectorPairs.put(1, 4);
-        reflectorPairs.put(2, 5);
-        reflectorPairs.put(5, 2);
-        Reflector reflector = new Reflector(RomanNumber.I, reflectorPairs);
-        Map<RomanNumber, Reflector> reflectors = new HashMap<RomanNumber, Reflector>();
-        reflectors.put(reflector.id(), reflector);
-
-        enigmaMachine = new EnigmaMachine(rotors, reflectors, ABC, 2);
-
-        //endregion
-
     }
 
     //region JAXB Translation
@@ -415,163 +366,66 @@ public class EngineManager implements MachineOperations, Serializable {
     //region Operations implements
     //region set automatic settings
     @Override
-    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException {
-        RotorIDSector rotorIDSector = getRandomRotorsIdSector();
-        StartingRotorPositionSector startingRotorPositionSector = getRandomStartingPositionRotorsSector(rotorIDSector.getElements().size());
-        ReflectorIdSector reflectorIdSector = getRandomReflectorSector();
-        PluginBoardSector pluginBoardSector = getRandomPluginBoardSector();
+    public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException, SettingsNotInitializedException {
+        List<Sector> randomSectors;
+        RandomSettingsGenerator randomSettingsGenerator = new RandomSettingsGenerator(enigmaMachine);
 
-        validateMachineSettings(rotorIDSector, startingRotorPositionSector, reflectorIdSector, pluginBoardSector);
-        initializeSettings(rotorIDSector, startingRotorPositionSector, reflectorIdSector, pluginBoardSector);
-    }
-
-    private PluginBoardSector getRandomPluginBoardSector() {
-        List<Pair<Character, Character>> pluginPairs = new ArrayList<>();
-        Set<Character> optionalCharacters = new HashSet<>(enigmaMachine.getKeyboard());
-        Random randomGenerator = new Random();
-        int amountOfPairs = randomGenerator.nextInt(enigmaMachine.getMaximumPairs() + 1);
-        Pair<Character, Character> randomPair;
-
-        for (int i = 0; i < amountOfPairs; i++) {
-            randomPair = getRandomPluginPair(optionalCharacters.stream().collect(Collectors.toList()), pluginPairs);
-            pluginPairs.add(randomPair);
-            optionalCharacters.remove(randomPair.getKey());
-            optionalCharacters.remove(randomPair.getValue());
+        if(!isMachineExists()) {
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
         }
 
-        return new PluginBoardSector(pluginPairs);
-    }
-
-    private Pair<Character, Character> getRandomPluginPair(List<Character> optionalCharacters, List<Pair<Character, Character>> pluginPairs) {
-        Character leftCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
-        optionalCharacters.remove(leftCharacter);
-        Character rightCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
-        Pair<Character, Character> randomPluginPair = new Pair<>(leftCharacter, rightCharacter);
-
-        while(!isValidPair(randomPluginPair, pluginPairs))
-        {
-            optionalCharacters.add(leftCharacter);
-            leftCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
-            optionalCharacters.remove(leftCharacter);
-            rightCharacter = getRandomCharacterFromTheKeyboard(optionalCharacters);
-            randomPluginPair = new Pair<>(leftCharacter, rightCharacter);
-        }
-
-        return randomPluginPair;
-    }
-
-    private boolean isValidPair(Pair<Character, Character> randomPair, List<Pair<Character, Character>> pluginPairs) {
-        if(randomPair.getKey() == randomPair.getValue()) {
-            return false;
-        }
-
-        //check if left char or right char already exists in any other plugged pair
-        if(pluginPairs.stream().map(Pair::getKey).collect(Collectors.toSet()).contains(randomPair.getValue()) ||
-           pluginPairs.stream().map(Pair::getKey).collect(Collectors.toSet()).contains(randomPair.getKey()) ||
-           pluginPairs.stream().map(Pair::getValue).collect(Collectors.toSet()).contains(randomPair.getValue()) ||
-           pluginPairs.stream().map(Pair::getValue).collect(Collectors.toSet()).contains(randomPair.getKey())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private ReflectorIdSector getRandomReflectorSector() {
-        Random randomGenerator = new Random();
-        RomanNumber[] reflectorIdArr = enigmaMachine.getAllReflectors().keySet().toArray(new RomanNumber[enigmaMachine.getAllReflectors().keySet().size()]);
-        List<RomanNumber> reflectorId = new ArrayList<RomanNumber>();
-
-        reflectorId.add(reflectorIdArr[randomGenerator.nextInt(reflectorIdArr.length)]);
-
-        return new ReflectorIdSector(reflectorId);
-    }
-
-    private StartingRotorPositionSector getRandomStartingPositionRotorsSector(int rotorsInUseSize) {
-        List<Character> startingPositionsOfTheRotors = new ArrayList<>();
-
-        for (int i = 0; i < rotorsInUseSize; i++) {
-            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard(enigmaMachine.getKeyboard().stream().collect(Collectors.toList())));
-        }
-        return new StartingRotorPositionSector(startingPositionsOfTheRotors);
-    }
-
-    private Character getRandomCharacterFromTheKeyboard(List<Character> optionalCharacters) {
-        Random randomGenerator = new Random();
-
-        return optionalCharacters.get(randomGenerator.nextInt(optionalCharacters.size()));
-    }
-
-    private RotorIDSector getRandomRotorsIdSector() {
-        List<Integer> rotorsId = new ArrayList<>();
-        Set<Integer> optionalRotorsId = new HashSet<>(enigmaMachine.getAllRotors().keySet());
-        Integer randomId;
-
-        for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
-            randomId =  getRandomRotorId(optionalRotorsId.stream().collect(Collectors.toList()));
-            rotorsId.add(randomId);
-            optionalRotorsId.remove(randomId);
-        }
-
-        return new RotorIDSector(rotorsId);
-    }
-
-
-    private Integer getRandomRotorId(List<Integer> optionalRotorsId) {
-        Random randomGenerator = new Random();
-        int randomRotorId = optionalRotorsId.get(randomGenerator.nextInt(optionalRotorsId.size()));
-
-        while(!enigmaMachine.getAllRotors().containsKey(randomRotorId))
-        {
-            randomRotorId = optionalRotorsId.get(randomGenerator.nextInt(optionalRotorsId.size()));
-        }
-
-        return randomRotorId;
+        randomSectors = randomSettingsGenerator.getRandomSectorSettings();
+        validateMachineSettings(randomSectors);
+        initializeSettings(randomSectors);
     }
 
     //endregion
 
     //region set Settings
-    public void initializeSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException {
-        setMachineSettings(rotorIDSector, startingPositionRotorsSector, reflectorSector, pluginBoardSector);
+    public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
+        setMachineSettings(settingsSector);
         enigmaMachine.setTheInitialCodeDefined(true);
         resetSettings();
-        setSettingsFormat(rotorIDSector, startingPositionRotorsSector, reflectorSector, pluginBoardSector);
+        setSettingsFormat(settingsSector);
         checkIfTheSettingsFormatInitialized();
     }
 
-    private void setSettingsFormat(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) {
+    private void setSettingsFormat(List<Sector> settingsSector) {
         enigmaMachine.clearSettings();
-        rotorIDSector.setCurrentNotchPositions(enigmaMachine.getCurrentRotorsInUse().stream().map(rotor -> rotor.getStartingNotchPosition()).collect(Collectors.toList()));
-        enigmaMachine.getOriginalSettingsFormat().addSector(rotorIDSector);
-        enigmaMachine.getOriginalSettingsFormat().addSector(startingPositionRotorsSector);
-        enigmaMachine.getOriginalSettingsFormat().addSector(reflectorSector);
-        enigmaMachine.getOriginalSettingsFormat().addSector(pluginBoardSector);
+        settingsSector.forEach(sector -> sector.addSectorToSettingsFormat(enigmaMachine));
 
-        if (pluginBoardSector.getElements().size() > 0) {
-            enigmaMachine.getOriginalSettingsFormat().isPluginBoardSet(true);
+        if (enigmaMachine.isPluginBoardSet()) {
+            enigmaMachine.getOriginalSettingsFormat().setIfPluginBoardSet(true);
         } else {
-            enigmaMachine.getOriginalSettingsFormat().isPluginBoardSet(false);
+            enigmaMachine.getOriginalSettingsFormat().setIfPluginBoardSet(false);
         }
     }
 
-    private void setMachineSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws CloneNotSupportedException, MachineNotExistsException {
+    private void setMachineSettings(List<Sector> settingsSector) throws CloneNotSupportedException, MachineNotExistsException {
         clearSettings();
-        enigmaMachine.setRotorsInUseSettings(rotorIDSector);
-        enigmaMachine.setStartingPositionRotorsSettings(startingPositionRotorsSector, rotorIDSector);
-        enigmaMachine.setReflectorInUseSettings(reflectorSector);
-        enigmaMachine.setPluginBoardSettings(pluginBoardSector);
+        settingsSector.forEach(sector -> {
+            try {
+                sector.setSectorInTheMachine(enigmaMachine);
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
-    private void validateMachineSettings(RotorIDSector rotorIDSector, StartingRotorPositionSector startingPositionRotorsSector, ReflectorIdSector reflectorSector, PluginBoardSector pluginBoardSector) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
-        enigmaMachine.validateRotorsInUseSettings(rotorIDSector);
-        enigmaMachine.validateStartingPositionRotorsSettings(startingPositionRotorsSector, rotorIDSector);
-        enigmaMachine.validateReflectorInUseSettings(reflectorSector);
-        enigmaMachine.validatePluginBoardSettings(pluginBoardSector);
+    private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
+        sectorSettings.forEach(sector -> {
+            try {
+                sector.validateSector(enigmaMachine);
+            } catch (RotorsInUseSettingsException | ReflectorSettingsException | PluginBoardSettingsException |
+                     StartingPositionsOfTheRotorException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void clearSettings() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
         }
 
         enigmaMachine.clearSettings();
@@ -583,30 +437,15 @@ public class EngineManager implements MachineOperations, Serializable {
 
         statisticsAndHistoryAnalyzer.addSettingConfiguration((SettingsFormat) enigmaMachine.getOriginalSettingsFormat().clone());
     }
-    public void validateRotorsInUse(RotorIDSector rotorIDSector) throws RotorsInUseSettingsException {
-        enigmaMachine.validateRotorsInUseSettings(rotorIDSector);
-    }
-
-    public void validateStartingPositionRotors(StartingRotorPositionSector startingPositionTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
-        enigmaMachine.validateStartingPositionRotorsSettings(startingPositionTheRotors, rotorIDSector);
-    }
-
-    public void validateReflectorInUse(ReflectorIdSector reflectorInUse) throws ReflectorSettingsException, CloneNotSupportedException {
-        enigmaMachine.validateReflectorInUseSettings(reflectorInUse);
-    }
-
-    public void validatePluginBoard(PluginBoardSector pluginBoardSector) throws PluginBoardSettingsException {
-        enigmaMachine.validatePluginBoardSettings(pluginBoardSector);
-    }
     //endregion
 
     @Override
-    public void resetSettings() throws MachineNotExistsException, IllegalArgumentException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
         }
         if(!enigmaMachine.isTheInitialCodeDefined()) {
-            throw new IllegalArgumentException("Error: The initial code configuration has not been configured for the machine, you must return to operation 3 or 4 and then return to this operation");
+            throw new SettingsNotInitializedException(OperationType.SET_SETTINGS_MANUAL, OperationType.SET_SETTINGS_AUTOMATIC);
         }
 
         enigmaMachine.resetSettings();
@@ -615,7 +454,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public MachineDetails displaySpecifications() throws MachineNotExistsException, CloneNotSupportedException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
        }
 
        return new MachineDetails(enigmaMachine.getAllRotors(),
@@ -632,7 +471,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public String analyzeHistoryAndStatistics() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation again");
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
         }
 
         return statisticsAndHistoryAnalyzer.toString();
@@ -640,10 +479,6 @@ public class EngineManager implements MachineOperations, Serializable {
 
     @Override
     public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException {
-        if(!isMachineExists()) {
-            throw new MachineNotExistsException("Go back to operation 1 and then run this operation");
-        }
-
         OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         Instant start = Instant.now();
         String encryptedString = getProcessedInput(inputToProcess);
@@ -694,5 +529,13 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public int getAmountOfActiveRotors() {
         return enigmaMachine.getNumOfActiveRotors();
+    }
+
+    public EnigmaMachine getCurrentEnigmaMachine() throws MachineNotExistsException {
+        if(!isMachineExists()) {
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+        }
+
+        return enigmaMachine;
     }
 }

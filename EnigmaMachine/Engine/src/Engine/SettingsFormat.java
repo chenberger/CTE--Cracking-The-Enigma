@@ -28,6 +28,10 @@ public class SettingsFormat {
 
     public <T> void addSector(Sector<T> sector) {
         settingsFormat.add(sector);
+
+        if(sector.type == SectorType.PLUGIN_BOARD) {
+            isPluginBoardSet = true;
+        }
     }
 
     @Override
@@ -97,7 +101,10 @@ public class SettingsFormat {
         throw new IllegalArgumentException("Error: The Sector type is not found in the settings format");
     }
 
-    public void isPluginBoardSet(boolean pluginBoardSet) {
+    public void setIfPluginBoardSet(boolean pluginBoardSet) {
         isPluginBoardSet = pluginBoardSet;
+    }
+    public boolean isPluginBoardSet() {
+        return isPluginBoardSet;
     }
 }

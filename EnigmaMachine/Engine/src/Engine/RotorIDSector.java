@@ -1,5 +1,8 @@
 package Engine;
 
+import EnigmaMachine.EnigmaMachine;
+import EnigmaMachineException.RotorsInUseSettingsException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,5 +44,21 @@ public class RotorIDSector extends Sector<Integer>{
         clonedRotorIdSector.setCurrentNotchPositions(this.notchPositions);
 
         return clonedRotorIdSector;
+    }
+
+    @Override
+    public void validateSector(EnigmaMachine enigmaMachine) throws RotorsInUseSettingsException {
+        enigmaMachine.validateRotorsInUseSettings(this);
+    }
+
+    @Override
+    public void setSectorInTheMachine(EnigmaMachine enigmaMachine) {
+        enigmaMachine.setRotorsInUseSettings(this);
+    }
+
+    @Override
+    public void addSectorToSettingsFormat(EnigmaMachine enigmaMachine) {
+        setCurrentNotchPositions(enigmaMachine.getCurrentRotorsInUse().stream().map(rotor -> rotor.getStartingNotchPosition()).collect(Collectors.toList()));
+        enigmaMachine.getOriginalSettingsFormat().addSector(this);
     }
 }

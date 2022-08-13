@@ -57,11 +57,11 @@ public class EnigmaMachine{
             }
             else {
                 originalSettingsFormat.addSector(pluginBoardSector);
-                originalSettingsFormat.isPluginBoardSet(true);
+                originalSettingsFormat.setIfPluginBoardSet(true);
             }
         }
         else {
-            originalSettingsFormat.isPluginBoardSet(false);
+            originalSettingsFormat.setIfPluginBoardSet(false);
         }
     }
 
@@ -147,20 +147,20 @@ public class EnigmaMachine{
         }
     }
 
-    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) {
+    public void setStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors) {
         int index = 0;
         for (Character startingRightCharToWindow : startPositionsOfTheRotors.getElements()) {
-                rotors.get(rotorIDSector.getElements().get(index)).setStartingRightCharToWindow(startingRightCharToWindow);
+                rotorsInUse.get(index).setStartingRightCharToWindow(startingRightCharToWindow);
                 index++;
         }
     }
 
-    public void validateStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors, RotorIDSector rotorIDSector) throws StartingPositionsOfTheRotorException {
+    public void validateStartingPositionRotorsSettings(StartingRotorPositionSector startPositionsOfTheRotors) throws StartingPositionsOfTheRotorException {
         StartingPositionsOfTheRotorException startingPositionsOfTheRotorException = new StartingPositionsOfTheRotorException();
         boolean isCharacterFound;
 
-        if (startPositionsOfTheRotors.getElements().size() != rotorIDSector.getElements().size()) {
-            startingPositionsOfTheRotorException.addIllegalPositionsSize(startPositionsOfTheRotors.getElements().size(), rotorIDSector.getElements().size());
+        if (startPositionsOfTheRotors.getElements().size() != numOfActiveRotors) {
+            startingPositionsOfTheRotorException.addIllegalPositionsSize(startPositionsOfTheRotors.getElements().size(), numOfActiveRotors);
         }
 
         for (Character startingRightCharToWindow : startPositionsOfTheRotors.getElements()) {
@@ -184,9 +184,12 @@ public class EnigmaMachine{
 
     public void setRotorsInUseSettings(RotorIDSector rotorIDSector) {
         rotorsInUse.clear();
+        int index = 0;
 
         for(Integer rotorId : rotorIDSector.getElements()) {
+            rotors.get(rotorId).setIsFirstRotor(index == 0);
             rotorsInUse.add(rotors.get(rotorId));
+            index++;
         }
     }
 
@@ -345,5 +348,9 @@ public class EnigmaMachine{
 
     public void setTheInitialCodeDefined(boolean theInitialCodeDefined) {
         isTheInitialCodeDefined = theInitialCodeDefined;
+    }
+
+    public boolean isPluginBoardSet() {
+        return originalSettingsFormat.isPluginBoardSet();
     }
 }

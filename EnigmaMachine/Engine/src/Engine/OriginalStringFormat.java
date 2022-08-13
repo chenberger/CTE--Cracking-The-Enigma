@@ -3,11 +3,11 @@ package Engine;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OriginalStringFormat extends Sector<Character>{
+public class OriginalStringFormat extends StringFormat<Character>{
 
 
     public OriginalStringFormat(List<Character> originalString) {
-        super(originalString, SectorType.ORIGINAL_STRING);
+        super(originalString, StringFormatType.ORIGINAL_STRING);
     }
 
     @Override

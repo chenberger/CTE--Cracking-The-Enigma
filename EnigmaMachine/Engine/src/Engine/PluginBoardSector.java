@@ -1,5 +1,7 @@
 package Engine;
 
+import EnigmaMachine.EnigmaMachine;
+import EnigmaMachineException.PluginBoardSettingsException;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -35,5 +37,20 @@ public class PluginBoardSector extends Sector<Pair<Character, Character>>{
     @Override
     public Object clone() throws CloneNotSupportedException {
         return new PluginBoardSector(new ArrayList<>(getElements()));
+    }
+
+    @Override
+    public void validateSector(EnigmaMachine enigmaMachine) throws PluginBoardSettingsException {
+        enigmaMachine.validatePluginBoardSettings(this);
+    }
+
+    @Override
+    public void setSectorInTheMachine(EnigmaMachine enigmaMachine) throws CloneNotSupportedException {
+        enigmaMachine.setPluginBoardSettings(this);
+    }
+
+    @Override
+    public void addSectorToSettingsFormat(EnigmaMachine enigmaMachine) {
+        enigmaMachine.getOriginalSettingsFormat().addSector(this);
     }
 }
