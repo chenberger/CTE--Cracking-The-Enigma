@@ -7,8 +7,6 @@ public class Reflector implements Cloneable{
     private final Map<Integer,Integer> reflectorPairs;
 
     public Reflector(RomanNumber Id, Map<Integer,Integer> reflectedNumbers ){
-        //TODO needs to fill the map, which means that I get a pair and needs to put the as key/value with each other
-        //example: key = 5 -> value = 2 and key = 2 -> value = 5.
         id = Id;
         reflectorPairs = reflectedNumbers;
     }

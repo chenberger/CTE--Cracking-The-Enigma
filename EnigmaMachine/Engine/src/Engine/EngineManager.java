@@ -196,10 +196,9 @@ public class EngineManager implements MachineOperations, Serializable {
         for(CTEReflector reflector: cteReflectors){
              if(IsReflectorIdIsValid(reflector, reflectorNotValidException) && numberOfPairsInReflectorValid(reflector,CTEAbc,reflectorNotValidException)) {
              Map<Integer,Integer> currentReflectorMapping = new HashMap<>();
+             Map<Integer,Integer> outPutColMap = new HashMap<>();
+             Map<Integer,Integer> inputColMap = new HashMap<>();
              for(CTEReflect reflect:reflector.getCTEReflect()){
-                 Map<Integer,Integer> outPutColMap = new HashMap<>();
-                 Map<Integer,Integer> inputColMap = new HashMap<>();
-
                  if(indexOutOfRange(reflect.getInput(), CTEAbc)){
                      reflectorNotValidException.addReflectorIndexOutOfRange(reflector.getId(),reflect.getInput());
                  }
@@ -219,8 +218,8 @@ public class EngineManager implements MachineOperations, Serializable {
                  if(reflect.getInput() == reflect.getOutput()){
                      reflectorNotValidException.addIndexMappedToHimSelf(reflect.getInput(),reflector.getId());
                  }
-                 currentReflectorMapping.put(reflect.getInput(),reflect.getOutput());
-                 currentReflectorMapping.put(reflect.getOutput(),reflect.getInput());
+                 currentReflectorMapping.put(reflect.getInput() - 1, reflect.getOutput() - 1);
+                 currentReflectorMapping.put(reflect.getOutput() - 1,reflect.getInput() - 1);
              }
              insertedReflectorsIds.put(reflector.getId(),true);
              Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
@@ -298,13 +297,13 @@ public class EngineManager implements MachineOperations, Serializable {
         Map<Integer,Rotor> machineRotors = new HashMap<Integer, Rotor>();
         Map<Integer,Boolean> generatedRotorsIds = fillRotorsMapWithFalseValues(cteRotors.size());
         RotorNotValidException rotorNotValidException = new RotorNotValidException();
-
+        rotorNotValidException.setMaxAlphabetLength(cteABC.size());
+        rotorNotValidException.setMaxRotorId(cteRotors.size());
         fillIdsMapByInsertedRotors(cteRotors, generatedRotorsIds);
         checkIfRotorsIdsAreValid(cteRotors, rotorNotValidException);
         if(cteRotors.size() < 2) {
             rotorNotValidException.setNumberOfRotorsToAdd(2 - cteRotors.size());
         }
-
         if(!AllRotorsIdsInSequence(generatedRotorsIds)) {
             rotorNotValidException.setRotorsIdsNotInSequenceList(generatedRotorsIds);
         }
@@ -327,7 +326,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 checkIfPositionLettersInABC(position, cteABC, rotorNotValidException, rotor.getId());
 
                 if(leftColInRotor.containsKey(position.getLeft())){
-                    rotorNotValidException.addDUplicatedCharToLeftCol(rotor.getId(),position.getLeft());
+                    rotorNotValidException.addDuplicatedCharToLeftCol(rotor.getId(),position.getLeft());
                 }
                 if(rightColInRotor.containsKey(position.getRight())){
                     rotorNotValidException.addDUDuplicatedCharToRightCol(rotor.getId(),position.getRight());
@@ -493,7 +492,6 @@ public class EngineManager implements MachineOperations, Serializable {
         for (int i = 0; i < rotorsInUseSize; i++) {
             startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard(enigmaMachine.getKeyboard().stream().collect(Collectors.toList())));
         }
-
         return new StartingRotorPositionSector(startingPositionsOfTheRotors);
     }
 

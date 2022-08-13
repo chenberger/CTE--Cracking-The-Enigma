@@ -15,8 +15,8 @@ public class ReflectorNotValidException extends Exception {
     private final List<Exception> exceptions;
     int maxPairsInAlphabet;
     private final Map<String, List<Integer>> indexesOutOfRange = new HashMap<>();
-    private final Map<String, List<Character>> outPutColDuplicateIndexes = new HashMap<>();
-    private final Map<String, List<Character>> inputColDuplicateIndexes = new HashMap<>();
+    private final Map<String, List<Integer>> outPutColDuplicateIndexes = new HashMap<>();
+    private final Map<String, List<Integer>> inputColDuplicateIndexes = new HashMap<>();
     private final Map<String, List<Integer>>  indexesMappedToThemselves = new HashMap<>();
     private boolean NoReflectorsFound = false;
     private boolean tooManyReflectors = false;
@@ -39,7 +39,7 @@ public class ReflectorNotValidException extends Exception {
         addOutputColDuplicateIndexesException();
         addReflectorsWithIndexesMappedToThemselves();
         addNoReflectorsFoundException();
-        addTooMantReflectorsException();
+        addTooManyReflectorsException();
         addOutOfRangeReflectorsException();
         addInvalidSizedReflectorsException();
 
@@ -58,9 +58,10 @@ public class ReflectorNotValidException extends Exception {
     }
     private void addInputColDuplicateIndexesException() {
         if (inputColDuplicateIndexes.size() > 0) {
-            for (Map.Entry<String, List<Character>> entry : inputColDuplicateIndexes.entrySet()) {
+            for (Map.Entry<String, List<Integer>> entry : inputColDuplicateIndexes.entrySet()) {
                 exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The input column in reflector " + entry.getKey() + "contains duplicate indexes which are: "
+                        + ": The input column in reflector " + entry.getKey() + " contains duplicate indexes which are: "
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
 
@@ -70,9 +71,10 @@ public class ReflectorNotValidException extends Exception {
 
     private void addOutputColDuplicateIndexesException() {
         if (outPutColDuplicateIndexes.size() > 0) {
-            for (Map.Entry<String, List<Character>> entry : outPutColDuplicateIndexes.entrySet()) {
+            for (Map.Entry<String, List<Integer>> entry : outPutColDuplicateIndexes.entrySet()) {
                 exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The output column in reflector " + entry.getKey() + "contains duplicate indexes which are: "
+                        + ": The output column in reflector " + entry.getKey() + " contains duplicate indexes which are: "
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
 
@@ -84,6 +86,7 @@ public class ReflectorNotValidException extends Exception {
             for (Map.Entry<String, List<Integer>> entry : indexesMappedToThemselves.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
                         + ": The Reflector: "+ entry.getKey() +"has the following indices mapped to themselves: "
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
             }
@@ -96,7 +99,7 @@ public class ReflectorNotValidException extends Exception {
             errorIndex++;
         }
     }
-    private void addTooMantReflectorsException() {
+    private void addTooManyReflectorsException() {
         if (tooManyReflectors) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
                     + ": The amount of reflectors that was inserted is illegal" + System.lineSeparator()
@@ -187,19 +190,19 @@ public class ReflectorNotValidException extends Exception {
     }
     public void addReflectorDuplicateOutput(String id, int output) {
         if(outPutColDuplicateIndexes.containsKey(id)) {
-            outPutColDuplicateIndexes.get(id).add((char) output);
+            outPutColDuplicateIndexes.get(id).add(output);
         }
         else {
-            outPutColDuplicateIndexes.put(id, new ArrayList<>(Arrays.asList((char) output)));
+            outPutColDuplicateIndexes.put(id, new ArrayList<>(Arrays.asList(output)));
         }
     }
 
     public void addReflectorDuplicateInput(String id, int input) {
         if(inputColDuplicateIndexes.containsKey(id)) {
-            inputColDuplicateIndexes.get(id).add((char) input);
+            inputColDuplicateIndexes.get(id).add(input);
         }
         else {
-            inputColDuplicateIndexes.put(id, new ArrayList<>(Arrays.asList((char) input)));
+            inputColDuplicateIndexes.put(id, new ArrayList<>(Arrays.asList(input)));
         }
     }
 

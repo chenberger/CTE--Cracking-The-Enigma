@@ -235,18 +235,24 @@ public class ConsoleUserInterface {
 
     public void loadMachineFromXML() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
+
         boolean operationSuccessful = false;
         boolean continueOperation = true;
         while (!operationSuccessful && continueOperation) {
+            System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
             String Path = scanner.nextLine();
             try {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(Path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
                 operationSuccessful = true;
-            } catch (GeneralEnigmaMachineException | FileNotFoundException | NotXmlFileException | JAXBException ex) {
+            } catch (GeneralEnigmaMachineException | NotXmlFileException  ex) {
                 System.out.println(ex.getMessage());
-                continueOperation = shouldContinueInOperation();
+            }catch (FileNotFoundException | JAXBException ex){
+                System.out.println("The file(from the path you inputted) was not found! ");;
+            }finally {
+                if(!operationSuccessful) {
+                    continueOperation = shouldContinueInOperation();
+                }
             }
         }
     }
