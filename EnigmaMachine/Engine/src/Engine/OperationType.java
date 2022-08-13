@@ -10,7 +10,7 @@ public enum OperationType implements ActivateOperation {
     LOAD_MACHINE(1, "Load machine specification from file") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
-            //consoleUserInterface.loadMachineFromXML();
+            consoleUserInterface.loadMachineFromXML();
         }
     },
     DISPLAY_MACHINE_SPECIFICATION(2, "Display machine specification"){

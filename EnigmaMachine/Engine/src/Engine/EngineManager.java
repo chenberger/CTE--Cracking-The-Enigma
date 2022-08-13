@@ -182,6 +182,7 @@ public class EngineManager implements MachineOperations, Serializable {
         Map<String, Boolean> insertedReflectorsIds = fillReflectorMapIdsMapWithFalseValues(cteReflectors.size());
 
         ReflectorNotValidException reflectorNotValidException = new ReflectorNotValidException();
+        reflectorNotValidException.setMaxPairsInAlphabet(CTEAbc.size()/2);
         if(cteReflectors.size() == 0) {
             reflectorNotValidException.setReflectorsEmpty();
         }
@@ -190,7 +191,7 @@ public class EngineManager implements MachineOperations, Serializable {
         }
         fillMapByInsertedReflectors(cteReflectors, insertedReflectorsIds);
         if(!allReflectorsIdsInSequence(insertedReflectorsIds,cteReflectors.size())){
-                reflectorNotValidException.setMissingReflectorsIdsFromSequenceList(insertedReflectorsIds);
+                reflectorNotValidException.setMissingReflectorsIdsFromSequenceList(insertedReflectorsIds,cteReflectors.size());
         }
         for(CTEReflector reflector: cteReflectors){
              if(IsReflectorIdIsValid(reflector, reflectorNotValidException) && numberOfPairsInReflectorValid(reflector,CTEAbc,reflectorNotValidException)) {
@@ -311,6 +312,8 @@ public class EngineManager implements MachineOperations, Serializable {
         //TODO check that the rotors count which the number of rotors in use is between 2 and 99, return the rotors count to erez.
         for(CTERotor rotor: cteRotors){
             Map<Character,Character> currentRotorMap = new HashMap<>();
+            Map<String,Integer> leftColInRotor = new HashMap<>();
+            Map<String,Integer> rightColInRotor = new HashMap<>();
             if(rotor.getNotch() > cteABC.size() || rotor.getNotch() < 0){
                 rotorNotValidException.addNotchOutOfRange(rotor.getId(),rotor.getNotch());
             }
@@ -322,16 +325,15 @@ public class EngineManager implements MachineOperations, Serializable {
             for(CTEPositioning position: rotor.getCTEPositioning()){
 
                 checkIfPositionLettersInABC(position, cteABC, rotorNotValidException, rotor.getId());
-                Map<Character,Integer> leftColInRotor = new HashMap<>();
-                Map<Character,Integer> rightColInRotor = new HashMap<>();
+
                 if(leftColInRotor.containsKey(position.getLeft())){
                     rotorNotValidException.addDUplicatedCharToLeftCol(rotor.getId(),position.getLeft());
                 }
                 if(rightColInRotor.containsKey(position.getRight())){
-                    rotorNotValidException.addDUplicatedCharToRightCol(rotor.getId(),position.getRight());
+                    rotorNotValidException.addDUDuplicatedCharToRightCol(rotor.getId(),position.getRight());
                 }
-                leftColInRotor.put(position.getLeft().charAt(0),1);
-                rightColInRotor.put(position.getRight().charAt(0),1);
+                leftColInRotor.put(position.getLeft(),1);
+                rightColInRotor.put(position.getRight(),1);
 
                 Pair<Character,Character> currentPair = new Pair<>(position.getLeft().charAt(0),position.getRight().charAt(0));
                 // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side where ever there are numbers, check that they are ints.
@@ -339,13 +341,13 @@ public class EngineManager implements MachineOperations, Serializable {
                 currentRotorMap.put(position.getLeft().charAt(0),position.getRight().charAt(0));
             }
 
-            rotorNotValidException.addExceptionsToTheList();
-            if(rotorNotValidException.shouldThrowException()){
-                enigmaMachineException.addException(rotorNotValidException);
-            }
             generatedRotorsIds.put(rotor.getId() ,true);
             Rotor currentRotor = new Rotor(rotor.getId(), rotor.getNotch() - 1, currentRotorPairs);
             machineRotors.put(rotor.getId(),currentRotor);
+        }
+        rotorNotValidException.addExceptionsToTheList();
+        if(rotorNotValidException.shouldThrowException()){
+            enigmaMachineException.addException(rotorNotValidException);
         }
         return machineRotors;
     }
@@ -353,11 +355,6 @@ public class EngineManager implements MachineOperations, Serializable {
     private void fillIdsMapByInsertedRotors(List<CTERotor> cteRotors, Map<Integer, Boolean> generatedRotorsIds) {
         for(CTERotor rotor: cteRotors){
             generatedRotorsIds.put(rotor.getId(),true);
-        }
-    }
-    private void fiilIdsMapByInsertedReflectors(List<CTEReflector> cteReflectors, Map<String, Boolean> generatedReflectorsIds) {
-        for(CTEReflector reflector: cteReflectors){
-            generatedReflectorsIds.put(reflector.getId(),true);
         }
     }
     private void checkIfRotorsIdsAreValid(List<CTERotor> cteRotors, RotorNotValidException rotorNotValidException) {
@@ -388,29 +385,11 @@ public class EngineManager implements MachineOperations, Serializable {
 
     private void checkIfPositionLettersInABC(CTEPositioning position, List<Character> cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
         //TODO add length validation.
-        for(Character charInAbc: cteABC){
-            if(position.getLeft().length() != 1){
-                rotorNotValidException.addNotValidLetter(position.getLeft(),rotorId);
-            }
-            if(position.getLeft().charAt(0) == charInAbc){
-                break;
-            }
+        if(!cteABC.contains(position.getLeft().toUpperCase().charAt(0)) || position.getLeft().length() != 1){
+            rotorNotValidException.addNotValidLetter(position.getLeft().toUpperCase(),rotorId);
         }
-        if(position.getLeft().length() != 1){
-            rotorNotValidException.addNotValidLetter(position.getLeft(),rotorId);
-        }
-
-        for(Character charInAbc: cteABC){
-            if(position.getRight().length() != 1){
-                rotorNotValidException.addNotValidLetter(position.getRight(),rotorId);
-                break;
-            }
-            if(position.getRight().charAt(0) == charInAbc){
-                break;
-            }
-        }
-        if(position.getRight().length() != 1){
-            rotorNotValidException.addNotValidLetter(position.getRight(),rotorId);
+        if(!cteABC.contains(position.getRight().toUpperCase().charAt(0)) || position.getRight().toUpperCase().length() != 1){
+            rotorNotValidException.addNotValidLetter(position.getRight().toUpperCase(),rotorId);
         }
 
     }

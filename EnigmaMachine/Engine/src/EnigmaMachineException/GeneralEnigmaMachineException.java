@@ -16,8 +16,7 @@ public class GeneralEnigmaMachineException extends Exception {
     }
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator() +
-                startingMessage + XmlExceptionList.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
+        return System.lineSeparator() + startingMessage + XmlExceptionList.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 
     public boolean shouldExceptionBeThrown() {

@@ -23,6 +23,11 @@ public class RotorNotValidException extends Exception {
 
     private boolean oddLength = false;
     private Map<Character, List<Character>> sameMappingInOneRotor;
+    public void clearPreviousExceptions() {
+        if(exceptions.size() > 0){
+            exceptions.clear();
+        }
+    }
 
     public RotorNotValidException(){
         exceptions = new ArrayList<>();
@@ -54,8 +59,7 @@ public class RotorNotValidException extends Exception {
     }
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
-                + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
+        return System.lineSeparator() + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 
     public void addValuesWithSameMappingInOneRotor(Character charMappedIntoMoreThenOneChar, Character FirstCharMappedInto, Character SecondCharMappedInto) {
@@ -70,9 +74,9 @@ public class RotorNotValidException extends Exception {
         if(!RotorsWithnotValidLetters.containsKey(rotorId)){
             RotorsWithnotValidLetters.put(rotorId, new ArrayList<>());
         }
-        else{
-            RotorsWithnotValidLetters.get(rotorId).add(letter);
-        };
+
+        RotorsWithnotValidLetters.get(rotorId).add(letter);
+
     }
     public void addRotorToRotorsWithSameId(int inputtedId) {
         RotorsWithSameId.put(inputtedId, RotorsWithSameId.getOrDefault(inputtedId, 1) + 1);
@@ -99,7 +103,7 @@ public class RotorNotValidException extends Exception {
 
         if(!RotorsWithSameId.isEmpty()){
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-            + "The following rotors appear more then once: " + RotorsWithSameId + System.lineSeparator()));
+            + ": The following rotors appear more then once: " + RotorsWithSameId + System.lineSeparator()));
             errorIndex++;
         }
     }
@@ -107,7 +111,9 @@ public class RotorNotValidException extends Exception {
         if(!RotorsWithnotValidLetters.isEmpty()) {
             for (Map.Entry<Integer, List<String>> entry : RotorsWithnotValidLetters.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                + INDEX_IDENTATION + "The Rotor " + entry.getKey() + " contains the following invalid letters: " + entry.getValue() + System.lineSeparator()));
+                + ": The Rotor " + entry.getKey() + " contains the following invalid letters: "
+                        + System.lineSeparator()
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION + entry.getValue() + System.lineSeparator()));
             }
             errorIndex++;
         }
@@ -115,7 +121,7 @@ public class RotorNotValidException extends Exception {
     private void addRotorsWithNotEnoughPositionsException() {
         for(Map.Entry<Integer, Integer> entry : rotorsWithNotEnoghPositions.entrySet()) {
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + "The Rotor " + entry.getKey() + " has " + entry.getValue()
+                    + ": The Rotor " + entry.getKey() + " has " + entry.getValue()
                     + " positions, should be " + maxAlphabetLength/2 + "."));
             errorIndex++;
         }
@@ -125,7 +131,7 @@ public class RotorNotValidException extends Exception {
         if(!rotorsWithNotchOutOfRange.isEmpty()){
         for(Map.Entry<Integer, Integer> entry : rotorsWithNotchOutOfRange.entrySet()) {
            exceptions.add(new Exception( EXCEPTION_IDENTATION + errorIndex.toString() +
-                   INDEX_IDENTATION + "The Rotor " + entry.getKey() + " has a notch at "
+                   INDEX_IDENTATION + ": The Rotor " + entry.getKey() + " has a notch at "
                    + entry.getValue() + ", should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
            errorIndex++;
         }
@@ -170,7 +176,7 @@ public class RotorNotValidException extends Exception {
         }
 
     }
-    public void addDUplicatedCharToRightCol(int id, String right) {
+    public void addDUDuplicatedCharToRightCol(int id, String right) {
         if(RightColDuplicateChars.containsKey(id)) {
             RightColDuplicateChars.get(id).add(right.charAt(0));
         } else {
@@ -197,7 +203,7 @@ public class RotorNotValidException extends Exception {
 
     public Exception addRotorIdsNotInOrder(Map<Integer, Boolean> generatedRotorsIds) {
         Exception rotorsNotInOrder = new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                + " The rotor ids are not in the right order(missing Ids in the sequence): " + System.lineSeparator());
+                + ": The rotor ids are not in the right order(missing Ids in the sequence): " + System.lineSeparator());
         errorIndex++;
         return rotorsNotInOrder;
     }

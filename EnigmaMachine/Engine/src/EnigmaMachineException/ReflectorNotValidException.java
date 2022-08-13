@@ -1,5 +1,6 @@
 package EnigmaMachineException;
 
+import EnigmaMachine.RomanNumber;
 import Jaxb.Schema.Generated.CTEReflector;
 
 import java.util.*;
@@ -29,8 +30,7 @@ public class ReflectorNotValidException extends Exception {
     }
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
-                + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
+        return System.lineSeparator() + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
     public void addExceptionsToTheList() {
         addMissingReflectorsIdsFromSequenceList();
@@ -115,10 +115,12 @@ public class ReflectorNotValidException extends Exception {
     private void addInvalidSizedReflectorsException() {
         if(invalidSizedReflectors.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflectors are invalid sized" + System.lineSeparator()
+                    + ": The following reflectors are invalid sized:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
-                    + invalidSizedReflectors.entrySet().stream().map(entry -> entry.getKey() + " : "
-                    + entry.getValue()).collect(Collectors.joining("")) + System.lineSeparator()));
+                    + invalidSizedReflectors.entrySet().stream().map(entry -> entry.getKey() + ": "
+                    + entry.getValue()).collect(Collectors.joining("")) + System.lineSeparator()
+                    + EXCEPTION_IDENTATION + INDEX_IDENTATION
+                    + "Should be in size of " + maxPairsInAlphabet + System.lineSeparator()));
             errorIndex++;
         }
     }
@@ -126,7 +128,7 @@ public class ReflectorNotValidException extends Exception {
     private void addMissingReflectorsIdsFromSequenceList() {
         if(missingReflectorsIdsFromSequenceList.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflectors are missing Ids in the desired sequence" + System.lineSeparator()
+                    + ": The following reflectors Ids are missing in the desired sequence:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
                     + String.join(", ", missingReflectorsIdsFromSequenceList) + System.lineSeparator()));
             errorIndex++;
@@ -136,8 +138,6 @@ public class ReflectorNotValidException extends Exception {
     public boolean shouldThrowException() {
         return exceptions.size() > 0;// no exceptions to throw
     }
-    // TODO implement check that the id's are in runnings order.
-    // TODO input output are integers.
     public void checkIfReflectorsIdsInSequence(Map<String, Boolean> reflectorsIdsInOrder) {
         for(Map.Entry<String, Boolean> entry : reflectorsIdsInOrder.entrySet()) {
             if (!entry.getValue()) {
@@ -203,11 +203,13 @@ public class ReflectorNotValidException extends Exception {
         }
     }
 
-    public void setMissingReflectorsIdsFromSequenceList(Map<String, Boolean> insertedReflectorsIds) {
-        for(Map.Entry<String, Boolean> entry : insertedReflectorsIds.entrySet()) {
-            if(!entry.getValue()) {
-                missingReflectorsIdsFromSequenceList.add(entry.getKey());
+    public void setMissingReflectorsIdsFromSequenceList(Map<String, Boolean> insertedReflectorsIds,int numberOfInsertedReflectors) {
+        int counter = 0;
+        for(RomanNumber romanNumber : RomanNumber.values()) {
+            if(!insertedReflectorsIds.get(romanNumber.toString()) && counter < numberOfInsertedReflectors) {
+                missingReflectorsIdsFromSequenceList.add(romanNumber.toString());
             }
+            counter++;
         }
     }
 }

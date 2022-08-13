@@ -243,6 +243,7 @@ public class ConsoleUserInterface {
             try {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(Path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
+                operationSuccessful = true;
             } catch (GeneralEnigmaMachineException | FileNotFoundException | NotXmlFileException | JAXBException ex) {
                 System.out.println(ex.getMessage());
                 continueOperation = shouldContinueInOperation();
