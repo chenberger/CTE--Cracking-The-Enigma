@@ -16,16 +16,19 @@ public class PluginBoardSector extends Sector<Pair<Character, Character>>{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
+        if(elements.size() > 0) {
+            result.append(super.openSector);
+            for (Pair<Character, Character> pluggedPair : super.elements) {
+                if (super.elements.indexOf(pluggedPair) > 0) {
+                    result.append(delimiterElements);
+                }
 
-        result.append(super.openSector);
-        for (Pair<Character, Character> pluggedPair : super.elements) {
-            if(super.elements.indexOf(pluggedPair) > 0) {
-                result.append(delimiterElements);
+                result.append(pluggedPair.getKey().toString() + delimiterPair + pluggedPair.getValue().toString());
             }
-            result.append(pluggedPair.getKey().toString() + delimiterPair + pluggedPair.getValue().toString());
+
+            result.append(super.closeSector);
         }
 
-        result.append(super.closeSector);
         return result.toString();
     }
 

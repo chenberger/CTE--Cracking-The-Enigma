@@ -16,7 +16,8 @@ public class RotorIDSector extends Sector<Integer>{
     }
 
     public void setCurrentNotchPositions(List<Integer> notchPositions) {
-        this.notchPositions = notchPositions;
+
+        this.notchPositions = new ArrayList<>(notchPositions);
     }
 
     @Override
@@ -36,6 +37,9 @@ public class RotorIDSector extends Sector<Integer>{
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return new RotorIDSector(new ArrayList<>(getElements()));
+        RotorIDSector clonedRotorIdSector =  new RotorIDSector(new ArrayList<>(getElements()));
+        clonedRotorIdSector.setCurrentNotchPositions(this.notchPositions);
+
+        return clonedRotorIdSector;
     }
 }

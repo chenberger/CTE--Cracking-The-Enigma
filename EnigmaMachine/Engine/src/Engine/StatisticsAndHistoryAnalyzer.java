@@ -25,7 +25,8 @@ public class StatisticsAndHistoryAnalyzer {
         Boolean isSettingFound = false;
         for(SettingsFormat setting : statisticsAndHistoryFormat.keySet()) {
             if(setting.equals(settingsFormat)) {
-                statisticsAndHistoryFormat.get(setting).add(processedStringsFormat);
+                List<ProcessedStringsFormat> test = statisticsAndHistoryFormat.get(setting);
+                test.add(processedStringsFormat);
                 isSettingFound = true;
                 break;
             }

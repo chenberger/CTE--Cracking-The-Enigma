@@ -316,6 +316,7 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
+                pluginBoardSector = null;
                 continueOperation = shouldContinueInOperation();
 
                 if(continueOperation) {
@@ -379,6 +380,7 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
+                reflectorIdSector = null;
                 continueOperation = shouldContinueInOperation();
 
                 if(continueOperation) {
@@ -414,6 +416,7 @@ public class ConsoleUserInterface {
             }
             catch(StartingPositionsOfTheRotorException ex) {
                 System.out.println(ex.getMessage());
+                startingRotorPositionSector = null;
                 continueOperation = shouldContinueInOperation();
 
                 if(continueOperation) {
@@ -458,6 +461,7 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
+                rotorIDSector = null;
                 continueOperation = shouldContinueInOperation();
 
                 if(continueOperation) {
