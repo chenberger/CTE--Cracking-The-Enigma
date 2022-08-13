@@ -171,8 +171,9 @@ public class ConsoleUserInterface {
             enigmaMachineEngine.resetSettings();
             System.out.println("The machine settings have been reset successfully" + System.lineSeparator());
         }
-        catch (RotorsInUseSettingsException | StartingPositionsOfTheRotorException | ReflectorSettingsException | PluginBoardSettingsException |
-               SettingsFormatException | CloneNotSupportedException | MachineNotExistsException | IllegalArgumentException ex) {
+        catch (RotorsInUseSettingsException | StartingPositionsOfTheRotorException | ReflectorSettingsException |
+               PluginBoardSettingsException | SettingsFormatException | CloneNotSupportedException |
+               MachineNotExistsException | IllegalArgumentException | SettingsNotInitializedException ex) {
 
             System.out.println(ex.getMessage());
         }
