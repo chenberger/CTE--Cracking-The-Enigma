@@ -1,5 +1,11 @@
 package Engine;
 
+import EnigmaMachine.EnigmaMachine;
+import EnigmaMachineException.PluginBoardSettingsException;
+import EnigmaMachineException.ReflectorSettingsException;
+import EnigmaMachineException.RotorsInUseSettingsException;
+import EnigmaMachineException.StartingPositionsOfTheRotorException;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -36,5 +42,11 @@ public abstract class Sector<T>  {
     public List<T> getElements() {
         return elements;
     }
+
+    public abstract void validateSector(EnigmaMachine enigmaMachine) throws RotorsInUseSettingsException, ReflectorSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException;
+
+    public abstract void setSectorInTheMachine(EnigmaMachine enigmaMachine) throws CloneNotSupportedException;
+
+    public abstract void addSectorToSettingsFormat(EnigmaMachine enigmaMachine);
     //endregion
 }

@@ -8,9 +8,7 @@ import TDO.MachineDetails;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,21 +33,6 @@ public class ConsoleUserInterface {
         printMenu();
         OperationType operationToActivate = getOperationFromTheUser();
         operationToActivate.activate(this);
-
-        if(!wantToQuitFromTheProgram) {
-            returnToMainMenu();
-        }
-    }
-
-    private void returnToMainMenu(){
-        System.out.println("Press any key to return to the main menu...");
-
-        try {
-            System.in.read();
-        }
-        catch(IOException e) {
-            System.out.println(System.lineSeparator());
-        }
     }
 
     private OperationType getOperationFromTheUser() {
@@ -174,9 +157,10 @@ public class ConsoleUserInterface {
         try {
             enigmaMachineEngine.setSettingsAutomatically();
             System.out.println("The machine settings have been successfully loaded" + System.lineSeparator());
-        }
-        catch (RotorsInUseSettingsException | StartingPositionsOfTheRotorException | ReflectorSettingsException |
-               PluginBoardSettingsException | SettingsFormatException | CloneNotSupportedException | MachineNotExistsException ex) {
+        } catch (RotorsInUseSettingsException | StartingPositionsOfTheRotorException | ReflectorSettingsException |
+                 SettingsNotInitializedException |
+                 PluginBoardSettingsException | SettingsFormatException | CloneNotSupportedException |
+                 MachineNotExistsException ex) {
 
             System.out.println(ex.getMessage());
         }
@@ -209,29 +193,37 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
         boolean continueOperation = false;
 
-        if(!enigmaMachineEngine.isMachineSettingInitialized()) {
-            System.out.println("Error: The initial code configuration has not been configured for the machine," +
-                    " you must return to operation 3 or 4 and then return to this operation" + System.lineSeparator());
-        }
-        else {
+        try {
+            if (!enigmaMachineEngine.isMachineExists()) {
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            }
+
+            if(!enigmaMachineEngine.isMachineSettingInitialized()) {
+                throw new SettingsNotInitializedException(OperationType.SET_SETTINGS_MANUAL, OperationType.SET_SETTINGS_AUTOMATIC);
+            }
             do {
                 try {
                     System.out.println("Please enter a message that you want to encrypt/decrypt: ");
                     userInputToEncrypt = scanner.nextLine();
                     encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase());
+                    continueOperation = false;
                     System.out.println("The message have been processed successfully" + System.lineSeparator() +
                             "The processed message is: " + encryptedMessage + System.lineSeparator());
                 } catch (MachineNotExistsException | IllegalArgumentException ex) {
                     System.out.println(ex.getMessage());
                     continueOperation = shouldContinueInOperation();
-
-                    if(continueOperation) {
+                    if (continueOperation) {
                         System.out.println("Please try again:");
                     }
                 }
-            } while(continueOperation);
+            } while (continueOperation);
+        }
+
+        catch(MachineNotExistsException  | SettingsNotInitializedException ex) {
+            System.out.println(ex.getMessage());
         }
     }
+
 
     public void loadMachineFromXML() {
         Scanner scanner = new Scanner(System.in);
@@ -256,6 +248,7 @@ public class ConsoleUserInterface {
             }
         }
     }
+
     public boolean shouldContinueInOperation() {
         Scanner scanner = new Scanner(System.in);
         boolean continueOperation = false;
@@ -278,10 +271,14 @@ public class ConsoleUserInterface {
     //region set settings manually
     public void setMachineSettingsManually() {
        try {
+            if(!enigmaMachineEngine.isMachineExists()) {
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            }
+
             Optional<RotorIDSector> rotorIDSector = Optional.ofNullable(getRotorIDSector());
             rotorIDSector.orElseThrow(ExceptionInInitializerError::new);
 
-            Optional<StartingRotorPositionSector> startingRotorPositionSector = Optional.of(getInitialRotorPositionForTheRotorsSector(rotorIDSector.get()));
+            Optional<StartingRotorPositionSector> startingRotorPositionSector = Optional.ofNullable(getInitialRotorPositionForTheRotorsSector(rotorIDSector.get()));
             startingRotorPositionSector.orElseThrow(ExceptionInInitializerError::new);
 
             Optional<ReflectorIdSector> reflectorIdSector = Optional.ofNullable(getReflectorIdSector());
@@ -290,9 +287,10 @@ public class ConsoleUserInterface {
             Optional<PluginBoardSector> pluginBoardSector = Optional.ofNullable(getPluginPairSector());
             pluginBoardSector.orElseThrow(ExceptionInInitializerError::new);
 
-            enigmaMachineEngine.initializeSettings(rotorIDSector.get(), startingRotorPositionSector.get(), reflectorIdSector.get(), pluginBoardSector.get());
+            enigmaMachineEngine.initializeSettings(new ArrayList<>(Arrays.asList(rotorIDSector.get(), startingRotorPositionSector.get(), reflectorIdSector.get(), pluginBoardSector.get())));
+           System.out.println("The machine settings have been successfully loaded" + System.lineSeparator());
         }
-        catch (MachineNotExistsException  | SettingsFormatException | CloneNotSupportedException  |RotorsInUseSettingsException |
+        catch (MachineNotExistsException  | SettingsFormatException | CloneNotSupportedException  |RotorsInUseSettingsException | SettingsNotInitializedException |
                StartingPositionsOfTheRotorException | ReflectorSettingsException | PluginBoardSettingsException ex) {
 
             System.out.println(ex.getMessage());
@@ -318,11 +316,11 @@ public class ConsoleUserInterface {
             if(isLengthIsEven(userInput.length())) {
                 try {
                     pluginBoardSector = convertStringToPluginPairsSector(userInput.toUpperCase());
-                    enigmaMachineEngine.validatePluginBoard(pluginBoardSector);
+                    pluginBoardSector.validateSector(enigmaMachineEngine.getCurrentEnigmaMachine());
                     validInput = true;
                     System.out.println("The plugin board settings have been successfully loaded" + System.lineSeparator());
                 }
-                catch(PluginBoardSettingsException ex) {
+                catch(PluginBoardSettingsException | MachineNotExistsException ex) {
                     System.out.println(ex.getMessage());
                 }
             }
@@ -378,7 +376,7 @@ public class ConsoleUserInterface {
                 userInput = scanner.nextInt();
                 if(userInput >= RomanNumber.minRomanValue() && userInput <= RomanNumber.maxRomanValue()) {
                     reflectorIdSector = new ReflectorIdSector(new ArrayList<>(Arrays.asList(RomanNumber.convertIntToRomanNumber(userInput))));
-                    enigmaMachineEngine.validateReflectorInUse(reflectorIdSector);
+                    reflectorIdSector.validateSector(enigmaMachineEngine.getCurrentEnigmaMachine());
                     validInput = true;
                     System.out.println("The reflector settings have been successfully loaded" + System.lineSeparator());
                 }
@@ -391,7 +389,7 @@ public class ConsoleUserInterface {
                 System.out.println("Error: The value that was inserted is is not a integer!");
                 scanner.nextLine();
             }
-            catch(ReflectorSettingsException | CloneNotSupportedException ex) {
+            catch(ReflectorSettingsException | MachineNotExistsException ex) {
                 System.out.println(ex.getMessage());
             }
 
@@ -426,11 +424,11 @@ public class ConsoleUserInterface {
             try {
                 Collections.reverse(rotorsPositionsAsList);
                 startingRotorPositionSector = new StartingRotorPositionSector(rotorsPositionsAsList);
-                enigmaMachineEngine.validateStartingPositionRotors(startingRotorPositionSector, rotorIDSector);
+                startingRotorPositionSector.validateSector(enigmaMachineEngine.getCurrentEnigmaMachine());
                 validInput = true;
                 System.out.println("The rotor starting positions were moved successfully according to the right column" + System.lineSeparator());
             }
-            catch(StartingPositionsOfTheRotorException ex) {
+            catch(StartingPositionsOfTheRotorException  | MachineNotExistsException ex) {
                 System.out.println(ex.getMessage());
                 startingRotorPositionSector = null;
                 continueOperation = shouldContinueInOperation();
@@ -464,7 +462,7 @@ public class ConsoleUserInterface {
                 rotorsIdAsIntList = rotorsIdAsStringList.stream().map(Integer::parseInt).collect(Collectors.toList());
                 Collections.reverse(rotorsIdAsIntList);
                 rotorIDSector = new RotorIDSector(rotorsIdAsIntList);
-                enigmaMachineEngine.validateRotorsInUse(rotorIDSector);
+                rotorIDSector.validateSector(enigmaMachineEngine.getCurrentEnigmaMachine());
                 validInput = true;
                 System.out.println("The selected rotors have been successfully inserted into the machine" + System.lineSeparator());
             }
@@ -472,7 +470,7 @@ public class ConsoleUserInterface {
                 System.out.println("Error: Failed to initialize the rotors that need to be use in the machine settings because of the following reasons: "
                                 + System.lineSeparator() + "       1.Could not convert the rotor number " + ex.getMessage() + " to integer");
             }
-            catch(RotorsInUseSettingsException ex) {
+            catch(RotorsInUseSettingsException  | MachineNotExistsException ex) {
                 System.out.println(ex.getMessage());
             }
 
@@ -489,6 +487,7 @@ public class ConsoleUserInterface {
 
         return rotorIDSector;
     }
+
     //endregion
     //endregion
 

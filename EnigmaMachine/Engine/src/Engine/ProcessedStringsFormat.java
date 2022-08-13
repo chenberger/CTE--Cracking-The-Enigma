@@ -5,12 +5,12 @@ import java.util.stream.Collectors;
 
 public class ProcessedStringsFormat {
     private final String INDEX_IDENTATION = "                 ";
-    private List<Sector> processedStringsFormat;
+    private List<StringFormat> processedStringsFormat;
     private long encryptionTimeDurationNanoSeconds;
     private static final String sectorDelimiter = " --> ";
     private Integer formatIndex;
 
-    public ProcessedStringsFormat(List<Sector> processedStringsFormat, long encryptionTimeDurationNanoSeconds, int formatIndex) {
+    public ProcessedStringsFormat(List<StringFormat> processedStringsFormat, long encryptionTimeDurationNanoSeconds, int formatIndex) {
         this.processedStringsFormat = processedStringsFormat;
         this.encryptionTimeDurationNanoSeconds = encryptionTimeDurationNanoSeconds;
         this.formatIndex = formatIndex;
