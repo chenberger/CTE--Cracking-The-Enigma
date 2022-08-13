@@ -8,6 +8,7 @@ import TDO.MachineDetails;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -206,21 +207,29 @@ public class ConsoleUserInterface {
         String userInputToEncrypt;
         String encryptedMessage;
         Scanner scanner = new Scanner(System.in);
+        boolean continueOperation = false;
 
         if(!enigmaMachineEngine.isMachineSettingInitialized()) {
             System.out.println("Error: The initial code configuration has not been configured for the machine," +
                     " you must return to operation 3 or 4 and then return to this operation" + System.lineSeparator());
         }
         else {
-            try {
-                System.out.println("Please enter a message that you want to encrypt/decrypt: ");
-                userInputToEncrypt = scanner.nextLine();
-                encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase());
-                System.out.println("The message have been processed successfully" + System.lineSeparator() +
-                                   "The processed message is: " + encryptedMessage + System.lineSeparator());
-            } catch (MachineNotExistsException  | IllegalArgumentException ex) {
-                System.out.println(ex.getMessage());
-            }
+            do {
+                try {
+                    System.out.println("Please enter a message that you want to encrypt/decrypt: ");
+                    userInputToEncrypt = scanner.nextLine();
+                    encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase());
+                    System.out.println("The message have been processed successfully" + System.lineSeparator() +
+                            "The processed message is: " + encryptedMessage + System.lineSeparator());
+                } catch (MachineNotExistsException | IllegalArgumentException ex) {
+                    System.out.println(ex.getMessage());
+                    continueOperation = shouldContinueInOperation();
+
+                    if(continueOperation) {
+                        System.out.println("Please try again:");
+                    }
+                }
+            } while(continueOperation);
         }
     }
 
@@ -475,4 +484,5 @@ public class ConsoleUserInterface {
     }
     //endregion
     //endregion
+
 }
