@@ -18,8 +18,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static javafx.application.Platform.exit;
-
 
 public class EngineManager implements MachineOperations, Serializable {
 
@@ -364,7 +362,6 @@ public class EngineManager implements MachineOperations, Serializable {
     //endregion
 
     //region Operations implements
-    //region set automatic settings
     @Override
     public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException, SettingsNotInitializedException {
         List<Sector> randomSectors;
@@ -378,8 +375,6 @@ public class EngineManager implements MachineOperations, Serializable {
         validateMachineSettings(randomSectors);
         initializeSettings(randomSectors);
     }
-
-    //endregion
 
     //region set Settings
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
@@ -513,9 +508,6 @@ public class EngineManager implements MachineOperations, Serializable {
             }
         }
         return false;
-    }
-    public void finishSession() {
-        exit();
     }
     //endregion
 
