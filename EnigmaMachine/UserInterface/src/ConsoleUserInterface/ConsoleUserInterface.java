@@ -157,7 +157,7 @@ public class ConsoleUserInterface {
             machineSpecifications.append("The original code machine settings is: ")
                                  .append(machineDetails.getOriginalMachineSettings())
                                  .append(System.lineSeparator())
-                                 .append("The current code machine settings is: ")
+                                 .append("The current code machine settings is:  ")
                                  .append(machineDetails.getCurrentMachineSettings())
                                  .append(System.lineSeparator());
         }
@@ -290,6 +290,7 @@ public class ConsoleUserInterface {
         String userInput;
         Scanner scanner = new Scanner(System.in);
         boolean validInput = false;
+        boolean continueOperation = true;
 
         System.out.println("Please enter a continuous string of characters that make up all the pairs required by the machine." + System.lineSeparator() +
                           "The pairs will appear close together, without any separator of one kind or another. When finished, type enter to complete the insertion of the string." + System.lineSeparator() +
@@ -315,10 +316,14 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
-                System.out.println("Please try again:");
+                continueOperation = shouldContinueInOperation();
+
+                if(continueOperation) {
+                    System.out.println("Please try again:");
+                }
             }
 
-        } while(!validInput);
+        } while(!validInput && continueOperation);
 
         return pluginBoardSector;
     }
@@ -342,6 +347,7 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
         ReflectorIdSector reflectorIdSector = null;
         boolean validInput = false;
+        boolean continueOperation = true;
 
         System.out.println("Please select the reflector that will be in the Enigma machine" + System.lineSeparator() +
                            "(Note: choose a number between " + RomanNumber.minRomanValue() + " to " + RomanNumber.maxRomanValue() + ")");
@@ -373,10 +379,13 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
-                System.out.println("Please try again:");
-            }
+                continueOperation = shouldContinueInOperation();
 
-        } while(!validInput);
+                if(continueOperation) {
+                    System.out.println("Please try again:");
+                }
+            }
+        } while(!validInput && continueOperation);
 
         return reflectorIdSector;
     }
@@ -387,6 +396,8 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
         String userInput;
         boolean validInput = false;
+        boolean continueOperation = true;
+
         System.out.println("Please enter the starting positions of the rotors without any separator" + System.lineSeparator() +
                 "(Note: you have to insert " + rotorIDSector.getElements().size() + " positions exactly!" +
                 " In addition, note that the positions you will enter are characters from the system's ABC)");
@@ -403,10 +414,14 @@ public class ConsoleUserInterface {
             }
             catch(StartingPositionsOfTheRotorException ex) {
                 System.out.println(ex.getMessage());
-                System.out.println("Please try again:");
+                continueOperation = shouldContinueInOperation();
+
+                if(continueOperation) {
+                    System.out.println("Please try again:");
+                }
             }
 
-        } while(!validInput);
+        } while(!validInput && continueOperation);
 
         return startingRotorPositionSector;
     }
@@ -418,6 +433,8 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
         String userInput;
         boolean validInput = false;
+        boolean continueOperation = true;
+
         System.out.println("Please enter the numbers id of rotors that will be in the Enigma machine separated by a comma." + System.lineSeparator() +
                 "(Note: you have to insert " + enigmaMachineEngine.getAmountOfActiveRotors() + " rotors exactly!)");
 
@@ -441,10 +458,14 @@ public class ConsoleUserInterface {
             }
 
             if(!validInput) {
-                System.out.println("Please try again:");
+                continueOperation = shouldContinueInOperation();
+
+                if(continueOperation) {
+                    System.out.println("Please try again:");
+                }
             }
 
-        } while(!validInput);
+        } while(!validInput && continueOperation);
 
         return rotorIDSector;
     }
