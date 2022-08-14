@@ -156,7 +156,9 @@ public class ConsoleUserInterface {
     public void setMachineSettingsAutomatically() {
         try {
             enigmaMachineEngine.setSettingsAutomatically();
-            System.out.println("The machine settings have been successfully loaded" + System.lineSeparator());
+            System.out.println("The machine settings have been successfully loaded");
+            System.out.println("The random machine settings that was generated are: ");
+            System.out.println(enigmaMachineEngine.getCurrentEnigmaMachine().getOriginalSettingsFormat() + System.lineSeparator());
         } catch (RotorsInUseSettingsException | StartingPositionsOfTheRotorException | ReflectorSettingsException |
                  SettingsNotInitializedException |
                  PluginBoardSettingsException | SettingsFormatException | CloneNotSupportedException |
