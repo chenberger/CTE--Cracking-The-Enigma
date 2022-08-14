@@ -1,7 +1,7 @@
 package Engine;
 
 import EnigmaMachineException.*;
-import TDO.MachineDetails;
+import DTO.MachineDetails;
 
 public interface MachineOperations {
     public void setSettingsAutomatically() throws Exception;

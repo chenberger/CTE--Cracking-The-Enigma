@@ -12,7 +12,7 @@ public class SettingsNotInitializedException extends Exception{
 
     public SettingsNotInitializedException(OperationType... operations) {
         extraInfo = new StringBuilder();
-        extraInfo.append("Go back to ");
+        extraInfo.append("Go back to operation");
         extraInfo.append(Arrays.stream(operations).map(OperationType::getOperationNumber).map(Object::toString).collect(Collectors.joining(" or ")));
         extraInfo.append(" and then run this operation again.").append(System.lineSeparator());
     }

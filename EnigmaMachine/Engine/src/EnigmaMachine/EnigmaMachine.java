@@ -244,7 +244,6 @@ public class EnigmaMachine{
         currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
         currentCharIndex = decodeByDirection(currentCharIndex, Direction.BACKWARD);
         currentChar = getKeyByValue(keyboard, currentCharIndex);
-
         currentChar = pluginBoard.getPluggedPair(currentChar);
 
         return currentChar;
