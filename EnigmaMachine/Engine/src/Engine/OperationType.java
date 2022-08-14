@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum OperationType implements ActivateOperation {
-    LOAD_MACHINE(1, "Load machine specification from file") {
+    LOAD_MACHINE_SPECIFICATION(1, "Load machine specification from file") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
             consoleUserInterface.loadMachineFromXML();
