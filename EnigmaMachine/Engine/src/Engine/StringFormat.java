@@ -1,12 +1,13 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class StringFormat<T> {
+public class StringFormat<T> implements Serializable {
     protected final char openSector = '<';
     protected final char closeSector = '>';
     protected List<T> elements;
-    public StringFormatType type;
+    private StringFormatType type;
 
     public StringFormat(List<T> elements, StringFormatType type) {
         this.elements = elements;

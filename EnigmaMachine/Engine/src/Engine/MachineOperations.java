@@ -3,10 +3,17 @@ package Engine;
 import EnigmaMachineException.*;
 import DTO.MachineDetails;
 
+import java.io.IOException;
+
 public interface MachineOperations {
-    public void setSettingsAutomatically() throws Exception;
-    public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;
-    public MachineDetails displaySpecifications() throws Exception;
-    public String analyzeHistoryAndStatistics() throws Exception;
-    public String processInput(String inputToProcess) throws Exception;
+    void setSettingsAutomatically() throws Exception;
+    void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;
+    MachineDetails displaySpecifications() throws Exception;
+    String analyzeHistoryAndStatistics() throws Exception;
+    String processInput(String inputToProcess) throws Exception;
+
+
+    void saveStateMachineToFile(String path) throws IOException, MachineNotExistsException;
+
+    void loadStateMachineFromFile(String path) throws IOException, ClassNotFoundException;
 }

@@ -3,12 +3,13 @@ package Engine;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.RotorsInUseSettingsException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RotorIDSector extends Sector<Integer>{
+public class RotorIDSector extends Sector<Integer> implements Serializable {
 
     private final CharSequence delimiter = ",";
     private List<Integer> notchPositions;

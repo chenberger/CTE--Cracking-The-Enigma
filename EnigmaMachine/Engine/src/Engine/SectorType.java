@@ -1,8 +1,9 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public enum SectorType {
+public enum SectorType implements Serializable {
     ROTORS_ID("Settings") {
         @Override
         public Sector getRandomSector(RandomSettingsGenerator randomSettingsGenerator) {

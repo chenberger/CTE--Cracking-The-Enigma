@@ -3,10 +3,13 @@ package EnigmaMachine;
 import javafx.util.Pair;
 import jdk.nashorn.internal.runtime.logging.Logger;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Logger
-public class Rotor implements Decoder{
+public class Rotor implements Decoder, Serializable {
     private final int id;
     private Integer notch;
     private final Integer WINDOW_POSITION;
@@ -14,7 +17,6 @@ public class Rotor implements Decoder{
     private Boolean isFirstRotor;
     private static final Integer ONE_STEP = 1;
     private final List<Pair<Character, Character>> mappingABC;
-
     private int startingNotchPosition;
 
     public Rotor(int id, int notch, List<Pair<Character, Character>> mappingABC) {

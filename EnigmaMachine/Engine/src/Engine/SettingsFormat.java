@@ -1,10 +1,11 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SettingsFormat {
+public class SettingsFormat implements Serializable {
     private List<Sector> settingsFormat;
     private boolean isPluginBoardSet;
     private int indexFormat;

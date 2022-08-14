@@ -4,11 +4,12 @@ import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.RomanNumber;
 import EnigmaMachineException.ReflectorSettingsException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReflectorIdSector extends Sector<RomanNumber>{
+public class ReflectorIdSector extends Sector<RomanNumber> implements Serializable {
 
     public ReflectorIdSector(List<RomanNumber> reflectorId) {
         super(reflectorId, SectorType.REFLECTOR);

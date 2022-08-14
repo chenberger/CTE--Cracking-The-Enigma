@@ -1,6 +1,8 @@
 package EnigmaMachine;
 
-public enum RomanNumber {
+import java.io.Serializable;
+
+public enum RomanNumber implements Serializable {
     I(1), II(2), III(3),IV(4), V(5);
 
     private final int decimalRepresentation;

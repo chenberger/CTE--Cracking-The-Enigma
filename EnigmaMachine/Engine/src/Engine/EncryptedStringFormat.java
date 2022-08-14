@@ -1,9 +1,10 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EncryptedStringFormat extends StringFormat<Character>{
+public class EncryptedStringFormat extends StringFormat<Character> implements Serializable {
 
     public EncryptedStringFormat(List<Character> elements) {
 

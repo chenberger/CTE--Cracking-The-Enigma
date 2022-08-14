@@ -1,6 +1,8 @@
 package Engine;
 
-public enum StringFormatType {
+import java.io.Serializable;
+
+public enum StringFormatType implements Serializable {
     ORIGINAL_STRING() ,
     ENCRYPTED_STRING();
 }

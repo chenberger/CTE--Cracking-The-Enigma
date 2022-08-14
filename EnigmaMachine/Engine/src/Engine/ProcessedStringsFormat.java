@@ -1,9 +1,10 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProcessedStringsFormat {
+public class ProcessedStringsFormat implements Serializable {
     private final String INDEX_IDENTATION = "                 ";
     private List<StringFormat> processedStringsFormat;
     private long encryptionTimeDurationNanoSeconds;

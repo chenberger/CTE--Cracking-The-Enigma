@@ -9,6 +9,7 @@ import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -490,8 +491,69 @@ public class ConsoleUserInterface {
 
         return rotorIDSector;
     }
-
     //endregion
+
+    public void saveMachineStateToFile() {
+        String path;
+        Scanner scanner = new Scanner(System.in);
+        boolean operationSuccessful = false;
+        boolean continueOperation = true;
+        
+        try {
+            if (!enigmaMachineEngine.isMachineExists()) {
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+
+            }
+            do {
+                System.out.println("Please enter the path (include the file name without the extension) of the file that you want to save to it the current state of the machine to: ");
+                path = "test.dat";
+                try {
+                    enigmaMachineEngine.saveStateMachineToFile(path);
+                    System.out.println("The machine has been successfully saved to the file" + System.lineSeparator());
+                    operationSuccessful = true;
+                } catch (IOException ex) {
+                    System.out.println("The file (from the path you inputted) was not found! ");
+                    ;
+                } catch (MachineNotExistsException e) {
+                    System.out.println(e.getMessage());
+                } finally {
+                    if (!operationSuccessful) {
+                        continueOperation = shouldContinueInOperation();
+                    }
+                }
+            } while (!operationSuccessful && continueOperation);
+        }
+        catch (MachineNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void loadMachineFromFile() {
+        String path;
+        Scanner scanner = new Scanner(System.in);
+        boolean operationSuccessful = false;
+        boolean continueOperation = true;
+        do{
+            System.out.println("Please enter the path (include the file name without the extension) of the file that you want to load the machine from: ");
+            path = "test.dat";
+            try {
+                enigmaMachineEngine.loadStateMachineFromFile(path);
+                System.out.println("The machine has been successfully saved to the file" + System.lineSeparator());
+                operationSuccessful = true;
+            }
+            catch (IOException ex){
+                System.out.println("The file (from the path you inputted) was not found! ");;
+            }
+            catch (ClassNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+            finally {
+                if(!operationSuccessful) {
+                    continueOperation = shouldContinueInOperation();
+                }
+            }
+        }while (!operationSuccessful && continueOperation);
+    }
     //endregion
 
 }

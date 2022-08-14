@@ -1,9 +1,10 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OriginalStringFormat extends StringFormat<Character>{
+public class OriginalStringFormat extends StringFormat<Character> implements Serializable {
 
 
     public OriginalStringFormat(List<Character> originalString) {

@@ -487,6 +487,16 @@ public class EngineManager implements MachineOperations, Serializable {
         return encryptedString;
     }
 
+    @Override
+    public void saveStateMachineToFile(String path) throws IOException, MachineNotExistsException {
+        MachineState.saveStateMachineToFile(path, this);
+    }
+
+    @Override
+    public void loadStateMachineFromFile(String path) throws IOException, ClassNotFoundException {
+        MachineState.loadStateMachineFromFile(path, this);
+    }
+
     private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
         //TODO chen: throw exception with more info: what are the illegal char and send the legal keyboard chars
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
@@ -527,5 +537,17 @@ public class EngineManager implements MachineOperations, Serializable {
         }
 
         return enigmaMachine;
+    }
+
+    public StatisticsAndHistoryAnalyzer getCurrentStatisticsAndHistory() {
+        return statisticsAndHistoryAnalyzer;
+    }
+
+    public void setCurrentMachine(EnigmaMachine enigmaMachine) {
+        this.enigmaMachine = enigmaMachine;
+    }
+
+    public void setCurrentStatisticsAndHistory(StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer) {
+        this.statisticsAndHistoryAnalyzer = statisticsAndHistoryAnalyzer;
     }
 }
