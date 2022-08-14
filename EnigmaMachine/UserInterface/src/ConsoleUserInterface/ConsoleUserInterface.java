@@ -4,7 +4,7 @@ package ConsoleUserInterface;
 import Engine.*;
 import EnigmaMachine.RomanNumber;
 import EnigmaMachineException.*;
-import TDO.MachineDetails;
+import DTO.MachineDetails;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
@@ -235,7 +235,7 @@ public class ConsoleUserInterface {
         boolean continueOperation = true;
         while (!operationSuccessful && continueOperation) {
             System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
-            String Path = scanner.nextLine();
+            String Path = "C:\\Users\\erez6\\Desktop\\לימודים\\אקדמית יפו\\שנה ב\\גאווה\\Enigma Machine V1\\Enigma-Machine\\ex1-sanity-paper-enigma (1).xml";
             try {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(Path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());

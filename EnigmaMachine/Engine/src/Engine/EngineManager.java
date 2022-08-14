@@ -6,9 +6,8 @@ import EnigmaMachine.RomanNumber;
 import EnigmaMachine.Rotor;
 import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
-import TDO.MachineDetails;
 import javafx.util.Pair;
-
+import DTO.MachineDetails;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -364,14 +363,13 @@ public class EngineManager implements MachineOperations, Serializable {
     //region Operations implements
     @Override
     public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException, SettingsNotInitializedException {
-        List<Sector> randomSectors;
-        RandomSettingsGenerator randomSettingsGenerator = new RandomSettingsGenerator(enigmaMachine);
-
         if(!isMachineExists()) {
             throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
         }
 
-        randomSectors = randomSettingsGenerator.getRandomSectorSettings();
+        RandomSettingsGenerator randomSettingsGenerator = new RandomSettingsGenerator(enigmaMachine);
+        List<Sector> randomSectors = randomSettingsGenerator.getRandomSectorSettings();
+
         validateMachineSettings(randomSectors);
         initializeSettings(randomSectors);
     }

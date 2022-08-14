@@ -1,4 +1,4 @@
-package TDO;
+package DTO;
 
 import EnigmaMachine.*;
 import Engine.*;

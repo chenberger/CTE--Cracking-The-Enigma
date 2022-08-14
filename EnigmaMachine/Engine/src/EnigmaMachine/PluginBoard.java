@@ -27,6 +27,7 @@ public class PluginBoard {
 
     public void addPluginPair(Pair<Character, Character> pluginPair) {
         pluggedPairs.put(pluginPair.getKey(), pluginPair.getValue());
+        pluggedPairs.put(pluginPair.getValue(), pluginPair.getKey());
     }
 
     public void clear() {
