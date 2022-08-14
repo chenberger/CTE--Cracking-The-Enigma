@@ -1,9 +1,10 @@
 package Engine;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StatisticsAndHistoryAnalyzer {
+public class StatisticsAndHistoryAnalyzer implements Serializable {
     //private static final String CODE_CONFIGURATION_INDENTATION = ""
     private static final String startingMessage = "All of the Code configurations that was set in the Enigma machine," +
                                                   " with describing of the encrypted strings of each code configuration are:" + System.lineSeparator();

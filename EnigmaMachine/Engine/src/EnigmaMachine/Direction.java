@@ -1,5 +1,7 @@
 package EnigmaMachine;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
     FORWARD, BACKWARD;
 }

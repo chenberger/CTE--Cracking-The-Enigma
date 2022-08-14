@@ -4,10 +4,11 @@ import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.PluginBoardSettingsException;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PluginBoardSector extends Sector<Pair<Character, Character>>{
+public class PluginBoardSector extends Sector<Pair<Character, Character>> implements Serializable {
     private final CharSequence delimiterElements = ",";
     private final CharSequence delimiterPair = "|";
 

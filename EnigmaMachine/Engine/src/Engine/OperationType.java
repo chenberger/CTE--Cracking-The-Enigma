@@ -49,7 +49,19 @@ public enum OperationType implements ActivateOperation {
             consoleUserInterface.displayStatisticsAndHistoryOfTheMachine();
         }
     },
-    EXIT(8, "Exit") {
+    SAVE_MACHINE_TO_FILE(8, "Save the current machine state to file") {
+        @Override
+        public void activate(ConsoleUserInterface consoleUserInterface) {
+            consoleUserInterface.saveMachineStateToFile();
+        }
+    },
+    LOAD_MACHINE_FROM_FILE(9, "Load machine from file") {
+        @Override
+        public void activate(ConsoleUserInterface consoleUserInterface) {
+            consoleUserInterface.loadMachineFromFile();
+        }
+    },
+    EXIT(10, "Exit") {
         @Override
         public void activate(ConsoleUserInterface consoleUserInterface) {
             consoleUserInterface.exit();

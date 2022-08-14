@@ -7,10 +7,11 @@ import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import Engine.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EnigmaMachine{
+public class EnigmaMachine implements Serializable {
     private final Map<Integer, Rotor> rotors;
     private final int numOfActiveRotors;
     private final List<Rotor> rotorsInUse;

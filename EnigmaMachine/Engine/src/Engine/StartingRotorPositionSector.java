@@ -3,12 +3,13 @@ package Engine;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StartingRotorPositionSector extends Sector<Character>{
+public class StartingRotorPositionSector extends Sector<Character> implements Serializable {
 
     public StartingRotorPositionSector(List<Character> startingPosition) {
         super(startingPosition, SectorType.START_POSITION_ROTORS);

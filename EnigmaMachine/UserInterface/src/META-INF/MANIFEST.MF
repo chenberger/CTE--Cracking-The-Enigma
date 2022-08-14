@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: ConsoleUserInterface.Main
-Class-Path: DTO.jar Engine.jar
+Class-Path: Engine.jar
 
