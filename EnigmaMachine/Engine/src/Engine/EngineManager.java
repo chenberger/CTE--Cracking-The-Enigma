@@ -364,7 +364,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public void setSettingsAutomatically() throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, PluginBoardSettingsException, SettingsFormatException, CloneNotSupportedException, MachineNotExistsException, SettingsNotInitializedException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
         }
 
         RandomSettingsGenerator randomSettingsGenerator = new RandomSettingsGenerator(enigmaMachine);
@@ -418,7 +418,7 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public void clearSettings() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
         }
 
         enigmaMachine.clearSettings();
@@ -435,7 +435,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
         }
         if(!enigmaMachine.isTheInitialCodeDefined()) {
             throw new SettingsNotInitializedException(OperationType.SET_SETTINGS_MANUAL, OperationType.SET_SETTINGS_AUTOMATIC);
@@ -447,7 +447,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public MachineDetails displaySpecifications() throws MachineNotExistsException, CloneNotSupportedException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
        }
 
        return new MachineDetails(enigmaMachine.getAllRotors(),
@@ -464,7 +464,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public String analyzeHistoryAndStatistics() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
         }
 
         return statisticsAndHistoryAnalyzer.toString();
@@ -533,7 +533,7 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public EnigmaMachine getCurrentEnigmaMachine() throws MachineNotExistsException {
         if(!isMachineExists()) {
-            throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+            throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
         }
 
         return enigmaMachine;

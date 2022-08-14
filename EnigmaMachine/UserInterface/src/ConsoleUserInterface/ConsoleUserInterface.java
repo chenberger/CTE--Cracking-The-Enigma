@@ -199,7 +199,7 @@ public class ConsoleUserInterface {
 
         try {
             if (!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
             }
 
             if(!enigmaMachineEngine.isMachineSettingInitialized()) {
@@ -231,20 +231,20 @@ public class ConsoleUserInterface {
 
     public void loadMachineFromXML() {
         Scanner scanner = new Scanner(System.in);
-
+        String path;
         boolean operationSuccessful = false;
         boolean continueOperation = true;
         while (!operationSuccessful && continueOperation) {
             System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
-            String Path = "C:\\Users\\erez6\\Desktop\\לימודים\\אקדמית יפו\\שנה ב\\גאווה\\Enigma Machine V1\\Enigma-Machine\\ex1-sanity-paper-enigma (1).xml";
+            path = scanner.nextLine();
             try {
-                enigmaMachineEngine.setMachineDetailsFromXmlFile(Path);
+                enigmaMachineEngine.setMachineDetailsFromXmlFile(path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
                 operationSuccessful = true;
             } catch (GeneralEnigmaMachineException | NotXmlFileException  ex) {
                 System.out.println(ex.getMessage());
             }catch (FileNotFoundException | JAXBException ex){
-                System.out.println("The file(from the path you inputted) was not found! ");;
+                System.out.println("The file (from the path you inputted) was not found! ");;
             }finally {
                 if(!operationSuccessful) {
                     continueOperation = shouldContinueInOperation();
@@ -276,7 +276,7 @@ public class ConsoleUserInterface {
     public void setMachineSettingsManually() {
        try {
             if(!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
             }
 
             Optional<RotorIDSector> rotorIDSector = Optional.ofNullable(getRotorIDSector());
@@ -498,15 +498,15 @@ public class ConsoleUserInterface {
         Scanner scanner = new Scanner(System.in);
         boolean operationSuccessful = false;
         boolean continueOperation = true;
-        
+
         try {
             if (!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE);
+                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
 
             }
             do {
                 System.out.println("Please enter the path (include the file name without the extension) of the file that you want to save to it the current state of the machine to: ");
-                path = "test.dat";
+                path = path = scanner.nextLine();
                 try {
                     enigmaMachineEngine.saveStateMachineToFile(path);
                     System.out.println("The machine has been successfully saved to the file" + System.lineSeparator());
@@ -535,7 +535,7 @@ public class ConsoleUserInterface {
         boolean continueOperation = true;
         do{
             System.out.println("Please enter the path (include the file name without the extension) of the file that you want to load the machine from: ");
-            path = "test.dat";
+            path = scanner.nextLine();
             try {
                 enigmaMachineEngine.loadStateMachineFromFile(path);
                 System.out.println("The machine has been successfully saved to the file" + System.lineSeparator());
