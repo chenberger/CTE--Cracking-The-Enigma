@@ -31,8 +31,7 @@ public class JaxbToMacineTransformer {
     }
 
     public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
-        // TODO implement here also validation.(the file exist),exceptions. also change the init settings to false.
-        List<Character> generatedABC = new ArrayList<>();
+        List<Character> generatedABC;
         ABCNotValidException abcNotValidException = new ABCNotValidException();
         checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
         generatedABC = getABCFromString(JAXBGeneratedEnigma.getCTEMachine().getABC().trim());
@@ -329,7 +328,6 @@ public class JaxbToMacineTransformer {
         rightColInRotor.put(position.getRight(),1);
 
         Pair<Character,Character> currentPair = new Pair<>(position.getLeft().charAt(0),position.getRight().charAt(0));
-        // TODO check if the Length is 1 and if the character is in ABC, and that there are no duplicates of chars in each side where ever there are numbers, check that they are ints.
         currentRotorPairs.add(currentPair);
         currentRotorMap.put(position.getLeft().charAt(0),position.getRight().charAt(0));
     }
@@ -384,7 +382,6 @@ public class JaxbToMacineTransformer {
     }
 
     private void checkIfPositionLettersInABC(CTEPositioning position, List<Character> cteABC, RotorNotValidException rotorNotValidException, int rotorId) {
-        //TODO add length validation.
         if(!cteABC.contains(position.getLeft().toUpperCase().charAt(0)) || position.getLeft().length() != 1){
             rotorNotValidException.addNotValidLetter(position.getLeft().toUpperCase(),rotorId);
         }
