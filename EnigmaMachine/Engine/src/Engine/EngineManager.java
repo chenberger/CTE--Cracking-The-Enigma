@@ -1,16 +1,11 @@
 package Engine;
 
 import EnigmaMachine.EnigmaMachine;
-import EnigmaMachine.Reflector;
-import EnigmaMachine.RomanNumber;
-import EnigmaMachine.Rotor;
 import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
-import javafx.util.Pair;
 import DTO.MachineDetails;
-import javax.xml.bind.JAXBContext;
+
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
@@ -37,7 +32,6 @@ public class EngineManager implements MachineOperations, Serializable {
 
 
     public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException {
-        // TODO implement here also validation.(the file exist)
         JaxbToMacineTransformer jaxbToMachineTransformer = new JaxbToMacineTransformer();
         try {
             InputStream inputStream = new FileInputStream(new File(machineDetailsXmlFilePath));
@@ -46,6 +40,9 @@ public class EngineManager implements MachineOperations, Serializable {
             }
             CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
             enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma);
+            if(statisticsAndHistoryAnalyzer != null) {
+                statisticsAndHistoryAnalyzer.clear();
+            }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException();
         }catch (JAXBException e){
@@ -193,15 +190,19 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
-        //TODO chen: throw exception with more info: what are the illegal char and send the legal keyboard chars
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
-            throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard");
+            List<Character> lettersNotInAbc = new ArrayList<>(getCharsNotInMachineKeyboard(inputToProcess));
+            throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator());
         }
         String processedInput = "";
         for(char letter: inputToProcess.toCharArray()){
             processedInput += enigmaMachine.decode(letter);
         }
         return processedInput;
+    }
+
+    private List<Character> getCharsNotInMachineKeyboard(String inputToProcess) {
+        return inputToProcess.chars().mapToObj(inputtedChar -> (char)inputtedChar).filter(inputtedChar -> !enigmaMachine.getKeyboard().contains(inputtedChar)).collect(Collectors.toList());
     }
 
     private boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
