@@ -22,6 +22,7 @@ public class ReflectorNotValidException extends Exception {
     private boolean tooManyReflectors = false;
     private final Map<String,Integer> invalidSizedReflectors = new HashMap<>();
     private final List<String> outOfRangeReflectors = new ArrayList<>();
+    private final List<String> reflectorsIdsDuplicateList = new ArrayList<>();
     private boolean reflectorsNotInOrder = false;
     private List<String> missingReflectorsIdsFromSequenceList = new ArrayList<>();
     public ReflectorNotValidException() {
@@ -33,6 +34,7 @@ public class ReflectorNotValidException extends Exception {
         return System.lineSeparator() + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
     public void addExceptionsToTheList() {
+        addDuplicateReflectorsException();
         addMissingReflectorsIdsFromSequenceList();
         addReflectorsWithIndexesOutOfRangeException();
         addInputColDuplicateIndexesException();
@@ -45,6 +47,14 @@ public class ReflectorNotValidException extends Exception {
 
     }
 //region add Exceptions to the list
+    private void addDuplicateReflectorsException() {
+        if (!reflectorsIdsDuplicateList.isEmpty()) {
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
+                    + ": The following reflectors appears more than once: "+ System.lineSeparator()
+                    + EXCEPTION_IDENTATION + INDEX_IDENTATION   + reflectorsIdsDuplicateList + System.lineSeparator()));
+            errorIndex++;
+        }
+    }
     private void addReflectorsWithIndexesOutOfRangeException(){
         if(!indexesOutOfRange.isEmpty()){
             for(Map.Entry<String, List<Integer>> entry : indexesOutOfRange.entrySet()){
@@ -85,7 +95,7 @@ public class ReflectorNotValidException extends Exception {
         if(indexesMappedToThemselves.size() > 0) {
             for (Map.Entry<String, List<Integer>> entry : indexesMappedToThemselves.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The Reflector: "+ entry.getKey() +"has the following indices mapped to themselves: "
+                        + ": The Reflector: "+ entry.getKey() +" has the following indices mapped to themselves: " + System.lineSeparator()
                         + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
@@ -213,6 +223,12 @@ public class ReflectorNotValidException extends Exception {
                 missingReflectorsIdsFromSequenceList.add(romanNumber.toString());
             }
             counter++;
+        }
+    }
+
+    public void addReflectorIdDuplicate(String id) {
+        if(!reflectorsIdsDuplicateList.contains(id)) {
+            reflectorsIdsDuplicateList.add(id);
         }
     }
 }

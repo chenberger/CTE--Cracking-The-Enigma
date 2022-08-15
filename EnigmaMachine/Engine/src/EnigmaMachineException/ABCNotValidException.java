@@ -16,7 +16,7 @@ public class ABCNotValidException extends Exception {
     private boolean isABCempty = false;
     @Override
     public String getMessage() {
-        return super.getMessage() + System.lineSeparator()
+        return  System.lineSeparator()
                 + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 
@@ -25,13 +25,12 @@ public class ABCNotValidException extends Exception {
     }
     public void addExceptionsToTheList(){
         addIsAlphabetEmptyException();
-        addDuplicateCharsException();
         addOddLengthException();
     }
 //region add Exceptions
     private void addIsAlphabetEmptyException() {
         if (isABCempty) {
-            exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
                     + ": The alphabet is empty" + System.lineSeparator()));
             errorIndex++;
         }
@@ -39,7 +38,7 @@ public class ABCNotValidException extends Exception {
 
     private void addOddLengthException() {
         if (oddLength) {
-            exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
                     + ": The alphabet has an odd length" + System.lineSeparator()));
             errorIndex++;
         }
@@ -47,8 +46,8 @@ public class ABCNotValidException extends Exception {
 
     private void addDuplicateCharsException() {
         if (!ABCduplicateChars.isEmpty()) {
-            exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The alphabet contains duplicate characters which are: " + ABCduplicateChars.stream().map(Object::toString).collect(Collectors.joining("")) + System.lineSeparator()));
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
+                    + ": The alphabet contains duplicate characters which are: "+ System.lineSeparator() + ABCduplicateChars + System.lineSeparator()));
             errorIndex++;
         }
     }

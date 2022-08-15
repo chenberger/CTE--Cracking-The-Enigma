@@ -20,6 +20,7 @@ public class RotorNotValidException extends Exception {
     private final Map<Integer,List<Character>> leftColDuplicateChars;
     private final Map<Integer,List<Character>> RightColDuplicateChars;
     private final List<Integer> rotorsWithIdsOutOfRange;
+    private boolean rotorsCountOutOfRange;
     private int numberOfRotorsToAdd;
     List<Integer> MissingRotorsIdsInSequenceList;
 
@@ -50,6 +51,7 @@ public class RotorNotValidException extends Exception {
     }
 
     public void addExceptionsToTheList(){
+        addRotorsCountOutOfRangeException();
         addRotorsDuplicateException();
         addRotorsWithNotEnoughPositionsException();
         addRotorsWithNotchOutOfRangeException();
@@ -58,7 +60,9 @@ public class RotorNotValidException extends Exception {
         addDuplicateRightColException();
         addMissingRotorsIdsException();
         addRotorsToOutOfRangeIdsListException();
-    }
+        addNotEnoughRotorsException();
+
+        }
 
     public boolean shouldThrowException() {
         return exceptions.size() > 0;
@@ -105,6 +109,13 @@ public class RotorNotValidException extends Exception {
         rotorsWithNotchOutOfRange.put(id, notch);
     }
     //addException region
+    private void addNotEnoughRotorsException() {
+        if(numberOfRotorsToAdd > 0) {
+            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString() + ": There are not enough rotors in the file you inserted(number of rotors < rotors count): "
+                    + System.lineSeparator() + EXCEPTION_IDENTATION + INDEX_IDENTATION + "you need to add " + numberOfRotorsToAdd + " rotors"
+                    + System.lineSeparator()));
+        }
+    }
     private void addRotorsToOutOfRangeIdsListException() {
         if(rotorsWithIdsOutOfRange.size() > 0) {
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString() + ": Rotors with Ids out of range:" + System.lineSeparator()
@@ -133,11 +144,13 @@ public class RotorNotValidException extends Exception {
         }
     }
     private void addRotorsWithNotEnoughPositionsException() {
-        for(Map.Entry<Integer, Integer> entry : rotorsWithNotEnoghPositions.entrySet()) {
-            exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The Rotor " + entry.getKey() + " has " + entry.getValue()
-                    + " positions, should be " + maxAlphabetLength/2 + "."));
-            errorIndex++;
+        if(!rotorsWithNotEnoghPositions.isEmpty()) {
+            for (Map.Entry<Integer, Integer> entry : rotorsWithNotEnoghPositions.entrySet()) {
+                exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
+                        + ": The Rotor " + entry.getKey() + " has " + entry.getValue()
+                        + " positions, should be " + maxAlphabetLength / 2 + "."));
+                errorIndex++;
+            }
         }
     }
 
@@ -179,6 +192,13 @@ public class RotorNotValidException extends Exception {
                         + ": The rotor " + id + " is missing from the desired sequence." + System.lineSeparator())));
                 errorIndex++;
             }
+        }
+    }
+    private void addRotorsCountOutOfRangeException(){
+        if(rotorsCountOutOfRange) {
+            exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
+                    + ": The inserted rotors count is out of range, should be between 2 and 99" + "." + System.lineSeparator())));
+            errorIndex++;
         }
     }
     //end region
@@ -227,6 +247,10 @@ public class RotorNotValidException extends Exception {
                 MissingRotorsIdsInSequenceList.add(entry.getKey());
             }
         }
+    }
+
+    public void setRotorsCountOutOfRange() {
+        rotorsCountOutOfRange = true;
     }
 }
 
