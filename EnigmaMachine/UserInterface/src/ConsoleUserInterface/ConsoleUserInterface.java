@@ -8,7 +8,6 @@ import EnigmaMachineException.*;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -232,15 +231,13 @@ public class ConsoleUserInterface {
 
 
     public void loadMachineFromXML() {
-        //test();
-
         Scanner scanner = new Scanner(System.in);
         String path;
         boolean operationSuccessful = false;
         boolean continueOperation = true;
         while (!operationSuccessful && continueOperation) {
             System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
-            path = "C:\\Users\\erez6\\tests\\ex1-sanity-small (1).xml";
+            path = scanner.nextLine();
             try {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
@@ -253,37 +250,6 @@ public class ConsoleUserInterface {
                 if(!operationSuccessful) {
                     continueOperation = shouldContinueInOperation();
                 }
-            }
-        }
-    }
-
-    private void test() {
-        String[] fileNames;
-
-        // Creates a new File instance by converting the given pathname string
-
-        String folderPath = "C:\\Users\\erez6\\tests\\";//replace with your own folder path
-
-        File f = new File(folderPath);
-        // Populates the array with names of files and directories
-        fileNames = f.list();
-        assert fileNames != null;
-        Arrays.sort(fileNames);
-
-
-        int i = 0;
-        // For each pathname in the pathnames array
-        for (String fileName : fileNames) {
-            try {
-                System.out.println((++i) + " # " + fileName + ":");
-                if(i != 11) {
-                    enigmaMachineEngine.setMachineDetailsFromXmlFile(folderPath + fileName);
-                }
-                System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
-            } catch (GeneralEnigmaMachineException | NotXmlFileException  ex) {
-                System.out.println(ex.getMessage());
-            }catch (FileNotFoundException | JAXBException ex){
-                System.out.println("The file (from the path you inputted) was not found! ");;
             }
         }
     }
