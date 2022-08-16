@@ -148,7 +148,7 @@ public class RotorNotValidException extends Exception {
             for (Map.Entry<Integer, Integer> entry : rotorsWithNotEnoghPositions.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
                         + ": The Rotor " + entry.getKey() + " has " + entry.getValue()
-                        + " positions, should be " + maxAlphabetLength / 2 + "."));
+                        + " positions, should be " + maxAlphabetLength + "." + System.lineSeparator()));
                 errorIndex++;
             }
         }
@@ -158,7 +158,7 @@ public class RotorNotValidException extends Exception {
         if(!rotorsWithNotchOutOfRange.isEmpty()){
         for(Map.Entry<Integer, Integer> entry : rotorsWithNotchOutOfRange.entrySet()) {
            exceptions.add(new Exception( EXCEPTION_IDENTATION + errorIndex.toString()
-                   + ": The Rotor " + entry.getKey() + " has his notch in position "
+                   + ": Rotor " + entry.getKey() + " has his notch in position "
                    + entry.getValue() + ",the notch position should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
            errorIndex++;
         }
@@ -189,7 +189,7 @@ public class RotorNotValidException extends Exception {
         if(!MissingRotorsIdsInSequenceList.isEmpty()) {
             for(Integer id : MissingRotorsIdsInSequenceList) {
                 exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The rotor " + id + " is missing from the desired sequence." + System.lineSeparator())));
+                        + ": Rotor " + id + " is missing from the desired sequence." + System.lineSeparator())));
                 errorIndex++;
             }
         }
