@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import EnigmaMachine.Reflector;
 import EnigmaMachine.RomanNumber;
 import EnigmaMachine.Rotor;
+
 
 public class JaxbToMacineTransformer {
 
@@ -84,7 +87,7 @@ public class JaxbToMacineTransformer {
     private List<Character> getABCFromString(String abc) {
         List<Character> generatedABC = new ArrayList<>();
         for (int i = 0; i < abc.length(); i++) {
-            generatedABC.add(abc.charAt(i));
+            generatedABC.add(Character.toUpperCase(abc.charAt(i)));
         }
         return generatedABC;
     }
@@ -318,14 +321,14 @@ public class JaxbToMacineTransformer {
     private void addPositionToTheRotor(List<Pair<Character, Character>> currentRotorPairs, int rotorId, CTEPositioning position, Map<Character, Character> currentRotorMap, List<Character> cteABC, RotorNotValidException rotorNotValidException, Map<String,Integer> leftColInRotor, Map<String,Integer> rightColInRotor ) {
         checkIfPositionLettersInABC(position, cteABC, rotorNotValidException, rotorId);
 
-        if(leftColInRotor.containsKey(position.getLeft())){
-            rotorNotValidException.addDuplicatedCharToLeftCol(rotorId,position.getLeft());
+        if(leftColInRotor.containsKey(position.getLeft().toUpperCase())){
+            rotorNotValidException.addDuplicatedCharToLeftCol(rotorId,position.getLeft().toUpperCase());
         }
-        if(rightColInRotor.containsKey(position.getRight())){
-            rotorNotValidException.addDUDuplicatedCharToRightCol(rotorId,position.getRight());
+        if(rightColInRotor.containsKey(position.getRight().toUpperCase())){
+            rotorNotValidException.addDUDuplicatedCharToRightCol(rotorId,position.getRight().toUpperCase());
         }
-        leftColInRotor.put(position.getLeft(),1);
-        rightColInRotor.put(position.getRight(),1);
+        leftColInRotor.put(position.getLeft().toUpperCase(),1);
+        rightColInRotor.put(position.getRight().toUpperCase(),1);
 
         Pair<Character,Character> currentPair = new Pair<>(position.getLeft().charAt(0),position.getRight().charAt(0));
         currentRotorPairs.add(currentPair);
