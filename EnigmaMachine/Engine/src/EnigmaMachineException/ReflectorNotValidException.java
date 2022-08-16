@@ -21,8 +21,11 @@ public class ReflectorNotValidException extends Exception {
     private boolean NoReflectorsFound = false;
     private boolean tooManyReflectors = false;
     private final Map<String,Integer> invalidSizedReflectors = new HashMap<>();
+    private final Map<String,List<Integer>> indexesAppearsMoreThanOnce = new HashMap<>();
     private final List<String> outOfRangeReflectors = new ArrayList<>();
     private final List<String> reflectorsIdsDuplicateList = new ArrayList<>();
+
+    private final List<String>reflectorsIdsNotValidList = new ArrayList<>();
     private boolean reflectorsNotInOrder = false;
     private List<String> missingReflectorsIdsFromSequenceList = new ArrayList<>();
     public ReflectorNotValidException() {
@@ -44,9 +47,21 @@ public class ReflectorNotValidException extends Exception {
         addTooManyReflectorsException();
         addOutOfRangeReflectorsException();
         addInvalidSizedReflectorsException();
+        addDuplicatedIndexesInReflectorsException();
 
     }
 //region add Exceptions to the list
+    private void addDuplicatedIndexesInReflectorsException() {
+        if(!indexesAppearsMoreThanOnce.isEmpty()){
+            for(Map.Entry<String,List<Integer>> entry : indexesAppearsMoreThanOnce.entrySet()){
+                String message = "";
+                message += EXCEPTION_IDENTATION +errorIndex.toString() + ": Reflector " + entry.getKey() + " has indexes that appears more than once and they are: "
+                        + System.lineSeparator() + EXCEPTION_IDENTATION + INDEX_IDENTATION +  entry.getValue() + System.lineSeparator();
+                exceptions.add(new Exception(message));
+            }
+            errorIndex++;
+        }
+    }
     private void addDuplicateReflectorsException() {
         if (!reflectorsIdsDuplicateList.isEmpty()) {
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
@@ -59,9 +74,9 @@ public class ReflectorNotValidException extends Exception {
         if(!indexesOutOfRange.isEmpty()){
             for(Map.Entry<String, List<Integer>> entry : indexesOutOfRange.entrySet()){
                 exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The indexes in reflector" + entry.getKey() + "that were inserted are out of range" + System.lineSeparator()
-                        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The indexes that were inserted are: " + entry.getValue() + System.lineSeparator()
-                        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The indexes that can be inserted are: " + (maxPairsInAlphabet) + System.lineSeparator()));
+                        + ": The following indexes in reflector " + entry.getKey() + " are out of range: " + System.lineSeparator()
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION + entry.getValue() + System.lineSeparator()
+                        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "all indexes should be between 1 to " + (maxPairsInAlphabet) * 2 + System.lineSeparator()));
                 errorIndex++;
             }
         }
@@ -70,7 +85,8 @@ public class ReflectorNotValidException extends Exception {
         if (inputColDuplicateIndexes.size() > 0) {
             for (Map.Entry<String, List<Integer>> entry : inputColDuplicateIndexes.entrySet()) {
                 exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The input column in reflector " + entry.getKey() + " contains duplicate indexes which are: "
+                        + ": The input column in reflector " + entry.getKey() + " contains indexes which appear more than once and they are: "
+                        + System.lineSeparator()
                         + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
@@ -83,8 +99,8 @@ public class ReflectorNotValidException extends Exception {
         if (outPutColDuplicateIndexes.size() > 0) {
             for (Map.Entry<String, List<Integer>> entry : outPutColDuplicateIndexes.entrySet()) {
                 exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The output column in reflector " + entry.getKey() + " contains duplicate indexes which are: "
-                        + EXCEPTION_IDENTATION + INDEX_IDENTATION
+                        + ": The output column in reflector " + entry.getKey() + " contains indexes which appear more than once and they are: "
+                        + System.lineSeparator()  + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
 
@@ -95,7 +111,7 @@ public class ReflectorNotValidException extends Exception {
         if(indexesMappedToThemselves.size() > 0) {
             for (Map.Entry<String, List<Integer>> entry : indexesMappedToThemselves.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The Reflector: "+ entry.getKey() +" has the following indices mapped to themselves: " + System.lineSeparator()
+                        + ": The Reflector: "+ entry.getKey() +" has the following indexes mapped to themselves: " + System.lineSeparator()
                         + EXCEPTION_IDENTATION + INDEX_IDENTATION
                         + entry.getValue() + System.lineSeparator()));
                 errorIndex++;
@@ -119,21 +135,21 @@ public class ReflectorNotValidException extends Exception {
     private void addOutOfRangeReflectorsException() {
         if(outOfRangeReflectors.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflectors are out of range" + System.lineSeparator()
+                    + ": The following reflectors ids are invalid:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
-                    + String.join("", outOfRangeReflectors) + System.lineSeparator()));
+                    + outOfRangeReflectors +", all ids should be from the following ids: " + Arrays.toString(Arrays.stream(RomanNumber.values()).toArray()) + System.lineSeparator()));
             errorIndex++;
         }
     }
     private void addInvalidSizedReflectorsException() {
         if(invalidSizedReflectors.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflectors are invalid sized:" + System.lineSeparator()
+                    + ": The following reflectors contains illegal number of pairs:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
-                    + invalidSizedReflectors.entrySet().stream().map(entry -> entry.getKey() + ": "
+                    + invalidSizedReflectors.entrySet().stream().map(entry -> entry.getKey() + " contains the following number of pairs: "
                     + entry.getValue()).collect(Collectors.joining("")) + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
-                    + "Should be in size of " + maxPairsInAlphabet + System.lineSeparator()));
+                    + "All reflectors should contain " + maxPairsInAlphabet +" pairs." + System.lineSeparator()));
             errorIndex++;
         }
     }
@@ -141,12 +157,17 @@ public class ReflectorNotValidException extends Exception {
     private void addMissingReflectorsIdsFromSequenceList() {
         if(missingReflectorsIdsFromSequenceList.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflectors Ids are missing in the desired sequence:" + System.lineSeparator()
+                    + ": The following reflector/s Ids are missing in the desired sequence:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
-                    + String.join(", ", missingReflectorsIdsFromSequenceList) + System.lineSeparator()));
+                    + missingReflectorsIdsFromSequenceList + System.lineSeparator()));
             errorIndex++;
         }
     }
+
+    public List<Exception> getExceptions() {
+        return exceptions;
+    }
+
     //endregion
     public boolean shouldThrowException() {
         return exceptions.size() > 0;// no exceptions to throw
@@ -229,6 +250,17 @@ public class ReflectorNotValidException extends Exception {
     public void addReflectorIdDuplicate(String id) {
         if(!reflectorsIdsDuplicateList.contains(id)) {
             reflectorsIdsDuplicateList.add(id);
+        }
+    }
+
+    public void addIndexAppearsMoreThanOnce(String reflectorId, int index) {
+        if(indexesAppearsMoreThanOnce.containsKey(reflectorId)) {
+            if(!indexesAppearsMoreThanOnce.get(reflectorId).contains(index)){
+                indexesAppearsMoreThanOnce.get(reflectorId).add(index);
+            };
+        }
+        else {
+            indexesAppearsMoreThanOnce.put(reflectorId, new ArrayList<>(Arrays.asList(index)));
         }
     }
 }

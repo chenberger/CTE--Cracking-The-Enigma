@@ -9,10 +9,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import EnigmaMachine.Reflector;
@@ -141,7 +138,7 @@ public class JaxbToMacineTransformer {
         Map<Integer,Integer> currentReflectorMapping = new HashMap<>();
         Map<Integer,Integer> outPutColMap = new HashMap<>();
         Map<Integer,Integer> inputColMap = new HashMap<>();
-
+        checkIfIndexesAppearsMoreThanOnce(reflector, reflectorNotValidException);
         for(CTEReflect reflect:reflector.getCTEReflect()){
             addIndexesOfReflectOutOfRangeExceptionIfNecessary(reflector.getId(),reflect, reflectorNotValidException, CTEAbc);
             addReflectorsDuplicatesExceptionIfNecessary(reflector.getId(),reflect,outPutColMap,inputColMap, reflectorNotValidException);
@@ -154,6 +151,24 @@ public class JaxbToMacineTransformer {
         insertedReflectorsIds.put(reflector.getId(),true);
         Reflector currentReflector = new Reflector(RomanNumber.valueOf(reflector.getId()), currentReflectorMapping);
         machineReflectors.put(RomanNumber.convertStringToRomanNumber(reflector.getId()),currentReflector);
+    }
+
+    private void checkIfIndexesAppearsMoreThanOnce(CTEReflector reflector, ReflectorNotValidException reflectorNotValidException) {
+        List<Integer> indexes = new ArrayList<>();
+        for(CTEReflect reflect:reflector.getCTEReflect()){
+            if(indexes.contains(reflect.getInput())){
+                reflectorNotValidException.addIndexAppearsMoreThanOnce(reflector.getId(),reflect.getInput());
+            }
+            else {
+                indexes.add(reflect.getInput());
+            }
+            if(indexes.contains(reflect.getOutput())){
+                reflectorNotValidException.addIndexAppearsMoreThanOnce(reflector.getId(),reflect.getOutput());
+            }
+            else {
+                indexes.add(reflect.getOutput());
+            }
+        }
     }
 
     private void addIndexesMappedToThemselvesExceptionIfNecessary(String reflectorId, CTEReflect reflect, ReflectorNotValidException reflectorNotValidException) {
@@ -186,6 +201,10 @@ public class JaxbToMacineTransformer {
         }
     }
 
+    private boolean ReflectoridIsNotValid(String id) {
+        return Arrays.toString(RomanNumber.values()).contains(id);
+    }
+
     private void addNumberOfReflectorsNotValidExceptionIfNecessary(int numberOfReflectors, ReflectorNotValidException reflectorNotValidException) {
         if(numberOfReflectors == 0) {
             reflectorNotValidException.setReflectorsEmpty();
@@ -198,11 +217,12 @@ public class JaxbToMacineTransformer {
     private void checkIfReflectorsIdsContainDuplication(List<CTEReflector> cteReflectors, ReflectorNotValidException reflectorNotValidException) {
         Map<String, Boolean> insertedReflectorsIds = fillReflectorMapIdsMapWithFalseValues(cteReflectors.size());
         for(CTEReflector reflector: cteReflectors){
-            if(insertedReflectorsIds.get(reflector.getId()) == true){
-                reflectorNotValidException.addReflectorIdDuplicate(reflector.getId());
-            }
-            else{
-                insertedReflectorsIds.put(reflector.getId(),true);
+            if(isValidRomanNumber(reflector.getId())) {
+                if (insertedReflectorsIds.get(reflector.getId())) {
+                    reflectorNotValidException.addReflectorIdDuplicate(reflector.getId());
+                } else {
+                    insertedReflectorsIds.put(reflector.getId(), true);
+                }
             }
         }
     }
@@ -225,7 +245,7 @@ public class JaxbToMacineTransformer {
     }
 
     private boolean indexOutOfRange(int input, List<Character> cteAbc) {
-        return input > cteAbc.size();
+        return (input > cteAbc.size() || input < 1);
     }
 
     private boolean numberOfPairsInReflectorValid(CTEReflector reflector, List<Character> CTEAbc,ReflectorNotValidException reflectorNotValidException) {
@@ -313,7 +333,7 @@ public class JaxbToMacineTransformer {
     }
 
     private void addNotchOutOfRangeExceptionIfNecessary(int rotorId, int rotorNotch,int AbcSize, RotorNotValidException rotorNotValidException) {
-        if(rotorNotch > AbcSize || rotorNotch < 0){
+        if(rotorNotch > AbcSize || rotorNotch <= 0){
             rotorNotValidException.addNotchOutOfRange(rotorId,rotorNotch);
         }
     }
@@ -362,7 +382,7 @@ public class JaxbToMacineTransformer {
         int numberOfRotors = cteRotors.size();
         Map<Integer,Boolean> rotorsIds = new HashMap<>();
         for(CTERotor rotor: cteRotors){
-            if(rotor.getId() < 0 || rotor.getId() > numberOfRotors){
+            if(rotor.getId() <= 0 || rotor.getId() > numberOfRotors){
                 rotorNotValidException.addRotorsToOutOfRangeList(rotor.getId());
             }
             if(rotorsIds.containsKey(rotor.getId())){

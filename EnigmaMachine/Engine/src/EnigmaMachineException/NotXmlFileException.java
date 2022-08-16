@@ -1,6 +1,9 @@
 package EnigmaMachineException;
 
 public class NotXmlFileException extends Exception {
-    private final boolean isXmlFile = false;
+    @Override
+    public String getMessage(){
+        return System.lineSeparator() + "The file is not an xml file, the file path should end with: .xml";
+    }
 }
 
