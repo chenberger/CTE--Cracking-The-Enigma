@@ -29,12 +29,10 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     //region JAXB Translation
-
-
     public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException {
         JaxbToMacineTransformer jaxbToMachineTransformer = new JaxbToMacineTransformer();
         try {
-            InputStream inputStream = new FileInputStream(new File(machineDetailsXmlFilePath));
+            InputStream inputStream = new FileInputStream(machineDetailsXmlFilePath);
             if (!machineDetailsXmlFilePath.endsWith(".xml")) {
                 throw new NotXmlFileException();
             }
@@ -192,7 +190,7 @@ public class EngineManager implements MachineOperations, Serializable {
     private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
             List<Character> lettersNotInAbc = new ArrayList<>(getCharsNotInMachineKeyboard(inputToProcess));
-            throw new IllegalArgumentException("The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator());
+            throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator());
         }
         String processedInput = "";
         for(char letter: inputToProcess.toCharArray()){

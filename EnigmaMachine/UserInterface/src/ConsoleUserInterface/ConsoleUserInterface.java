@@ -240,7 +240,7 @@ public class ConsoleUserInterface {
         boolean continueOperation = true;
         while (!operationSuccessful && continueOperation) {
             System.out.println("Please enter the path of the XML file that you want to load the machine from: ");
-            path = "C:\\Users\\erez6\\tests\\ex1-sanity-small (1).xml";
+            path = scanner.nextLine();
             try {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());

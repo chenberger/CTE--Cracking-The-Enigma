@@ -67,38 +67,31 @@ public class EnigmaMachine implements Serializable {
     }
 
     private void checkValidPluggedPair(PluginBoardSector pluginBoardSector, PluginBoardSettingsException pluginBoardSettingsException, Map<Character, Boolean> charactersUsingForPluginBoard) {
-        boolean isValidKey;
-
         for (Pair<Character, Character> pluginPair : pluginBoardSector.getElements()) {
-            isValidKey = true;
             if (pluginPair.getKey() == pluginPair.getValue()) {
-                isValidKey = false;
                 pluginBoardSettingsException.addValuePluggedToHimself(pluginPair.getKey());
             }
 
-            if (!keyboard.containsKey(pluginPair.getKey())) {
-                isValidKey = false;
-                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getKey(), keyboard.keySet());
-            }
-
-            if (!keyboard.containsKey(pluginPair.getValue())) {
-                isValidKey = false;
-                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getValue(), keyboard.keySet());
-            }
-
             if (charactersUsingForPluginBoard.containsKey(pluginPair.getKey()) && charactersUsingForPluginBoard.get(pluginPair.getKey())) {
-                isValidKey = false;
                 pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getKey());
             }
 
             if (charactersUsingForPluginBoard.containsKey(pluginPair.getValue()) && charactersUsingForPluginBoard.get(pluginPair.getValue())) {
-                isValidKey = false;
                 pluginBoardSettingsException.addValuePluggedToMoreThenOneChar(pluginPair.getValue());
             }
 
-            if (isValidKey) {
-                charactersUsingForPluginBoard.put(pluginPair.getValue(), true);
+            if (!keyboard.containsKey(pluginPair.getKey())) {
+                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getKey(), keyboard.keySet());
+            }
+            else {
                 charactersUsingForPluginBoard.put(pluginPair.getKey(), true);
+            }
+
+            if (!keyboard.containsKey(pluginPair.getValue())) {
+                pluginBoardSettingsException.addIllegalCharNotFromTheKeyboard(pluginPair.getValue(), keyboard.keySet());
+            }
+            else {
+                charactersUsingForPluginBoard.put(pluginPair.getValue(), true);
             }
         }
     }
