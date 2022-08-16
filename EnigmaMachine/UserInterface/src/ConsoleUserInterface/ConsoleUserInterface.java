@@ -45,6 +45,7 @@ public class ConsoleUserInterface {
                 userInput = Optional.of(scanner.nextInt());
                 if (userInput.get() >= OperationType.getMinimumNumber().get() && userInput.get() <= OperationType.getMaximumNumber().get()) {
                     validInput = true;
+                    System.out.println(System.lineSeparator());
                 }
                 else {
                     printIllegalOperationNumberInserted(userInput.get(), OperationType.getMinimumNumber().get(), OperationType.getMaximumNumber().get());
@@ -538,7 +539,7 @@ public class ConsoleUserInterface {
             path = scanner.nextLine();
             try {
                 enigmaMachineEngine.loadStateMachineFromFile(path);
-                System.out.println("The machine has been successfully saved to the file" + System.lineSeparator());
+                System.out.println("The machine has been successfully loaded" + System.lineSeparator());
                 operationSuccessful = true;
             }
             catch (IOException ex){
