@@ -39,7 +39,7 @@ public class ABCNotValidException extends Exception {
     private void addOddLengthException() {
         if (oddLength) {
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The alphabet has an odd length" + System.lineSeparator()));
+                    + ": The alphabet has an odd length, should be even cause each letter mapped to exactly one(and only one) other letter." + System.lineSeparator()));
             errorIndex++;
         }
     }

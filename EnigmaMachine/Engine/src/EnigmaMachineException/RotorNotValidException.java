@@ -100,10 +100,6 @@ public class RotorNotValidException extends Exception {
         maxAlphabetLength = cteABC.size();
     }
 
-    //TODO check that the rotor id is positive number. V
-    //TODO check that the id's are valid. V
-    //TODO check that the each column is all the alphabet. V
-    //TODO rows are the same length of abc. V
 
     public void addNotchOutOfRange(int id, int notch) {
         rotorsWithNotchOutOfRange.put(id, notch);
@@ -112,7 +108,8 @@ public class RotorNotValidException extends Exception {
     private void addNotEnoughRotorsException() {
         if(numberOfRotorsToAdd > 0) {
             exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString() + ": There are not enough rotors in the file you inserted(number of rotors < rotors count): "
-                    + System.lineSeparator() + EXCEPTION_IDENTATION + INDEX_IDENTATION + "you need to add " + numberOfRotorsToAdd + " rotors"
+                    + System.lineSeparator() + EXCEPTION_IDENTATION + INDEX_IDENTATION + "you need to add " + numberOfRotorsToAdd + " rotor/s, or reduce the rotors count by "
+                    + numberOfRotorsToAdd
                     + System.lineSeparator()));
         }
     }
@@ -136,7 +133,7 @@ public class RotorNotValidException extends Exception {
         if(!RotorsWithnotValidLetters.isEmpty()) {
             for (Map.Entry<Integer, List<String>> entry : RotorsWithnotValidLetters.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                + ": The Rotor " + entry.getKey() + " contains the following invalid letters: "
+                + ": Rotor " + entry.getKey() + " contains the following invalid letters: "
                         + System.lineSeparator()
                         + EXCEPTION_IDENTATION + INDEX_IDENTATION + entry.getValue() + System.lineSeparator()));
             }
@@ -147,7 +144,7 @@ public class RotorNotValidException extends Exception {
         if(!rotorsWithNotEnoghPositions.isEmpty()) {
             for (Map.Entry<Integer, Integer> entry : rotorsWithNotEnoghPositions.entrySet()) {
                 exceptions.add(new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": The Rotor " + entry.getKey() + " has " + entry.getValue()
+                        + ": Rotor " + entry.getKey() + " has " + entry.getValue()
                         + " positions, should be " + maxAlphabetLength + "." + System.lineSeparator()));
                 errorIndex++;
             }
@@ -159,7 +156,7 @@ public class RotorNotValidException extends Exception {
         for(Map.Entry<Integer, Integer> entry : rotorsWithNotchOutOfRange.entrySet()) {
            exceptions.add(new Exception( EXCEPTION_IDENTATION + errorIndex.toString()
                    + ": Rotor " + entry.getKey() + " has his notch in position "
-                   + entry.getValue() + ",the notch position should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
+                   + entry.getValue() + ", the notch position should be between 1 and " + maxAlphabetLength + "." +  System.lineSeparator()));
            errorIndex++;
         }
     }
@@ -189,7 +186,7 @@ public class RotorNotValidException extends Exception {
         if(!MissingRotorsIdsInSequenceList.isEmpty()) {
             for(Integer id : MissingRotorsIdsInSequenceList) {
                 exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": Rotor " + id + " is missing from the desired sequence." + System.lineSeparator())));
+                        + ": Rotor " + id + "(id) is missing from the desired sequence." + System.lineSeparator())));
                 errorIndex++;
             }
         }
@@ -197,7 +194,7 @@ public class RotorNotValidException extends Exception {
     private void addRotorsCountOutOfRangeException(){
         if(rotorsCountOutOfRange) {
             exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The inserted rotors count is out of range, should be between 2 and 99" + "." + System.lineSeparator())));
+                    + ": The inserted rotors count is invalid, should be between 2 and 99."  + System.lineSeparator())));
             errorIndex++;
         }
     }
