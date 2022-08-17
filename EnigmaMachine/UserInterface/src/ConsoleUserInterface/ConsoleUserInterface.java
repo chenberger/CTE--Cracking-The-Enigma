@@ -367,7 +367,7 @@ public class ConsoleUserInterface {
         boolean validInput = false;
         boolean continueOperation = true;
 
-        System.out.println("Please enter a continuous string of characters that make up all the pairs required by the machine." + System.lineSeparator() +
+        System.out.println("Please enter characters that make up all the plugin pairs in the machine." + System.lineSeparator() +
                           "The pairs will appear close together, without any separator of one kind or another. When finished, type enter to complete the insertion of the string." + System.lineSeparator() +
                           "(Note: you must make sure that the length of the string is even, in addition an empty string is a valid input - it means that there are no plugin pairs at all in the machine." + System.lineSeparator() +
                           "Also, do not use the same character in more than one mapping pair, and there is no character mapping to itself.)");
