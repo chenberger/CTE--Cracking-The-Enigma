@@ -147,7 +147,7 @@ public class ReflectorNotValidException extends Exception {
                     + ": The following reflectors contains illegal number of pairs:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
                     + invalidSizedReflectors.entrySet().stream().map(entry -> entry.getKey() + " contains the following number of pairs: "
-                    + entry.getValue()).collect(Collectors.joining("")) + System.lineSeparator()
+                    + entry.getValue()).collect(Collectors.joining(System.lineSeparator() +EXCEPTION_IDENTATION + INDEX_IDENTATION)) + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
                     + "All reflectors should contain " + maxPairsInAlphabet +" pairs." + System.lineSeparator()));
             errorIndex++;

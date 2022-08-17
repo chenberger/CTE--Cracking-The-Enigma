@@ -190,7 +190,8 @@ public class EngineManager implements MachineOperations, Serializable {
     private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
         if(containsCharNotInMAMachineKeyboard(inputToProcess)){
             List<Character> lettersNotInAbc = new ArrayList<>(getCharsNotInMachineKeyboard(inputToProcess));
-            throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator());
+            throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator()
+                    + "You can choose only from the following letters: " + enigmaMachine.getKeyboard());
         }
         String processedInput = "";
         for(char letter: inputToProcess.toCharArray()){
