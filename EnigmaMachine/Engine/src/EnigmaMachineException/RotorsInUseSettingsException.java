@@ -41,8 +41,8 @@ public class RotorsInUseSettingsException extends Exception{
 
     public void addRotorIdDuplicates(Integer rotorId) {
         addException(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-        + ": Rotor cannot insert more then one time" + System.lineSeparator()
-        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "There rotor that was inserted more then one time is: " + rotorId + System.lineSeparator()));
+        + ": Rotor cannot be inserted more then once" + System.lineSeparator()
+        + EXCEPTION_IDENTATION + INDEX_IDENTATION + "The rotor that was inserted more then one time is: " + rotorId + System.lineSeparator()));
     }
 
     public void addIllegalRotorId(Integer rotorId, Set<Integer> allRotorsId) {

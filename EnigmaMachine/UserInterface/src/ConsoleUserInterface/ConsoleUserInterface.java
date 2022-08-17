@@ -8,7 +8,6 @@ import EnigmaMachineException.*;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -225,7 +224,7 @@ public class ConsoleUserInterface {
             } while (continueOperation);
         }
 
-        catch(MachineNotExistsException  | SettingsNotInitializedException ex) {
+        catch(MachineNotExistsException  | SettingsNotInitializedException ex)  {
             System.out.println(ex.getMessage());
         }
     }
