@@ -56,7 +56,7 @@ public class RotorNotValidException extends Exception {
         addRotorsWithNotEnoughPositionsException();
         addRotorsWithNotchOutOfRangeException();
         addRotorsWithNotValidLettersException();
-        addDuplicateleftColException();
+        addDuplicateLeftColException();
         addDuplicateRightColException();
         addMissingRotorsIdsException();
         addRotorsToOutOfRangeIdsListException();
@@ -72,11 +72,6 @@ public class RotorNotValidException extends Exception {
         return System.lineSeparator() + startingMessage + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(""));
     }
 
-    public void addValuesWithSameMappingInOneRotor(Character charMappedIntoMoreThenOneChar, Character FirstCharMappedInto, Character SecondCharMappedInto) {
-        sameMappingInOneRotor.putIfAbsent(charMappedIntoMoreThenOneChar, new ArrayList<>(Arrays.asList(FirstCharMappedInto, SecondCharMappedInto)));
-
-        sameMappingInOneRotor.get(charMappedIntoMoreThenOneChar).add(FirstCharMappedInto);
-    }
     public void setNumberOfRotorsToAdd(int numberOfRotorsToAdd) {
         this.numberOfRotorsToAdd = numberOfRotorsToAdd;
     }
@@ -88,9 +83,6 @@ public class RotorNotValidException extends Exception {
         RotorsWithnotValidLetters.get(rotorId).add(letter);
 
     }
-    public void addRotorToRotorsWithSameId(int inputtedId) {
-        RotorsWithSameId.put(inputtedId, RotorsWithSameId.getOrDefault(inputtedId, 1) + 1);
-    }
 
     public void setNumberOfPairsInRotorInvalid(CTERotor rotor, List<Character> cteABC) {
         // TODO Implement.
@@ -99,7 +91,6 @@ public class RotorNotValidException extends Exception {
         }
         maxAlphabetLength = cteABC.size();
     }
-
 
     public void addNotchOutOfRange(int id, int notch) {
         rotorsWithNotchOutOfRange.put(id, notch);
@@ -162,7 +153,7 @@ public class RotorNotValidException extends Exception {
     }
     }
 
-    private void addDuplicateleftColException(){
+    private void addDuplicateLeftColException(){
         if(!leftColDuplicateChars.isEmpty()) {
            for(Map.Entry<Integer, List<Character>> entry : leftColDuplicateChars.entrySet()) {
                 exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
@@ -186,7 +177,7 @@ public class RotorNotValidException extends Exception {
         if(!MissingRotorsIdsInSequenceList.isEmpty()) {
             for(Integer id : MissingRotorsIdsInSequenceList) {
                 exceptions.add(new Exception((EXCEPTION_IDENTATION + errorIndex.toString()
-                        + ": Rotor " + id + "(id) is missing from the desired sequence." + System.lineSeparator())));
+                        + ": Rotor " + id + "(id) is missing from the desired ids sequence." + System.lineSeparator())));
                 errorIndex++;
             }
         }
@@ -221,21 +212,6 @@ public class RotorNotValidException extends Exception {
 
     public void addRotorsToOutOfRangeList(int id) {
         rotorsWithIdsOutOfRange.add(id);
-    }
-
-    public List<Exception> getExceptions() {
-        return exceptions;
-    }
-
-    public boolean isGeneratedRotorsIdsInOrder(Map<Integer, Boolean> generatedRotorsIds) {
-        return generatedRotorsIds.values().stream().allMatch(b -> b);
-    }
-
-    public Exception addRotorIdsNotInOrder(Map<Integer, Boolean> generatedRotorsIds) {
-        Exception rotorsNotInOrder = new Exception(EXCEPTION_IDENTATION + errorIndex.toString()
-                + ": The rotor ids are not in the right order(missing Ids in the sequence): " + System.lineSeparator());
-        errorIndex++;
-        return rotorsNotInOrder;
     }
 
     public void setRotorsIdsNotInSequenceList(Map<Integer,Boolean> IdsMap) {

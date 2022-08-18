@@ -10,7 +10,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import EnigmaMachine.Reflector;
 import EnigmaMachine.RomanNumber;
@@ -35,7 +34,6 @@ public class JaxbToMacineTransformer {
         ABCNotValidException abcNotValidException = new ABCNotValidException();
         checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
         generatedABC = getABCFromString(JAXBGeneratedEnigma.getCTEMachine().getABC().trim());
-
         abcNotValidException.addExceptionsToTheList();
         throwExceptionIfAlphabetNotValid(abcNotValidException);
 
@@ -48,10 +46,6 @@ public class JaxbToMacineTransformer {
         int rotorsInUseCounter = JAXBGeneratedEnigma.getCTEMachine().getRotorsCount();;
 
         machineKeyBoard = getMachineKeyboardFromCTEKeyboard(generatedABC, abcNotValidException);
-        //if(abcNotValidException.shouldThrowException()){
-        //    enigmaMachineException.addException(abcNotValidException);
-        //    throw enigmaMachineException;
-        //}
 
         machineRotors = getMachineRotorsFromCTERotors(CTERotors, generatedABC, rotorsInUseCounter);
         machineReflectors = getMachineReflectorsFromCTEReflectors(CTEReflectors,generatedABC);
@@ -89,27 +83,6 @@ public class JaxbToMacineTransformer {
         return generatedABC;
     }
 
-    //private boolean checkIfKeyBoardContainsDuplications(String abc, ABCNotValidException abcNotValidException, List<Character> generatedABC) {
-    //    Map<Character, Integer> abcMap = new HashMap<>();
-    //    for(int i = 0; i < abc.length(); i++){
-    //        if(abcMap.containsKey(abc.charAt(i))){
-    //            abcNotValidException.addCharToDuplicateChars(abc.charAt(i));
-    //        }
-    //        else{
-    //            abcMap.put(abc.charAt(i), 1);
-    //        }
-    //    }
-    //    for(Character charInABC : abcMap.keySet()){
-    //        if(abcMap.get(charInABC) > 1){
-    //            abcNotValidException.addCharToDuplicateChars(charInABC);
-    //        }
-    //        else {
-    //            generatedABC.add(charInABC);
-    //        }
-    //    }
-//
-    //    return false;
-    //}
     private Map<RomanNumber, Reflector> getMachineReflectorsFromCTEReflectors(List<CTEReflector> cteReflectors, List<Character> CTEAbc) {
         Map<RomanNumber, Reflector> machineReflectors = new HashMap<>();
         Map<String, Boolean> insertedReflectorsIds = fillReflectorMapIdsMapWithFalseValues(cteReflectors.size());
@@ -199,10 +172,6 @@ public class JaxbToMacineTransformer {
         if(!allReflectorsIdsInSequence(insertedReflectorsIds,numberOfReflectors)){
             reflectorNotValidException.setMissingReflectorsIdsFromSequenceList(insertedReflectorsIds,numberOfReflectors);
         }
-    }
-
-    private boolean ReflectoridIsNotValid(String id) {
-        return Arrays.toString(RomanNumber.values()).contains(id);
     }
 
     private void addNumberOfReflectorsNotValidExceptionIfNecessary(int numberOfReflectors, ReflectorNotValidException reflectorNotValidException) {
