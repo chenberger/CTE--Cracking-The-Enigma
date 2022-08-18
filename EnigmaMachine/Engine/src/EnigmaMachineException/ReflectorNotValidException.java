@@ -157,7 +157,7 @@ public class ReflectorNotValidException extends Exception {
     private void addMissingReflectorsIdsFromSequenceList() {
         if(missingReflectorsIdsFromSequenceList.size() > 0) {
             exceptions.add(new IllegalArgumentException(EXCEPTION_IDENTATION + errorIndex.toString()
-                    + ": The following reflector/s Ids are missing in the desired sequence:" + System.lineSeparator()
+                    + ": The following reflector/s Ids are missing in the desired ids sequence:" + System.lineSeparator()
                     + EXCEPTION_IDENTATION + INDEX_IDENTATION
                     + missingReflectorsIdsFromSequenceList + System.lineSeparator()));
             errorIndex++;
