@@ -161,5 +161,9 @@ public class Rotor implements Decoder, Serializable {
         return startingNotchPosition;
     }
 
+    public Character getCurrentRightCharInTheWindow() {
+        return mappingABC.get(0).getValue();
+    }
+
     //endregion
 }

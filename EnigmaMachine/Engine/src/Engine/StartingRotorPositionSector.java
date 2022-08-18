@@ -10,21 +10,42 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StartingRotorPositionSector extends Sector<Character> implements Serializable {
+    private List<Integer> notchPositions;
 
     public StartingRotorPositionSector(List<Character> startingPosition) {
         super(startingPosition, SectorType.START_POSITION_ROTORS);
+        this.notchPositions = new ArrayList<>();
+    }
+
+    public void setCurrentNotchPositions(List<Integer> notchPositions) {
+        this.notchPositions = new ArrayList<>(notchPositions);
+    }
+
+    public void setCurrentCharactersInTheWindow(List<Character> charactersInTheWindow) {
+        this.elements = new ArrayList<>(charactersInTheWindow);
     }
 
     @Override
     public String toString() {
-        List<Character> reversedId = new ArrayList<>(elements);
-        Collections.reverse(reversedId);
-        return super.openSector + reversedId.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
+        List<Character> reversedStartingPositions = new ArrayList<>(elements);
+        Collections.reverse(reversedStartingPositions);
+        List<Integer> reversedNotchPositions = new ArrayList<>(notchPositions);
+        Collections.reverse(reversedNotchPositions);
+        List<String> startingPositionsString = reversedStartingPositions.stream().map(Object::toString).collect(Collectors.toList());
+
+        for (int i = 0; i < reversedNotchPositions.size(); i++) {
+            startingPositionsString.set(i, startingPositionsString.get(i) + "(" + reversedNotchPositions.get(i) + ")");
+        }
+
+        return super.openSector + startingPositionsString.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return new StartingRotorPositionSector(new ArrayList<>(getElements()));
+        StartingRotorPositionSector clonedStartingRotorPositionSector =  new StartingRotorPositionSector(new ArrayList<>(getElements()));
+        clonedStartingRotorPositionSector.setCurrentNotchPositions(this.notchPositions);
+
+        return clonedStartingRotorPositionSector;
     }
 
     @Override
@@ -39,6 +60,7 @@ public class StartingRotorPositionSector extends Sector<Character> implements Se
 
     @Override
     public void addSectorToSettingsFormat(EnigmaMachine enigmaMachine) {
+        setCurrentNotchPositions(enigmaMachine.getCurrentRotorsInUse().stream().map(rotor -> rotor.getStartingNotchPosition()).collect(Collectors.toList()));
         enigmaMachine.getOriginalSettingsFormat().addSector(this);
     }
 }

@@ -323,8 +323,9 @@ public class EnigmaMachine implements Serializable {
     public SettingsFormat getCurrentSettingsFormat() throws CloneNotSupportedException {
         SettingsFormat currentSettingsFormat = (SettingsFormat) originalSettingsFormat.clone();
         if(isTheInitialCodeDefined) {
-            RotorIDSector rotorIDSector = (RotorIDSector) (currentSettingsFormat.getSectorByType(SectorType.ROTORS_ID));
-            rotorIDSector.setCurrentNotchPositions(rotorsInUse.stream().map(rotor -> rotor.notch()).collect(Collectors.toList()));
+            StartingRotorPositionSector startingRotorPositionSector = (StartingRotorPositionSector) (currentSettingsFormat.getSectorByType(SectorType.START_POSITION_ROTORS));
+            startingRotorPositionSector.setCurrentNotchPositions(rotorsInUse.stream().map(rotor -> rotor.notch()).collect(Collectors.toList()));
+            startingRotorPositionSector.setCurrentCharactersInTheWindow(rotorsInUse.stream().map(rotor -> rotor.getCurrentRightCharInTheWindow()).collect(Collectors.toList()));
         }
 
         return currentSettingsFormat;
