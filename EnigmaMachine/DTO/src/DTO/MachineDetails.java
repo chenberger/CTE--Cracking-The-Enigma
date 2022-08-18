@@ -19,13 +19,16 @@ public class MachineDetails {
     private final PluginBoard pluginBoard;
     private int messagesCounter;
 
-    public MachineDetails(Map<Integer, Rotor> rotors, List<Rotor> rotorsInUse, Map<RomanNumber, Reflector> reflectors, Reflector reflectorInUse, Set<Character> keyboard, PluginBoard pluginBoard, int messagesCounter, SettingsFormat originalSettingsFormat, SettingsFormat currentSettingsFormat) {
-        this.rotors = rotors;
-        this.rotorsInUse = rotorsInUse;
-        this.reflectors = reflectors;
-        this.reflectorInUse = reflectorInUse;
-        this.keyboard = keyboard;
-        this.pluginBoard = pluginBoard;
+    private EnigmaMachine enigmaMachine;
+
+    public MachineDetails(EnigmaMachine enigmaMachine, int messagesCounter, SettingsFormat originalSettingsFormat, SettingsFormat currentSettingsFormat) {
+        this.enigmaMachine = enigmaMachine;
+        this.rotors = enigmaMachine.getAllRotors();
+        this.rotorsInUse = enigmaMachine.getCurrentRotorsInUse();
+        this.reflectors = enigmaMachine.getAllReflectors();
+        this.reflectorInUse = enigmaMachine.getCurrentReflectorInUse();
+        this.keyboard = enigmaMachine.getKeyboard();
+        this.pluginBoard = enigmaMachine.getPluginBoard();
         this.originalSettingsFormat = originalSettingsFormat;
         this.currentSettingsFormat = currentSettingsFormat;
         this.messagesCounter = messagesCounter;
@@ -42,12 +45,8 @@ public class MachineDetails {
     public String getOriginalMachineSettings() { return originalSettingsFormat.toString(); }
     public String getCurrentMachineSettings() { return currentSettingsFormat.toString(); }
 
-    public List<Pair<Integer, Integer>> getNotchPositionsInRotorsInUse() {
-        return rotorsInUse.stream().map(rotor -> new Pair<>(rotor.id(), rotor.notch() + 1)).collect(Collectors.toList());
-    }
-
     public int getAmountCurrentRotorsInUse() {
-        return isMachineSettingsInitialized() ? rotorsInUse.size() : 0;
+        return enigmaMachine.getNumOfActiveRotors();
     }
 
     public int getAmountOfTotalRotors() {
@@ -57,7 +56,6 @@ public class MachineDetails {
     public int getAmountOfTotalReflectors(){
         return reflectors.size();
     }
-
 
 
     //region Get Sector Methods

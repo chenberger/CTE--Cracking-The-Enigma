@@ -140,15 +140,10 @@ public class EngineManager implements MachineOperations, Serializable {
             throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
        }
 
-       return new MachineDetails(enigmaMachine.getAllRotors(),
-                                           enigmaMachine.getCurrentRotorsInUse(),
-                                           enigmaMachine.getAllReflectors(),
-                                           enigmaMachine.getCurrentReflectorInUse(),
-                                           enigmaMachine.getKeyboard(),
-                                           enigmaMachine.getPluginBoard(),
-                                           statisticsAndHistoryAnalyzer.getMessagesCounter(),
-                                           enigmaMachine.getOriginalSettingsFormat(),
-                                           enigmaMachine.getCurrentSettingsFormat());
+       return new MachineDetails(enigmaMachine,
+                                 statisticsAndHistoryAnalyzer.getMessagesCounter(),
+                                 enigmaMachine.getOriginalSettingsFormat(),
+                                 enigmaMachine.getCurrentSettingsFormat());
     }
 
     @Override
