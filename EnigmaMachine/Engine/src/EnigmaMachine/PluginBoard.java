@@ -6,7 +6,6 @@ import javafx.util.Pair;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 public class PluginBoard implements Serializable {
 
     public static final Character PAIR_SEPARATOR = '|';

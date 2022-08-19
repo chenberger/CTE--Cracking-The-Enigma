@@ -12,13 +12,12 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+// the purpose of the EngineManager is to manage the Enigma Machine, and it's operations.
 public class EngineManager implements MachineOperations, Serializable {
 
     //region private data members
     private EnigmaMachine enigmaMachine;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
-
 
 
     //endregion

@@ -4,7 +4,6 @@ import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.MachineNotExistsException;
 
 import java.io.*;
-
 public class MachineState implements Serializable {
     private EnigmaMachine enigmaMachine;
     private  StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;

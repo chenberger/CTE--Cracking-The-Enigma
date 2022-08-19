@@ -2,7 +2,6 @@ package EnigmaMachine;
 
 import java.io.Serializable;
 import java.util.*;
-
 public class Reflector implements Cloneable, Serializable {
     private final RomanNumber id;
     private final Map<Integer,Integer> reflectorPairs;
