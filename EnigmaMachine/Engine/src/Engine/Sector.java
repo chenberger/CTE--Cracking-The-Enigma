@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Sector<T>  implements Serializable {
+public abstract class Sector<T> implements Serializable {
     protected final char openSector = '<';
     protected final char closeSector = '>';
     protected List<T> elements;
