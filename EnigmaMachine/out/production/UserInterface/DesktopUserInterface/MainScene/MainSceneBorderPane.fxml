@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="700.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.MainController">
+   <top>
+      <fx:include fx:id="TopBorderPane" source="TopScene/TopBorderPane.fxml" />
+   </top>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+         <tabs>
+            <fx:include fx:id="MachineTab" source="BodyScene/MachineTab.fxml" />
+            <fx:include fx:id="EncryptDecryptTab" source="BodyScene/EncryptDecryptTab.fxml" />
+            <fx:include fx:id="BruteForceTab" source="BodyScene/BruteForceTab.fxml" />
+         </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
