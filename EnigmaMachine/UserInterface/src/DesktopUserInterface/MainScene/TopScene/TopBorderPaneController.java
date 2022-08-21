@@ -22,8 +22,4 @@ public class TopBorderPaneController {
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
-
-    public void setText() {
-        EnigmaMachineHeadlineTextField.setText("BLA");
-    }
 }
