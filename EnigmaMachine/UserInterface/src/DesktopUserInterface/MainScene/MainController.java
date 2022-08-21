@@ -4,6 +4,7 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridControl
 import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
+import Engine.EngineManager;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
@@ -21,6 +22,12 @@ public class MainController {
     @FXML private EncryptDecryptGridController encryptDecryptGridController;
     @FXML private GridPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;
+
+    private final EngineManager enigmaMachineEngine;
+
+    public MainController() {
+        this.enigmaMachineEngine = new EngineManager();
+    }
 
 
     @FXML
@@ -50,4 +57,5 @@ public class MainController {
 
     public void OnBruteForceTabSelected(Event event) {
     }
+
 }
