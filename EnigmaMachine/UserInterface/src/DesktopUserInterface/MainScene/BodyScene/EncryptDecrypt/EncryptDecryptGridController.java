@@ -1,18 +1,13 @@
-package DesktopUserInterface.MainScene.BodyScene;
+package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.MainController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
+import javafx.scene.layout.GridPane;
 
-public class MachineTabController {
+public class EncryptDecryptGridController {
     @FXML
-    private Tab MachineTab;
+    private GridPane EncryptDecryptGrid;
     private MainController mainController;
-    @FXML
-    void OnMachineTabSelected(ActionEvent event) {
-
-    }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;

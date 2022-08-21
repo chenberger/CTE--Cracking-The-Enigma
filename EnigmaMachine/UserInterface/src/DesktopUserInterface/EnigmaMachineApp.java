@@ -17,3 +17,4 @@ public class EnigmaMachineApp extends Application {
         primaryStage.show();
     }
 }
+
