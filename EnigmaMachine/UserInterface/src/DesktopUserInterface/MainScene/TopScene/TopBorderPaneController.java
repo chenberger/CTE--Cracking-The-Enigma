@@ -17,10 +17,13 @@ public class TopBorderPaneController {
 
     @FXML
     void OnLoadMachineButtonClicked(ActionEvent event) {
-
     }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setText() {
+        EnigmaMachineHeadlineTextField.setText("BLA");
     }
 }
