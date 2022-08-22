@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
 
 public class TopBorderPaneController {
     @FXML
@@ -19,6 +20,8 @@ public class TopBorderPaneController {
 
     @FXML
     void OnLoadMachineButtonClicked(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+
     }
 
     public void setMainController(MainController mainController) {
