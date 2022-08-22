@@ -34,18 +34,22 @@ public class MainController {
     public void initialize() {
         if(topBorderPaneController != null) {
             topBorderPaneController.setMainController(this);
+            topBorderPaneController.setEngineManager(enigmaMachineEngine);
         }
 
         if(machineGridController != null) {
             machineGridController.setMainController(this);
+            machineGridController.setEngineManager(enigmaMachineEngine);
         }
 
         if(encryptDecryptGridController != null) {
             encryptDecryptGridController.setMainController(this);
+            encryptDecryptGridController.setEngineManager(enigmaMachineEngine);
         }
 
         if(bruteForceGridController != null) {
             bruteForceGridController.setMainController(this);
+            bruteForceGridController.setEngineManager(enigmaMachineEngine);
         }
     }
 

@@ -8,7 +8,6 @@ public class CurrentCodeConfigurationController {
 
     @FXML private GridPane CodeCalibrationGrid;
     @FXML private Label currentCodeConfigurationLabel;
-    @FXML private GridPane machineGrid;
     private MachineGridController machineGridController;
 
     public void setMachineGridController(MachineGridController machineGridController) {

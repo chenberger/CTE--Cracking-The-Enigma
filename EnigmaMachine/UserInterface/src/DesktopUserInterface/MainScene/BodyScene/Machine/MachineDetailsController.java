@@ -6,7 +6,6 @@ import javafx.scene.layout.GridPane;
 
 public class MachineDetailsController {
 
-    @FXML private GridPane machineGrid;
     @FXML private GridPane machineDetailsGrid;
     @FXML private Label totalAmountRotorsLabel;
     @FXML private Label currentAmountRotorsLabel;
