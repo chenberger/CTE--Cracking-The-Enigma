@@ -16,11 +16,7 @@ public class TopBorderPaneController {
     @FXML
     private Label EnigmaMachineHeadlineTextField;
     private MainController mainController;
-    private EngineManager engineManager;
-
-    public TopBorderPaneController(){
-        engineManager = new EngineManager();
-    }
+    private EngineManager enigmaMachineEngine;
 
     @FXML
     void OnLoadMachineButtonClicked(ActionEvent event) {
@@ -30,5 +26,9 @@ public class TopBorderPaneController {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setEngineManager(EngineManager enigmaMachineEngine) {
+        this.enigmaMachineEngine = enigmaMachineEngine;
     }
 }
