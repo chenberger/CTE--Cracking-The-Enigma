@@ -199,7 +199,7 @@ public class ConsoleUserInterface {
 
         try {
             if (!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
+                throw new MachineNotExistsException();
             }
 
             if(!enigmaMachineEngine.isMachineSettingInitialized()) {
@@ -275,7 +275,7 @@ public class ConsoleUserInterface {
     public void setMachineSettingsManually() {
        try {
             if(!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
+                throw new MachineNotExistsException();
             }
 
             Optional<RotorIDSector> rotorIDSector = Optional.ofNullable(getRotorIDSector());
@@ -500,7 +500,7 @@ public class ConsoleUserInterface {
 
         try {
             if (!enigmaMachineEngine.isMachineExists()) {
-                throw new MachineNotExistsException(OperationType.LOAD_MACHINE_SPECIFICATION, OperationType.LOAD_MACHINE_FROM_FILE);
+                throw new MachineNotExistsException();
 
             }
             do {
