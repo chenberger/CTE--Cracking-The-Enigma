@@ -1,17 +1,28 @@
 #load-machine-button {
-    -fx-background-color: rgba(47, 252, 0, 0.94);
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
-    -fx-font-weight: bold;
     -fx-padding: 5px;
     -fx-border-radius: 5px;
-    -fx-border-color: #00bfff;
+    -fx-border-color: #0a0f11;
     -fx-border-width: 1px;
 }
 #loaded-file-path {
-    -fx-background-color: #ec7979;
     -fx-font-size: 20px;
-    -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 
+}
+.top-buttons{
+     -fx-background-color: rgba(83, 116, 138, 0.726);
+     -fx-text-fill: #ffffff;
+}
+#enigma-image{
+    -fx-background-image: url("keyboard.jpeg");
+    -fx-background-size: 100% 100%;
+}
+#currren-file-path-label{
+    -fx-font-size: 15px;
+
+}
+#enigma-label{
+    -fx-font-family: "Lucida Console", "Courier New", monospace;
 }

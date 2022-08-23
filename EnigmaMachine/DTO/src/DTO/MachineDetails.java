@@ -102,4 +102,16 @@ public class MachineDetails {
     public int getMessagesCounter() {
         return messagesCounter;
     }
+
+    public List<Integer> getAllRotorsId() {
+        return new ArrayList<>(rotors.keySet());
+    }
+
+    public List<RomanNumber> getAllReflectorsId() {
+        return new ArrayList<>(reflectors.keySet());
+    }
+
+    public Set<Character> getKeyboardCharacters() {
+        return keyboard;
+    }
 }

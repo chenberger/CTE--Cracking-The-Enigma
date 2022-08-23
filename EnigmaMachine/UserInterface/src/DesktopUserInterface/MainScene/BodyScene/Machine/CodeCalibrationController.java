@@ -1,6 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
+import Engine.EngineManager;
 import EnigmaMachineException.MachineNotExistsException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,22 +16,25 @@ public class CodeCalibrationController {
     @FXML private Button setRandomCodeButton;
     @FXML private Button setManuallyCodeButton;
     private MachineGridController machineGridController;
-    private ManuallyCodeController manuallyCodeController;
+    private ManuallyCodeInitializerScene manuallyCodeInitializerScene;
+    private EngineManager engineManager;
 
-    public void initialize() {
-        manuallyCodeController = new ManuallyCodeController();
-        manuallyCodeController.setCodeCalibrationController(this);
-    }
     public void setMachineGridController(MachineGridController machineGridController) {
         this.machineGridController = machineGridController;
     }
 
+    public void setEngineManager(EngineManager engineManager) {
+        this.engineManager = engineManager;
+    }
+
     @FXML void OnSetManuallyCodeButtonClicked(ActionEvent event) throws IOException {
-        if(machineGridController.isMachineExists()) {
-            manuallyCodeController.show();
+        manuallyCodeInitializerScene= new ManuallyCodeInitializerScene();
+
+        try {
+            manuallyCodeInitializerScene.show(engineManager.displaySpecifications());
         }
-        else {
-            new ErrorDialog(new MachineNotExistsException(), "Failed to set code configuration manually");
+        catch (MachineNotExistsException  | CloneNotSupportedException ex) {
+            new ErrorDialog(ex, "Failed to set configuration code manually");
         }
     }
 
