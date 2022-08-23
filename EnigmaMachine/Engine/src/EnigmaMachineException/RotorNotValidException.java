@@ -85,7 +85,6 @@ public class RotorNotValidException extends Exception {
     }
 
     public void setNumberOfPairsInRotorInvalid(CTERotor rotor, List<Character> cteABC) {
-        // TODO Implement.
         if(rotor.getCTEPositioning().size() != cteABC.size()) {
             rotorsWithNotEnoghPositions.put(rotor.getId(), rotor.getCTEPositioning().size());
         }

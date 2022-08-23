@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="machineGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-    <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-      <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-    <RowConstraints vgrow="NEVER" />
-    <RowConstraints vgrow="NEVER" />
-      <RowConstraints vgrow="NEVER" />
-      <RowConstraints vgrow="NEVER" />
-  </rowConstraints>
-   <children>
-      <fx:include fx:id="machineDetailsGrid" source="MachineDetails.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-      <fx:include fx:id="codeCalibrationGrid" source="CodeCalibration.fxml" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER" />
-      <fx:include fx:id="currentCodeConfigurationGrid" source="CurrentCodeConfiguration.fxml" GridPane.columnIndex="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER" />
-   </children>
-</GridPane>
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController">
+   <content>
+      <GridPane fx:id="machineGrid">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+          <RowConstraints vgrow="NEVER" />
+          <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints vgrow="NEVER" />
+            <RowConstraints vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <fx:include fx:id="machineDetailsGrid" maxHeight="-Infinity" maxWidth="-Infinity" source="MachineDetails.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <fx:include fx:id="codeCalibrationGrid" source="CodeCalibration.fxml" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <ScrollPane GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+               <content>
+                  <fx:include fx:id="currentCodeConfigurationGrid" source="CurrentCodeConfiguration.fxml" GridPane.columnIndex="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER" />
+               </content>
+            </ScrollPane>
+         </children>
+      </GridPane>
+   </content>
+</ScrollPane>

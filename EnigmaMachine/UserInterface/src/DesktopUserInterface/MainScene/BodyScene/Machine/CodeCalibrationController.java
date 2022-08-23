@@ -1,5 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import DesktopUserInterface.MainScene.ErrorDialog;
+import EnigmaMachineException.MachineNotExistsException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,22 +15,26 @@ public class CodeCalibrationController {
     @FXML private Button setRandomCodeButton;
     @FXML private Button setManuallyCodeButton;
     private MachineGridController machineGridController;
-    private ManuallyCodeInitializer manuallyCodeInitializer;
+    private ManuallyCodeController manuallyCodeController;
 
     public void initialize() {
-        manuallyCodeInitializer = new ManuallyCodeInitializer();
+        manuallyCodeController = new ManuallyCodeController();
+        manuallyCodeController.setCodeCalibrationController(this);
     }
     public void setMachineGridController(MachineGridController machineGridController) {
         this.machineGridController = machineGridController;
     }
 
     @FXML void OnSetManuallyCodeButtonClicked(ActionEvent event) throws IOException {
-        {
-            manuallyCodeInitializer.show();
-        };
+        if(machineGridController.isMachineExists()) {
+            manuallyCodeController.show();
+        }
+        else {
+            new ErrorDialog(new MachineNotExistsException(), "Failed to set code configuration manually");
+        }
     }
 
     @FXML void OnSetRandomCodeButtonClicked(ActionEvent event) {
-
+        machineGridController.setAutomaticCodeConfiguration();
     }
 }
