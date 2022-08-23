@@ -16,14 +16,14 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <ScrollPane fx:id="decodeScroller" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
          <content>
-            <fx:include source="EncryptDecryptDetails.fxml" />
+            <fx:include fx:id="EncryptDecryptDetails" source="EncryptDecryptDetails.fxml" />
          </content>
       </ScrollPane>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="173.0" minWidth="100.0" prefHeight="248.0" prefWidth="602.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <ScrollPane fx:id="statisticScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="173.0" minWidth="100.0" prefHeight="248.0" prefWidth="602.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <content>
-            <fx:include prefWidth="600.0" source="MachineStatistics.fxml" />
+            <fx:include fx:id="machineStatistic" prefWidth="600.0" source="MachineStatistics.fxml" />
          </content>
       </ScrollPane>
    </children>

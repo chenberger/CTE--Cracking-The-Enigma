@@ -1,6 +1,9 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
-import EnigmaMachineException.MachineNotExistsException;
+import DesktopUserInterface.MainScene.ErrorDialog;
+import EnigmaMachineException.*;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +11,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.awt.event.ActionEvent;
 
 public class EncryptDecryptDetailsController {
 
@@ -37,11 +39,19 @@ public class EncryptDecryptDetailsController {
     private void setScrollPaneColor(){
         encryptDecryptWordsScrollPane.setStyle("-fx-background-color: transparent;");
     }
-    private void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException {
-        encryptDecryptGridController.decodeWord(encryptedDecryptedWordText.getText());
+    @FXML
+    private void onDecryptionButtonClicked(ActionEvent event) {
+        try {
+            String textToDecode = encryptDecryptTextBox.getText();
+            encryptDecryptGridController.decodeWord(textToDecode);
+        }
+        catch (MachineNotExistsException | IllegalArgumentException|SettingsNotInitializedException ex){
+            new ErrorDialog(ex, "");
+        }
     }
-
-
+    @FXML private void onResetMachineStateButtonClicked(ActionEvent event) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+        encryptDecryptGridController.resetMachineState();
+    }
     public void setDecodedWord(String decodeWord) {
         encryptedDecryptedWordText.setText(decodeWord);
     }

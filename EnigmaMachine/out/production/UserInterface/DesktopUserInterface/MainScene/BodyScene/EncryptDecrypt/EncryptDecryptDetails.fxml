@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
+<GridPane fx:id="EncryptDecryptDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints hgrow="NEVER" minWidth="30.0" prefWidth="30.0" />
@@ -29,7 +29,7 @@
     </rowConstraints>
     <children>
         <TextField fx:id="encryptDecryptTextBox" prefHeight="31.0" prefWidth="275.0" promptText="Put the word you want To encrypt/decrypt" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-        <Button fx:id="encryptDecryptButton" mnemonicParsing="false" text="encrypt/decrypt" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" text="encrypt/decrypt" GridPane.columnIndex="2" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
