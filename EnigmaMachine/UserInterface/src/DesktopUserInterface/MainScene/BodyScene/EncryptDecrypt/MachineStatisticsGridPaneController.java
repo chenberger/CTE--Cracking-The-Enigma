@@ -6,26 +6,26 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
-public class MachineStatisticsController {
+public class MachineStatisticsGridPaneController {
 
     @FXML
     private ScrollPane statisticsGrid;
-
-    @FXML
-    private GridPane machineStatisticsGridPane;
-
     @FXML
     private TextArea statisticTextArea;
 
     @FXML
     private Label machineStatisticsHeader;
+
+    @FXML
+    private GridPane machineStatisticsGridPane;
+
     private EncryptDecryptGridController encryptDecryptGridController;
 
     public void setEncryptDecryptGridController(EncryptDecryptGridController encryptDecryptGridController) {
         this.encryptDecryptGridController = encryptDecryptGridController;
     }
 
-    public void setDecodeWord(String decodeWord) {
-        statisticTextArea.setText(decodeWord);
+    public void showCurrentStatistics(String currentStatistics) {
+        statisticTextArea.setText(currentStatistics);
     }
 }
