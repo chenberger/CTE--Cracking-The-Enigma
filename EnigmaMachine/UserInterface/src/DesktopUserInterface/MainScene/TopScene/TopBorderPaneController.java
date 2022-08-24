@@ -35,7 +35,6 @@ public class TopBorderPaneController {
 
         try {
             enigmaMachineEngine.setMachineDetailsFromXmlFile(selectedFile.getPath());
-            mainController.machineLoaded();
             CurrentFilePathTextField.setText(selectedFile.getPath());
         }
         catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException ex) {

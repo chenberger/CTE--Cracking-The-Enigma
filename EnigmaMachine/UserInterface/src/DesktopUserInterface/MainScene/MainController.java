@@ -4,9 +4,9 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridControl
 import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
+import DesktopUserInterface.MainScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
-import EnigmaMachineException.MachineNotExistsException;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -36,6 +36,12 @@ public class MainController {
     public MainController() {
         this.enigmaMachineEngine = new EngineManager();
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
+
+        registerToEvents();
+    }
+
+    private void registerToEvents() {
+        enigmaMachineEngine.currentCodeConfigurationHandler.add(this::currentCodeConfigurationChanged);
     }
 
     @FXML
@@ -74,24 +80,13 @@ public class MainController {
     public void OnBruteForceTabSelected(Event event) {
     }
 
-    public void machineLoaded() {
-        machineGridController.setMachineDetails();
-    }
-
     public Window getStageWindow() {
         return borderPane.getScene().getWindow();
     }
 
-    public void currentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
-        encryptDecryptGridController.setCodeConfigurationInStatistics();
+    public void currentCodeConfigurationChanged(Object source , String currentCodeConfiguration) {
         currentCodeConfigurationGridControllers.forEach(code -> {
-            try {
-            code.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
-
-            }
-            catch (MachineNotExistsException | CloneNotSupportedException ex) {
-                new ErrorDialog(ex, "Failed to update the current code configuration");
-            }
+            code.setCodeConfiguration(currentCodeConfiguration);
         });
     }
 }

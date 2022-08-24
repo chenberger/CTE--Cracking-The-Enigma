@@ -1,15 +1,13 @@
-package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import EnigmaMachineException.*;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 

@@ -123,17 +123,18 @@ public class EnigmaMachine implements Serializable {
         if(reflectorIdSector.getElements().size() != 1) {
             reflectorSettingsException.addIllegalReflectorsSize(reflectorIdSector.getElements().size());
          }
+        else {
+            reflectorId = reflectorIdSector.getElements().get(0);
 
-        reflectorId = reflectorIdSector.getElements().get(0);
-
-        for(RomanNumber romanNumber : reflectors.keySet()) {
-            if(romanNumber == reflectorId) {
-                isReflectorFound = true;
+            for(RomanNumber romanNumber : reflectors.keySet()) {
+                if(romanNumber == reflectorId) {
+                    isReflectorFound = true;
+                }
             }
-        }
 
-        if(!isReflectorFound) {
-            reflectorSettingsException.addIllegalReflectorId(reflectorId, reflectors.keySet());
+            if(!isReflectorFound) {
+                reflectorSettingsException.addIllegalReflectorId(reflectorId, reflectors.keySet());
+            }
         }
 
         if(reflectorSettingsException.isExceptionNeedToThrown()) {
@@ -297,9 +298,9 @@ public class EnigmaMachine implements Serializable {
     public void setPluginBoard(PluginBoard pluginBoard) {
         this.pluginBoard = pluginBoard;
     }
-    public void validateReflectorInUseSettings(String id) {
+/*    public void validateReflectorInUseSettings(String id) {
         this.reflectorInUse = findReflectorById(id);
-    }
+    }*/
     //endregion
 
     //region Getters

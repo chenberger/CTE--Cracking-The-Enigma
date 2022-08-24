@@ -1,4 +1,4 @@
-package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.EncryptDecrypt;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,16 +8,12 @@ import javafx.scene.layout.GridPane;
 
 public class MachineStatisticsGridPaneController {
 
-    @FXML
-    private ScrollPane statisticsGrid;
-    @FXML
-    private TextArea statisticTextArea;
+    @FXML private ScrollPane statisticsGrid;
+    @FXML private TextArea statisticTextArea;
 
-    @FXML
-    private Label machineStatisticsHeader;
+    @FXML private Label machineStatisticsHeader;
 
-    @FXML
-    private GridPane machineStatisticsGridPane;
+    @FXML private GridPane machineStatisticsGridPane;
 
     private EncryptDecryptGridController encryptDecryptGridController;
 
@@ -25,7 +21,7 @@ public class MachineStatisticsGridPaneController {
         this.encryptDecryptGridController = encryptDecryptGridController;
     }
 
-    public void showCurrentStatistics(String currentStatistics) {
+    public void staticsAndHistoryChanged(Object o, String currentStatistics) {
         statisticTextArea.setText(currentStatistics);
     }
 

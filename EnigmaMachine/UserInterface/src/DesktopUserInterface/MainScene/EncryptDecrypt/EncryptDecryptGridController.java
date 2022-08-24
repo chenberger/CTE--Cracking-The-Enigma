@@ -1,4 +1,4 @@
-package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -37,8 +37,6 @@ public class EncryptDecryptGridController {
         try {
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
-            machineStatisticController.showCurrentStatistics(enigmaMachineEngine.getCurrentStatisticsAndHistory().toString());
-            mainController.currentCodeConfigurationChanged();
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             new ErrorDialog(ex,"Unable to decode.");
@@ -53,7 +51,14 @@ public class EncryptDecryptGridController {
 
     public void setEngineManager(EngineManager enigmaMachineEngine) {
         this.enigmaMachineEngine = enigmaMachineEngine;
+
+        registerToEvents();
     }
+
+    private void registerToEvents() {
+        enigmaMachineEngine.statisticsAndHistoryHandler.add(machineStatisticController::staticsAndHistoryChanged);
+    }
+
     public void initialize() {
         if(EncryptDecryptDetailsController != null) {
             EncryptDecryptDetailsController.setEncryptDecryptGridController(this);
@@ -66,17 +71,12 @@ public class EncryptDecryptGridController {
     public void resetMachineState() throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try{
             enigmaMachineEngine.resetSettings();
-            mainController.currentCodeConfigurationChanged();
+            //TODO chen: update current code configuration
         }
         catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |
-                SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException | MachineNotExistsException ex) {
+                SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException ex) {
             new ErrorDialog(ex,"Unable to reset machine state.");
         }
     }
-
-    public void setCodeConfigurationInStatistics() throws MachineNotExistsException, CloneNotSupportedException {
-        machineStatisticController.setCodeConfiguration(enigmaMachineEngine.getCurrentStatisticsAndHistory().toString());
-    }
-
     //TODO chen: add keyboard bonus spare room component
 }
