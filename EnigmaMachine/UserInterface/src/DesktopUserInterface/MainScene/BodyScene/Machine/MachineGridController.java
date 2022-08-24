@@ -28,10 +28,6 @@ public class MachineGridController {
              codeCalibrationGridController.setMachineGridController(this);
          }
 
-         if(currentCodeConfigurationGridController != null) {
-             currentCodeConfigurationGridController.setMachineController(this);
-         }
-
          if(machineDetailsGrid != null) {
             machineDetailsGrid.setStyle("-fx-background-color:transparent;");
          }
@@ -57,7 +53,6 @@ public class MachineGridController {
     public void setAutomaticCodeConfiguration() {
          try {
              enigmaMachineEngine.setSettingsAutomatically();
-             //TODO : delete mainController.currentCodeConfigurationChanged();
          }
          catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |
                   SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException |
