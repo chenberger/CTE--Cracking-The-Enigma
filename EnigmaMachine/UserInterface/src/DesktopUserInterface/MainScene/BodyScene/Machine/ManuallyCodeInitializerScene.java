@@ -10,17 +10,24 @@ import java.io.IOException;
 
 public class ManuallyCodeInitializerScene {
     private ManuallyCodeController manuallyCodeController;
-    public void show(MachineDetails machineDetails) throws IOException {
+    private Stage manuallyCodeStage;
+    private CodeCalibrationController codeCalibrationController;
+    public void show(MachineDetails machineDetails, CodeCalibrationController codeCalibrationController) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManuallyCodeInitializer.fxml"));
         Parent load = fxmlLoader.load();
         this.manuallyCodeController = (ManuallyCodeController) fxmlLoader.getController();
         manuallyCodeController.setMachineDetails(machineDetails);
+        manuallyCodeController.setCodeCalibrationController(codeCalibrationController);
         manuallyCodeController.initializeControls();
 
         Scene scene = new Scene(load);
-        Stage secondStage = new Stage();
-        secondStage.setScene(scene); // set the scene
-        secondStage.setTitle("Manually Code Configuration");
-        secondStage.show();
+        manuallyCodeStage = new Stage();
+        manuallyCodeStage.setScene(scene); // set the scene
+        manuallyCodeStage.setTitle("Manually Code Configuration");
+        manuallyCodeStage.show();
+    }
+
+    public void close() {
+        manuallyCodeStage.close();
     }
 }

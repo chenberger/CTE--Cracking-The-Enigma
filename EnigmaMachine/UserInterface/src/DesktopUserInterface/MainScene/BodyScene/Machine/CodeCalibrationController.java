@@ -2,13 +2,15 @@ package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
-import EnigmaMachineException.MachineNotExistsException;
+import Engine.Sector;
+import EnigmaMachineException.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CodeCalibrationController {
 
@@ -31,7 +33,7 @@ public class CodeCalibrationController {
         manuallyCodeInitializerScene= new ManuallyCodeInitializerScene();
 
         try {
-            manuallyCodeInitializerScene.show(engineManager.displaySpecifications());
+            manuallyCodeInitializerScene.show(engineManager.displaySpecifications(), this);
         }
         catch (MachineNotExistsException  | CloneNotSupportedException ex) {
             new ErrorDialog(ex, "Failed to set configuration code manually");
@@ -40,5 +42,20 @@ public class CodeCalibrationController {
 
     @FXML void OnSetRandomCodeButtonClicked(ActionEvent event) {
         machineGridController.setAutomaticCodeConfiguration();
+    }
+
+    public void codeConfigurationSetted(List<Sector> codeConfigurationSectors) {
+        try {
+            engineManager.initializeSettings(codeConfigurationSectors);
+        }
+        catch (MachineNotExistsException  | SettingsFormatException | CloneNotSupportedException  |RotorsInUseSettingsException | SettingsNotInitializedException |
+               StartingPositionsOfTheRotorException | ReflectorSettingsException | PluginBoardSettingsException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    public void codeConfigurationSetSuccessfully() {
+        manuallyCodeInitializerScene.close();
     }
 }

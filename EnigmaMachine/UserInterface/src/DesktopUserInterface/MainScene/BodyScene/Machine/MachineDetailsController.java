@@ -21,12 +21,16 @@ public class MachineDetailsController {
         this.machineGridController = machineGridController;
     }
 
-    public void machineDetailsChanged(MachineDetails machineDetails) {
+    public void machineDetailsChanged(Object object, MachineDetails machineDetails) {
         totalAmountRotorsLabel.setText(String.valueOf(machineDetails.getAmountOfTotalRotors()));
         currentAmountRotorsLabel.setText(String.valueOf(machineDetails.getAmountCurrentRotorsInUse()));
         totalAmountReflectorsLabel.setText(String.valueOf(machineDetails.getAmountOfTotalReflectors()));
         messagesAmountLabel.setText(String.valueOf(machineDetails.getMessagesCounter()));
         originalCodeLabel.setText(String.valueOf(machineDetails.getOriginalMachineSettings()));
         currentCodeLabel.setText(String.valueOf(machineDetails.getCurrentMachineSettings()));
+    }
+
+    public void currentCodeChanged(Object source, String currentCode) {
+        currentCodeLabel.setText(currentCode);
     }
 }

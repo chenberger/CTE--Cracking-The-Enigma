@@ -213,7 +213,7 @@ public class ConsoleUserInterface {
                     continueOperation = false;
                     System.out.println("The message have been processed successfully" + System.lineSeparator() +
                             "The processed message is: " + encryptedMessage + System.lineSeparator());
-                } catch (MachineNotExistsException | IllegalArgumentException ex) {
+                } catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex) {
                     System.out.println(ex.getMessage());
                     continueOperation = shouldContinueInOperation();
                     if (continueOperation) {

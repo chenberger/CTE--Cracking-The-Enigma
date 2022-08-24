@@ -1,15 +1,19 @@
 package Engine;
 
+import DTO.MachineDetails;
+import Events.EventHandler;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.*;
-import Jaxb.Schema.Generated.*;
-import DTO.MachineDetails;
+import Jaxb.Schema.Generated.CTEEnigma;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 // the purpose of the EngineManager is to manage the Enigma Machine, and it's operations.
@@ -18,14 +22,39 @@ public class EngineManager implements MachineOperations, Serializable {
     //region private data members
     private EnigmaMachine enigmaMachine;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
-
-
     //endregion
+
+    public EventHandler<String> statisticsAndHistoryHandler;
+    public EventHandler<String> currentCodeConfigurationHandler;
+    public EventHandler<MachineDetails> machineDetailsHandler;
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.enigmaMachine = null;
+
+        initializeEventHandlers();
     }
+
+    //region events
+    private void initializeEventHandlers() {
+        this.statisticsAndHistoryHandler = new EventHandler<>();
+        this.currentCodeConfigurationHandler = new EventHandler<>();
+        this.machineDetailsHandler = new EventHandler<>();
+    }
+
+    private void onCurrentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
+        currentCodeConfigurationHandler.invoke(this, displaySpecifications().getCurrentMachineSettings());
+    }
+
+    private void onMachineDetailsChanged() throws MachineNotExistsException, CloneNotSupportedException {
+        machineDetailsHandler.invoke(this, displaySpecifications());
+    }
+
+    private void onStatisticsAndHistoryChanged() throws MachineNotExistsException, CloneNotSupportedException {
+        statisticsAndHistoryHandler.invoke(this, statisticsAndHistoryAnalyzer.toString());
+    }
+    //endregion
+
 
     //region JAXB Translation
     public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException {
@@ -40,9 +69,15 @@ public class EngineManager implements MachineOperations, Serializable {
             if(statisticsAndHistoryAnalyzer != null) {
                 statisticsAndHistoryAnalyzer.clear();
             }
-        } catch (FileNotFoundException e) {
+
+            onCurrentCodeConfigurationChanged();
+            onMachineDetailsChanged();
+            onStatisticsAndHistoryChanged();
+        }
+        catch (FileNotFoundException e) {
             throw new FileNotFoundException();
-        }catch (JAXBException e){
+        }
+        catch (JAXBException | MachineNotExistsException | CloneNotSupportedException e){
             throw new RuntimeException();
         }
     }
@@ -59,17 +94,21 @@ public class EngineManager implements MachineOperations, Serializable {
         RandomSettingsGenerator randomSettingsGenerator = new RandomSettingsGenerator(enigmaMachine);
         List<Sector> randomSectors = randomSettingsGenerator.getRandomSectorSettings();
 
-        validateMachineSettings(randomSectors);
         initializeSettings(randomSectors);
     }
 
     //region set Settings
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
+        validateMachineSettings(settingsSector);
         setMachineSettings(settingsSector);
         enigmaMachine.setTheInitialCodeDefined(true);
-        resetSettings();
+        resetMachine();
         setSettingsFormat(settingsSector);
         checkIfTheSettingsFormatInitialized();
+
+        onCurrentCodeConfigurationChanged();
+        onMachineDetailsChanged();
+        onStatisticsAndHistoryChanged();
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
@@ -95,14 +134,22 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
+        AtomicReference<Boolean> needToThrowException = new AtomicReference<>(false);
+        StringBuilder exceptionMessage = new StringBuilder();
+
         sectorSettings.forEach(sector -> {
             try {
                 sector.validateSector(enigmaMachine);
             } catch (RotorsInUseSettingsException | ReflectorSettingsException | PluginBoardSettingsException |
                      StartingPositionsOfTheRotorException e) {
-                throw new RuntimeException(e);
+                exceptionMessage.append(e.getMessage() + System.lineSeparator());
+                needToThrowException.set(true);
             }
         });
+
+        if(needToThrowException.get()) {
+            throw new RuntimeException(exceptionMessage.toString());
+        }
     }
 
     public void clearSettings() throws MachineNotExistsException {
@@ -121,8 +168,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
     //endregion
 
-    @Override
-    public void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException {
+    private void resetMachine() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException {
         if(!isMachineExists()) {
             throw new MachineNotExistsException();
         }
@@ -131,6 +177,12 @@ public class EngineManager implements MachineOperations, Serializable {
         }
 
         enigmaMachine.resetSettings();
+    }
+
+    @Override
+    public void resetSettings() throws MachineNotExistsException, CloneNotSupportedException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException {
+        resetMachine();
+        onCurrentCodeConfigurationChanged();
     }
 
     @Override
@@ -155,7 +207,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException {
+    public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
         OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         Instant start = Instant.now();
         String encryptedString = getProcessedInput(inputToProcess);
@@ -167,6 +219,9 @@ public class EngineManager implements MachineOperations, Serializable {
         enigmaMachine.getOriginalSettingsFormat().advanceIndexFormat();
         statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
         statisticsAndHistoryAnalyzer.advancedMessagesCounter();
+
+        onCurrentCodeConfigurationChanged();
+        onStatisticsAndHistoryChanged();
 
         return encryptedString;
     }

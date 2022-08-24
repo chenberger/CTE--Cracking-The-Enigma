@@ -36,7 +36,13 @@ public class MachineGridController {
             machineDetailsGrid.setStyle("-fx-background-color:transparent;");
          }
      }
-     public void setMainController(MainController mainController) {
+
+    private void registerToEvents() {
+        enigmaMachineEngine.currentCodeConfigurationHandler.add(machineDetailsGridController::currentCodeChanged);
+        enigmaMachineEngine.machineDetailsHandler.add(machineDetailsGridController::machineDetailsChanged);
+    }
+
+    public void setMainController(MainController mainController) {
         this.mainController = mainController;
         this.mainController.addCurrentCodeConfigurationController(currentCodeConfigurationGridController);
     }
@@ -44,23 +50,14 @@ public class MachineGridController {
     public void setEngineManager(EngineManager enigmaMachineEngine) {
          this.enigmaMachineEngine = enigmaMachineEngine;
          this.codeCalibrationGridController.setEngineManager(enigmaMachineEngine);
-    }
 
-    public void setMachineDetails() {
-         try {
-             machineDetailsGridController.machineDetailsChanged(enigmaMachineEngine.displaySpecifications());
-         } catch (MachineNotExistsException | CloneNotSupportedException ex) {
-             new ErrorDialog(ex, "Failed to get the machine details");
-         }
+         registerToEvents();
     }
 
     public void setAutomaticCodeConfiguration() {
          try {
              enigmaMachineEngine.setSettingsAutomatically();
-             machineDetailsGridController.machineDetailsChanged(enigmaMachineEngine.displaySpecifications());
-             mainController.currentCodeConfigurationChanged();
-
-             //TODO erez: update machine details and current code configuration
+             //TODO : delete mainController.currentCodeConfigurationChanged();
          }
          catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |
                   SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException |
