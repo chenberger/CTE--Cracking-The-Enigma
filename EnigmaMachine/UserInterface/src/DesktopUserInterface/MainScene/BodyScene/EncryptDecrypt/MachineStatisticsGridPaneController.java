@@ -28,4 +28,8 @@ public class MachineStatisticsGridPaneController {
     public void showCurrentStatistics(String currentStatistics) {
         statisticTextArea.setText(currentStatistics);
     }
+
+    public void setCodeConfiguration(String currentMachineSettings) {
+        statisticTextArea.setText(currentMachineSettings);
+    }
 }

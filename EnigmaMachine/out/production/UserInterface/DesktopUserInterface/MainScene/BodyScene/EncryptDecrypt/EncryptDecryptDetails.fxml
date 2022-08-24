@@ -34,9 +34,9 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Button>
-        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" text="Reset Machine State" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" text="Reset Machine State" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
         <Label fx:id="encryptDecryptTextLabel" text="encrypted/decrypted word" textFill="#1c11f2" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-        <ScrollPane fx:id="encryptDecryptWordsScrollPane" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="TOP">
+        <ScrollPane fx:id="encryptDecryptWordsScrollPane" fitToHeight="true" fitToWidth="true" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="TOP">
             <content>
                 <TextField fx:id="encryptedDecryptedWordText" editable="false" />
             </content>

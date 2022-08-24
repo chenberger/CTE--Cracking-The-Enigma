@@ -82,10 +82,12 @@ public class MainController {
         return borderPane.getScene().getWindow();
     }
 
-    public void currentCodeConfigurationChanged() {
+    public void currentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
+        encryptDecryptGridController.setCodeConfigurationInStatistics();
         currentCodeConfigurationGridControllers.forEach(code -> {
             try {
             code.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
+
             }
             catch (MachineNotExistsException | CloneNotSupportedException ex) {
                 new ErrorDialog(ex, "Failed to update the current code configuration");
