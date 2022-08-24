@@ -59,6 +59,7 @@ public class MachineGridController {
              enigmaMachineEngine.setSettingsAutomatically();
              machineDetailsGridController.machineDetailsChanged(enigmaMachineEngine.displaySpecifications());
              mainController.currentCodeConfigurationChanged();
+
              //TODO erez: update machine details and current code configuration
          }
          catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |

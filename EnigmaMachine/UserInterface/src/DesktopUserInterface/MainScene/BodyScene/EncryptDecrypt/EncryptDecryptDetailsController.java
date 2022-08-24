@@ -1,6 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
+import DesktopUserInterface.MainScene.MainController;
 import EnigmaMachineException.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -43,7 +44,9 @@ public class EncryptDecryptDetailsController {
     private void onDecryptionButtonClicked(ActionEvent event) {
         try {
             String textToDecode = encryptDecryptTextBox.getText();
+            if(!textToDecode.isEmpty()){
             encryptDecryptGridController.decodeWord(textToDecode);
+            }
         }
         catch (MachineNotExistsException | IllegalArgumentException|SettingsNotInitializedException ex){
             new ErrorDialog(ex, "");
