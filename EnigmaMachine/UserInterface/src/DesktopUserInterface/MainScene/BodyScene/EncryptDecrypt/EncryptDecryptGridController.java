@@ -1,4 +1,4 @@
-package DesktopUserInterface.MainScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;

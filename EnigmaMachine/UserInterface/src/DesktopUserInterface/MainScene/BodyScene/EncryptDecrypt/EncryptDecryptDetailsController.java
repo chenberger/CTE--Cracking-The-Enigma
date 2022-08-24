@@ -1,7 +1,6 @@
-package DesktopUserInterface.MainScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
-import DesktopUserInterface.MainScene.MainController;
 import EnigmaMachineException.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package DesktopUserInterface.MainScene.EncryptDecrypt;
+package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
