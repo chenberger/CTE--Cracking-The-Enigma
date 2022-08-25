@@ -5,8 +5,9 @@
    
 }
 .answer-labels {
-    -fx-text-fill: #030303;
+    -fx-text-fill: black;
     -fx-font-size: 15px;
+    -fx-border-color: rgb(174, 127, 45);
 }
 .machine-deatils {
     -fx-font-size: 25px;

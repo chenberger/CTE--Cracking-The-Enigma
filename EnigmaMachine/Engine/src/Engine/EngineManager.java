@@ -220,7 +220,7 @@ public class EngineManager implements MachineOperations, Serializable {
         statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
         statisticsAndHistoryAnalyzer.advancedMessagesCounter();
 
-        onCurrentCodeConfigurationChanged();
+        onMachineDetailsChanged();
         onStatisticsAndHistoryChanged();
 
         return encryptedString;

@@ -1,14 +1,13 @@
 package DesktopUserInterface.MainScene;
 
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController;
+import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
-import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -22,7 +21,7 @@ public class MainController {
     @FXML private BorderPane borderPane;
     @FXML private TopBorderPaneController topBorderPaneController;
     @FXML private GridPane topBorderPane;
-    @FXML private ScrollPane machineGrid;
+    @FXML private GridPane machineGrid;
     @FXML private MachineGridController machineGridController;
     @FXML private GridPane encryptDecryptGrid;
     @FXML private EncryptDecryptGridController encryptDecryptGridController;

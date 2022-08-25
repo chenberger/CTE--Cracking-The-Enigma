@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
 
 public class EncryptDecryptGridController {
     @FXML private AnchorPane configurationAnchorPane;
-    @FXML private ScrollPane CurrentCodeConfigurationGrid;
+    @FXML private GridPane CurrentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
     @FXML private GridPane encryptDecryptGrid;
 

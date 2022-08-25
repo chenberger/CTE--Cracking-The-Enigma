@@ -201,6 +201,7 @@ public class ManuallyCodeController {
         for (int i = 0; i < machineDetails.getAmountCurrentRotorsInUse(); i++) {
             rotorIdVBox = new VBox();
             label = new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString());
+            label.setWrapText(true);
             rotorIdVBox.getChildren().add(label);
             choiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsId()));
             choiceBox.setPrefWidth(label.getPrefWidth());
@@ -208,7 +209,7 @@ public class ManuallyCodeController {
             RotorsId.getChildren().add(rotorIdVBox);
 
             rotorStartingPositionVBox = new VBox();
-            rotorStartingPositionVBox.getChildren().add(new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString()));
+            rotorStartingPositionVBox.getChildren().add(label);
             rotorStartingPositionVBox.getChildren().add(new ChoiceBox<Character>(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters())));
             StartingPositions.getChildren().add(rotorStartingPositionVBox);
         }
