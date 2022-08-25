@@ -69,7 +69,7 @@
                                        <children>
                                           <TextFlow lineSpacing="5.0">
                                              <children>
-                                                <Label prefHeight="70.0" prefWidth="500.0" text="Please enter the starting positions  of the rotors that will be in the Enigma machine" />
+                                                <Label prefHeight="70.0" prefWidth="500.0" text="Please enter the starting positions  of the rotors that will be in the Enigma machine" wrapText="true" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets left="10.0" />
@@ -94,7 +94,7 @@
                                        <children>
                                           <TextFlow lineSpacing="5.0" prefHeight="70.0" prefWidth="500.0">
                                              <children>
-                                                <Label prefHeight="70.0" prefWidth="500.0" text="Please select the reflector that will be in the Enigma machine">
+                                                <Label prefHeight="70.0" prefWidth="500.0" text="Please select the reflector that will be in the Enigma machine" wrapText="true">
                                                    <padding>
                                                       <Insets right="10.0" />
                                                    </padding>
@@ -114,9 +114,9 @@
                                  <children>
                                     <FlowPane minHeight="-Infinity" prefWidth="500.0" vgap="20.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Please enter characters that make up all the plugin pairs in the machine." />
-                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Note: do not use the same character in more than one mapping pair, and there is no character mapping to itself." />
-                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Also, its not mandatory to add any pairs, it means that there are no plugin pairs at all in the machine." />
+                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Please enter characters that make up all the plugin pairs in the machine." wrapText="true" />
+                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Note: do not use the same character in more than one mapping pair, and there is no character mapping to itself." wrapText="true" />
+                                          <Label maxWidth="500.0" minWidth="200.0" prefWidth="500.0" text="Also, its not mandatory to add any pairs, it means that there are no plugin pairs at all in the machine." wrapText="true" />
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -124,7 +124,7 @@
                                     </FlowPane>
                                     <HBox spacing="15.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label prefHeight="70.0" text="Add plugin pair:" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="70.0" text="Add plugin pair:" wrapText="true" HBox.hgrow="ALWAYS" />
                                           <ChoiceBox fx:id="leftPluggedPairChoiceBox" prefHeight="32.0" HBox.hgrow="NEVER">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
@@ -175,7 +175,7 @@
                                        <children>
                                           <VBox spacing="7.0">
                                              <children>
-                                                <Label maxWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" text="Please enter the id numbers of the rotors that will be in the Enigma machine:" />
+                                                <Label maxWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" text="Please enter the id numbers of the rotors that will be in the Enigma machine:" wrapText="true" />
                                                 <HBox fx:id="RotorsId" spacing="5.0">
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -10,218 +9,200 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="machineDetailsScroll" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.MachineDetailsController">
-   <content>
-      <GridPane fx:id="machineDetailsGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@machinedetails.css">
+<GridPane fx:id="machineDetailsGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@machinedetails.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.MachineDetailsController">
+  <columnConstraints>
+      <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="150.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="450.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <VBox id="top" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="101.0" prefWidth="150.0" styleClass="machine-deatils" text="Machine Details " textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="33.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="450.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <VBox id="top" prefHeight="321.0" prefWidth="154.0">
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" styleClass="data-box" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="250.0" styleClass="machine-deatils" text="Machine " textAlignment="CENTER">
-                     <font>
-                        <Font size="33.0" />
-                     </font>
-                  </Label>
-                  <Label styleClass="machine-deatils" text="Details">
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="175.0" styleClass="question-labels" stylesheets="@machinedetails.css" text="The total amount of rotors that can be use in the machine is:" wrapText="true" HBox.hgrow="ALWAYS">
                      <padding>
-                        <Insets left="37.0" right="38.0" />
+                        <Insets bottom="8.0" right="10.0" top="8.0" />
                      </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="totalAmountRotorsLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" styleClass="answer-labels" textAlignment="RIGHT" wrapText="true" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="30.0" left="5.0" right="5.0" top="30.0" />
+                     </HBox.margin>
                   </Label>
                </children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
                <padding>
-                  <Insets top="135.0" />
+                  <Insets right="10.0" />
                </padding>
-            </VBox>
-            <GridPane prefWidth="200.0" GridPane.columnIndex="1">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" spacing="5.0" styleClass="data-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <HBox prefHeight="30.0" styleClass="data-box">
-                     <children>
-                        <Label prefHeight="104.0" prefWidth="166.0" styleClass="question-labels" stylesheets="@machinedetails.css" text="The total amount of rotors that can be use in the machine is:" wrapText="true" HBox.hgrow="NEVER">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="8.0" right="10.0" top="8.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="totalAmountRotorsLabel" prefHeight="18.0" prefWidth="0.0" styleClass="answer-labels" HBox.hgrow="NEVER">
-                           <padding>
-                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets right="18.0" top="50.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="175.0" styleClass="question-labels" text="The current amount of rotors in use in the machine is:" wrapText="true" HBox.hgrow="ALWAYS">
                      <padding>
-                        <Insets right="10.0" />
+                        <Insets bottom="8.0" right="10.0" top="8.0" />
                      </padding>
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox prefHeight="30.0" spacing="5.0" styleClass="data-box" GridPane.columnIndex="1">
-                     <children>
-                        <Label styleClass="question-labels" text="The current amount of rotors in use in the machine is:" wrapText="true">
-                           <padding>
-                              <Insets bottom="8.0" right="10.0" top="8.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="currentAmountRotorsLabel" styleClass="answer-labels">
-                           <HBox.margin>
-                              <Insets right="18.0" top="50.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                           </padding>
-                        </Label>
-                     </children>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="currentAmountRotorsLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" styleClass="answer-labels" wrapText="true" HBox.hgrow="ALWAYS">
                      <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                     <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox prefHeight="30.0" styleClass="data-box" GridPane.rowIndex="1">
-                     <children>
-                        <Label styleClass="question-labels" text="The total amount of reflectors that can be use in the machine is:" wrapText="true">
-                           <padding>
-                              <Insets bottom="8.0" right="10.0" top="8.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="totalAmountReflectorsLabel" styleClass="answer-labels">
-                           <HBox.margin>
-                              <Insets right="18.0" top="50.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets right="10.0" />
                      </padding>
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox prefHeight="30.0" styleClass="data-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <Label prefHeight="100.0" prefWidth="177.0" styleClass="question-labels" text="The total amount of messages have been processed by the machine so far is:" wrapText="true">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="8.0" right="10.0" top="8.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="messagesAmountLabel" styleClass="answer-labels">
-                           <HBox.margin>
-                              <Insets right="18.0" top="50.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox prefHeight="30.0" styleClass="data-box" GridPane.rowIndex="2">
-                     <children>
-                        <VBox prefHeight="133.0" prefWidth="232.0">
-                           <children>
-                              <Label styleClass="question-labels" text="The original code machine settings is:" wrapText="true">
-                                 <padding>
-                                    <Insets bottom="8.0" right="10.0" top="8.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="originalCodeLabel" styleClass="answer-labels">
-                                 <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox prefHeight="30.0" styleClass="data-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <children>
-                        <VBox prefHeight="133.0" prefWidth="229.0">
-                           <children>
-                              <Label styleClass="question-labels" text="The current code machine settings is:" wrapText="true">
-                                 <padding>
-                                    <Insets bottom="8.0" right="10.0" top="8.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="currentCodeLabel" styleClass="answer-labels">
-                                 <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </HBox>
+                     <HBox.margin>
+                        <Insets bottom="30.0" left="5.0" right="5.0" top="30.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
-            </GridPane>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" spacing="5.0" styleClass="data-box" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="175.0" styleClass="question-labels" text="The total amount of reflectors that can be use in the machine is:" wrapText="true" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="8.0" right="10.0" top="8.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="totalAmountReflectorsLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" styleClass="answer-labels" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="30.0" left="5.0" right="5.0" top="30.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" spacing="5.0" styleClass="data-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="175.0" styleClass="question-labels" text="The total amount of messages have been processed by the machine so far is:" wrapText="true" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="8.0" right="10.0" top="8.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="messagesAmountLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" styleClass="answer-labels" wrapText="true" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="30.0" left="5.0" right="5.0" top="30.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" styleClass="data-box" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="133.0" prefWidth="232.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="question-labels" text="The original code machine settings is:" wrapText="true" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="8.0" right="10.0" top="8.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="originalCodeLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="answer-labels" wrapText="true" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" styleClass="data-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="133.0" prefWidth="229.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="question-labels" text="The current code machine settings is:" wrapText="true" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="8.0" right="10.0" top="8.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="currentCodeLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="answer-labels" wrapText="true" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </HBox>
          </children>
       </GridPane>
-   </content>
-</ScrollPane>
+   </children>
+</GridPane>

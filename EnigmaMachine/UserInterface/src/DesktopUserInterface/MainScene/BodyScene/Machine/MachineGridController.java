@@ -5,17 +5,16 @@ import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
 public class MachineGridController {
     @FXML private GridPane machineGrid;
-    @FXML private ScrollPane machineDetailsGrid;
+    @FXML private GridPane machineDetailsGrid;
     @FXML private MachineDetailsController machineDetailsGridController;
     @FXML private CodeCalibrationController codeCalibrationGridController;
-    @FXML private ScrollPane currentCodeConfigurationGrid;
+    @FXML private GridPane currentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController currentCodeConfigurationGridController;
-    @FXML private ScrollPane codeCalibrationGrid;
+    @FXML private GridPane codeCalibrationGrid;
      private MainController mainController;
      private EngineManager enigmaMachineEngine;
 
