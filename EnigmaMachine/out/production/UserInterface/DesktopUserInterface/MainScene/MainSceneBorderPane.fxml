@@ -8,25 +8,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.MainController">
+<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.MainController">
    <content>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1220.0">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
          <children>
-            <BorderPane fx:id="borderPane" layoutX="0.5" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <top>
-                  <fx:include fx:id="topBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="1000.0" source="TopScene/TopBorderPane.fxml" BorderPane.alignment="TOP_LEFT" />
-               </top>
+            <BorderPane fx:id="borderPane" layoutX="0.5" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                <center>
-                  <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1220.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1000.0" tabMaxWidth="2000.0">
+                  <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1000.0" tabMaxWidth="2000.0">
                      <tabs>
                         <Tab fx:id="machineTab" onSelectionChanged="#OnMachineTabSelected" text="Machine">
                            <content>
-                              <fx:include fx:id="machineGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1200.0" source="BodyScene/Machine/MachineGrid.fxml" />
+                              <fx:include fx:id="machineGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="BodyScene/Machine/MachineGrid.fxml" />
                            </content>
                         </Tab>
                         <Tab fx:id="encryptDecryptTab" onSelectionChanged="#OnEncryptDecryptTabSelected" text="Encrypt/Decrypt">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane>
                                  <children>
                                     <fx:include fx:id="encryptDecryptGrid" source="BodyScene/EncryptDecrypt/EncryptDecryptGrid.fxml" />
                                  </children>
@@ -35,7 +32,7 @@
                         </Tab>
                         <Tab fx:id="bruteForceTab" onSelectionChanged="#OnBruteForceTabSelected" text="Brute Force">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane>
                                  <children>
                                     <fx:include fx:id="bruteForceGrid" source="BodyScene/BruteForce/BruteForceGrid.fxml" />
                                  </children>
@@ -46,9 +43,9 @@
                   </TabPane>
                </center>
                <bottom>
-                  <AnchorPane prefHeight="26.0" prefWidth="1298.0">
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="1298.0">
                      <children>
-                        <Label prefHeight="34.0" prefWidth="873.0" text="\@ Copyright by Erez Cohen and Chen berger" textAlignment="CENTER">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="873.0" text="\@ Copyright by Erez Cohen and Chen berger" textAlignment="CENTER">
                            <padding>
                               <Insets left="550.0" />
                            </padding>
@@ -56,6 +53,9 @@
                      </children>
                   </AnchorPane>
                </bottom>
+               <top>
+                  <fx:include fx:id="topBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="1230.0" source="TopScene/TopBorderPane.fxml" BorderPane.alignment="BOTTOM_CENTER" />
+               </top>
             </BorderPane>
          </children>
       </AnchorPane>

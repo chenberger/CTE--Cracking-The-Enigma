@@ -6,21 +6,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="TopOfScene" maxHeight="250.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.TopScene.TopBorderPaneController">
+<GridPane fx:id="TopOfScene" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.TopScene.TopBorderPaneController">
   <columnConstraints>
-    <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="157.0" />
-      <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="408.0" prefWidth="443.0" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="183.33334350585938" minHeight="100.0" prefHeight="120.0" vgrow="ALWAYS" />
-      <RowConstraints percentHeight="0.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="1.7976931348623157E308" percentHeight="0.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <AnchorPane id="enigma-image" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" stylesheets="@TopBorderPane.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <AnchorPane id="enigma-image" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@TopBorderPane.css" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -28,41 +29,54 @@
             <Insets />
          </GridPane.margin>
       </AnchorPane>
-      <Button id="load-machine-button" fx:id="LoadMachineButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoadMachineButtonClicked" prefHeight="40.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="Load Machine" textAlignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <padding>
-            <Insets left="15.0" right="15.0" />
-         </padding>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
          <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" top="40.0" />
+            <Insets />
          </GridPane.margin>
-      </Button>
-      <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
          <children>
-            <Label id="currren-file-path-label" fx:id="CurrentFilePathTextField1" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="210.0" stylesheets="@TopBorderPane.css" text="Currently loaded file path:">
+            <Button id="load-machine-button" fx:id="LoadMachineButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" mnemonicParsing="false" onAction="#OnLoadMachineButtonClicked" prefHeight="54.0" prefWidth="200.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="Load Machine" HBox.hgrow="NEVER">
                <font>
                   <Font size="20.0" />
                </font>
                <padding>
-                  <Insets right="18.0" top="7.25" />
+                  <Insets left="15.0" right="15.0" />
                </padding>
-            </Label>
-            <Label id="loaded-file-path" fx:id="CurrentFilePathTextField" alignment="CENTER" contentDisplay="RIGHT" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="350.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="There is no any file loaded" wrapText="true">
-               <padding>
-                  <Insets bottom="7.25" right="100.0" top="7.25" />
-               </padding>
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Label>
+               <HBox.margin>
+                  <Insets bottom="40.0" left="20.0" right="20.0" top="5.0" />
+               </HBox.margin>
+            </Button>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="88.0" prefWidth="440.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label id="currren-file-path-label" fx:id="CurrentFilePathTextField1" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="200.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" stylesheets="@TopBorderPane.css" text="Currently loaded file path:" VBox.vgrow="NEVER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets right="18.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets right="230.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label id="loaded-file-path" fx:id="CurrentFilePathTextField" alignment="CENTER" contentDisplay="RIGHT" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="34.0" prefWidth="430.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="There is no any file loaded" wrapText="true" VBox.vgrow="NEVER">
+                     <padding>
+                        <Insets right="170.0" />
+                     </padding>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="40.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </VBox>
-      <Label id="enigma-label" fx:id="EnigmaMachineHeadlineTextField" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="420.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="The Enigma Machine" textAlignment="CENTER" textFill="#0e20eb" textOverrun="CENTER_ELLIPSIS" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      </HBox>
+      <Label id="enigma-label" fx:id="EnigmaMachineHeadlineTextField" alignment="CENTER" maxHeight="150.0" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="420.0" styleClass="top-buttons" stylesheets="@TopBorderPane.css" text="The Enigma Machine" textAlignment="CENTER" textFill="#0e20eb" textOverrun="CENTER_ELLIPSIS" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
