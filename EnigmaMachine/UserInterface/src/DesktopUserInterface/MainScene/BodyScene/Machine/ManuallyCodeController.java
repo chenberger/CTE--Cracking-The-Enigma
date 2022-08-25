@@ -89,6 +89,7 @@ public class ManuallyCodeController {
     }
 
     @FXML void OnSetCodeButtonClicked(ActionEvent event) {
+        codeConfigurationSectors.clear();
         translateFromControllersToSectors();
 
         try {
