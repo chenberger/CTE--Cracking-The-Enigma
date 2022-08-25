@@ -196,21 +196,25 @@ public class ManuallyCodeController {
         VBox rotorIdVBox;
         VBox rotorStartingPositionVBox;
         Label label;
-        ChoiceBox<Integer> choiceBox;
+        ChoiceBox<Integer> idChoiceBox;
+        ChoiceBox<Character> characterChoiceBox;
 
         for (int i = 0; i < machineDetails.getAmountCurrentRotorsInUse(); i++) {
             rotorIdVBox = new VBox();
             label = new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString());
             label.setWrapText(true);
             rotorIdVBox.getChildren().add(label);
-            choiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsId()));
-            choiceBox.setPrefWidth(label.getPrefWidth());
-            rotorIdVBox.getChildren().add(choiceBox);
+            idChoiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsId()));
+            idChoiceBox.setPrefWidth(label.getWidth());
+            rotorIdVBox.getChildren().add(idChoiceBox);
             RotorsId.getChildren().add(rotorIdVBox);
 
             rotorStartingPositionVBox = new VBox();
+            label = new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString());
+            characterChoiceBox = new ChoiceBox<Character>(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters()));
+            characterChoiceBox.setPrefWidth(label.getWidth());
             rotorStartingPositionVBox.getChildren().add(label);
-            rotorStartingPositionVBox.getChildren().add(new ChoiceBox<Character>(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters())));
+            rotorStartingPositionVBox.getChildren().add(characterChoiceBox);
             StartingPositions.getChildren().add(rotorStartingPositionVBox);
         }
 
