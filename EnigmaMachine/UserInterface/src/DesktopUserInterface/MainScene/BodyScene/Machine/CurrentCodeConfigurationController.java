@@ -13,4 +13,7 @@ public class CurrentCodeConfigurationController {
         currentCodeConfigurationLabel.setText(currentMachineSettings);
     }
 
+    public void currentCodeChanged(Object o, String currentCode) {
+        currentCodeConfigurationLabel.setText(currentCode);
+    }
 }
