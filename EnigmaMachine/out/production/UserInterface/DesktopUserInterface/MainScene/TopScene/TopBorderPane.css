@@ -1,5 +1,4 @@
 #load-machine-button:hover {
-<<<<<<< HEAD
     -fx-background-image: url("Bisli&Kifli.png");
     -fx-background-size: 100% 100%;
     -fx-text-fill: black;
@@ -11,9 +10,6 @@
     -fx-background-size: 25 25;
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5 18; 
-=======
-    -fx-background-color: rgb(41, 41, 198);
->>>>>>> 5c691b5 (some design)
 }
 
 #loaded-file-path {
