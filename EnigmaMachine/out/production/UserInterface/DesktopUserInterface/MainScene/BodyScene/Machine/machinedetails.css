@@ -1,12 +1,12 @@
  
 .question-labels {
     -fx-text-fill: #030303;
-    -fx-font-size: 15px;
+    -fx-font-size: 22px;
    
 }
 .answer-labels {
     -fx-text-fill: black;
-    -fx-font-size: 15px;
+    -fx-font-size: 18px;
     -fx-border-color: rgb(174, 127, 45);
 }
 .machine-deatils {
