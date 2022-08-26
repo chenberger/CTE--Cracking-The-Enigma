@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Rotor implements Decoder, Serializable {
     private final int id;
     private Integer notch;
-    private final Integer WINDOW_POSITION;
+    private static final int WINDOW_POSITION;
     private Character startingRightCharToWindow;
     private Boolean isFirstRotor;
     private static final Integer ONE_STEP = 1;
@@ -23,7 +23,10 @@ public class Rotor implements Decoder, Serializable {
         this.id = id;
         this.notch = notch;
         this.mappingABC = mappingABC;
-        this.WINDOW_POSITION = 0;
+    }
+
+    static {
+        WINDOW_POSITION = 0;
     }
 
     public void setIsFirstRotor(boolean isFirstRotor) {
@@ -34,7 +37,6 @@ public class Rotor implements Decoder, Serializable {
         this.startingRightCharToWindow = startingRightCharToWindow;
         this.id = id;
         this.notch = notch;
-        this.WINDOW_POSITION = 0;
         this.isFirstRotor = isFirstRotor;
         reset();
     }
@@ -55,11 +57,14 @@ public class Rotor implements Decoder, Serializable {
     }
 
     public boolean rotate(boolean isPreviewsRotorNotchReachedTheWindow) {
+
         if(isRotorNeedToSpin(isPreviewsRotorNotchReachedTheWindow)) {
             spinRotor(ONE_STEP);
+
+            return notch.intValue() == WINDOW_POSITION;
         }
 
-        return notch == WINDOW_POSITION;
+        return false;
     }
 
     @Override
