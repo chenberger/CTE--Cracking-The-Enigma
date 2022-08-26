@@ -1,0 +1,17 @@
+#encrypted-word-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e01111;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.encryption-buttons{
+    -fx-background-color: rgba(83, 116, 138, 0.726);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+}
+.reset-state-button{
+    -fx-background-color: rgba(241, 200, 4, 0.94);
+    -fx-text-fill: #0c0b0b;
+    -fx-font-size: 15px;
+}

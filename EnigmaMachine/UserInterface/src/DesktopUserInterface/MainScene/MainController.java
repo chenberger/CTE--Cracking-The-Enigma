@@ -8,6 +8,7 @@ import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -23,7 +24,7 @@ public class MainController {
     @FXML private GridPane topBorderPane;
     @FXML private GridPane machineGrid;
     @FXML private MachineGridController machineGridController;
-    @FXML private GridPane encryptDecryptGrid;
+    @FXML private ScrollPane encryptDecryptGrid;
     @FXML private EncryptDecryptGridController encryptDecryptGridController;
     @FXML private GridPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;

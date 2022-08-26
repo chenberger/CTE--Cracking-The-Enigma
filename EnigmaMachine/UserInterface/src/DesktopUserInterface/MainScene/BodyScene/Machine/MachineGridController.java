@@ -34,6 +34,7 @@ public class MachineGridController {
 
     private void registerToEvents() {
         enigmaMachineEngine.currentCodeConfigurationHandler.add(machineDetailsGridController::currentCodeChanged);
+        enigmaMachineEngine.currentCodeConfigurationHandler.add(currentCodeConfigurationGridController::currentCodeChanged);
         enigmaMachineEngine.machineDetailsHandler.add(machineDetailsGridController::machineDetailsChanged);
     }
 

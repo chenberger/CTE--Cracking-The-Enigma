@@ -27,6 +27,10 @@ public class EncryptDecryptGridController {
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
 
+    public void UpdateCurrentConfiguration() {
+
+    }
+
     public void decodeWord(String text) throws MachineNotExistsException, SettingsNotInitializedException {
         if (!enigmaMachineEngine.isMachineExists()) {
             throw new MachineNotExistsException();
@@ -37,6 +41,7 @@ public class EncryptDecryptGridController {
         try {
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
+            //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             new ErrorDialog(ex,"Unable to decode.");
@@ -67,10 +72,11 @@ public class EncryptDecryptGridController {
             machineStatisticController.setEncryptDecryptGridController(this);
         }
     }
-
+    //TODO: handle reset when the machine is not exists.
     public void resetMachineState() throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try{
             enigmaMachineEngine.resetSettings();
+            //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
             //TODO chen: update current code configuration
         }
         catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |

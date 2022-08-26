@@ -208,6 +208,9 @@ public class EngineManager implements MachineOperations, Serializable {
 
     @Override
     public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
+        if(inputToProcess.length() == 0) {
+            throw new IllegalArgumentException("You must enter a message to process!!!");
+        }
         OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         Instant start = Instant.now();
         String encryptedString = enigmaMachine.processedInput(inputToProcess);
@@ -223,6 +226,7 @@ public class EngineManager implements MachineOperations, Serializable {
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
         onStatisticsAndHistoryChanged();
+        onCurrentCodeConfigurationChanged();
 
         return encryptedString;
     }
