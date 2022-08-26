@@ -227,7 +227,7 @@ public class EnigmaMachine implements Serializable {
         return keyboard.size() / 2;
     }
 
-    public Character decode(Character inputtedChar) {
+    private Character decode(Character inputtedChar) {
         int currentCharIndex;
         Character currentChar;
 
@@ -242,6 +242,32 @@ public class EnigmaMachine implements Serializable {
         currentChar = pluginBoard.getPluggedPair(currentChar);
 
         return currentChar;
+    }
+
+    public String processedInput(String inputToProcess) throws IllegalArgumentException{
+        if(containsCharNotInMAMachineKeyboard(inputToProcess)){
+            List<Character> lettersNotInAbc = new ArrayList<>(getCharsNotInMachineKeyboard(inputToProcess));
+            throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator()
+                    + "You can choose only from the following letters: " + keyboard.keySet());
+        }
+        String processedInput = "";
+        for(char letter: inputToProcess.toCharArray()){
+            processedInput += decode(letter);
+        }
+        return processedInput;
+    }
+
+    private List<Character> getCharsNotInMachineKeyboard(String inputToProcess) {
+        return inputToProcess.chars().mapToObj(inputtedChar -> (char)inputtedChar).filter(inputtedChar -> !keyboard.containsKey(inputtedChar)).collect(Collectors.toList());
+    }
+
+    private boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
+        for(char letter: inputToProcess.toCharArray()){
+            if(!keyboard.containsKey(letter)){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -293,15 +319,6 @@ public class EnigmaMachine implements Serializable {
             }
         }
     }
-    //region Setters
-
-    public void setPluginBoard(PluginBoard pluginBoard) {
-        this.pluginBoard = pluginBoard;
-    }
-/*    public void validateReflectorInUseSettings(String id) {
-        this.reflectorInUse = findReflectorById(id);
-    }*/
-    //endregion
 
     //region Getters
     public int getNumOfActiveRotors() {
