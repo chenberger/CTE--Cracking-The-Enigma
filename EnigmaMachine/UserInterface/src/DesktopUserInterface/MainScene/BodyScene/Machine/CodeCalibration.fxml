@@ -33,16 +33,16 @@
       </Label>
       <HBox alignment="TOP_CENTER" spacing="50.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
-            <Button fx:id="setRandomCodeButton" mnemonicParsing="false" onAction="#OnSetRandomCodeButtonClicked" styleClass="set-buttons" stylesheets="@CodeCalibration.css" text="Set Random code" textAlignment="CENTER" />
-            <Button fx:id="setManuallyCodeButton" mnemonicParsing="false" onAction="#OnSetManuallyCodeButtonClicked" styleClass="set-buttons" stylesheets="@CodeCalibration.css" text="Set manually code" textAlignment="CENTER" />
+            <Button fx:id="setRandomCodeButton" mnemonicParsing="false" onAction="#OnSetRandomCodeButtonClicked" prefHeight="50.0" prefWidth="150.0" styleClass="set-buttons" stylesheets="@CodeCalibration.css" text="Set Random code" textAlignment="CENTER" />
+            <Button fx:id="setManuallyCodeButton" mnemonicParsing="false" onAction="#OnSetManuallyCodeButtonClicked" prefHeight="50.0" prefWidth="150.0" styleClass="set-buttons" stylesheets="@CodeCalibration.css" text="Set manually code" textAlignment="CENTER" />
          </children>
          <GridPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </GridPane.margin>
       </HBox>
-      <AnchorPane id="settings-icon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="70.0" stylesheets="@CodeCalibration.css" GridPane.rowSpan="2">
+      <AnchorPane id="settings-icon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="70.0" stylesheets="@CodeCalibration.css" GridPane.rowSpan="2">
          <GridPane.margin>
-            <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" right="10.0" />
          </GridPane.margin>
       </AnchorPane>
    </children>

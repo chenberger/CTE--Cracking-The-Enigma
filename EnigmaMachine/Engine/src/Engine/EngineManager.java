@@ -210,7 +210,7 @@ public class EngineManager implements MachineOperations, Serializable {
     public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
         OriginalStringFormat originalStringFormat = new OriginalStringFormat(inputToProcess.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         Instant start = Instant.now();
-        String encryptedString = getProcessedInput(inputToProcess);
+        String encryptedString = enigmaMachine.processedInput(inputToProcess);
         Instant end = Instant.now();
         long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
@@ -221,6 +221,7 @@ public class EngineManager implements MachineOperations, Serializable {
         statisticsAndHistoryAnalyzer.advancedMessagesCounter();
 
         onMachineDetailsChanged();
+        onCurrentCodeConfigurationChanged();
         onStatisticsAndHistoryChanged();
 
         return encryptedString;
@@ -236,31 +237,6 @@ public class EngineManager implements MachineOperations, Serializable {
         MachineState.loadStateMachineFromFile(path, this);
     }
 
-    private String getProcessedInput(String inputToProcess) throws IllegalArgumentException{
-        if(containsCharNotInMAMachineKeyboard(inputToProcess)){
-            List<Character> lettersNotInAbc = new ArrayList<>(getCharsNotInMachineKeyboard(inputToProcess));
-            throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator()
-                    + "You can choose only from the following letters: " + enigmaMachine.getKeyboard());
-        }
-        String processedInput = "";
-        for(char letter: inputToProcess.toCharArray()){
-            processedInput += enigmaMachine.decode(letter);
-        }
-        return processedInput;
-    }
-
-    private List<Character> getCharsNotInMachineKeyboard(String inputToProcess) {
-        return inputToProcess.chars().mapToObj(inputtedChar -> (char)inputtedChar).filter(inputtedChar -> !enigmaMachine.getKeyboard().contains(inputtedChar)).collect(Collectors.toList());
-    }
-
-    private boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
-        for(char letter: inputToProcess.toCharArray()){
-            if(!enigmaMachine.getKeyboard().contains(letter)){
-                return true;
-            }
-        }
-        return false;
-    }
     //endregion
 
     public boolean isMachineExists() {

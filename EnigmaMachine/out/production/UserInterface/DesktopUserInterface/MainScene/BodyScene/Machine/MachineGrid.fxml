@@ -35,9 +35,9 @@
             <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
          </GridPane.margin>
       </ScrollPane>
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="30.0" prefWidth="511.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
         <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="470.0">
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="507.0">
                <children>
                   <fx:include fx:id="codeCalibrationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="CodeCalibration.fxml" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
                </children>
@@ -47,7 +47,7 @@
             </AnchorPane>
         </content>
          <GridPane.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" right="5.0" top="20.0" />
          </GridPane.margin>
       </ScrollPane>
    </children>

@@ -34,12 +34,12 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
          <children>
-            <Label id="current-code" fx:id="currentCodeConfigurationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="609.0" stylesheets="@CurrentCodeConfiguration.css" textAlignment="CENTER" wrapText="true">
+            <Label id="current-code" fx:id="currentCodeConfigurationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="609.0" stylesheets="@CurrentCodeConfiguration.css" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="24.0" />
                </font>
                <padding>
-                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                  <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
                </padding>
             </Label>
          </children>
