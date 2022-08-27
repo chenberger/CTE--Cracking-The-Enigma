@@ -24,7 +24,7 @@ public class MainController {
     @FXML private GridPane topBorderPane;
     @FXML private GridPane machineGrid;
     @FXML private MachineGridController machineGridController;
-    @FXML private ScrollPane encryptDecryptGrid;
+    @FXML private GridPane encryptDecryptGrid;
     @FXML private EncryptDecryptGridController encryptDecryptGridController;
     @FXML private GridPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;
