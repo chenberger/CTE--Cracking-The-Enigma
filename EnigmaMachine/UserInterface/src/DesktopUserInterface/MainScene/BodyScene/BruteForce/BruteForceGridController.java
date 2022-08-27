@@ -8,6 +8,15 @@ import javafx.scene.layout.GridPane;
 public class BruteForceGridController {
     @FXML
     private GridPane BruteForceGrid;
+    @FXML GridPane candidatesAndProgressGrid;
+    @FXML
+    CandidatesAndProgressGridController candidatesAndProgressController;
+    @FXML GridPane dMOperationalGrid;
+    @FXML
+    DMOperationalGridController dmOperationalGridController;
+    @FXML GridPane encryptDecryptActionsGrid;
+    @FXML
+    EncryptDecryptActionsGridController encryptDecryptActionsController;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
 
@@ -18,4 +27,19 @@ public class BruteForceGridController {
     public void setEngineManager(EngineManager enigmaMachineEngine) {
         this.enigmaMachineEngine = enigmaMachineEngine;
     }
+    public  void initialize(){
+        if(candidatesAndProgressController != null){
+            candidatesAndProgressController.setBruteForceGridController(this);
+        }
+        if(dmOperationalGridController != null){
+            dmOperationalGridController.setBruteForceGridController(this);
+        }
+        if (encryptDecryptActionsController != null){
+            encryptDecryptActionsController.setBruteForceGridController(this);
+        }
+    }
+    private void registerToEvents(){
+        //TODO:chen/erez - register here when needed
+    }
+
 }
