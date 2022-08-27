@@ -1,9 +1,22 @@
- 
-#code-configuration-frame {
+ #title{
     -fx-background-image: url("CodeConfigurationFrame.png");
-    -fx-background-size: 100% 100%;
+     -fx-background-size: 100% 100%;
+     -fx-text-fill: white;
+    -fx-fill-height: true;
+     -fx-resize: true;
+ }
+#code-configuration-frame {
+    '-fx-background-image: url("CodeConfigurationFrame.png");
+    '-fx-background-size: 100% 100%;
+    -fx-fill-height: true;
+    -fx-resize: true;
 }
 
 #current-code {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
+    -fx-tab-max-height: 100%;
+    -fx-text-overrun: scroll;
+    -fx-fill-width: true;
+    -fx-fill-height: true;
+    -fx-fit-to-width: true;
 }

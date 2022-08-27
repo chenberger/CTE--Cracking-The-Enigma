@@ -47,7 +47,7 @@
             </Button>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="88.0" prefWidth="440.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label id="currren-file-path-label" fx:id="CurrentFilePathTextField1" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="200.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" stylesheets="@TopBorderPane.css" text="Currently loaded file path:" VBox.vgrow="NEVER">
+                  <Label id="current-file-path-label" fx:id="CurrentFilePathTextField1" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="200.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" stylesheets="@TopBorderPane.css" text="Currently loaded file path:" VBox.vgrow="NEVER">
                      <font>
                         <Font size="20.0" />
                      </font>

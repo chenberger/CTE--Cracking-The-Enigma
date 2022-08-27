@@ -32,13 +32,12 @@ public class EncryptDecryptGridController {
     }
 
     public void decodeWord(String text) throws MachineNotExistsException, SettingsNotInitializedException {
-        if (!enigmaMachineEngine.isMachineExists()) {
-            throw new MachineNotExistsException();
-        }
-        else if(!enigmaMachineEngine.isMachineSettingInitialized()) {
-            throw new SettingsNotInitializedException();
-        }
+        checkIfMachineExistsAndInitialized();
+
         try {
+            if(text.length() != 1) {
+                throw new IllegalArgumentException("The Length of the text must be 1!!!");
+            }
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
             //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
@@ -47,6 +46,14 @@ public class EncryptDecryptGridController {
             new ErrorDialog(ex,"Unable to decode.");
         }
 
+    }
+    private void checkIfMachineExistsAndInitialized() throws MachineNotExistsException, SettingsNotInitializedException {
+        if (!enigmaMachineEngine.isMachineExists()) {
+            throw new MachineNotExistsException();
+        }
+        else if(!enigmaMachineEngine.isMachineSettingInitialized()) {
+            throw new SettingsNotInitializedException();
+        }
     }
 
     public void setMainController(MainController mainController) {
@@ -72,12 +79,10 @@ public class EncryptDecryptGridController {
             machineStatisticController.setEncryptDecryptGridController(this);
         }
     }
-    //TODO: handle reset when the machine is not exists.
     public void resetMachineState() throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try{
             enigmaMachineEngine.resetSettings();
             //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
-            //TODO chen: update current code configuration
         }
         catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |
                 SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException ex) {

@@ -1,0 +1,8 @@
+#current-code-component {
+    -fx-text-fill: white;
+    -fx-fill-height: true;
+    -fx-fit-to-height: true;
+    -fx-text-alignment: center;
+    -fx-fill-width: true;
+    -fx-fit-to-width: true;
+}

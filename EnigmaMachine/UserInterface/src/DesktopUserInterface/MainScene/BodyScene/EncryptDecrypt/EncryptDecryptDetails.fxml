@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="EncryptDecryptDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@EncryptDecryptDetails.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
+<GridPane id="#encryption-button" fx:id="EncryptDecryptDetails" styleClass="encrypt-grid-pane" stylesheets="@EncryptDecryptDetails.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints hgrow="NEVER" minWidth="30.0" prefWidth="30.0" />
@@ -18,6 +18,7 @@
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="NEVER" minWidth="30.0" prefWidth="30.0" />
         <ColumnConstraints hgrow="NEVER" minWidth="30.0" prefWidth="30.0" />
+      <ColumnConstraints hgrow="NEVER" minWidth="30.0" prefWidth="30.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints />
@@ -27,17 +28,34 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-      <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
     </rowConstraints>
     <children>
-        <TextField fx:id="encryptDecryptTextBox" prefHeight="31.0" prefWidth="275.0" promptText="Put word To encrypt/decrypt" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-        <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" styleClass="encryption-buttons" text="encrypt/decrypt" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <TextField fx:id="encryptDecryptTextBox" prefHeight="31.0" prefWidth="275.0" promptText="Put word To encrypt/decrypt" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets top="30.0" />
+         </GridPane.margin></TextField>
+        <Button id="encryption-button" fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" styleClass="encryption-buttons" text="encrypt/decrypt" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
         </Button>
-        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" styleClass="reset-state-button" text="Reset Machine State" GridPane.columnIndex="2" GridPane.columnSpan="5" GridPane.rowIndex="5" />
-        <Label id="encrypted-word-title" fx:id="encryptDecryptTextLabel" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="encrypted/decrypted word" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-          <TextField fx:id="encryptedDecryptedWordText" editable="false" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" styleClass="reset-state-button" text="Reset Machine State" GridPane.columnIndex="3" GridPane.columnSpan="5" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets top="30.0" />
+         </GridPane.margin></Button>
+        <Label id="encrypted-word-title" fx:id="encryptDecryptTextLabel" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="encrypted/decrypted word" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Label>
+          <TextField fx:id="encryptedDecryptedWordText" editable="false" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets top="30.0" />
+         </GridPane.margin></TextField>
     </children>
 </GridPane>
