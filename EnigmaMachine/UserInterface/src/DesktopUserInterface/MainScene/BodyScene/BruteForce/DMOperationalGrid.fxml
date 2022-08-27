@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMOperational"
+            fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMOperationalGridController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>
