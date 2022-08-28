@@ -1,8 +1,8 @@
 package EnigmaMachineException;
 
-import Engine.Sector;
-import Engine.SectorType;
-import Engine.SettingsFormat;
+import EnigmaMachine.Settings.Sector;
+import EnigmaMachine.Settings.SectorType;
+import EnigmaMachine.Settings.SettingsFormat;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Engine;
+package EnigmaMachine.Settings;
 
 import java.io.Serializable;
 import java.util.ArrayList;

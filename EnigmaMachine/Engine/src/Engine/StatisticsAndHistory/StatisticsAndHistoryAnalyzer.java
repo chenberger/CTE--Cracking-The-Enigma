@@ -1,4 +1,6 @@
-package Engine;
+package Engine.StatisticsAndHistory;
+
+import EnigmaMachine.Settings.SettingsFormat;
 
 import java.io.Serializable;
 import java.util.*;

@@ -2,6 +2,7 @@ package Engine;
 
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.RomanNumber;
+import EnigmaMachine.Settings.*;
 import EnigmaMachineException.*;
 import javafx.util.Pair;
 

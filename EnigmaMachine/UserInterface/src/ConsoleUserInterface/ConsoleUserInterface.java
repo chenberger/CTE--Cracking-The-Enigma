@@ -4,6 +4,10 @@ package ConsoleUserInterface;
 import DTO.MachineDetails;
 import Engine.*;
 import EnigmaMachine.RomanNumber;
+import EnigmaMachine.Settings.PluginBoardSector;
+import EnigmaMachine.Settings.ReflectorIdSector;
+import EnigmaMachine.Settings.RotorIDSector;
+import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.*;
 import javafx.util.Pair;
 

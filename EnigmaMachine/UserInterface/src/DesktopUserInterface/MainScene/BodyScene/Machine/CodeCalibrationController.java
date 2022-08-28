@@ -2,7 +2,7 @@ package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
-import Engine.Sector;
+import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

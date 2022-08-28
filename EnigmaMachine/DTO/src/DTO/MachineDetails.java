@@ -1,7 +1,7 @@
 package DTO;
 
 import EnigmaMachine.*;
-import Engine.*;
+import EnigmaMachine.Settings.*;
 import javafx.util.Pair;
 
 import java.util.*;

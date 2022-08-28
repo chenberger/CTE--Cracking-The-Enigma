@@ -1,10 +1,10 @@
 package EnigmaMachine;
 
+import EnigmaMachine.Settings.*;
 import EnigmaMachineException.PluginBoardSettingsException;
 import EnigmaMachineException.ReflectorSettingsException;
 import EnigmaMachineException.RotorsInUseSettingsException;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
-import Engine.*;
 import javafx.util.Pair;
 
 import java.io.Serializable;

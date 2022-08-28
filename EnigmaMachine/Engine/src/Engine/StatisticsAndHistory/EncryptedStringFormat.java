@@ -1,14 +1,14 @@
-package Engine;
+package Engine.StatisticsAndHistory;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OriginalStringFormat extends StringFormat<Character> implements Serializable {
+public class EncryptedStringFormat extends StringFormat<Character> implements Serializable {
 
+    public EncryptedStringFormat(List<Character> elements) {
 
-    public OriginalStringFormat(List<Character> originalString) {
-        super(originalString, StringFormatType.ORIGINAL_STRING);
+        super(elements, StringFormatType.ENCRYPTED_STRING);
     }
 
     @Override
