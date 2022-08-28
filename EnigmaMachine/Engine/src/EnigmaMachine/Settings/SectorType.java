@@ -1,4 +1,6 @@
-package Engine;
+package EnigmaMachine.Settings;
+
+import Engine.RandomSettingsGenerator;
 
 import java.io.Serializable;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package Engine;
+package EnigmaMachine.Settings;
 
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.RomanNumber;

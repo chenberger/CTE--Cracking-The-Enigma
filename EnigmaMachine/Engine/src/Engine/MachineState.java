@@ -1,12 +1,13 @@
 package Engine;
 
+import Engine.StatisticsAndHistory.StatisticsAndHistoryAnalyzer;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.MachineNotExistsException;
 
 import java.io.*;
 public class MachineState implements Serializable {
     private EnigmaMachine enigmaMachine;
-    private  StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
+    private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
 
     public MachineState(EnigmaMachine enigmaMachine, StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer) {
         this.enigmaMachine = enigmaMachine;

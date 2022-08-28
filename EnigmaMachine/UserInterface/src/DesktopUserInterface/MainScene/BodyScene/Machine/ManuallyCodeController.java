@@ -2,8 +2,8 @@ package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import Engine.*;
 import EnigmaMachine.RomanNumber;
+import EnigmaMachine.Settings.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

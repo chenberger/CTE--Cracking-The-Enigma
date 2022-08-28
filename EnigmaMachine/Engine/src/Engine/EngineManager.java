@@ -1,6 +1,12 @@
 package Engine;
 
 import DTO.MachineDetails;
+import Engine.StatisticsAndHistory.EncryptedStringFormat;
+import Engine.StatisticsAndHistory.OriginalStringFormat;
+import Engine.StatisticsAndHistory.ProcessedStringsFormat;
+import Engine.StatisticsAndHistory.StatisticsAndHistoryAnalyzer;
+import EnigmaMachine.Settings.Sector;
+import EnigmaMachine.Settings.SettingsFormat;
 import Events.EventHandler;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.*;
