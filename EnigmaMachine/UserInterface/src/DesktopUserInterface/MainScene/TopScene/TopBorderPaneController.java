@@ -4,6 +4,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.GeneralEnigmaMachineException;
+import EnigmaMachineException.IllegalAgentsAmountException;
 import EnigmaMachineException.NotXmlFileException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class TopBorderPaneController {
             enigmaMachineEngine.setMachineDetailsFromXmlFile(selectedFile.getPath());
             CurrentFilePathTextField.setText(selectedFile.getPath());
         }
-        catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException ex) {
+        catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException | IllegalAgentsAmountException ex) {
             new ErrorDialog(ex, "Failed to load the enigma machine from xml file");
         }
     }

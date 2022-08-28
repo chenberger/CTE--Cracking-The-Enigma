@@ -244,7 +244,7 @@ public class ConsoleUserInterface {
                 enigmaMachineEngine.setMachineDetailsFromXmlFile(path);
                 System.out.println("The machine has been successfully loaded from the XML file" + System.lineSeparator());
                 operationSuccessful = true;
-            } catch (GeneralEnigmaMachineException | NotXmlFileException  ex) {
+            } catch (GeneralEnigmaMachineException | NotXmlFileException | IllegalAgentsAmountException ex) {
                 System.out.println(ex.getMessage());
             }catch (FileNotFoundException | JAXBException ex){
                 System.out.println("The file (from the path you inputted) was not found! ");;

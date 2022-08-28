@@ -1,16 +1,16 @@
 package Engine;
 
-import Agents.Agent;
 import DTO.MachineDetails;
+import Decryption.DecryptionManager;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
 import Engine.StatisticsAndHistory.OriginalStringFormat;
 import Engine.StatisticsAndHistory.ProcessedStringsFormat;
 import Engine.StatisticsAndHistory.StatisticsAndHistoryAnalyzer;
+import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachine.Settings.SettingsFormat;
-import Events.EventHandler;
-import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.*;
+import Events.EventHandler;
 import Jaxb.Schema.Generated.CTEEnigma;
 
 import javax.xml.bind.JAXBException;
@@ -29,7 +29,7 @@ public class EngineManager implements MachineOperations, Serializable {
     //region private data members
     private EnigmaMachine enigmaMachine;
     private Dictionary dictionary;
-    private Agent agents;
+    private DecryptionManager decryptionManager;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     //endregion
 
@@ -39,6 +39,8 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
+        this.decryptionManager = new DecryptionManager();
+        this.dictionary = new Dictionary();
         this.enigmaMachine = null;
 
         initializeEventHandlers();
@@ -66,15 +68,16 @@ public class EngineManager implements MachineOperations, Serializable {
 
 
     //region JAXB Translation
-    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException {
-        JaxbToMacineTransformer jaxbToMachineTransformer = new JaxbToMacineTransformer();
+    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException {
+        JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
         try {
             InputStream inputStream = new FileInputStream(machineDetailsXmlFilePath);
             if (!machineDetailsXmlFilePath.endsWith(".xml")) {
                 throw new NotXmlFileException();
             }
             CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma,agents,dictionary);
+            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma, decryptionManager, dictionary);
+
             if(statisticsAndHistoryAnalyzer != null) {
                 statisticsAndHistoryAnalyzer.clear();
             }
@@ -88,6 +91,8 @@ public class EngineManager implements MachineOperations, Serializable {
         }
         catch (JAXBException | MachineNotExistsException | CloneNotSupportedException e){
             throw new RuntimeException();
+        } catch (IllegalAgentsAmountException e) {
+            throw e;
         }
     }
 
