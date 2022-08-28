@@ -10,6 +10,7 @@ package Jaxb.Schema.Generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -25,9 +26,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}CTE-Machine"/>
- *         &lt;element ref="{}CTE-Decipher"/>
+ *         &lt;element name="Words" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
+ *       &lt;attribute name="exclude-chars" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -37,63 +38,62 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cteMachine",
-    "cteDecipher"
+    "words"
 })
-@XmlRootElement(name = "CTE-Enigma")
-public class CTEEnigma {
+@XmlRootElement(name = "CTE-Dictionary")
+public class CTEDictionary {
 
-    @XmlElement(name = "CTE-Machine", required = true)
-    protected CTEMachine cteMachine;
-    @XmlElement(name = "CTE-Decipher", required = true)
-    protected CTEDecipher cteDecipher;
+    @XmlElement(name = "Words", required = true)
+    protected String words;
+    @XmlAttribute(name = "exclude-chars", required = true)
+    protected String excludeChars;
 
     /**
-     * Gets the value of the cteMachine property.
+     * Gets the value of the words property.
      * 
      * @return
      *     possible object is
-     *     {@link CTEMachine }
+     *     {@link String }
      *     
      */
-    public CTEMachine getCTEMachine() {
-        return cteMachine;
+    public String getWords() {
+        return words;
     }
 
     /**
-     * Sets the value of the cteMachine property.
+     * Sets the value of the words property.
      * 
      * @param value
      *     allowed object is
-     *     {@link CTEMachine }
+     *     {@link String }
      *     
      */
-    public void setCTEMachine(CTEMachine value) {
-        this.cteMachine = value;
+    public void setWords(String value) {
+        this.words = value;
     }
 
     /**
-     * Gets the value of the cteDecipher property.
+     * Gets the value of the excludeChars property.
      * 
      * @return
      *     possible object is
-     *     {@link CTEDecipher }
+     *     {@link String }
      *     
      */
-    public CTEDecipher getCTEDecipher() {
-        return cteDecipher;
+    public String getExcludeChars() {
+        return excludeChars;
     }
 
     /**
-     * Sets the value of the cteDecipher property.
+     * Sets the value of the excludeChars property.
      * 
      * @param value
      *     allowed object is
-     *     {@link CTEDecipher }
+     *     {@link String }
      *     
      */
-    public void setCTEDecipher(CTEDecipher value) {
-        this.cteDecipher = value;
+    public void setExcludeChars(String value) {
+        this.excludeChars = value;
     }
 
 }

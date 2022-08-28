@@ -1,5 +1,6 @@
 package Engine;
 
+import Agents.Agent;
 import DTO.MachineDetails;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
 import Engine.StatisticsAndHistory.OriginalStringFormat;
@@ -27,6 +28,8 @@ public class EngineManager implements MachineOperations, Serializable {
 
     //region private data members
     private EnigmaMachine enigmaMachine;
+    private Dictionary dictionary;
+    private Agent agents;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     //endregion
 
@@ -71,7 +74,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 throw new NotXmlFileException();
             }
             CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma);
+            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma,agents,dictionary);
             if(statisticsAndHistoryAnalyzer != null) {
                 statisticsAndHistoryAnalyzer.clear();
             }

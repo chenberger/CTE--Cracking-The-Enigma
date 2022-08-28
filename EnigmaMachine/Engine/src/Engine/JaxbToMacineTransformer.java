@@ -1,5 +1,6 @@
 package Engine;
 
+import Agents.Agent;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.*;
 import Jaxb.Schema.Generated.*;
@@ -29,14 +30,16 @@ public class JaxbToMacineTransformer {
         return (CTEEnigma) u.unmarshal(in);
     }
 
-    public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma) throws GeneralEnigmaMachineException {
+    public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma, Agent agents, Dictionary dictionary) throws GeneralEnigmaMachineException {
         List<Character> generatedABC;
         ABCNotValidException abcNotValidException = new ABCNotValidException();
         checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
         generatedABC = getABCFromString(JAXBGeneratedEnigma.getCTEMachine().getABC().trim());
         abcNotValidException.addExceptionsToTheList();
         throwExceptionIfAlphabetNotValid(abcNotValidException);
-
+        
+        agents.setNumOfAgents(JAXBGeneratedEnigma.getCTEDecipher().getAgents());
+        dictionary.setDictionary(JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getWords());
 
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
         List<CTEReflector> CTEReflectors = JAXBGeneratedEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
