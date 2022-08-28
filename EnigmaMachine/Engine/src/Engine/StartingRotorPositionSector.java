@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class StartingRotorPositionSector extends Sector<Character> implements Serializable {
     private List<Integer> notchPositions;
+    private final CharSequence delimiter = ",";
 
     public StartingRotorPositionSector(List<Character> startingPosition) {
         super(startingPosition, SectorType.START_POSITION_ROTORS);
@@ -37,7 +38,7 @@ public class StartingRotorPositionSector extends Sector<Character> implements Se
             startingPositionsString.set(i, startingPositionsString.get(i) + "(" + reversedNotchPositions.get(i) + ")");
         }
 
-        return super.openSector + startingPositionsString.stream().map(Object::toString).collect(Collectors.joining()) + super.closeSector;
+        return super.openSector + startingPositionsString.stream().map(Object::toString).collect(Collectors.joining(delimiter)) + super.closeSector;
     }
 
     @Override
