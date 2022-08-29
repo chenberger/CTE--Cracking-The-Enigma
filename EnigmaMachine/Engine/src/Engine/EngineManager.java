@@ -245,9 +245,11 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     public String processInputsFromDictionary(String inputToProcess) throws Exception {
+        List<String> inputToProcessAfterCleanFromExcludeChars;
+
         if(dictionary != null) {
-            dictionary.validateWords(Arrays.asList(inputToProcess.split(" ")));
-            return processInput(inputToProcess.toUpperCase());
+            inputToProcessAfterCleanFromExcludeChars = dictionary.validateWords(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
+            return processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
         }
         else {
             throw new Exception("Error : There is no any dictionary in the machine");
