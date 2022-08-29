@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,6 @@ public class EngineManager implements MachineOperations, Serializable {
         statisticsAndHistoryHandler.invoke(this, statisticsAndHistoryAnalyzer.toString());
     }
     //endregion
-
 
     //region JAXB Translation
     public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException {
@@ -240,9 +240,18 @@ public class EngineManager implements MachineOperations, Serializable {
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
         onStatisticsAndHistoryChanged();
-        onCurrentCodeConfigurationChanged();
 
         return encryptedString;
+    }
+
+    public String processInputsFromDictionary(String inputToProcess) throws Exception {
+        if(dictionary != null) {
+            dictionary.validateWords(Arrays.asList(inputToProcess.split(" ")));
+            return processInput(inputToProcess.toUpperCase());
+        }
+        else {
+            throw new Exception("Error : There is no any dictionary in the machine");
+        }
     }
 
     @Override
@@ -287,5 +296,9 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public void setCurrentStatisticsAndHistory(StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer) {
         this.statisticsAndHistoryAnalyzer = statisticsAndHistoryAnalyzer;
+    }
+
+    public Set<String> getDictionary() {
+        return dictionary.getDictionary();
     }
 }

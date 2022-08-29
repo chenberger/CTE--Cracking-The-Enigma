@@ -4,6 +4,7 @@ import DTO.MachineDetails;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class ManuallyCodeInitializerScene {
 
         Scene scene = new Scene(load);
         manuallyCodeStage = new Stage();
+        manuallyCodeStage.initModality(Modality.APPLICATION_MODAL);
         manuallyCodeStage.setScene(scene); // set the scene
         manuallyCodeStage.setTitle("Manually Code Configuration");
         manuallyCodeStage.show();

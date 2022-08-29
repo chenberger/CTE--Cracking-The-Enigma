@@ -49,6 +49,7 @@ public class ManuallyCodeController {
 
     private List<Sector> codeConfigurationSectors;
 
+    @FXML
     public void initialize() {
         pluginBoardArea.setVisible(false);
         rotorsIdArea.setVisible(false);

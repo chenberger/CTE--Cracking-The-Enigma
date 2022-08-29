@@ -1,12 +1,11 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
+import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
-
 import EnigmaMachineException.*;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -32,7 +31,7 @@ public class EncryptDecryptGridController {
     }
 
     public void decodeWord(String text) throws MachineNotExistsException, SettingsNotInitializedException {
-        checkIfMachineExistsAndInitialized();
+        Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
 
         try {
             if(text.length() != 1) {
@@ -40,20 +39,11 @@ public class EncryptDecryptGridController {
             }
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
-            //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             new ErrorDialog(ex,"Unable to decode.");
         }
 
-    }
-    private void checkIfMachineExistsAndInitialized() throws MachineNotExistsException, SettingsNotInitializedException {
-        if (!enigmaMachineEngine.isMachineExists()) {
-            throw new MachineNotExistsException();
-        }
-        else if(!enigmaMachineEngine.isMachineSettingInitialized()) {
-            throw new SettingsNotInitializedException();
-        }
     }
 
     public void setMainController(MainController mainController) {
@@ -79,13 +69,12 @@ public class EncryptDecryptGridController {
             machineStatisticController.setEncryptDecryptGridController(this);
         }
     }
-    public void resetMachineState() throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    public void resetMachineState() {
         try{
             enigmaMachineEngine.resetSettings();
-            //CurrentCodeConfigurationGridController.setCodeConfiguration(enigmaMachineEngine.displaySpecifications().getCurrentMachineSettings());
         }
-        catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException |
-                SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException ex) {
+        catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException | MachineNotExistsException |
+                SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException  | CloneNotSupportedException ex) {
             new ErrorDialog(ex,"Unable to reset machine state.");
         }
     }

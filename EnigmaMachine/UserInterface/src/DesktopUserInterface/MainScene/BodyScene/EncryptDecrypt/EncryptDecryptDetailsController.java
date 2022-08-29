@@ -47,13 +47,8 @@ public class EncryptDecryptDetailsController {
             new ErrorDialog(ex, "");
         }
     }
-    @FXML private void onResetMachineStateButtonClicked(ActionEvent event) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
-        try {
-            encryptDecryptGridController.resetMachineState();
-        }
-        catch (MachineNotExistsException | IllegalArgumentException|SettingsNotInitializedException ex){
-            new ErrorDialog(ex, "Unable to reset machine state");
-        }
+    @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
+          encryptDecryptGridController.resetMachineState();
     }
     public void setDecodedWord(String decodeWord) {
         encryptedDecryptedWordText.setText(decodeWord);

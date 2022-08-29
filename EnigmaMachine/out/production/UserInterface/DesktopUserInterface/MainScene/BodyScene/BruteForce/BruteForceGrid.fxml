@@ -6,8 +6,8 @@
 
 <GridPane fx:id="bruteForceGrid" prefHeight="550.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1195.0" minWidth="10.0" prefWidth="720.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="580.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
@@ -16,4 +16,8 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
+   <children>
+      <fx:include fx:id="encryptDecryptActionsGrid" source="EncryptDecryptActionsGrid.fxml" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+      <fx:include fx:id="CurrentCodeConfigurationGrid" source="../Machine/CurrentCodeConfiguration.fxml" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   </children>
 </GridPane>
