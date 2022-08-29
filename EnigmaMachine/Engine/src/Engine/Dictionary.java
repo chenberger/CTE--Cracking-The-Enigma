@@ -1,5 +1,7 @@
 package Engine;
 
+import EnigmaMachineException.WordNotValidInDictionaryException;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -24,5 +26,22 @@ public class Dictionary {
         unCleanedWords.forEach(word -> {
             this.words.add(word.replaceAll("[" + excludeChars + "]", ""));
         });
+    }
+
+    public Set<String> getDictionary() {
+        return words;
+    }
+
+    public void validateWords(List<String> wordsToCheck) throws WordNotValidInDictionaryException {
+        WordNotValidInDictionaryException wordNotValidInDictionary = new WordNotValidInDictionaryException(words);
+        wordsToCheck.forEach(word -> {
+            if(!words.contains(word)) {
+                wordNotValidInDictionary.addIllegalWord(word);
+            }
+        });
+
+        if(wordNotValidInDictionary.isExceptionNeedToThrown()) {
+            throw wordNotValidInDictionary;
+        }
     }
 }
