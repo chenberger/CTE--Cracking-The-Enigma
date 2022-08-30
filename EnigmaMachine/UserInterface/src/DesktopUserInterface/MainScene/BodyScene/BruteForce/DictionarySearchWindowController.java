@@ -26,9 +26,9 @@ public class DictionarySearchWindowController {
             changeListView();
         });
     }
-    @FXML void selectButtonClicked(ActionEvent event) {
+/*    @FXML void selectButtonClicked(ActionEvent event) {
         encryptDecryptActionsGridController.wordSelectedFromDictionary(listView.getSelectionModel().getSelectedItem());
-    }
+    }*/
 
     @FXML void searchBarChanged(ActionEvent event) {
         changeListView();

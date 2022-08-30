@@ -29,9 +29,15 @@ public class BruteForceGridController {
         this.mainController.addCurrentCodeConfigurationController(CurrentCodeConfigurationGridController);
     }
 
+    private void registerToEvents() {
+        enigmaMachineEngine.dictionaryChangedHandler.add(encryptDecryptActionsGridController::setDictionary);
+    }
+
     public void setEngineManager(EngineManager enigmaMachineEngine) {
         this.enigmaMachineEngine = enigmaMachineEngine;
+        registerToEvents();
     }
+
     public  void initialize(){
         if(candidatesAndProgressController != null){
             candidatesAndProgressController.setBruteForceGridController(this);
@@ -42,9 +48,6 @@ public class BruteForceGridController {
         if (encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setBruteForceGridController(this);
         }
-    }
-    private void registerToEvents(){
-        //TODO:chen/erez - register here when needed
     }
 
     public Set<String> getDictionary() {
