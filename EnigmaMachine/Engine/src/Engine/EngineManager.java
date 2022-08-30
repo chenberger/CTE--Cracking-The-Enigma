@@ -37,6 +37,7 @@ public class EngineManager implements MachineOperations, Serializable {
     public EventHandler<String> statisticsAndHistoryHandler;
     public EventHandler<String> currentCodeConfigurationHandler;
     public EventHandler<MachineDetails> machineDetailsHandler;
+    public EventHandler<Dictionary> dictionaryChangedHandler;
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
@@ -52,6 +53,11 @@ public class EngineManager implements MachineOperations, Serializable {
         this.statisticsAndHistoryHandler = new EventHandler<>();
         this.currentCodeConfigurationHandler = new EventHandler<>();
         this.machineDetailsHandler = new EventHandler<>();
+        this.dictionaryChangedHandler = new EventHandler<>();
+    }
+
+    private void onDictionaryChanged() {
+        dictionaryChangedHandler.invoke(this, dictionary);
     }
 
     private void onCurrentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
@@ -85,6 +91,7 @@ public class EngineManager implements MachineOperations, Serializable {
             onCurrentCodeConfigurationChanged();
             onMachineDetailsChanged();
             onStatisticsAndHistoryChanged();
+            onDictionaryChanged();
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException();

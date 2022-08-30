@@ -8,7 +8,6 @@ import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
