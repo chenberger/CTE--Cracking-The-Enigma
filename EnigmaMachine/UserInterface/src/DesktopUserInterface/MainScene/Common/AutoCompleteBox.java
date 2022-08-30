@@ -32,30 +32,6 @@ public class AutoCompleteBox<T> implements EventHandler{
 
     @Override
     public void handle(Event event) {
-/*        KeyEvent keyEvent = (KeyEvent) event;
-        if ( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.DOWN
-                || keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.LEFT
-                || keyEvent.getCode() == KeyCode.HOME
-                || keyEvent.getCode() == KeyCode.END || keyEvent.getCode() == KeyCode.TAB
-        ) {
-            return;
-        }
-
-        if(keyEvent.getCode() == KeyCode.BACK_SPACE){
-            String str = this.comboBox.getEditor().getText();
-            if (str != null && str.length() > 0) {
-                str = str.substring(0, str.length() - 1);
-            }
-            if(str != null){
-                this.comboBox.getEditor().setText(str);
-                moveCaret(str.length());
-            }
-            this.comboBox.getSelectionModel().clearSelection();
-        }
-
-        if(keyEvent.getCode() == KeyCode.ENTER && comboBox.getSelectionModel().getSelectedIndex()>-1)
-            return;*/
-
         setItems();
     }
 
