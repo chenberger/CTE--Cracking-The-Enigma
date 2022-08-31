@@ -8,7 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.HBox;
+
+import java.awt.event.KeyEvent;
 
 
 public class EncryptDecryptDetailsController {
@@ -61,9 +64,11 @@ public class EncryptDecryptDetailsController {
     @FXML
     private void onLetterByLetterButtonPressed(ActionEvent event) {
         encryptDecryptButton.setText("Done");
+        encryptDecryptTextBox.clear();
+        encryptedDecryptedWordText.clear();
         fullWordDecoding = false;
     }
-    @FXML private void onLetterEnteredToBox(ActionEvent event){
+    @FXML private void onLetterEnteredToBox(InputMethodEvent event) {
         if(!fullWordDecoding) {
             try {
                 encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
@@ -80,11 +85,18 @@ public class EncryptDecryptDetailsController {
     }
     @FXML private void onFullWordButtonPressed(ActionEvent event){
         encryptDecryptButton.setText("Process");
+        encryptDecryptTextBox.clear();
+        encryptedDecryptedWordText.clear();
         fullWordDecoding = true;
     }
 
 
     public void setDecodedWord(String decodeWord) {
-        encryptedDecryptedWordText.setText(decodeWord);
+        if(fullWordDecoding) {
+            encryptedDecryptedWordText.setText(decodeWord);
+        }
+        else{
+            encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + decodeWord);
+        }
     }
 }
