@@ -226,7 +226,15 @@ public class EngineManager implements MachineOperations, Serializable {
 
         return statisticsAndHistoryAnalyzer.toString();
     }
-
+    public void insertingInputFinished() throws MachineNotExistsException, CloneNotSupportedException {
+        ProcessedStringsFormat processedStringsFormat = statisticsAndHistoryAnalyzer.cloneProcessedStringsFormat();
+        processedStringsFormat.addIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
+        statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
+        enigmaMachine.getOriginalSettingsFormat().advanceIndexFormat();
+        statisticsAndHistoryAnalyzer.advancedMessagesCounter();
+        onStatisticsAndHistoryChanged();
+        statisticsAndHistoryAnalyzer.clearProcessedStringsFormat();
+    }
     @Override
     public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
         if(inputToProcess.length() == 0) {
@@ -238,15 +246,10 @@ public class EngineManager implements MachineOperations, Serializable {
         Instant end = Instant.now();
         long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
-        ProcessedStringsFormat processedStringsFormat = new ProcessedStringsFormat(new ArrayList<>(Arrays.asList(originalStringFormat, encryptedStringFormat)),
-                durationEncryptedTimeInNanoSeconds, enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
-        enigmaMachine.getOriginalSettingsFormat().advanceIndexFormat();
-        statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
-        statisticsAndHistoryAnalyzer.advancedMessagesCounter();
-
+        statisticsAndHistoryAnalyzer.addStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
+        statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
-        onStatisticsAndHistoryChanged();
 
         return encryptedString;
     }

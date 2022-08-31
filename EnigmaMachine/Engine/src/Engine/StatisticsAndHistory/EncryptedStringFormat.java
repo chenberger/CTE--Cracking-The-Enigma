@@ -10,7 +10,9 @@ public class EncryptedStringFormat extends StringFormat<Character> implements Se
 
         super(elements, StringFormatType.ENCRYPTED_STRING);
     }
-
+    public void add(Character character) {
+        elements.add(character);
+    }
     @Override
     public String toString() {
 

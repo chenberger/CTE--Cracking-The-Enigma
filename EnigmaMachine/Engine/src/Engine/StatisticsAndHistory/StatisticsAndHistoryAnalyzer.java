@@ -13,13 +13,19 @@ public class StatisticsAndHistoryAnalyzer implements Serializable {
     private static final String startingCodeConfigurationsMessage = "Code configuration: ";
     private final Map<SettingsFormat, List<ProcessedStringsFormat>> statisticsAndHistoryFormat;
     private int messagesCounter;
+    private ProcessedStringsFormat processedStringsFormat;
 
     public StatisticsAndHistoryAnalyzer() {
         messagesCounter = 0;
         statisticsAndHistoryFormat = new HashMap<>();
+        processedStringsFormat = new ProcessedStringsFormat();
     }
 
-
+    public void addStringsAndTime(StringFormat OriginalString, StringFormat processedString, long encryptionTimeDurationNanoSeconds) {
+        processedStringsFormat.addStringToProcessedStringsFormat(OriginalString);
+        processedStringsFormat.addStringToProcessedStringsFormat(processedString);
+        processedStringsFormat.addToTotalTime(encryptionTimeDurationNanoSeconds);
+    }
     public void addSettingConfiguration(SettingsFormat settingsFormat) {
         statisticsAndHistoryFormat.put(settingsFormat, new ArrayList<>());
     }
@@ -63,5 +69,20 @@ public class StatisticsAndHistoryAnalyzer implements Serializable {
 
     public void advancedMessagesCounter() {
         this.messagesCounter++;
+    }
+     public ProcessedStringsFormat getProcessedStringsFormat() {
+        return processedStringsFormat;
+    }
+
+    public ProcessedStringsFormat cloneProcessedStringsFormat() {
+        return new ProcessedStringsFormat(processedStringsFormat.getProcessedStringsFormat(), processedStringsFormat.getTime(), processedStringsFormat.getFormatIndex());
+    }
+
+    public void clearProcessedStringsFormat() {
+        processedStringsFormat = new ProcessedStringsFormat();
+    }
+
+    public void setIndexFormat(int indexFormat) {
+        processedStringsFormat.setFormatIndex(indexFormat);
     }
 }
