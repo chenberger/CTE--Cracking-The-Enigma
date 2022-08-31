@@ -11,7 +11,7 @@
     -fx-text-fill: white;
     -fx-text-fill: #ffffff;
 }
-#encryption-button:hover{
+.encryption-buttons:hover{
     -fx-background-color: rgb(47, 151, 177);
 
 }
@@ -26,7 +26,7 @@
 }
 .encrypt-grid-pane{
     -fx-max-width: 100%;
-    -fx-min-width: 500px;
+    -fx-min-width: 800px;
     -fx-jusitfy-content: center;
     -fx-alignment: center;
     -fx-display: inline-block;

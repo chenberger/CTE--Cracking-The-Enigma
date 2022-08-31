@@ -34,9 +34,6 @@ public class EncryptDecryptGridController {
         Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
 
         try {
-            if(text.length() != 1) {
-                throw new IllegalArgumentException("The Length of the text must be 1!!!");
-            }
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
         }
@@ -76,6 +73,15 @@ public class EncryptDecryptGridController {
         catch (ReflectorSettingsException | RotorsInUseSettingsException | SettingsFormatException | MachineNotExistsException |
                 SettingsNotInitializedException | StartingPositionsOfTheRotorException | PluginBoardSettingsException  | CloneNotSupportedException ex) {
             new ErrorDialog(ex,"Unable to reset machine state.");
+        }
+    }
+
+    public void onFinishInput() throws MachineNotExistsException, CloneNotSupportedException {
+        try {
+            enigmaMachineEngine.insertingInputFinished();
+        }
+        catch (MachineNotExistsException | CloneNotSupportedException|IllegalArgumentException ex) {
+            new ErrorDialog(ex,"Unable to Process input.");
         }
     }
     //TODO chen: add keyboard bonus spare room component
