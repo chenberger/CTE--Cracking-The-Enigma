@@ -59,7 +59,7 @@
                         <Insets bottom="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="encryptDecryptTextBox" minWidth="300.0" onInputMethodTextChanged="#OnWordToProccessTextChanged" prefHeight="31.0" prefWidth="364.0" promptText="Put word To encrypt/decrypt" />
+                <TextField fx:id="encryptDecryptTextBox" minWidth="300.0" prefHeight="31.0" prefWidth="364.0" promptText="Put word To encrypt/decrypt" />
             </children>
             <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
