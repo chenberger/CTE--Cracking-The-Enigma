@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="119.0" prefWidth="388.0" stylesheets="@EncryptDecryptActionsGrid.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
+<GridPane prefHeight="119.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints minWidth="500.0" />
@@ -52,14 +52,14 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </GridPane.margin>
         </HBox>
-        <HBox fx:id="wordToProcessTextBox" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
                 <Label fx:id="encryptDecryptTextLabel1" text="Word to proccess:">
                     <padding>
                         <Insets bottom="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="encryptDecryptTextBox" minWidth="300.0" onInputMethodTextChanged="#onLetterEnteredToBox" prefHeight="31.0" prefWidth="364.0" promptText="Put word To encrypt/decrypt" />
+                <TextField fx:id="encryptDecryptTextBox" minWidth="300.0" onInputMethodTextChanged="#OnWordToProccessTextChanged" prefHeight="31.0" prefWidth="364.0" promptText="Put word To encrypt/decrypt" />
             </children>
             <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
