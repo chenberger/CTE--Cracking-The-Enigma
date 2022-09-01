@@ -7,9 +7,17 @@ import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class EncryptDecryptGridController {
     @FXML private AnchorPane configurationAnchorPane;
@@ -23,19 +31,28 @@ public class EncryptDecryptGridController {
     @FXML private GridPane machineStatistic;
     @FXML private MachineStatisticsGridPaneController machineStatisticController;
     @FXML private EncryptDecryptDetailsController EncryptDecryptDetailsController;
+    @FXML private FlowPane keyboardFlowPane;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
+    private Map<Character, KeyboardButtonController> keyboardControllers;
 
     public void UpdateCurrentConfiguration() {
 
     }
 
-    public void decodeWord(String text) throws MachineNotExistsException, SettingsNotInitializedException {
-        Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
+    public void decodeWord(String text) {
+        try {
+            Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
+        } catch (MachineNotExistsException  | SettingsNotInitializedException ex) {
+            new ErrorDialog(ex,"Unable to decode.");
+        }
 
         try {
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
+            KeyboardButtonController test = keyboardControllers.get(decodeWord.charAt(0));
+
+            test.turnOnBulbButton();
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             new ErrorDialog(ex,"Unable to decode.");
@@ -56,6 +73,27 @@ public class EncryptDecryptGridController {
 
     private void registerToEvents() {
         enigmaMachineEngine.statisticsAndHistoryHandler.add(machineStatisticController::staticsAndHistoryChanged);
+        enigmaMachineEngine.keyboardChangedHandler.add(this::initializeKeyboard);
+    }
+
+    private void initializeKeyboard(Object source, Set<Character> keyboard) {
+        keyboard.forEach(this::createKeyboardButton);
+    }
+
+    private void createKeyboardButton(Character word) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("KeyboardButton.fxml"));
+            Node keyboardAnchorPane = fxmlLoader.load();
+            KeyboardButtonController singleKeyboardButtonController = (KeyboardButtonController) fxmlLoader.getController();
+            singleKeyboardButtonController.setEncryptDecryptGridController(this);
+            singleKeyboardButtonController.setKeyboardCharacter(word);
+
+            keyboardFlowPane.getChildren().add(keyboardAnchorPane);
+            keyboardControllers.put(word, singleKeyboardButtonController);
+
+        } catch (IOException ignored) {
+            ignored.getMessage();
+        }
     }
 
     public void initialize() {
@@ -65,6 +103,8 @@ public class EncryptDecryptGridController {
         if(machineStatisticController != null) {
             machineStatisticController.setEncryptDecryptGridController(this);
         }
+
+        keyboardControllers = new HashMap<>();
     }
     public void resetMachineState() {
         try{
@@ -76,13 +116,16 @@ public class EncryptDecryptGridController {
         }
     }
 
+
     public void onFinishInput() throws MachineNotExistsException, CloneNotSupportedException {
         try {
             enigmaMachineEngine.insertingInputFinished();
-        }
-        catch (MachineNotExistsException | CloneNotSupportedException|IllegalArgumentException ex) {
-            new ErrorDialog(ex,"Unable to Process input.");
+        } catch (MachineNotExistsException | CloneNotSupportedException | IllegalArgumentException ex) {
+            new ErrorDialog(ex, "Unable to Process input.");
         }
     }
-    //TODO chen: add keyboard bonus spare room component
+
+    public void keyBoardButtonClicked(Character keyboardCharacter) {
+        decodeWord(keyboardCharacter.toString());
+    }
 }

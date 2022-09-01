@@ -38,6 +38,7 @@ public class EngineManager implements MachineOperations, Serializable {
     public EventHandler<String> currentCodeConfigurationHandler;
     public EventHandler<MachineDetails> machineDetailsHandler;
     public EventHandler<Dictionary> dictionaryChangedHandler;
+    public EventHandler<Set<Character>> keyboardChangedHandler;
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
@@ -54,10 +55,15 @@ public class EngineManager implements MachineOperations, Serializable {
         this.currentCodeConfigurationHandler = new EventHandler<>();
         this.machineDetailsHandler = new EventHandler<>();
         this.dictionaryChangedHandler = new EventHandler<>();
+        this.keyboardChangedHandler = new EventHandler<>();
     }
 
     private void onDictionaryChanged() {
         dictionaryChangedHandler.invoke(this, dictionary);
+    }
+
+    private void onKeyboardChanged() {
+        keyboardChangedHandler.invoke(this, enigmaMachine.getKeyboard());
     }
 
     private void onCurrentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
@@ -92,6 +98,7 @@ public class EngineManager implements MachineOperations, Serializable {
             onMachineDetailsChanged();
             onStatisticsAndHistoryChanged();
             onDictionaryChanged();
+            onKeyboardChanged();
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException();

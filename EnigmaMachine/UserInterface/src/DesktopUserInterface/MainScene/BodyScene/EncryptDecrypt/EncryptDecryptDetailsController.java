@@ -1,7 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
-import DesktopUserInterface.MainScene.ErrorDialog;
-import EnigmaMachineException.*;
+import EnigmaMachineException.MachineNotExistsException;
+import EnigmaMachineException.SettingsNotInitializedException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,9 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
-import javafx.scene.layout.HBox;
-
-import java.awt.event.KeyEvent;
 
 
 public class EncryptDecryptDetailsController {
@@ -48,8 +45,7 @@ public class EncryptDecryptDetailsController {
     private void setScrollPaneColor(){
         encryptDecryptWordsScrollPane.setStyle("-fx-background-color: transparent;");
     }
-    @FXML
-    private void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException, CloneNotSupportedException, SettingsNotInitializedException {
+    @FXML private void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException, CloneNotSupportedException, SettingsNotInitializedException {
             if(fullWordDecoding) {
                 encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
                 encryptDecryptTextBox.clear();
@@ -70,16 +66,11 @@ public class EncryptDecryptDetailsController {
     }
     @FXML private void onLetterEnteredToBox(InputMethodEvent event) {
         if(!fullWordDecoding) {
-            try {
-                encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
-            } catch (MachineNotExistsException e) {
-                throw new RuntimeException(e);
-            } catch (SettingsNotInitializedException e) {
-                throw new RuntimeException(e);
-            }
+            encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
             encryptDecryptTextBox.clear();
         }
     }
+
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
         encryptDecryptGridController.resetMachineState();
     }
