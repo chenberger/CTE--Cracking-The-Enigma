@@ -35,10 +35,7 @@ public class EncryptDecryptGridController {
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
     private Map<Character, KeyboardButtonController> keyboardControllers;
-
-    public void UpdateCurrentConfiguration() {
-
-    }
+    private boolean isKeyboardButtonClicked = false;
 
     public void decodeWord(String text) {
         try {
@@ -50,9 +47,12 @@ public class EncryptDecryptGridController {
         try {
             String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
-            KeyboardButtonController test = keyboardControllers.get(decodeWord.charAt(0));
 
-            test.turnOnBulbButton();
+            if(isKeyboardButtonClicked) {
+                keyboardControllers.get(decodeWord.charAt(0)).turnOnBulbButton();
+                isKeyboardButtonClicked = false;
+            }
+
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             new ErrorDialog(ex,"Unable to decode.");
@@ -91,9 +91,7 @@ public class EncryptDecryptGridController {
             keyboardFlowPane.getChildren().add(keyboardAnchorPane);
             keyboardControllers.put(word, singleKeyboardButtonController);
 
-        } catch (IOException ignored) {
-
-        }
+        } catch (IOException ignored) { }
     }
 
     public void initialize() {
@@ -126,6 +124,7 @@ public class EncryptDecryptGridController {
     }
 
     public void keyBoardButtonClicked(Character keyboardCharacter) {
+        isKeyboardButtonClicked = true;
         decodeWord(keyboardCharacter.toString());
     }
 }
