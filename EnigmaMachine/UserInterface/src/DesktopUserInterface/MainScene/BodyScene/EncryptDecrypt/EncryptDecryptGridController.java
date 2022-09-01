@@ -92,7 +92,7 @@ public class EncryptDecryptGridController {
             keyboardControllers.put(word, singleKeyboardButtonController);
 
         } catch (IOException ignored) {
-            ignored.getMessage();
+
         }
     }
 

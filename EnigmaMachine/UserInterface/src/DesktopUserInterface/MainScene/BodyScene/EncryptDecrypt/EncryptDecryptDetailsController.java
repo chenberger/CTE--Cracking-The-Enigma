@@ -2,50 +2,49 @@ package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import EnigmaMachineException.MachineNotExistsException;
 import EnigmaMachineException.SettingsNotInitializedException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 
 
 public class EncryptDecryptDetailsController {
 
-    @FXML
-    private TextField encryptDecryptTextBox;
-
-
-    @FXML
-    private Button encryptDecryptButton;
-
-    @FXML
-    private Button ResetMachineStateButton;
-
-    @FXML
-    private Label encryptDecryptTextLabel;
-
-    @FXML
-    private ScrollPane encryptDecryptWordsScrollPane;
+    @FXML private TextField encryptDecryptTextBox;
+    @FXML private Button encryptDecryptButton;
+    @FXML private Button ResetMachineStateButton;
+    @FXML private Label encryptDecryptTextLabel;
+    @FXML private ScrollPane encryptDecryptWordsScrollPane;
     @FXML private Button fullWordButton;
     @FXML private Button letterByLetterButton;
-
-    @FXML
-    private TextField encryptedDecryptedWordText;
-    @FXML
-    private Label encryptDecryptTextLabel1;
+    @FXML private TextField encryptedDecryptedWordText;
+    @FXML private Label encryptDecryptTextLabel1;
     private boolean fullWordDecoding = true;
     private EncryptDecryptGridController encryptDecryptGridController;
-
 
     public void setEncryptDecryptGridController(EncryptDecryptGridController encryptDecryptGridController) {
         this.encryptDecryptGridController = encryptDecryptGridController;
     }
+
+    @FXML public void initialize() {
+        encryptDecryptTextBox.textProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(!fullWordDecoding) {
+                    encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
+                    encryptDecryptTextBox.clear();
+                }
+            }
+        });
+    }
     private void setScrollPaneColor(){
         encryptDecryptWordsScrollPane.setStyle("-fx-background-color: transparent;");
     }
-    @FXML private void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException, CloneNotSupportedException, SettingsNotInitializedException {
+    @FXML void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException, CloneNotSupportedException, SettingsNotInitializedException {
             if(fullWordDecoding) {
                 encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
                 encryptDecryptTextBox.clear();
@@ -57,20 +56,12 @@ public class EncryptDecryptDetailsController {
             encryptDecryptGridController.onFinishInput();
             encryptDecryptTextBox.clear();
 }
-    @FXML
-    private void onLetterByLetterButtonPressed(ActionEvent event) {
+    @FXML void onLetterByLetterButtonPressed(ActionEvent event) {
         encryptDecryptButton.setText("Done");
         encryptDecryptTextBox.clear();
         encryptedDecryptedWordText.clear();
         fullWordDecoding = false;
     }
-    @FXML private void onLetterEnteredToBox(InputMethodEvent event) {
-        if(!fullWordDecoding) {
-            encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
-            encryptDecryptTextBox.clear();
-        }
-    }
-
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
         encryptDecryptGridController.resetMachineState();
     }
