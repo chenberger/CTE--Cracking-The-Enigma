@@ -66,4 +66,25 @@ public class ProcessedStringsFormat implements Serializable {
     public void setFormatIndex(int indexFormat) {
         this.formatIndex = indexFormat;
     }
+
+    public StringFormat getOriginalString() {
+        return originalStringFormat;
+    }
+
+    public StringFormat getEncryptedString() {
+        return encryptedStringFormat;
+    }
+
+    public void addToStrings(StringFormat OriginalString, StringFormat EncryptedString) {
+        for (Character character : OriginalString.toString().toCharArray()) {
+            if(character != '<' && character != '>') {
+                addToOriginalString(character);
+            }
+        }
+        for (Character character : EncryptedString.toString().toCharArray()) {
+            if(character != '<' && character != '>') {
+                addToEncryptedString(character);
+            }
+        }
+    }
 }

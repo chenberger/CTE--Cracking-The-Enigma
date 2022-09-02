@@ -47,7 +47,7 @@
          </children>
       <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="2">
          <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
          </GridPane.margin>
          <children>
             <FlowPane fx:id="keyboardFlowPane" layoutX="118.0" layoutY="5.0" minHeight="160.0" minWidth="-Infinity" prefWidth="1000.0">

@@ -21,7 +21,7 @@ public class EncryptDecryptDetailsController {
     @FXML private ScrollPane encryptDecryptWordsScrollPane;
     @FXML private Button fullWordButton;
     @FXML private Button letterByLetterButton;
-    @FXML private TextField encryptedDecryptedWordText;
+    @FXML private TextField decodedWordsTextArea;
     @FXML private Label encryptDecryptTextLabel1;
     private boolean fullWordDecoding = true;
     private EncryptDecryptGridController encryptDecryptGridController;
@@ -34,9 +34,9 @@ public class EncryptDecryptDetailsController {
         encryptDecryptTextBox.textProperty().addListener(new ChangeListener<String>(){
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!fullWordDecoding) {
+                if(!fullWordDecoding && newValue != null && newValue.length() > 0) {
                     encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
-                    encryptDecryptTextBox.clear();
+                    clearDecodingTextArea();
                 }
             }
         });
@@ -51,34 +51,40 @@ public class EncryptDecryptDetailsController {
             }
             else{
                 //TODO: chen - add statistics change only when pushes button.
-                encryptedDecryptedWordText.clear();
+                decodedWordsTextArea.clear();
             }
             encryptDecryptGridController.onFinishInput();
             encryptDecryptTextBox.clear();
 }
     @FXML void onLetterByLetterButtonPressed(ActionEvent event) {
+        encryptDecryptGridController.setKeyboardButtonsEnabled();
         encryptDecryptButton.setText("Done");
         encryptDecryptTextBox.clear();
-        encryptedDecryptedWordText.clear();
+        decodedWordsTextArea.clear();
         fullWordDecoding = false;
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
         encryptDecryptGridController.resetMachineState();
     }
     @FXML private void onFullWordButtonPressed(ActionEvent event){
+        encryptDecryptGridController.setKeyboardButtonsDisabled();
         encryptDecryptButton.setText("Process");
         encryptDecryptTextBox.clear();
-        encryptedDecryptedWordText.clear();
+        decodedWordsTextArea.clear();
         fullWordDecoding = true;
     }
 
 
     public void setDecodedWord(String decodeWord) {
         if(fullWordDecoding) {
-            encryptedDecryptedWordText.setText(decodeWord);
+            decodedWordsTextArea.setText(decodeWord);
         }
         else{
-            encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + decodeWord);
+            decodedWordsTextArea.setText(decodedWordsTextArea.getText() + decodeWord);
         }
+    }
+
+    public void clearDecodingTextArea() {
+        encryptDecryptTextBox.clear();
     }
 }
