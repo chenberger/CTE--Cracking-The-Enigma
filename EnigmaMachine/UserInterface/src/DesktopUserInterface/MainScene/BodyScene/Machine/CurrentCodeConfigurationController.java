@@ -1,19 +1,19 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
 public class CurrentCodeConfigurationController {
 
     @FXML private GridPane CodeCalibrationGrid;
-    @FXML private Label currentCodeConfigurationLabel;
+    @FXML private TextArea currentCodeConfigurationTextArea;
 
     public void setCodeConfiguration(String currentMachineSettings) {
-        currentCodeConfigurationLabel.setText(currentMachineSettings);
+        currentCodeConfigurationTextArea.setText(currentMachineSettings);
     }
 
     public void currentCodeChanged(Object o, String currentCode) {
-        currentCodeConfigurationLabel.setText(currentCode);
+        currentCodeConfigurationTextArea.setText(currentCode);
     }
 }
