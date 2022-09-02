@@ -20,11 +20,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class EncryptDecryptGridController {
+
     @FXML private AnchorPane configurationAnchorPane;
     @FXML private GridPane CurrentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
     @FXML private GridPane encryptDecryptGrid;
-
     @FXML private ScrollPane decodeScroller;
     @FXML private ScrollPane statisticScrollPane;
     @FXML private GridPane EncryptDecryptDetails;
@@ -36,6 +36,19 @@ public class EncryptDecryptGridController {
     private EngineManager enigmaMachineEngine;
     private Map<Character, KeyboardButtonController> keyboardControllers;
     private boolean isKeyboardButtonClicked = false;
+
+    public EncryptDecryptGridController() {
+        keyboardControllers = new HashMap<>();
+    }
+
+    public void initialize() {
+        if(EncryptDecryptDetailsController != null) {
+            EncryptDecryptDetailsController.setEncryptDecryptGridController(this);
+        }
+        if(machineStatisticController != null) {
+            machineStatisticController.setEncryptDecryptGridController(this);
+        }
+    }
 
 
     public void decodeWord(String text) {
@@ -76,6 +89,7 @@ public class EncryptDecryptGridController {
     private void registerToEvents() {
         enigmaMachineEngine.statisticsAndHistoryHandler.add(machineStatisticController::staticsAndHistoryChanged);
         enigmaMachineEngine.keyboardChangedHandler.add(this::initializeKeyboard);
+        enigmaMachineEngine.keyboardChangedHandler.add(EncryptDecryptDetailsController::enableToProcess);
     }
 
     private void initializeKeyboard(Object source, Set<Character> keyboard) {
@@ -89,6 +103,7 @@ public class EncryptDecryptGridController {
             KeyboardButtonController singleKeyboardButtonController = (KeyboardButtonController) fxmlLoader.getController();
             singleKeyboardButtonController.setEncryptDecryptGridController(this);
             singleKeyboardButtonController.setKeyboardCharacter(word);
+            singleKeyboardButtonController.setDisableBind(EncryptDecryptDetailsController.getFullWordDecodingProperty());
 
             keyboardFlowPane.getChildren().add(keyboardAnchorPane);
             keyboardControllers.put(word, singleKeyboardButtonController);
@@ -96,16 +111,6 @@ public class EncryptDecryptGridController {
         } catch (IOException ignored) { }
     }
 
-    public void initialize() {
-        if(EncryptDecryptDetailsController != null) {
-            EncryptDecryptDetailsController.setEncryptDecryptGridController(this);
-        }
-        if(machineStatisticController != null) {
-            machineStatisticController.setEncryptDecryptGridController(this);
-        }
-
-        keyboardControllers = new HashMap<>();
-    }
     public void resetMachineState() {
         try{
             enigmaMachineEngine.resetSettings();
@@ -127,15 +132,6 @@ public class EncryptDecryptGridController {
 
     public void keyBoardButtonClicked(Character keyboardCharacter) {
         isKeyboardButtonClicked = true;
-
-        decodeWord(keyboardCharacter.toString());
-    }
-
-    public void setKeyboardButtonsEnabled() {
-        keyboardControllers.forEach((key, value) -> value.setEnabled());
-    }
-
-    public void setKeyboardButtonsDisabled() {
-        keyboardControllers.forEach((key, value) -> value.setDisabled());
+        EncryptDecryptDetailsController.keyboardButtonClicked(keyboardCharacter);
     }
 }
