@@ -20,22 +20,19 @@
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" percentHeight="0.0" prefHeight="100.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <Label id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="61.0" prefWidth="334.0" stylesheets="@CurrentCodeConfiguration.css" text="Current Code Configuration" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
+      <Label id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="61.0" prefWidth="334.0" stylesheets="@CurrentCodeConfiguration.css" text="Current Code Configuration" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
          <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets left="2.0" right="2.0" top="2.0" />
          </GridPane.margin>
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <AnchorPane id="code-configuration-frame" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="407.0" stylesheets="@CurrentCodeConfiguration.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <AnchorPane id="code-configuration-frame" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="407.0" stylesheets="@CurrentCodeConfiguration.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
-            <TextArea id="current-code" fx:id="currentCodeConfigurationTextArea" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="400.0" stylesheets="@CurrentCodeConfiguration.css" wrapText="true" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <TextArea id="current-code" fx:id="currentCodeConfigurationTextArea" editable="false" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="397.0" stylesheets="@CurrentCodeConfiguration.css" wrapText="true" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
             </TextArea>
          </children>
