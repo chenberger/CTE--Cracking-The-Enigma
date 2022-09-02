@@ -21,9 +21,8 @@ public class StatisticsAndHistoryAnalyzer implements Serializable {
         processedStringsFormat = new ProcessedStringsFormat();
     }
 
-    public void addStringsAndTime(StringFormat OriginalString, StringFormat processedString, long encryptionTimeDurationNanoSeconds) {
-        processedStringsFormat.addStringToProcessedStringsFormat(OriginalString);
-        processedStringsFormat.addStringToProcessedStringsFormat(processedString);
+    public void addToOriginalAndEncryptedStringsAndTime(StringFormat OriginalString, StringFormat processedString, long encryptionTimeDurationNanoSeconds) {
+        processedStringsFormat.addToStrings(OriginalString, processedString);
         processedStringsFormat.addToTotalTime(encryptionTimeDurationNanoSeconds);
     }
     public void addSettingConfiguration(SettingsFormat settingsFormat) {
@@ -84,5 +83,12 @@ public class StatisticsAndHistoryAnalyzer implements Serializable {
 
     public void setIndexFormat(int indexFormat) {
         processedStringsFormat.setFormatIndex(indexFormat);
+    }
+
+    public void addFullEncryptedAndOriginalStringsToProcessedStrings(){
+        OriginalStringFormat original = new OriginalStringFormat(processedStringsFormat.getOriginalString().getElements());
+        EncryptedStringFormat encrypted = new EncryptedStringFormat(processedStringsFormat.getEncryptedString().getElements());
+        processedStringsFormat.addStringToProcessedStringsFormat(original);
+        processedStringsFormat.addStringToProcessedStringsFormat(encrypted);
     }
 }

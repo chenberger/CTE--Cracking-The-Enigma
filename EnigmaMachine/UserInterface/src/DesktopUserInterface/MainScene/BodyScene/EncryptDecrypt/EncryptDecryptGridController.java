@@ -37,6 +37,7 @@ public class EncryptDecryptGridController {
     private Map<Character, KeyboardButtonController> keyboardControllers;
     private boolean isKeyboardButtonClicked = false;
 
+
     public void decodeWord(String text) {
         try {
             Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
@@ -55,6 +56,7 @@ public class EncryptDecryptGridController {
 
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
+            EncryptDecryptDetailsController.clearDecodingTextArea();
             new ErrorDialog(ex,"Unable to decode.");
         }
 
@@ -125,6 +127,15 @@ public class EncryptDecryptGridController {
 
     public void keyBoardButtonClicked(Character keyboardCharacter) {
         isKeyboardButtonClicked = true;
+
         decodeWord(keyboardCharacter.toString());
+    }
+
+    public void setKeyboardButtonsEnabled() {
+        keyboardControllers.forEach((key, value) -> value.setEnabled());
+    }
+
+    public void setKeyboardButtonsDisabled() {
+        keyboardControllers.forEach((key, value) -> value.setDisabled());
     }
 }

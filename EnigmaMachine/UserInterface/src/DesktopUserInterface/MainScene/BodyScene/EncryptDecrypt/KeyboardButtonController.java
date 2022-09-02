@@ -30,6 +30,7 @@ public class KeyboardButtonController {
 
     public void setKeyboardCharacter(Character keyboardCharacter) {
         this.keyboardCharacter = keyboardCharacter;
+        keyboardButton.setDisable(true);
         keyboardButton.setText(keyboardCharacter.toString());
     }
 
@@ -52,4 +53,11 @@ public class KeyboardButtonController {
         keyboardButton.setId("key-button");
     }
 
+    public void setEnabled() {
+        keyboardButton.setDisable(false);
+    }
+
+    public void setDisabled() {
+        keyboardButton.setDisable(true);
+    }
 }

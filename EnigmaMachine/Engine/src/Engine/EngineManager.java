@@ -17,7 +17,6 @@ import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -234,6 +233,7 @@ public class EngineManager implements MachineOperations, Serializable {
         return statisticsAndHistoryAnalyzer.toString();
     }
     public void insertingInputFinished() throws MachineNotExistsException, CloneNotSupportedException {
+        statisticsAndHistoryAnalyzer.addFullEncryptedAndOriginalStringsToProcessedStrings();
         ProcessedStringsFormat processedStringsFormat = statisticsAndHistoryAnalyzer.cloneProcessedStringsFormat();
         processedStringsFormat.addIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
         statisticsAndHistoryAnalyzer.addProcessedStringFormat(enigmaMachine.getOriginalSettingsFormat(), processedStringsFormat);
@@ -253,7 +253,7 @@ public class EngineManager implements MachineOperations, Serializable {
         Instant end = Instant.now();
         long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
-        statisticsAndHistoryAnalyzer.addStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
+        statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
         statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
