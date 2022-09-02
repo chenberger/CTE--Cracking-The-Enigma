@@ -2,6 +2,8 @@ package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import javafx.animation.FillTransition;
 import javafx.animation.Interpolator;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -19,9 +21,16 @@ public class KeyboardButtonController {
     @FXML private Button keyboardButton;
     private EncryptDecryptGridController encryptDecryptGridController;
     private Character keyboardCharacter;
+    private SimpleStringProperty buttonClickedProperty;
+
+    public KeyboardButtonController() {
+        buttonClickedProperty = new SimpleStringProperty("");
+    }
+
 
     @FXML void OnKeyboardButtonClicked(ActionEvent event) {
         encryptDecryptGridController.keyBoardButtonClicked(keyboardCharacter);
+        buttonClickedProperty.set(keyboardButton.getText());
     }
 
     public void setEncryptDecryptGridController(EncryptDecryptGridController encryptDecryptGridController) {
@@ -53,11 +62,11 @@ public class KeyboardButtonController {
         keyboardButton.setId("key-button");
     }
 
-    public void setEnabled() {
-        keyboardButton.setDisable(false);
+    public void setDisableBind(SimpleBooleanProperty fullWordDecodingProperty) {
+        keyboardButton.disableProperty().bind(fullWordDecodingProperty);
     }
 
-    public void setDisabled() {
-        keyboardButton.setDisable(true);
+    public SimpleStringProperty getButtonClickedProperty() {
+        return buttonClickedProperty;
     }
 }

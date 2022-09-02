@@ -3,17 +3,19 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane prefHeight="119.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints minWidth="500.0" />
-        <ColumnConstraints minWidth="300.0" />
+        <ColumnConstraints minWidth="200.0" />
         <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
@@ -23,22 +25,6 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefHeight="31.0" prefWidth="191.0" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="Proccess" GridPane.columnIndex="2" GridPane.rowIndex="1">
-            <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </GridPane.margin>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-        </Button>
-        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="193.0" styleClass="reset-state-button" stylesheets="@EncryptDecryptDetails.css" text="Reset Machine State" GridPane.columnIndex="2" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </GridPane.margin>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-        </Button>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.5" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <children>
                 <Label fx:id="encryptDecryptTextLabel" text="Proccessed word:">
@@ -65,27 +51,44 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </GridPane.margin>
         </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
          <children>
-            <Label text="Decoding method:">
+            <Label prefHeight="31.0" prefWidth="131.0" text="Decoding method:">
                <HBox.margin>
-                  <Insets left="5.0" top="5.0" />
+                  <Insets top="5.0" />
                </HBox.margin>
                <padding>
                   <Insets bottom="5.0" top="5.0" />
                </padding>
             </Label>
-            <Button fx:id="fullWordButton" mnemonicParsing="false" onAction="#onFullWordButtonPressed" prefHeight="31.0" prefWidth="90.0" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="Full Word">
+            <RadioButton fx:id="fullWordButton" mnemonicParsing="false" onAction="#onFullWordButtonPressed" prefHeight="21.0" prefWidth="97.0" text="Full Word">
                <HBox.margin>
-                  <Insets left="2.0" right="20.0" top="5.0" />
+                  <Insets bottom="7.0" left="7.0" top="10.0" />
                </HBox.margin>
-            </Button>
-            <Button fx:id="letterByLetterButton" mnemonicParsing="false" onAction="#onLetterByLetterButtonPressed" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="Letter By Letter">
+            </RadioButton>
+            <RadioButton fx:id="letterByLetterButton" mnemonicParsing="false" onAction="#onLetterByLetterButtonPressed" prefHeight="21.0" prefWidth="135.0" text="Letter By Letter">
                <HBox.margin>
-                  <Insets top="5.0" />
+                  <Insets bottom="7.0" left="7.0" right="7.0" top="10.0" />
                </HBox.margin>
-            </Button>
+            </RadioButton>
          </children>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
       </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="7.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+         <children>
+              <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefHeight="31.0" prefWidth="191.0" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="Proccess">
+                  <padding>
+                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+              </Button>
+              <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="193.0" styleClass="reset-state-button" stylesheets="@EncryptDecryptDetails.css" text="Reset Machine State">
+                  <padding>
+                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+              </Button>
+         </children>
+      </VBox>
     </children>
 </GridPane>
