@@ -52,5 +52,9 @@ public class Reflector implements Cloneable, Serializable {
         return reflectorPairs.size();
     }
 
+    public Object cloneReflector() {
+        return new Reflector(id, new HashMap<Integer, Integer>(reflectorPairs));
+    }
+
     //endregion
 }

@@ -170,5 +170,9 @@ public class Rotor implements Decoder, Serializable {
         return mappingABC.get(0).getValue();
     }
 
+    public Object cloneRotor() {
+        return new Rotor(id, notch, isFirstRotor, mappingABC, startingRightCharToWindow);
+    }
+
     //endregion
 }
