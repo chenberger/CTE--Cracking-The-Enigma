@@ -365,4 +365,28 @@ public class EnigmaMachine implements Serializable {
     public boolean isPluginBoardSet() {
         return originalSettingsFormat.isPluginBoardSet();
     }
+
+    public Map<Integer,Rotor> cloneRotors() {
+        Map<Integer,Rotor> clonedRotors = new HashMap<>();
+        for(Map.Entry<Integer,Rotor> entry : rotors.entrySet()) {
+            clonedRotors.put(entry.getKey(), (Rotor)entry.getValue().cloneRotor());
+        }
+        return clonedRotors;
+    }
+
+    public Map<RomanNumber, Reflector> cloneReflector() {
+        Map<RomanNumber, Reflector> clonedReflectors = new HashMap<>();
+        for(Map.Entry<RomanNumber, Reflector> entry : reflectors.entrySet()) {
+            clonedReflectors.put(entry.getKey(), (Reflector)entry.getValue().cloneReflector());
+        }
+        return clonedReflectors;
+    }
+
+    public Map<Character, Integer> cloneKeyboard() {
+        Map<Character, Integer> clonedKeyboard = new HashMap<>();
+        for(Map.Entry<Character, Integer> entry : keyboard.entrySet()) {
+            clonedKeyboard.put(entry.getKey(), entry.getValue());
+        }
+        return clonedKeyboard;
+    }
 }

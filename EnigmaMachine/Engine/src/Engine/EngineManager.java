@@ -38,10 +38,10 @@ public class EngineManager implements MachineOperations, Serializable {
     public EventHandler<MachineDetails> machineDetailsHandler;
     public EventHandler<Dictionary> dictionaryChangedHandler;
     public EventHandler<Set<Character>> keyboardChangedHandler;
+    public EventHandler<String> decryptionCandidateEventHandler;
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
-        this.decryptionManager = new DecryptionManager();
         this.dictionary = new Dictionary();
         this.enigmaMachine = null;
 
@@ -55,8 +55,11 @@ public class EngineManager implements MachineOperations, Serializable {
         this.machineDetailsHandler = new EventHandler<>();
         this.dictionaryChangedHandler = new EventHandler<>();
         this.keyboardChangedHandler = new EventHandler<>();
+        this.decryptionCandidateEventHandler = new EventHandler<>();
     }
-
+    private void onDecryptionMangerFinished(){
+        decryptionCandidateEventHandler.invoke(this, decryptionManager.getDecryptionCandidatesFormat());
+    }
     private void onDictionaryChanged() {
         dictionaryChangedHandler.invoke(this, dictionary);
     }
@@ -137,6 +140,10 @@ public class EngineManager implements MachineOperations, Serializable {
         onMachineDetailsChanged();
         onStatisticsAndHistoryChanged();
     }
+    private void setDecryptionManager() throws CloneNotSupportedException {
+
+        decryptionManager = new DecryptionManager(cloneMachine(), dictionary);
+    }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
         enigmaMachine.clearSettings();
@@ -158,6 +165,10 @@ public class EngineManager implements MachineOperations, Serializable {
                 throw new RuntimeException(e);
             }
         });
+    }
+    private EnigmaMachine cloneMachine() throws CloneNotSupportedException {
+        EnigmaMachine clonedMachine = new EnigmaMachine(enigmaMachine.cloneRotors(), enigmaMachine.cloneReflector(), enigmaMachine.cloneKeyboard(), enigmaMachine.getNumOfActiveRotors());
+        return clonedMachine;
     }
 
     private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
