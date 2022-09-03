@@ -15,6 +15,7 @@ public class DecryptionManager {
     private Dictionary dictionary;
 
     private EnigmaMachine enigmaMachine;
+
     private static final int MIN_AGENTS_AMOUNT = 2;
     private static final int MAX_AGENTS_AMOUNT = 50;
 
@@ -59,6 +60,7 @@ public class DecryptionManager {
                     .map(pair -> pair.getValue().toString() + System.lineSeparator() +
                             "Found at configuration: "+ pair.getKey().toString() + System.lineSeparator())
                     .collect(Collectors.joining(System.lineSeparator()));
+
         }
     }
 }

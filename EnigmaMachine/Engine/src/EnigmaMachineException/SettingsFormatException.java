@@ -32,7 +32,7 @@ public class SettingsFormatException extends Exception{
             isSectorTypeFound = false;
 
             for(Sector settingSector : settingsFormat.getSettingsFormat()) {
-                if(sectorType == settingSector.type) {
+                if(sectorType == settingSector.getType()) {
                     isSectorTypeFound = true;
                     break;
                 }

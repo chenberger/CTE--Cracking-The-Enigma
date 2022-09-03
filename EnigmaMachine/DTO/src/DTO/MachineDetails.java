@@ -27,7 +27,7 @@ public class MachineDetails {
         this.rotorsInUse = enigmaMachine.getCurrentRotorsInUse();
         this.reflectors = enigmaMachine.getAllReflectors();
         this.reflectorInUse = enigmaMachine.getCurrentReflectorInUse();
-        this.keyboard = enigmaMachine.getKeyboard();
+        this.keyboard = enigmaMachine.getKeyboardCharacters();
         this.pluginBoard = enigmaMachine.getPluginBoard();
         this.originalSettingsFormat = originalSettingsFormat;
         this.currentSettingsFormat = currentSettingsFormat;

@@ -14,8 +14,8 @@
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
       <GridPane fx:id="encryptDecryptGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1.0" minWidth="1.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+          <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+          <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
@@ -39,12 +39,12 @@
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
             </AnchorPane>
          </children>
-      <AnchorPane prefHeight="135.0" prefWidth="695.0" GridPane.columnSpan="2">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="695.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
-            <VBox layoutX="1.0" prefHeight="195.0" prefWidth="1258.0" spacing="5.0" AnchorPane.bottomAnchor="10.0">
+            <VBox layoutX="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="1258.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                <children>
-                  <fx:include fx:id="CurrentCodeConfigurationGrid" source="../Machine/CurrentCodeConfiguration.fxml" />
-                  <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" />
+                  <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1200.0" source="../Machine/CurrentCodeConfiguration.fxml" VBox.vgrow="NEVER" />
+                  <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="NEVER" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -70,9 +70,9 @@
          <children>
             <HBox layoutX="14.0" layoutY="4.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                <children>
-                  <fx:include fx:id="EncryptDecryptDetails" minWidth="-Infinity" prefWidth="600.0" source="EncryptDecryptDetails.fxml" HBox.hgrow="ALWAYS" />
-                  <Separator orientation="VERTICAL" prefHeight="244.0" prefWidth="0.0" />
-                  <fx:include fx:id="machineStatistic" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="400.0" source="MachineStatistics.fxml" HBox.hgrow="ALWAYS" />
+                  <fx:include fx:id="EncryptDecryptDetails" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" source="EncryptDecryptDetails.fxml" HBox.hgrow="ALWAYS" />
+                  <Separator orientation="VERTICAL" prefWidth="0.0" />
+                  <fx:include fx:id="machineStatistic" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" source="MachineStatistics.fxml" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children></AnchorPane>
