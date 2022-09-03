@@ -14,7 +14,7 @@ public abstract class Sector<T> implements Serializable {
     protected final char openSector = '<';
     protected final char closeSector = '>';
     protected List<T> elements;
-    public SectorType type;
+    private final SectorType type;
 
     public Sector(List<T> elements, SectorType type) {
         this.elements = elements;
@@ -44,10 +44,18 @@ public abstract class Sector<T> implements Serializable {
         return elements;
     }
 
+    public void setElements(List<T> newElements) {
+        elements = newElements;
+    }
+
+    public SectorType getType() {
+        return type;
+    }
+
     public abstract void validateSector(EnigmaMachine enigmaMachine) throws RotorsInUseSettingsException, ReflectorSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException;
 
     public abstract void setSectorInTheMachine(EnigmaMachine enigmaMachine) throws CloneNotSupportedException;
 
     public abstract void addSectorToSettingsFormat(EnigmaMachine enigmaMachine);
-    //endregion
+        //endregion
 }

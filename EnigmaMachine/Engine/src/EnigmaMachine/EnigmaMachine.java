@@ -18,14 +18,14 @@ public class EnigmaMachine implements Serializable {
     private Reflector reflectorInUse;
     private final Map<RomanNumber, Reflector> reflectors;
     private PluginBoard pluginBoard;
-    private final Map<Character, Integer> keyboard;
+    private final Keyboard keyboard;
     private boolean isTheInitialCodeDefined;
     private final SettingsFormat originalSettingsFormat;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard, int numOfActiveRotors){
         this.rotors = rotors;
         this.reflectors = reflectors;
-        this.keyboard = keyboard;
+        this.keyboard = new Keyboard(keyboard);
         this.numOfActiveRotors = numOfActiveRotors;
         this.rotorsInUse = new ArrayList<Rotor>();
         this.pluginBoard = new PluginBoard();
@@ -238,7 +238,7 @@ public class EnigmaMachine implements Serializable {
         currentCharIndex = decodeByDirection(currentCharIndex, Direction.FORWARD);
         currentCharIndex = reflectorInUse.SetIndex(currentCharIndex);
         currentCharIndex = decodeByDirection(currentCharIndex, Direction.BACKWARD);
-        currentChar = getKeyByValue(keyboard, currentCharIndex);
+        currentChar = keyboard.getKeyByValue(currentCharIndex);
         currentChar = pluginBoard.getPluggedPair(currentChar);
 
         return currentChar;
@@ -334,7 +334,8 @@ public class EnigmaMachine implements Serializable {
 
     public PluginBoard getPluginBoard() { return pluginBoard; }
 
-    public Set<Character> getKeyboard() { return keyboard.keySet(); }
+    public Set<Character> getKeyboardCharacters() { return keyboard.keySet(); }
+    public Keyboard getKeyboard() { return keyboard; }
 
     public SettingsFormat getOriginalSettingsFormat() { return originalSettingsFormat; }
 

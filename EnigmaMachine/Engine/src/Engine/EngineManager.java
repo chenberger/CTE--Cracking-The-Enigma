@@ -62,7 +62,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     private void onKeyboardChanged() {
-        keyboardChangedHandler.invoke(this, enigmaMachine.getKeyboard());
+        keyboardChangedHandler.invoke(this, enigmaMachine.getKeyboardCharacters());
     }
 
     private void onCurrentCodeConfigurationChanged() throws MachineNotExistsException, CloneNotSupportedException {
@@ -128,7 +128,6 @@ public class EngineManager implements MachineOperations, Serializable {
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
         validateMachineSettings(settingsSector);
         setMachineSettings(settingsSector);
-        enigmaMachine.setTheInitialCodeDefined(true);
         resetMachine();
         setSettingsFormat(settingsSector);
         checkIfTheSettingsFormatInitialized();
@@ -158,6 +157,8 @@ public class EngineManager implements MachineOperations, Serializable {
                 throw new RuntimeException(e);
             }
         });
+
+        enigmaMachine.setTheInitialCodeDefined(true);
     }
 
     private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {

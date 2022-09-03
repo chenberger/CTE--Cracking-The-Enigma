@@ -3,20 +3,20 @@ package Decryption;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
 public class DecryptionManager {
-    private int agentsAmount;
+    private int numberOfAgents;
     private static final int MIN_AGENTS_AMOUNT = 2;
     private static final int MAX_AGENTS_AMOUNT = 50;
 
-    public int getAgentsAmount() {
-        return agentsAmount;
+    public int getNumberOfAgents() {
+        return numberOfAgents;
     }
 
-    public void setAgentsAmount(int agentsAmount) throws IllegalAgentsAmountException {
-        if(agentsAmount >= MIN_AGENTS_AMOUNT && agentsAmount <= MAX_AGENTS_AMOUNT) {
-            this.agentsAmount = agentsAmount;
+    public void setNumberOfAgents(int numberOfAgents) throws IllegalAgentsAmountException {
+        if(numberOfAgents >= MIN_AGENTS_AMOUNT && numberOfAgents <= MAX_AGENTS_AMOUNT) {
+            this.numberOfAgents = numberOfAgents;
         }
         else {
-            throw new IllegalAgentsAmountException(agentsAmount, MIN_AGENTS_AMOUNT, MAX_AGENTS_AMOUNT);
+            throw new IllegalAgentsAmountException(numberOfAgents, MIN_AGENTS_AMOUNT, MAX_AGENTS_AMOUNT);
         }
     }
 }

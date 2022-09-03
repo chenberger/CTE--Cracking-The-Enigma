@@ -6,13 +6,14 @@ import Engine.EngineManager;
 import EnigmaMachineException.*;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class MachineGridController {
     @FXML private GridPane machineGrid;
     @FXML private GridPane machineDetailsGrid;
     @FXML private MachineDetailsController machineDetailsGridController;
     @FXML private CodeCalibrationController codeCalibrationGridController;
-    @FXML private GridPane currentCodeConfigurationGrid;
+    @FXML private VBox currentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController currentCodeConfigurationGridController;
     @FXML private GridPane codeCalibrationGrid;
      private MainController mainController;
