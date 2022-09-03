@@ -28,11 +28,26 @@ public class SettingsFormat implements Serializable {
 
 
     public <T> void addSector(Sector<T> sector) {
-        settingsFormat.add(sector);
+        if(isSectorExists(sector)) {
+            setSectorByType(sector);
+        }
+        else {
+            settingsFormat.add(sector);
+        }
 
-        if(sector.type == SectorType.PLUGIN_BOARD) {
+        if(sector.getType() == SectorType.PLUGIN_BOARD) {
             isPluginBoardSet = true;
         }
+    }
+
+    private <T> boolean isSectorExists(Sector<T> sector) {
+        for(Sector sectorToSearch: settingsFormat) {
+            if(sectorToSearch.getType() == sector.getType()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -94,12 +109,17 @@ public class SettingsFormat implements Serializable {
         }
 
         for(Sector sector : settingsFormat) {
-            if(sector.type == sectorType) {
+            if(sector.getType() == sectorType) {
                 return sector;
             }
         }
 
         throw new IllegalArgumentException("Error: The Sector type is not found in the settings format");
+    }
+
+    public void setSectorByType(Sector sector) {
+        Sector sectorToUpdate = getSectorByType(sector.getType());
+        sectorToUpdate = sector;
     }
 
     public void setIfPluginBoardSet(boolean pluginBoardSet) {

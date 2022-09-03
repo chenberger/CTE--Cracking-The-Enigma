@@ -30,7 +30,7 @@ public class RandomSettingsGenerator {
 
     public PluginBoardSector getRandomPluginBoardSector() {
         List<Pair<Character, Character>> pluginPairs = new ArrayList<>();
-        Set<Character> optionalCharacters = new HashSet<>(enigmaMachine.getKeyboard());
+        Set<Character> optionalCharacters = new HashSet<>(enigmaMachine.getKeyboardCharacters());
         Random randomGenerator = new Random();
         int amountOfPairs = randomGenerator.nextInt(enigmaMachine.getMaximumPairs() + 1);
         Pair<Character, Character> randomPair;
@@ -93,7 +93,7 @@ public class RandomSettingsGenerator {
         List<Character> startingPositionsOfTheRotors = new ArrayList<>();
 
         for (int i = 0; i < rotorIDSector.getElements().size(); i++) {
-            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard(enigmaMachine.getKeyboard().stream().collect(Collectors.toList())));
+            startingPositionsOfTheRotors.add(getRandomCharacterFromTheKeyboard(enigmaMachine.getKeyboardCharacters().stream().collect(Collectors.toList())));
         }
 
         return new StartingRotorPositionSector(startingPositionsOfTheRotors);

@@ -40,7 +40,7 @@ public class JaxbToMachineTransformer {
         abcNotValidException.addExceptionsToTheList();
         throwExceptionIfAlphabetNotValid(abcNotValidException);
 
-        decryptionManager.setAgentsAmount(JAXBGeneratedEnigma.getCTEDecipher().getAgents());
+        decryptionManager.setNumberOfAgents(JAXBGeneratedEnigma.getCTEDecipher().getAgents());
         dictionary.setDictionary(JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getWords(), JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getExcludeChars());
 
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();

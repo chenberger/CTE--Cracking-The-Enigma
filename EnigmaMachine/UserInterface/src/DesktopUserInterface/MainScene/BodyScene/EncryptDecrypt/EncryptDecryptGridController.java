@@ -13,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class EncryptDecryptGridController {
 
     @FXML private AnchorPane configurationAnchorPane;
-    @FXML private GridPane CurrentCodeConfigurationGrid;
+    @FXML private VBox CurrentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
     @FXML private GridPane encryptDecryptGrid;
     @FXML private ScrollPane decodeScroller;

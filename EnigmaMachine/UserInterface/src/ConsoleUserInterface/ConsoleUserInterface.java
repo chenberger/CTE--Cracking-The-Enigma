@@ -2,7 +2,8 @@ package ConsoleUserInterface;
 
 
 import DTO.MachineDetails;
-import Engine.*;
+import Engine.EngineManager;
+import Engine.OperationType;
 import EnigmaMachine.RomanNumber;
 import EnigmaMachine.Settings.PluginBoardSector;
 import EnigmaMachine.Settings.ReflectorIdSector;
@@ -217,12 +218,15 @@ public class ConsoleUserInterface {
                     continueOperation = false;
                     System.out.println("The message have been processed successfully" + System.lineSeparator() +
                             "The processed message is: " + encryptedMessage + System.lineSeparator());
+
                 } catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex) {
                     System.out.println(ex.getMessage());
                     continueOperation = shouldContinueInOperation();
                     if (continueOperation) {
                         System.out.println("Please try again:");
                     }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             } while (continueOperation);
         }

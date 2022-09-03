@@ -8,6 +8,7 @@ import Engine.EngineManager;
 import EnigmaMachineException.*;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class BruteForceGridController {
     @FXML private DMOperationalGridController dmOperationalGridController;
     @FXML private GridPane encryptDecryptActionsGrid;
     @FXML private EncryptDecryptActionsGridController encryptDecryptActionsGridController;
-    @FXML private GridPane CurrentCodeConfigurationGrid;
+    @FXML private VBox CurrentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
