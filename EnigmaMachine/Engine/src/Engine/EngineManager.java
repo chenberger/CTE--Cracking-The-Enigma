@@ -277,7 +277,7 @@ public class EngineManager implements MachineOperations, Serializable {
         List<String> inputToProcessAfterCleanFromExcludeChars;
 
         if(dictionary != null) {
-            inputToProcessAfterCleanFromExcludeChars = dictionary.validateWords(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
+            inputToProcessAfterCleanFromExcludeChars = dictionary.validateWordsAfterCleanExcludeChars(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
             return processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
         }
         else {

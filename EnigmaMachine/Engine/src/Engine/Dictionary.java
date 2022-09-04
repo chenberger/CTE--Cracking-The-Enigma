@@ -29,13 +29,20 @@ public class Dictionary {
         return words;
     }
 
-    public List<String> validateWords(List<String> wordsToCheck) throws WordNotValidInDictionaryException {
-        WordNotValidInDictionaryException wordNotValidInDictionary = new WordNotValidInDictionaryException(words);
+    public List<String> validateWordsAfterCleanExcludeChars(List<String> wordsToCheck) throws WordNotValidInDictionaryException {
         List<String> wordsToCheckAfterCleanExcludeChars = new ArrayList<>();
 
         wordsToCheck.forEach(word -> {
             wordsToCheckAfterCleanExcludeChars.add(word.replaceAll("[" + excludeChars + "]", ""));
         });
+
+        validateWords(wordsToCheckAfterCleanExcludeChars);
+
+        return wordsToCheckAfterCleanExcludeChars;
+    }
+
+    public void validateWords(List<String> wordsToCheckAfterCleanExcludeChars) throws WordNotValidInDictionaryException {
+        WordNotValidInDictionaryException wordNotValidInDictionary = new WordNotValidInDictionaryException(words);
 
         wordsToCheckAfterCleanExcludeChars.forEach(word -> {
             if(!words.contains(word)) {
@@ -46,7 +53,5 @@ public class Dictionary {
         if(wordNotValidInDictionary.isExceptionNeedToThrown()) {
             throw wordNotValidInDictionary;
         }
-
-        return wordsToCheckAfterCleanExcludeChars;
     }
 }
