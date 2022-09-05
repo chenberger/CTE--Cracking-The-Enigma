@@ -1,4 +1,4 @@
-package Decryption;
+package BruteForce;
 
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
@@ -13,10 +13,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class  Agent extends Task<List<String>> {
 
-    private final Integer id;
+    private final Instant id;
     private Integer taskSize;
     private Keyboard keyboard;
     private EnigmaMachine enigmaMachine;
@@ -24,12 +25,12 @@ public class  Agent extends Task<List<String>> {
     private String encryptedString;
     private Dictionary dictionary;
     private long encryptionTimeDurationInMiliSeconds;
+    private BlockingQueue candidateMessagesQueue;
 
-    private static int continuousId;
-
-    public Agent(Integer taskSize, EnigmaMachine enigmaMachine, StartingRotorPositionSector fromRotorPositions, String encryptedString, Dictionary dictionary) {
+    public Agent(Integer taskSize, EnigmaMachine enigmaMachine, StartingRotorPositionSector fromRotorPositions, String encryptedString, Dictionary dictionary, BlockingQueue candidateMessagesQueue) {
         this.dictionary = dictionary;
-        this.id = continuousId++;
+        this.candidateMessagesQueue = candidateMessagesQueue;
+        this.id = Instant.parse(Thread.currentThread().getName());
         this.taskSize = taskSize;
         this.keyboard = enigmaMachine.getKeyboard();
         this.enigmaMachine = enigmaMachine;
@@ -37,22 +38,14 @@ public class  Agent extends Task<List<String>> {
         this.encryptedString = encryptedString;
     }
 
-    static {
-        resetContinuousId();
-    }
-
-    public static void resetContinuousId() {
-        continuousId = 1;
-    }
-
     @Override
     protected List<String> call() throws Exception {
-        Instant startingTime = Instant.now();
         List<String> decryptStrings = new ArrayList<>();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(fromRotorPositions.getElements());
 
         for (int i = 0; i < taskSize; i++) {
             try {
+                Instant startingTime = Instant.now();
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
@@ -60,6 +53,9 @@ public class  Agent extends Task<List<String>> {
 
                 try {
                     dictionary.validateWords(Arrays.asList(candidateMessage.split(" ")));
+                    encryptionTimeDurationInMiliSeconds = Duration.between(startingTime, Instant.now()).toMillis();
+                    candidateMessagesQueue.put();
+                    //TODO erez: add to blocking queue
                     decryptStrings.add(candidateMessage);
                 } catch (WordNotValidInDictionaryException ignored) {}
 
@@ -72,8 +68,6 @@ public class  Agent extends Task<List<String>> {
             } catch (StartingPositionsOfTheRotorException | CloneNotSupportedException ignored) {}
         }
 
-        //TODO erez : notify to ui
-        encryptionTimeDurationInMiliSeconds = Duration.between(startingTime, Instant.now()).toMillis();
         return decryptStrings;
     }
 
@@ -81,5 +75,11 @@ public class  Agent extends Task<List<String>> {
         currentRotorPositions.validateSector(enigmaMachine);
         currentRotorPositions.setSectorInTheMachine(enigmaMachine);
         enigmaMachine.resetSettings();
+
+
+
+        ExecutorService exService = new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(4));
+
+
     }
 }
