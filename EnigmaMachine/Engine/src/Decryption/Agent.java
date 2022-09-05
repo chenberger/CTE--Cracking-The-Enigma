@@ -9,7 +9,7 @@ import javafx.concurrent.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Agent extends Task<List<String>> {
+public class  Agent extends Task<List<String>> {
 
     private final Integer id;
     private Integer taskSize;
