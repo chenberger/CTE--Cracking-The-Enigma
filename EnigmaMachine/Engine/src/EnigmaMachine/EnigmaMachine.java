@@ -367,6 +367,7 @@ public class EnigmaMachine implements Serializable {
         return originalSettingsFormat.isPluginBoardSet();
     }
 
+
     public Map<Integer,Rotor> cloneRotors() {
         Map<Integer,Rotor> clonedRotors = new HashMap<>();
         for(Map.Entry<Integer,Rotor> entry : rotors.entrySet()) {
@@ -389,5 +390,9 @@ public class EnigmaMachine implements Serializable {
             clonedKeyboard.put(entry.getKey(), entry.getValue());
         }
         return clonedKeyboard;
+    }
+
+    public void setReflector(Reflector reflector) {
+        reflectorInUse = reflector;
     }
 }
