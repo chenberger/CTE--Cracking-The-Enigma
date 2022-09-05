@@ -13,6 +13,10 @@ public class BruteForceTask {
         this.taskSize = taskSize;
     }
 
+    public BruteForceTask() {
+
+    }
+
     public int getAmountOfAgents() {
         return amountOfAgents;
     }
@@ -23,5 +27,17 @@ public class BruteForceTask {
 
     public int getTaskSize() {
         return taskSize;
+    }
+
+    public void setAmountOfAgents(int amountOfAgents) {
+        this.amountOfAgents = amountOfAgents;
+    }
+
+    public void setDifficultTaskLevel(DifficultyLevel difficultTaskLevel) {
+        this.difficultTaskLevel = difficultTaskLevel;
+    }
+
+    public void setTaskSize(int taskSize) {
+        this.taskSize = taskSize;
     }
 }

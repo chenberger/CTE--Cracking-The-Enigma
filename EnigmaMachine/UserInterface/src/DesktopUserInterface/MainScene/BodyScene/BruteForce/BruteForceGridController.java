@@ -22,6 +22,8 @@ public class BruteForceGridController {
     @FXML private EncryptDecryptActionsGridController encryptDecryptActionsGridController;
     @FXML private VBox CurrentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
+    @FXML private GridPane decryptionManager;
+    @FXML private DecryptionManagerController decryptionManagerController;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
 
@@ -32,6 +34,7 @@ public class BruteForceGridController {
 
     private void registerToEvents() {
         enigmaMachineEngine.dictionaryChangedHandler.add(encryptDecryptActionsGridController::setDictionary);
+        enigmaMachineEngine.maxAgentsAmountChangedHandler.add(decryptionManagerController::setMaxAmountOfAgents);
     }
 
     public void setEngineManager(EngineManager enigmaMachineEngine) {
@@ -48,6 +51,10 @@ public class BruteForceGridController {
         }
         if (encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setBruteForceGridController(this);
+        }
+
+        if(decryptionManagerController != null) {
+            decryptionManagerController.setBruteForceGridController(this);
         }
     }
 
