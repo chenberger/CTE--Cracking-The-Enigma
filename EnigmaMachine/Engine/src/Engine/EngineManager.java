@@ -1,7 +1,7 @@
 package Engine;
 
 import DTO.MachineDetails;
-import Decryption.DecryptionManager;
+import BruteForce.DecryptionManager;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
 import Engine.StatisticsAndHistory.OriginalStringFormat;
 import Engine.StatisticsAndHistory.ProcessedStringsFormat;

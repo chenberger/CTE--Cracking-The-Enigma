@@ -1,6 +1,6 @@
 package Engine;
 
-import Decryption.DecryptionManager;
+import BruteForce.DecryptionManager;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
 import EnigmaMachine.RomanNumber;
