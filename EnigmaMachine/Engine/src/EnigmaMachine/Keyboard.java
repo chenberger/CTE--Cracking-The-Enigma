@@ -28,13 +28,18 @@ public class Keyboard {
         return maxValueCharacter[0];
     }
 
-    public List<Character> increase(List<Character> rotorsPositionsToIncrease) throws Exception {
+    public List<Character> increaseRotorPositions(List<Character> rotorsPositionsToIncrease) throws Exception {
+        return increaseRotorPositions(rotorsPositionsToIncrease, 1);
+    }
+
+    public List<Character> increaseRotorPositions(List<Character> rotorsPositionsToIncrease, int amountToIncrease) throws Exception {
         if(!isPossibleToIncrease(rotorsPositionsToIncrease, rotorsPositionsToIncrease.size())) {
             throw new Exception();
         }
+
         int rotorsPositionsInDecimal = convertFromStringToDecimal(rotorsPositionsToIncrease);
 
-        return convertFromDecimalToString(rotorsPositionsInDecimal + 1,  rotorsPositionsToIncrease.size());
+        return convertFromDecimalToString(rotorsPositionsInDecimal + amountToIncrease ,  rotorsPositionsToIncrease.size());
     }
 
     private List<Character> convertFromDecimalToString(int decimalNumberToConvert, int amountOfRotorsInUse) {

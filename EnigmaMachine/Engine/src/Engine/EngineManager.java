@@ -1,5 +1,7 @@
 package Engine;
 
+import BruteForce.BruteForceUIAdapter;
+import DTO.BruteForceTask;
 import DTO.MachineDetails;
 import BruteForce.DecryptionManager;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
@@ -58,7 +60,7 @@ public class EngineManager implements MachineOperations, Serializable {
         this.decryptionCandidateEventHandler = new EventHandler<>();
     }
     private void onDecryptionMangerFinished(){
-        decryptionCandidateEventHandler.invoke(this, decryptionManager.getDecryptionCandidatesFormat());
+        decryptionCandidateEventHandler.invoke(this, decryptionManager.getDecryptionCandidatesStatistics());
     }
     private void onDictionaryChanged() {
         dictionaryChangedHandler.invoke(this, dictionary);
@@ -139,9 +141,11 @@ public class EngineManager implements MachineOperations, Serializable {
         onMachineDetailsChanged();
         onStatisticsAndHistoryChanged();
     }
-    private void setDecryptionManager() throws CloneNotSupportedException {
 
-        decryptionManager = new DecryptionManager(cloneMachine(), dictionary);
+    @Override
+    public  void startBruteForceDeciphering(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask) throws CloneNotSupportedException {
+        decryptionManager = new DecryptionManager(cloneMachine(), dictionary, bruteForceUIAdapter, bruteForceTask);
+        decryptionManager.startDeciphering();
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
