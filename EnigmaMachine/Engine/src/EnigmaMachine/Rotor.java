@@ -174,5 +174,6 @@ public class Rotor implements Decoder, Serializable {
         return new Rotor(id, notch, isFirstRotor, mappingABC, startingRightCharToWindow);
     }
 
+
     //endregion
 }
