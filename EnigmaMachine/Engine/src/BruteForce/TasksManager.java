@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import BruteForce.AgentThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -138,11 +139,11 @@ public class TasksManager implements Runnable{
         totalTasksSize = numOfPossibleRotorsPositions;
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
         while(numOfPossibleRotorsPositions > 0) {
-            Agent agent = new Agent(taskSize, enigmaMachine, currentStartingRotorsPositions, encryptedString, dictionary);
-            TasksPool.execute(agent);
+            //Agent agent = new Agent(taskSize, enigmaMachine, currentStartingRotorsPositions, encryptedString, dictionary);
+            //TasksPool.execute(agent);
             //TODO: implement the thread pool of the agentas
             numOfPossibleRotorsPositions -= taskSize;
-            currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increase(currentStartingRotorsPositions.getElements()));
+            //currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increase(currentStartingRotorsPositions.getElements()));
         }
 
     }
