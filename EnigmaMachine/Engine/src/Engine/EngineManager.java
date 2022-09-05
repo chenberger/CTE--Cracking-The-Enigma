@@ -41,11 +41,13 @@ public class EngineManager implements MachineOperations, Serializable {
     public EventHandler<Dictionary> dictionaryChangedHandler;
     public EventHandler<Set<Character>> keyboardChangedHandler;
     public EventHandler<String> decryptionCandidateEventHandler;
+    public EventHandler<Integer> maxAgentsAmountChangedHandler;
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.dictionary = new Dictionary();
         this.enigmaMachine = null;
+        this.decryptionManager = new DecryptionManager();
 
         initializeEventHandlers();
     }
@@ -58,7 +60,13 @@ public class EngineManager implements MachineOperations, Serializable {
         this.dictionaryChangedHandler = new EventHandler<>();
         this.keyboardChangedHandler = new EventHandler<>();
         this.decryptionCandidateEventHandler = new EventHandler<>();
+        this.maxAgentsAmountChangedHandler = new EventHandler<>();
     }
+
+    private void onMaxAgentsAmountChanged(){
+        maxAgentsAmountChangedHandler.invoke(this, decryptionManager.getMaxCurrentAmountOfAgents());
+    }
+
     private void onDecryptionMangerFinished(){
         decryptionCandidateEventHandler.invoke(this, decryptionManager.getDecryptionCandidatesStatistics());
     }
@@ -103,6 +111,7 @@ public class EngineManager implements MachineOperations, Serializable {
             onStatisticsAndHistoryChanged();
             onDictionaryChanged();
             onKeyboardChanged();
+            onMaxAgentsAmountChanged();
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException();
@@ -143,7 +152,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public  void startBruteForceDeciphering(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask) throws CloneNotSupportedException {
+    public void startBruteForceDeciphering(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask) throws CloneNotSupportedException {
         decryptionManager = new DecryptionManager(cloneMachine(), dictionary, bruteForceUIAdapter, bruteForceTask);
         decryptionManager.startDeciphering();
     }
@@ -282,7 +291,10 @@ public class EngineManager implements MachineOperations, Serializable {
 
         if(dictionary != null) {
             inputToProcessAfterCleanFromExcludeChars = dictionary.validateWordsAfterCleanExcludeChars(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
-            return processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
+            String processedMessege =  processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
+            decryptionManager.setDecryptedMessege(processedMessege);
+
+            return processedMessege;
         }
         else {
             throw new Exception("Error : There is no any dictionary in the machine");
@@ -335,5 +347,9 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public Set<String> getDictionary() {
         return dictionary.getDictionary();
+    }
+
+    public int getMaxAmountOfAgents() {
+        return decryptionManager.getMaxCurrentAmountOfAgents();
     }
 }
