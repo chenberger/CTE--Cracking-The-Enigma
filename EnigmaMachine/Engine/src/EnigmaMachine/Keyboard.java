@@ -98,4 +98,9 @@ public class Keyboard {
 
         return false;
     }
+
+    public Iterable<? extends Map.Entry<Character, Integer>> entrySet() {
+        return keyboardCharacters.entrySet();
+    }
 }
+
