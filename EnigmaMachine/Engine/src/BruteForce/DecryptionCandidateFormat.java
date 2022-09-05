@@ -1,21 +1,24 @@
-package Decryption;
+package BruteForce;
 
 import java.io.Serializable;
 
 public class DecryptionCandidateFormat implements Serializable {
     private String candidate;
-    private int timeInNanoseconds;
+    private String currentCodeConfigurationFormat;
+    private long timeInNanoseconds;
     private int agentId;
 
-    public DecryptionCandidateFormat(String candidate, int timeInNanoseconds, int agentId) {
+    public DecryptionCandidateFormat(String candidate, long timeInNanoseconds, int agentId, String currentCodeConfigurationFormat) {
         this.candidate = candidate;
         this.timeInNanoseconds = timeInNanoseconds;
         this.agentId = agentId;
+        this.currentCodeConfigurationFormat = currentCodeConfigurationFormat;
     }
 
     @Override public String toString() {
-        return "Candidate: " + candidate + "." +System.lineSeparator()
-                + "Found in: "+ timeInNanoseconds + " nano seconds."+
-                "Found by agent: "+ agentId + "." + System.lineSeparator();
+        return  "Agent id: " + agentId + System.lineSeparator() +
+                "Code configuration: " + currentCodeConfigurationFormat +
+                "Candidate message: " + candidate + System.lineSeparator() +
+                "Found in: "+ timeInNanoseconds + " nano seconds";
     }
 }

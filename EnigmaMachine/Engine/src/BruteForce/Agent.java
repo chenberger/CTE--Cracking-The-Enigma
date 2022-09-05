@@ -1,6 +1,5 @@
 package BruteForce;
 
-import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Keyboard;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
@@ -13,54 +12,49 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
 
 public class  Agent extends Task<List<String>> {
 
-    private final Instant id;
-    private Integer taskSize;
+    private final Integer id;
     private Keyboard keyboard;
-    private EnigmaMachine enigmaMachine;
-    private StartingRotorPositionSector fromRotorPositions;
-    private String encryptedString;
-    private Dictionary dictionary;
-    private long encryptionTimeDurationInMiliSeconds;
-    private BlockingQueue candidateMessagesQueue;
 
-    public Agent(Integer taskSize, EnigmaMachine enigmaMachine, StartingRotorPositionSector fromRotorPositions, String encryptedString, Dictionary dictionary, BlockingQueue candidateMessagesQueue) {
-        this.dictionary = dictionary;
-        this.candidateMessagesQueue = candidateMessagesQueue;
-        this.id = Instant.parse(Thread.currentThread().getName());
-        this.taskSize = taskSize;
-        this.keyboard = enigmaMachine.getKeyboard();
-        this.enigmaMachine = enigmaMachine;
-        this.fromRotorPositions = fromRotorPositions;
-        this.encryptedString = encryptedString;
+    private long encryptionTimeDurationInNanoSeconds;
+    private AgentTask agentTask;
+    private EnigmaMachine enigmaMachine;
+    private StartingRotorPositionSector startingRotorPosition;
+
+    public Agent(AgentTask agentTask) {
+        this.agentTask = agentTask;
+        this.id = Integer.valueOf(Thread.currentThread().getName());
+        this.keyboard = agentTask.getKeyboard();
+        this.enigmaMachine = agentTask.getEnigmaMachine();
+        this.startingRotorPosition = agentTask.getStartingRotorPositions();
     }
 
     @Override
     protected List<String> call() throws Exception {
         List<String> decryptStrings = new ArrayList<>();
-        StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(fromRotorPositions.getElements());
+        StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
 
-        for (int i = 0; i < taskSize; i++) {
+        for (int i = 0; i < agentTask.getTaskSize(); i++) {
             try {
                 Instant startingTime = Instant.now();
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
-                String candidateMessage = enigmaMachine.processedInput(encryptedString);
+                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString());
 
                 try {
-                    dictionary.validateWords(Arrays.asList(candidateMessage.split(" ")));
-                    encryptionTimeDurationInMiliSeconds = Duration.between(startingTime, Instant.now()).toMillis();
-                    candidateMessagesQueue.put();
-                    //TODO erez: add to blocking queue
+                    agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
+                    encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
+                    agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
+                            new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, id, currentCodeConfigurationFormat)));
+
                     decryptStrings.add(candidateMessage);
                 } catch (WordNotValidInDictionaryException ignored) {}
 
                 try {
-                    currentRotorPositions.setElements(keyboard.increase(currentRotorPositions.getElements()));
+                    currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));
                 }
                 catch (Exception e) {
                     break;
@@ -75,11 +69,5 @@ public class  Agent extends Task<List<String>> {
         currentRotorPositions.validateSector(enigmaMachine);
         currentRotorPositions.setSectorInTheMachine(enigmaMachine);
         enigmaMachine.resetSettings();
-
-
-
-        ExecutorService exService = new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(4));
-
-
     }
 }

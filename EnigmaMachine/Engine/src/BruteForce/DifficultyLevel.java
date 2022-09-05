@@ -1,4 +1,4 @@
-package Decryption;
+package BruteForce;
 
 public enum DifficultyLevel {
     EASY,
