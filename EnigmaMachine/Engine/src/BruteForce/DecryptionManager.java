@@ -19,9 +19,12 @@ public class DecryptionManager {
     private BruteForceUIAdapter bruteForceUIAdapter;
     private BruteForceTask bruteForceTask;
     private DecipherStatistics decipherStatistics;
-    private String decryptedMessege;
-
-    public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask) {
+    
+    public DecryptionManager() {
+        this.bruteForceUIAdapter = null;
+        this.decipherStatistics = new DecipherStatistics();
+    }
+    public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
         this.decipherStatistics = new DecipherStatistics();
         this.bruteForceTask = bruteForceTask;
@@ -53,6 +56,16 @@ public class DecryptionManager {
         return decipherStatistics.toString();
     }
 
+    public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {
+        this.bruteForceUIAdapter = bruteForceUIAdapter;
+    }
+
+    public void setBruteForceTask(BruteForceTask bruteForceTask) {
+        this.bruteForceTask = bruteForceTask;
+    }
+
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
     public void setDecryptedMessege(String decryptedMessege) {
         this.decryptedMessege = decryptedMessege;
     }
