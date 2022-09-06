@@ -19,10 +19,10 @@ public class DecryptionManager {
     private BruteForceUIAdapter bruteForceUIAdapter;
     private BruteForceTask bruteForceTask;
     private DecipherStatistics decipherStatistics;
+    
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
         this.decipherStatistics = new DecipherStatistics();
-
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
@@ -32,6 +32,8 @@ public class DecryptionManager {
         this.dictionary = dictionary;
         this.threadPoolExecutor = Executors.newCachedThreadPool();
     }
+
+    public DecryptionManager(){};
 
     public void setMaxCurrentAmountOfAgents(int maxCurrentAmountOfAgents) throws IllegalAgentsAmountException {
         if(maxCurrentAmountOfAgents >= MIN_AGENTS_AMOUNT && maxCurrentAmountOfAgents <= MAX_AGENTS_AMOUNT) {
@@ -64,5 +66,15 @@ public class DecryptionManager {
 
     public void setDictionary(Dictionary dictionary) {
         this.dictionary = dictionary;
+    public void setDecryptedMessege(String decryptedMessege) {
+        this.decryptedMessege = decryptedMessege;
+    }
+
+    public static int getMinAgentsAmount() {
+        return MIN_AGENTS_AMOUNT;
+    }
+
+    public static int getMaxAgentsAmount() {
+        return MAX_AGENTS_AMOUNT;
     }
 }

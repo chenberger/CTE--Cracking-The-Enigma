@@ -19,7 +19,7 @@ public class AgentTask {
     private final DecipherStatistics decipherStatistics;
     private StartingRotorPositionSector startingRotorPositions;
 
-    public AgentTask(Integer taskSize, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ExecutorService threadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
+    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ExecutorService threadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
         this.taskSize = taskSize;
         this.enigmaMachine = enigmaMachine;
         this.encryptedString = encryptedString;
@@ -27,6 +27,7 @@ public class AgentTask {
         this.threadPoolExecutor = threadPoolExecutor;
         this.bruteForceUIAdapter = bruteForceUIAdapter;
         this.decipherStatistics = decipherStatistics;
+        this.startingRotorPositions = startingRotorPositionSector;
     }
 
 
