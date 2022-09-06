@@ -1,10 +1,10 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
-import BruteForce.DecryptionManager;
 import BruteForce.DifficultyLevel;
 import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.DecryptionManagerSettingsException;
+import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DecryptionManagerController {
@@ -40,6 +41,7 @@ public class DecryptionManagerController {
     private final String STOP_LABEL = "Stop";
     private final String PAUSE_LABEL = "Pause";
     private final String RESUME_LABEL = "Resume";
+    private BruteForceTask bruteForceTask;
 
     private BruteForceGridController bruteForceGridController;
     private SimpleStringProperty agentsAmountProperty;
@@ -61,10 +63,18 @@ public class DecryptionManagerController {
     }
 
     @FXML void onPauseResumeButtonClicked(ActionEvent event) {
-        pauseResumeButton.setText(pauseResumeButton.getText() == PAUSE_LABEL ? RESUME_LABEL : PAUSE_LABEL);
+        if(Objects.equals(pauseResumeButton.getText(), PAUSE_LABEL)) {
+            //TODO erez: implement pause to brute force mission
+
+            pauseResumeButton.setText(RESUME_LABEL);
+        }
+        else {
+            //TODO erez: implement resume tu brute force mission
+            pauseResumeButton.setText(PAUSE_LABEL);
+        }
     }
 
-    @FXML void onSetButtonClicked(ActionEvent event) {
+    @FXML private void onSetButtonClicked(ActionEvent event) {
         DecryptionManagerSettingsException decryptionManagerSettingsException = new DecryptionManagerSettingsException();
         BruteForceTask bruteForceTask = new BruteForceTask();
 
@@ -78,23 +88,25 @@ public class DecryptionManagerController {
         }
         else {
             succsesSetLabel.setText("Success to initialize settings");
+            this.bruteForceTask = bruteForceTask;
         }
     }
 
     private void validateAgentsAmount(DecryptionManagerSettingsException decryptionManagerSettingsException, BruteForceTask bruteForceTask) {
-        try {
-            Integer agentsAmount = Integer.parseInt(agentsAmountLabel.getText());
 
-            if(agentsAmount < DecryptionManager.getMinAgentsAmount()) {
-                decryptionManagerSettingsException.addIllegalAgentsAmount(agentsAmount, DecryptionManager.getMinAgentsAmount(), agentsAmountSlider.getMax());
+            Double agentsAmountDouble = Double.parseDouble(agentsAmountLabel.getText());
+            Integer agentsAmount = agentsAmountDouble.intValue();
+
+            if(agentsAmount < 1) {
+                decryptionManagerSettingsException.addIllegalAgentsAmount(agentsAmount, 1, agentsAmountSlider.getMax());
             }
             else {
                 bruteForceTask.setAmountOfAgents(agentsAmount);
             }
-        }
-        catch(NumberFormatException ex) {
+
+/*        catch(NumberFormatException ex) {
             //decryptionManagerSettingsException.addFailedParseAgentsAmountToInt(agentsAmountLabel.getText());
-        }
+        }*/
     }
 
     private void validateDifficultyLevel(DecryptionManagerSettingsException decryptionManagerSettingsException, BruteForceTask bruteForceTask) {
@@ -122,9 +134,24 @@ public class DecryptionManagerController {
         }
     }
 
-    @FXML void onStartStopButtonClicked(ActionEvent event) {
-        isStartButtonClicked.set(startStopButton.getText() == START_LABEL);
-        startStopButton.setText(startStopButton.getText() == START_LABEL ? STOP_LABEL : START_LABEL);
+    @FXML private void onStartStopButtonClicked(ActionEvent event) {
+        if(Objects.equals(startStopButton.getText(), START_LABEL)) {
+            try {
+                bruteForceGridController.startBruteForce(bruteForceTask);
+                isStartButtonClicked.set(true);
+                startStopButton.setText(STOP_LABEL);
+            }
+            catch (DecryptionMessegeNotInitializedException | CloneNotSupportedException  | IllegalArgumentException ex) {
+                new ErrorDialog(ex, "Error: Failed to start brute force decipher mission");
+            }
+        }
+        else {
+            startStopButton.setText(START_LABEL);
+            isStartButtonClicked.set(false);
+            //TODO erez: implement stop brute force
+        }
+
+        pauseResumeButton.setText(PAUSE_LABEL);
     }
 
     public void setBruteForceGridController(BruteForceGridController bruteForceGridController) {
@@ -137,5 +164,6 @@ public class DecryptionManagerController {
 
     public void setMaxAmountOfAgents(Object o, Integer maxAmountOfAgents) {
         agentsAmountSlider.setMax(maxAmountOfAgents);
+        agentsAmountProperty.set(String.valueOf(agentsAmountSlider.getValue()));
     }
 }

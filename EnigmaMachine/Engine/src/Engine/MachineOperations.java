@@ -1,16 +1,15 @@
 package Engine;
 
-import BruteForce.BruteForceUIAdapter;
 import DTO.BruteForceTask;
-import EnigmaMachineException.*;
 import DTO.MachineDetails;
+import EnigmaMachineException.*;
 
 import java.io.IOException;
 
 public interface MachineOperations {
     void setSettingsAutomatically() throws Exception;
 
-    void startBruteForceDeciphering() throws CloneNotSupportedException;
+    void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException;
 
     void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;
     MachineDetails displaySpecifications() throws Exception;

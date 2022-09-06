@@ -1,7 +1,7 @@
 .statistics-header {
     -fx-text-fill: rgba(83, 116, 138, 0.726);
     -fx-font: Arial, BOLD;
-    -fx-font-size: 20px;
+    -fx-font-size: 32px;
 }
 .statistics-text-box {
     border: 1px solid #000;

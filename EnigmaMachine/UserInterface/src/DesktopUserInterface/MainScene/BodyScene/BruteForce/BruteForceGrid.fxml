@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -8,8 +9,8 @@
 
 <GridPane fx:id="bruteForceGrid" prefHeight="550.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1195.0" minWidth="10.0" prefWidth="720.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="580.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1195.0" minWidth="10.0" prefWidth="718.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="582.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints vgrow="NEVER" />
@@ -20,12 +21,13 @@
   </rowConstraints>
    <children>
       <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" source="../Machine/CurrentCodeConfiguration.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <AnchorPane prefHeight="201.0" prefWidth="709.0" GridPane.rowIndex="1">
          <children>
             <fx:include fx:id="encryptDecryptActionsGrid" source="EncryptDecryptActionsGrid.fxml" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <Separator layoutX="10.0" layoutY="192.0" prefHeight="3.0" prefWidth="702.0" />
          </children>
          <GridPane.margin>
-            <Insets top="45.0" />
+            <Insets top="10.0" />
          </GridPane.margin>
       </AnchorPane>
       <fx:include fx:id="decryptionManager" source="DMOperational.fxml" GridPane.columnSpan="2" GridPane.rowIndex="3" />

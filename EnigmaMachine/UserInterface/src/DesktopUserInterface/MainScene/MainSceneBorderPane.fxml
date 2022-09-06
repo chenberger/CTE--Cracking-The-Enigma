@@ -14,11 +14,11 @@
          <children>
             <BorderPane fx:id="borderPane" layoutX="0.5" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                <center>
-                  <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1000.0" tabMaxWidth="2000.0">
+                  <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="800.0" tabMaxWidth="2000.0">
                      <tabs>
                         <Tab fx:id="machineTab" onSelectionChanged="#OnMachineTabSelected" text="Machine">
                            <content>
-                              <fx:include fx:id="machineGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="BodyScene/Machine/MachineGrid.fxml" />
+                              <fx:include fx:id="machineGrid" source="BodyScene/Machine/MachineGrid.fxml" />
                            </content>
                         </Tab>
                         <Tab fx:id="encryptDecryptTab" onSelectionChanged="#OnEncryptDecryptTabSelected" text="Encrypt/Decrypt">

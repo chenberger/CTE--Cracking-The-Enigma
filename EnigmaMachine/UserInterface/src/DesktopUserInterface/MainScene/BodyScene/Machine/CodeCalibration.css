@@ -6,11 +6,16 @@
 .set-buttons {
     -fx-background-color: rgba(83, 116, 138, 0.726);
     -fx-text-fill: white;
-    -fx-background-radius: 15px;
+    -fx-background-radius: 17px;
     -fx-text-fill: #ffffff;
 }
 
 #settings-icon {
     -fx-background-image: url("SettingsIcon.png");
     -fx-background-size: 100% 100%;
+}
+#code-calibration-label {
+    -fx-text-fill: rgba(83, 116, 138, 0.726);
+    -fx-font: Arial, BOLD;
+    -fx-font-size: 32px;
 }

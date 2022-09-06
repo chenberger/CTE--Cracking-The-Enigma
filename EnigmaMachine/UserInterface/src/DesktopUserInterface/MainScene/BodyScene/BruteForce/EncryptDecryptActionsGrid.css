@@ -39,3 +39,9 @@
     -fx-display: none;
 }
 
+#process-messege-label {
+    -fx-text-fill: rgba(83, 116, 138, 0.726);
+    -fx-font: Arial, BOLD;
+    -fx-font-size: 30px;
+}
+

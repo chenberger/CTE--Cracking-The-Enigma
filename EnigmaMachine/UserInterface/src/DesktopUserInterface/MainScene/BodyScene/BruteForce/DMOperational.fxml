@@ -17,8 +17,8 @@
 
 <GridPane fx:id="bruteForceGrid" stylesheets="@DMManager.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DecryptionManagerController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="504.0" prefWidth="504.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="355.0" prefWidth="585.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="485.0" prefWidth="600.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="355.0" prefWidth="489.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="300.0" vgrow="SOMETIMES" />
@@ -27,20 +27,23 @@
    <children>
       <VBox prefHeight="365.0" prefWidth="705.0" spacing="10.0">
          <children>
-            <Label prefHeight="73.0" prefWidth="612.0" text="Decryption Manager Settings">
+            <Label id="dm-settings-label" prefHeight="73.0" prefWidth="612.0" stylesheets="@DMOperational.css" text="Decryption Manager Settings">
                <font>
-                  <Font size="37.0" />
+                  <Font size="30.0" />
                </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
             </Label>
             <Separator prefHeight="6.0" prefWidth="200.0" />
-            <HBox prefHeight="49.0" prefWidth="701.0" spacing="20.0">
+            <HBox prefHeight="49.0" prefWidth="701.0">
                <children>
-                  <Label prefHeight="72.0" prefWidth="204.0" text="Amount of agents to activate:" wrapText="true">
+                  <Label prefHeight="67.0" prefWidth="345.0" text="Amount of agents to activate:" wrapText="true">
                      <font>
-                        <Font size="25.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <VBox prefHeight="100.0" prefWidth="192.0">
+                  <VBox prefHeight="67.0" prefWidth="198.0">
                      <children>
                         <Label fx:id="agentsAmountLabel" prefHeight="21.0" prefWidth="70.0" text="0">
                            <VBox.margin>
@@ -50,7 +53,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Slider fx:id="agentsAmountSlider" majorTickUnit="1.0" max="50.0" minorTickCount="0" onMouseReleased="#agentsAmountSliderChanged" prefHeight="45.0" prefWidth="206.0" showTickLabels="true" snapToTicks="true">
+                        <Slider fx:id="agentsAmountSlider" majorTickUnit="1.0" max="50.0" min="1.0" minorTickCount="0" onMouseReleased="#agentsAmountSliderChanged" prefHeight="45.0" prefWidth="206.0" showTickLabels="true" snapToTicks="true" value="1.0">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
@@ -67,10 +70,10 @@
                <children>
                   <Label prefHeight="36.0" prefWidth="205.0" text="Difficulty Level:">
                      <font>
-                        <Font size="25.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="difficultyLevelComboBox" onAction="#onDifficultyLevelComboBoxChosen" prefHeight="31.0" prefWidth="185.0">
+                  <ComboBox fx:id="difficultyLevelComboBox" onAction="#onDifficultyLevelComboBoxChosen" prefHeight="31.0" prefWidth="304.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -85,10 +88,10 @@
                <children>
                   <Label prefHeight="36.0" prefWidth="205.0" text="Task Size:">
                      <font>
-                        <Font size="25.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="taskSizeTextField" prefHeight="31.0" prefWidth="185.0">
+                  <TextField fx:id="taskSizeTextField" prefHeight="31.0" prefWidth="306.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -101,42 +104,45 @@
             <Separator prefWidth="200.0" />
          </children>
          <GridPane.margin>
-            <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+            <Insets left="10.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </VBox>
-      <VBox id="dechiper" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowSpan="2">
+      <VBox id="decipher" prefHeight="200.0" prefWidth="100.0" spacing="20.0" stylesheets="@DMOperational.css" GridPane.columnIndex="1" GridPane.rowSpan="2">
          <children>
-            <Label text="Brute Force Buttons" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="37.0" />
-               </font>
-            </Label>
             <AnchorPane prefHeight="218.0" prefWidth="354.0" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox prefHeight="123.0" prefWidth="349.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="250.0">
+                  <HBox layoutX="148.0" layoutY="352.0" prefWidth="349.0" spacing="10.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="360.0">
                      <children>
                         <Button fx:id="startStopButton" mnemonicParsing="false" onAction="#onStartStopButtonClicked" prefHeight="50.0" prefWidth="180.0" text="Start" HBox.hgrow="NEVER" />
                         <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#onPauseResumeButtonClicked" prefHeight="50.0" prefWidth="180.0" text="Pause" HBox.hgrow="NEVER" />
                      </children>
                   </HBox>
+                  <Label layoutX="47.0" layoutY="101.0" prefHeight="129.0" prefWidth="306.0" text="Brute Force " textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="44.0" />
+                     </font>
+                  </Label>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </AnchorPane>
          </children>
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
       </VBox>
-      <VBox GridPane.rowIndex="1">
+      <VBox prefHeight="14.0" prefWidth="317.0" GridPane.rowIndex="1">
          <children>
             <Button fx:id="setButton" mnemonicParsing="false" onAction="#onSetButtonClicked" prefHeight="31.0" prefWidth="75.0" text="Set">
                <VBox.margin>
-                  <Insets bottom="5.0" left="30.0" top="5.0" />
+                  <Insets bottom="5.0" left="50.0" top="5.0" />
                </VBox.margin>
             </Button>
             <Label fx:id="succsesSetLabel" />
          </children>
          <GridPane.margin>
-            <Insets bottom="5.0" left="180.0" top="5.0" />
+            <Insets bottom="5.0" left="160.0" top="20.0" />
          </GridPane.margin>
       </VBox>
    </children>

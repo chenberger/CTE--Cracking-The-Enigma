@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
+import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -79,9 +80,19 @@ public class BruteForceGridController {
             Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
             processedString = enigmaMachineEngine.processInputsFromDictionary(textToDecode);
             encryptDecryptActionsGridController.setProcessedString(processedString);
-            //TODO erez: in that case of procces dont update the statistics !
+            //TODO erez: in that case of dict procces dont update the statistics !
         } catch (Exception ex) {
             new ErrorDialog(ex,"Failed to process words from the dictionary");
         }
+    }
+
+    public void startBruteForce(BruteForceTask bruteForceTask) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
+        if(bruteForceTask != null) {
+            enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask);
+        }
+        else {
+            throw  new IllegalArgumentException("Failed to start the brute force deciphering, The decryption settings not initialized");
+        }
+
     }
 }
