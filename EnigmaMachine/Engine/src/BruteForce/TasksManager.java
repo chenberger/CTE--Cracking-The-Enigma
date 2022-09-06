@@ -1,5 +1,6 @@
 package BruteForce;
 
+import DTO.BruteForceTask;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 
@@ -22,18 +23,22 @@ public class TasksManager implements Runnable{
     private ExecutorService TasksPool;
     private Integer totalTasksSize;
     private ExecutorService outputTasksPool;
+    private BruteForceUIAdapter bruteForceUIAdapter;
     private String encryptedString;
     private Dictionary dictionary;
+    private Integer amountOfAgents;
     private List<Character> startingRotorsPositions;
     private Integer taskSize;
     private EnigmaMachine enigmaMachine;
     private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
 
-    public TasksManager(EnigmaMachine enigmaMachine,String encryptedString, DifficultyLevel difficultyLevel, int taskSize, Dictionary dictionary) throws Exception {
+    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask,BruteForceUIAdapter UIAdapter, Dictionary dictionary) throws Exception {
         this.enigmaMachine = enigmaMachine;
-        this.difficultyLevel = difficultyLevel;
+        this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
         this.encryptedString = encryptedString;
-        this.taskSize = taskSize;
+        this.bruteForceUIAdapter = UIAdapter;
+        this.amountOfAgents = bruteForceTask.getAmountOfAgents();
+        this.taskSize = bruteForceTask.getTaskSize();
         this.dictionary = dictionary;
         this.totalTasksSize = 0;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
@@ -139,11 +144,11 @@ public class TasksManager implements Runnable{
         totalTasksSize = numOfPossibleRotorsPositions;
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
         while(numOfPossibleRotorsPositions > 0) {
-            //Agent agent = new Agent(taskSize, enigmaMachine, currentStartingRotorsPositions, encryptedString, dictionary);
+            //Agent agent = new Agent
             //TasksPool.execute(agent);
             //TODO: implement the thread pool of the agentas
             numOfPossibleRotorsPositions -= taskSize;
-            //currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increase(currentStartingRotorsPositions.getElements()));
+            currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
 
     }

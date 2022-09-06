@@ -129,6 +129,7 @@ public class EngineManager implements MachineOperations, Serializable {
         initializeSettings(randomSectors);
     }
 
+
     //region set Settings
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
         validateMachineSettings(settingsSector);
@@ -143,9 +144,13 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public  void startBruteForceDeciphering(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask) throws CloneNotSupportedException {
-        decryptionManager = new DecryptionManager(cloneMachine(), dictionary, bruteForceUIAdapter, bruteForceTask);
+    public  void startBruteForceDeciphering() throws CloneNotSupportedException {
         decryptionManager.startDeciphering();
+    }
+    public void initializeDecryptionManager(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask,Dictionary dictionary) throws CloneNotSupportedException {
+        decryptionManager.setUIAdapter(bruteForceUIAdapter);
+        decryptionManager.setBruteForceTask(bruteForceTask);
+        decryptionManager.setDictionary(dictionary);
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
