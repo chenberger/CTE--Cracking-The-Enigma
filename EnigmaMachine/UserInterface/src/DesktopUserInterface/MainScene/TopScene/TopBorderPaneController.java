@@ -37,6 +37,7 @@ public class TopBorderPaneController {
         try {
             enigmaMachineEngine.setMachineDetailsFromXmlFile(selectedFile.getPath());
             CurrentFilePathTextField.setText(selectedFile.getPath());
+            mainController.machineLoaded();
         }
         catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException | IllegalAgentsAmountException ex) {
             new ErrorDialog(ex, "Failed to load the enigma machine from xml file");

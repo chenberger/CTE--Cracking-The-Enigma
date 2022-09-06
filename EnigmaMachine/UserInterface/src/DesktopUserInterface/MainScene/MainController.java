@@ -6,9 +6,11 @@ import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfiguration
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,12 +31,18 @@ public class MainController {
     @FXML private GridPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
-
+    @FXML private Tab machineTab;
+    @FXML private Tab bruteForceTab;
+    @FXML private Tab encryptDecryptTab;
+    private SimpleBooleanProperty isMachineExsists;
+    private SimpleBooleanProperty isCodeConfigurationSet;
     private final EngineManager enigmaMachineEngine;
 
     public MainController() {
         this.enigmaMachineEngine = new EngineManager();
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
+        this.isMachineExsists = new SimpleBooleanProperty(false);
+        this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
 
         registerToEvents();
     }
@@ -64,6 +72,9 @@ public class MainController {
             bruteForceGridController.setMainController(this);
             bruteForceGridController.setEngineManager(enigmaMachineEngine);
         }
+
+        encryptDecryptTab.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
+        bruteForceTab.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
     }
 
     public void addCurrentCodeConfigurationController(CurrentCodeConfigurationController currentCodeConfigurationController) {
@@ -87,5 +98,11 @@ public class MainController {
         currentCodeConfigurationGridControllers.forEach(code -> {
             code.setCodeConfiguration(currentCodeConfiguration);
         });
+
+        isCodeConfigurationSet.set(true);
+    }
+
+    public void machineLoaded() {
+        isMachineExsists.set(true);
     }
 }

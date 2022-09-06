@@ -106,9 +106,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 statisticsAndHistoryAnalyzer.clear();
             }
 
-            onCurrentCodeConfigurationChanged();
             onMachineDetailsChanged();
-            onStatisticsAndHistoryChanged();
             onDictionaryChanged();
             onKeyboardChanged();
             onMaxAgentsAmountChanged();
@@ -153,8 +151,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public  void startBruteForceDeciphering() throws CloneNotSupportedException {
-
+    public  void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
         decryptionManager.startDeciphering();
     }
     public void initializeDecryptionManager(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask,Dictionary dictionary) throws CloneNotSupportedException {

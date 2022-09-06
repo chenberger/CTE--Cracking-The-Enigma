@@ -3,6 +3,7 @@ package BruteForce;
 import DTO.BruteForceTask;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
+import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
 import java.util.concurrent.ExecutorService;
@@ -19,7 +20,8 @@ public class DecryptionManager {
     private BruteForceUIAdapter bruteForceUIAdapter;
     private BruteForceTask bruteForceTask;
     private DecipherStatistics decipherStatistics;
-    
+    private String decryptedMessege;
+
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
         this.decipherStatistics = new DecipherStatistics();
@@ -32,8 +34,6 @@ public class DecryptionManager {
         this.dictionary = dictionary;
         this.threadPoolExecutor = Executors.newCachedThreadPool();
     }
-
-    public DecryptionManager(){};
 
     public void setMaxCurrentAmountOfAgents(int maxCurrentAmountOfAgents) throws IllegalAgentsAmountException {
         if(maxCurrentAmountOfAgents >= MIN_AGENTS_AMOUNT && maxCurrentAmountOfAgents <= MAX_AGENTS_AMOUNT) {
@@ -48,7 +48,10 @@ public class DecryptionManager {
         return maxCurrentAmountOfAgents;
     }
 
-    public void startDeciphering() {
+    public void startDeciphering() throws DecryptionMessegeNotInitializedException {
+        if(decryptedMessege == null) {
+            throw new DecryptionMessegeNotInitializedException();
+        }
         //TODO chen: call task manager to start
     }
 
@@ -66,6 +69,8 @@ public class DecryptionManager {
 
     public void setDictionary(Dictionary dictionary) {
         this.dictionary = dictionary;
+    }
+
     public void setDecryptedMessege(String decryptedMessege) {
         this.decryptedMessege = decryptedMessege;
     }

@@ -29,7 +29,7 @@ public class EncryptDecryptDetailsController {
     private SimpleBooleanProperty fileLoadedProperty;
 
     public EncryptDecryptDetailsController() {
-        fullWordDecodingProperty = new SimpleBooleanProperty(false);
+        fullWordDecodingProperty = new SimpleBooleanProperty(true);
         fileLoadedProperty = new SimpleBooleanProperty(false);
     }
 
@@ -51,6 +51,7 @@ public class EncryptDecryptDetailsController {
 
         ToggleGroup toggleGroup = new ToggleGroup();
         fullWordButton.setToggleGroup(toggleGroup);
+        fullWordButton.setSelected(true);
         letterByLetterButton.setToggleGroup(toggleGroup);
 
         fullWordButton.disableProperty().bind(fileLoadedProperty.not());
