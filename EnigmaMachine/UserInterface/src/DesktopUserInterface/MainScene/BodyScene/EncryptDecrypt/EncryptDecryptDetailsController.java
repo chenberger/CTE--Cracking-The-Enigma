@@ -51,7 +51,7 @@ public class EncryptDecryptDetailsController {
 
         ToggleGroup toggleGroup = new ToggleGroup();
         fullWordButton.setToggleGroup(toggleGroup);
-        fullWordButton.setSelected(true);
+        letterByLetterButton.setSelected(true);
         letterByLetterButton.setToggleGroup(toggleGroup);
 
         fullWordButton.disableProperty().bind(fileLoadedProperty.not());
