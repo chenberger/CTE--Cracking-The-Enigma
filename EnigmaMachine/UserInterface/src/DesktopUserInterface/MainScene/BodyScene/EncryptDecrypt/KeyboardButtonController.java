@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -44,22 +43,19 @@ public class KeyboardButtonController {
     }
 
     public void turnOnBulbButton() {
-        Circle circle = new Circle();
-        FillTransition fillTransition = new FillTransition(Duration.millis(3000), circle, Color.KHAKI, Color.BLACK);
+        Circle circle = new Circle(keyboardButton.getLayoutX(), keyboardButton.getLayoutY(), keyboardButton.getWidth() / 2);
+        FillTransition fillTransition = new FillTransition(Duration.millis(3000), circle, Color.KHAKI, (Color)keyboardButton.getBackground().getFills().get(0).getFill());
         fillTransition.setCycleCount(1);
 
         fillTransition.setInterpolator(new Interpolator() {
             @Override
             protected double curve(double t) {
-                keyboardButton.setBackground(new Background(new BackgroundFill(circle.getFill(), CornerRadii.EMPTY, Insets.EMPTY)));
+                keyboardButton.setBackground(new Background(new BackgroundFill(circle.getFill(), new CornerRadii(keyboardButton.getWidth()), Insets.EMPTY)));
                 return t;
             }
         });
 
         fillTransition.play();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.getDialogPane().getStylesheets().add("KeyboardButton.css");
-        keyboardButton.setId("key-button");
     }
 
     public void setDisableBind(SimpleBooleanProperty fullWordDecodingProperty) {
