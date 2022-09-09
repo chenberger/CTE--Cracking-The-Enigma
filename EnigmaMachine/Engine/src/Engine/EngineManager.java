@@ -1,11 +1,9 @@
 package Engine;
 
-import BruteForce.BruteForceUIAdapter;
-import BruteForce.DifficultyLevel;
+import BruteForce.DecryptionManager;
 import DTO.BruteForceTask;
 import DTO.MachineDetails;
-import BruteForce.DecryptionManager;
-import DesktopUserInterface.MainScene.BodyScene.BruteForce.UIAdapter;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
 import Engine.StatisticsAndHistory.OriginalStringFormat;
@@ -142,12 +140,6 @@ public class EngineManager implements MachineOperations, Serializable {
         initializeSettings(randomSectors);
     }
 
-    @Override
-    public void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
-
-    }
-
-
     //region set Settings
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
         validateMachineSettings(settingsSector);
@@ -162,15 +154,9 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public  void startBruteForceDeciphering(BruteForceTask bruteForceTask, UIAdapter uiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
-        initializeDecryptionManager(new BruteForceUIAdapter(),new BruteForceTask(getMaxAmountOfAgents(), DifficultyLevel.IMPOSSIBLE,10), dictionary);
+    public void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws IllegalArgumentException {
+        decryptionManager.initialize(bruteForceTask, bruteForceUiAdapter, onFinish, enigmaMachine, dictionary, mainController);
         decryptionManager.startDeciphering();
-    }
-    public void initializeDecryptionManager(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask,Dictionary dictionary) throws CloneNotSupportedException {
-        decryptionManager.setUIAdapter(bruteForceUIAdapter);
-        decryptionManager.setBruteForceTask(bruteForceTask);
-        decryptionManager.setDictionary(dictionary);
-        decryptionManager.setEnigmaMachine(enigmaMachine);
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
@@ -297,7 +283,7 @@ public class EngineManager implements MachineOperations, Serializable {
         statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
         statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
         this.encryptedString = encryptedStringFormat.getElements().toString();
-        startBruteForceDeciphering();
+
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
 

@@ -7,6 +7,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -84,14 +85,23 @@ public class BruteForceGridController {
         }
     }
 
-    public void startBruteForce(UIAdapter uiAdapter, Runnable onFinish) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
+    public void startBruteForce(BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
         BruteForceTask bruteForceTask = decryptionManagerController.getBruteForceTask();
 
         if(bruteForceTask != null) {
-            enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask, uiAdapter, onFinish);
+            try {
+                enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask, bruteForceUiAdapter, onFinish);
+            }
+            catch (IllegalArgumentException ex) {
+                new ErrorDialog(ex, "Failed to start brute force analyzer");
+            }
         }
         else {
             throw  new IllegalArgumentException("Failed to start the brute force deciphering, The decryption settings not initialized");
         }
+    }
+
+    public void bindTaskToUIComponents(Task<Boolean> tasksManager, Runnable onFinish) {
+        DMStatisticsController.bindTaskToUIComponents(tasksManager, onFinish);
     }
 }

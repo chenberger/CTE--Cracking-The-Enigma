@@ -1,5 +1,6 @@
 package BruteForce;
 
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Keyboard;
@@ -15,18 +16,18 @@ public class AgentTask {
     private final EnigmaMachine enigmaMachine;
     private final String encryptedString;
     private final Dictionary dictionary;
-    private final ThreadPoolExecutor threadPoolExecutor;
+    private final ThreadPoolExecutor candidatesThreadPoolExecutor;
     private final BruteForceUIAdapter bruteForceUIAdapter;
     private final DecipherStatistics decipherStatistics;
     private StartingRotorPositionSector startingRotorPositions;
 
-    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ThreadPoolExecutor threadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
+    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ThreadPoolExecutor candidatesThreadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
 
         this.taskSize = taskSize;
         this.enigmaMachine = enigmaMachine;
         this.encryptedString = encryptedString;
         this.dictionary = dictionary;
-        this.threadPoolExecutor = threadPoolExecutor;
+        this.candidatesThreadPoolExecutor = candidatesThreadPoolExecutor;
         this.bruteForceUIAdapter = bruteForceUIAdapter;
         this.decipherStatistics = decipherStatistics;
         this.startingRotorPositions = startingRotorPositionSector;
@@ -49,8 +50,8 @@ public class AgentTask {
         return dictionary;
     }
 
-    public ExecutorService getThreadPoolExecutor() {
-        return threadPoolExecutor;
+    public ExecutorService getCandidatesThreadPoolExecutor() {
+        return candidatesThreadPoolExecutor;
     }
 
     public BruteForceUIAdapter getBruteForceUIAdapter() {
@@ -78,6 +79,6 @@ public class AgentTask {
     }
 
     public void addDecryptionCandidateTaskToThreadPool(Runnable decryptionCandidateTask) {
-        threadPoolExecutor.execute(decryptionCandidateTask);
+        candidatesThreadPoolExecutor.execute(decryptionCandidateTask);
     }
 }

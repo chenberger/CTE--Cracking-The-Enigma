@@ -1,26 +1,26 @@
 package BruteForce;
 
 import DTO.BruteForceTask;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.*;
-
-import java.util.stream.Collectors;
-
 import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.RotorIDSector;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
+import javafx.concurrent.Task;
 
-public class TasksManager implements Runnable {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+
+public class TasksManager extends Task<Boolean> {
     //TODO chen : if the task size is bigger then the mission size, ceil it to the mission size.
     private static final int  MAX_QUEUE_SIZE = 1000;
     private ThreadPoolExecutor tasksPool;
     private DecipherStatistics decipherStatistics;
-    private Integer totalTasksSize;
+    private Double totalCombinations;
     private ExecutorService outputTasksPool;
     private BruteForceUIAdapter bruteForceUIAdapter;
     private String encryptedString;
@@ -31,6 +31,11 @@ public class TasksManager implements Runnable {
     private Integer taskSize;
     private EnigmaMachine enigmaMachine;
     private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
+    private long totalTaskSize;
+    private long currentTaskSize;
+    private long totalAgentTasksTime;
+    private long totalAgentTasksAverageTime;
+
 
     public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, String decryptedMessege) throws Exception {
         this.enigmaMachine = enigmaMachine;
@@ -40,12 +45,15 @@ public class TasksManager implements Runnable {
         this.amountOfAgents = bruteForceTask.getAmountOfAgents();
         this.taskSize = bruteForceTask.getTaskSize();
         this.dictionary = dictionary;
-        this.totalTasksSize = 0;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents, Integer.MAX_VALUE, 5000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE));
         tasksPool.setThreadFactory(new AgentThreadFactory());
         decipherStatistics = new DecipherStatistics();
         this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+        this.totalAgentTasksTime = 0;
+        this.totalAgentTasksAverageTime = 0;
+
+        calcMissionSize();
     }
     public void start() throws Exception {
         difficultyLevel.setTask(this);
@@ -155,24 +163,31 @@ public class TasksManager implements Runnable {
     private void calcMissionSize(){
         switch (difficultyLevel) {
             case EASY:
-                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
                 break;
             case MEDIUM:
-                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
-                totalTasksSize *= enigmaMachine.getAllReflectors().size();
+                totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalCombinations *= enigmaMachine.getAllReflectors().size();
                 break;
             case HARD:
-                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
-                totalTasksSize *= enigmaMachine.getAllReflectors().size();
-                totalTasksSize *= factorial(enigmaMachine.getNumOfActiveRotors());
+                totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalCombinations *= enigmaMachine.getAllReflectors().size();
+                totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());
                 break;
             case IMPOSSIBLE:
-                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
-                totalTasksSize *= enigmaMachine.getAllReflectors().size();
-                totalTasksSize *= factorial(enigmaMachine.getNumOfActiveRotors());
-                totalTasksSize *= binomial(enigmaMachine.getNumOfActiveRotors(), enigmaMachine.getAllRotors().size());
+                totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalCombinations *= enigmaMachine.getAllReflectors().size();
+                totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());
+                totalCombinations *= binomial(enigmaMachine.getNumOfActiveRotors(), enigmaMachine.getAllRotors().size());
                 break;
         }
+
+        totalTaskSize = (long) (totalCombinations / taskSize);
+        currentTaskSize = 0;
+        bruteForceUIAdapter.updateTotalAgentsTasks(totalTaskSize);
+        bruteForceUIAdapter.updateTotalProcessedAgentTasks(currentTaskSize);
+
+        updateProgress(currentTaskSize, totalTaskSize);
     }
 
     public void setMediumTasks() throws Exception {
@@ -186,12 +201,16 @@ public class TasksManager implements Runnable {
     public void setEasyTasks() throws Exception {
         boolean isFirstAgent = true;
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
-        calcMissionSize();
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
+
         while(numOfPossibleRotorsPositions > 0) {
+            bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
+            updateProgress(currentTaskSize, totalTaskSize);
+
             AgentTask agentTask = new AgentTask(taskSize, currentStartingRotorsPositions, enigmaMachine,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
-            Agent agent = new Agent(agentTask);
-            agent.call();
+            Agent agent = new Agent(agentTask, this);
+
+            new Thread(agent).start();
            //if(isFirstAgent) {
            //    tasksPool.execute(agent);
            //    isFirstAgent = false;
@@ -199,22 +218,27 @@ public class TasksManager implements Runnable {
             //tasksPool.getThreadFactory().newThread(agent).start();
             //tasksPool.getQueue().put(agent);
 
-
             numOfPossibleRotorsPositions -= taskSize;
 
             currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
 
     }
-
-
     @Override
-    public void run() {
+    protected Boolean call() throws Exception {
         try {
             difficultyLevel.setTask(this);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        return Boolean.TRUE;
     }
 
+    public void agentTaskFinished(long agentTaskTimeDuration) {
+        totalAgentTasksTime+= agentTaskTimeDuration;
+        totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize;
+        bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
+        bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
+    }
 }
