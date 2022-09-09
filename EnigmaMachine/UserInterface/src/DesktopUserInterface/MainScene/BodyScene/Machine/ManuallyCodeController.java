@@ -8,10 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
@@ -23,8 +24,8 @@ import java.util.stream.Collectors;
 
 public class ManuallyCodeController {
     @FXML private Button setCodeButton;
-    @FXML private HBox RotorsId;
-    @FXML private HBox StartingPositions;
+    @FXML private FlowPane RotorsId;
+    @FXML private FlowPane StartingPositions;
     @FXML private ChoiceBox<RomanNumber> reflectorChoiceBox;
     private CodeCalibrationController codeCalibrationController;
     private MachineDetails machineDetails;
@@ -209,6 +210,8 @@ public class ManuallyCodeController {
             idChoiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsId()));
             idChoiceBox.setPrefWidth(label.getWidth());
             rotorIdVBox.getChildren().add(idChoiceBox);
+            VBox.setMargin(label, new Insets(10, 10, 10, 10));
+            VBox.setMargin(idChoiceBox, new Insets(10, 10, 10, 10));
             RotorsId.getChildren().add(rotorIdVBox);
 
             rotorStartingPositionVBox = new VBox();
@@ -217,6 +220,8 @@ public class ManuallyCodeController {
             characterChoiceBox.setPrefWidth(label.getWidth());
             rotorStartingPositionVBox.getChildren().add(label);
             rotorStartingPositionVBox.getChildren().add(characterChoiceBox);
+            VBox.setMargin(label, new Insets(10, 10, 10, 10));
+            VBox.setMargin(characterChoiceBox, new Insets(10, 10, 10, 10));
             StartingPositions.getChildren().add(rotorStartingPositionVBox);
         }
 

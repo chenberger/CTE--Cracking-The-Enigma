@@ -4,6 +4,8 @@ import BruteForce.BruteForceUIAdapter;
 import DTO.BruteForceTask;
 import DTO.MachineDetails;
 import BruteForce.DecryptionManager;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.UIAdapter;
+import DesktopUserInterface.MainScene.MainController;
 import Engine.StatisticsAndHistory.EncryptedStringFormat;
 import Engine.StatisticsAndHistory.OriginalStringFormat;
 import Engine.StatisticsAndHistory.ProcessedStringsFormat;
@@ -33,6 +35,7 @@ public class EngineManager implements MachineOperations, Serializable {
     private Dictionary dictionary;
     private DecryptionManager decryptionManager;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
+    private MainController mainController;
     //endregion
 
     public EventHandler<String> statisticsAndHistoryHandler;
@@ -151,7 +154,7 @@ public class EngineManager implements MachineOperations, Serializable {
     }
 
     @Override
-    public  void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
+    public  void startBruteForceDeciphering(BruteForceTask bruteForceTask, UIAdapter uiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
         decryptionManager.startDeciphering();
     }
     public void initializeDecryptionManager(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask,Dictionary dictionary) throws CloneNotSupportedException {
@@ -354,5 +357,9 @@ public class EngineManager implements MachineOperations, Serializable {
 
     public int getMaxAmountOfAgents() {
         return decryptionManager.getMaxCurrentAmountOfAgents();
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

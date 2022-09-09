@@ -1,5 +1,7 @@
 package DesktopUserInterface;
 
+import DesktopUserInterface.MainScene.MainController;
+import Engine.EngineManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +12,13 @@ public class EnigmaMachineApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Enigma Machine");
-        Parent load = FXMLLoader.load(getClass().getResource("MainScene/MainSceneBorderPane.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainScene/MainSceneBorderPane.fxml"));
+        Parent load = fxmlLoader.load();
+        MainController mainController = fxmlLoader.getController();
+        EngineManager engineManager = new EngineManager();
+
+        engineManager.setMainController(mainController);
+        mainController.setEnigmaEngine(engineManager);
         Scene scene = new Scene(load);
         primaryStage.setScene(scene);
         primaryStage.show();

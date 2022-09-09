@@ -1,0 +1,28 @@
+package DesktopUserInterface.MainScene.BodyScene.BruteForce;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+
+public class AgentTaskController {
+    @FXML private GridPane bruteForceGrid;
+
+    @FXML private Label agentIdLabel;
+
+    @FXML private Label taskTotalTimeLabel;
+
+    @FXML private TextArea candidatesArea;
+
+    public void setCandidateMessege(String candidates) {
+        candidatesArea.setText(candidates);
+    }
+
+    public void setId(Integer id) {
+        agentIdLabel.setText(id.toString());
+    }
+
+    public void setTotalTime(Integer time) {
+        taskTotalTimeLabel.setText(time.toString());
+    }
+}
