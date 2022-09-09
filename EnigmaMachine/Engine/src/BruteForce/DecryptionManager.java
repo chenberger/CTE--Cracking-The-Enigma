@@ -14,6 +14,7 @@ public class DecryptionManager {
     private Dictionary dictionary;
     private EnigmaMachine enigmaMachine;
     private ExecutorService threadPoolExecutor;
+    TasksManager tasksManager;
     private static final int MIN_AGENTS_AMOUNT = 2;
     private static final int MAX_AGENTS_AMOUNT = 50;
     private Integer taskSize;
@@ -48,11 +49,14 @@ public class DecryptionManager {
         return maxCurrentAmountOfAgents;
     }
 
-    public void startDeciphering() throws DecryptionMessegeNotInitializedException {
-        if(decryptedMessege == null) {
-            throw new DecryptionMessegeNotInitializedException();
+    public void startDeciphering() {
+        try {
+            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter, dictionary, threadPoolExecutor, decryptedMessege);
+            tasksManager.start();
+        }//TODO chen: call task manager to start
+        catch (Exception e) {
+            e.printStackTrace();
         }
-        //TODO chen: call task manager to start
     }
 
     public String getDecryptionCandidatesStatistics() {
@@ -69,10 +73,7 @@ public class DecryptionManager {
 
     public void setDictionary(Dictionary dictionary) {
         this.dictionary = dictionary;
-    }
 
-    public void setDecryptedMessege(String decryptedMessege) {
-        this.decryptedMessege = decryptedMessege;
     }
 
     public static int getMinAgentsAmount() {
@@ -81,5 +82,14 @@ public class DecryptionManager {
 
     public static int getMaxAgentsAmount() {
         return MAX_AGENTS_AMOUNT;
+    }
+
+
+    public void setDecryptedMessage(String processedMessage) {
+        this.decryptedMessege = processedMessage;
+    }
+
+    public void setEnigmaMachine(EnigmaMachine enigmaMachine) {
+        this.enigmaMachine = enigmaMachine;
     }
 }
