@@ -15,7 +15,7 @@ import java.util.List;
 
 public class  Agent extends Task<List<String>> {
 
-    private final Integer id;
+    private final String id;
     private Keyboard keyboard;
 
     private long encryptionTimeDurationInNanoSeconds;
@@ -25,10 +25,12 @@ public class  Agent extends Task<List<String>> {
 
     public Agent(AgentTask agentTask) {
         this.agentTask = agentTask;
-        this.id = Integer.valueOf(Thread.currentThread().getName());
+        //Thread.currentThread().setName("1");
+        this.id = (Thread.currentThread().getName());
         this.keyboard = agentTask.getKeyboard();
         this.enigmaMachine = agentTask.getEnigmaMachine();
         this.startingRotorPosition = agentTask.getStartingRotorPositions();
+        System.out.println("Agent " + id + " created");//to check
     }
 
     @Override
@@ -37,12 +39,13 @@ public class  Agent extends Task<List<String>> {
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
 
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
+            System.out.println("Agent " + id + " is working");//to check
             try {
                 Instant startingTime = Instant.now();
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
-                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString());
+                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
 
                 try {
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));

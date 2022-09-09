@@ -6,9 +6,9 @@ public class DecryptionCandidateFormat implements Serializable {
     private String candidate;
     private String currentCodeConfigurationFormat;
     private long timeInNanoseconds;
-    private int agentId;
+    private String agentId;
 
-    public DecryptionCandidateFormat(String candidate, long timeInNanoseconds, int agentId, String currentCodeConfigurationFormat) {
+    public DecryptionCandidateFormat(String candidate, long timeInNanoseconds, String agentId, String currentCodeConfigurationFormat) {
         this.candidate = candidate;
         this.timeInNanoseconds = timeInNanoseconds;
         this.agentId = agentId;
