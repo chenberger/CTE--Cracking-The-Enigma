@@ -1,19 +1,18 @@
 package BruteForce;
 
-import javafx.concurrent.Task;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.AgentTaskData;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 
-public class DecryptionCandidateTaskHandler extends Task<Void> {
+public class DecryptionCandidateTaskHandler implements Runnable {
     private BruteForceUIAdapter bruteForceUIAdapter;
-    private DecryptionCandidateFormat decryptionCandidateFormat;
+    private AgentTaskData agentTaskData;
 
-    public DecryptionCandidateTaskHandler(BruteForceUIAdapter bruteForceUIAdapter, DecryptionCandidateFormat decryptionCandidateFormat) {
+    public DecryptionCandidateTaskHandler(BruteForceUIAdapter bruteForceUIAdapter, AgentTaskData agentTaskData) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
-        this.decryptionCandidateFormat = decryptionCandidateFormat;
+        this.agentTaskData = agentTaskData;
     }
-
     @Override
-    protected Void call() throws Exception {
-        bruteForceUIAdapter.addDecryptionCandidate(decryptionCandidateFormat);
-        return null;
+    public void run() {
+        bruteForceUIAdapter.updateExistingAgentTask(agentTaskData);
     }
 }

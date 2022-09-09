@@ -4,12 +4,13 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -17,9 +18,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DMStatisticsController {
 
@@ -49,29 +50,29 @@ public class DMStatisticsController {
     private final String RESUME_LABEL = "Resume";
     private BruteForceGridController bruteForceGridController;
     private SimpleBooleanProperty isStartButtonClicked;
-    private SimpleIntegerProperty missionTotalTimeProperty;
-    private SimpleIntegerProperty averageTaskTimeProperty;
-    private SimpleIntegerProperty processedTasksProperty;
-    private SimpleIntegerProperty totalTasksProperty;
+    private SimpleLongProperty averageTaskTimeProperty;
+    private SimpleLongProperty missionTotalTimeProperty;
+    private SimpleLongProperty processedTasksProperty;
+    private SimpleLongProperty totalTasksProperty;
     private SimpleStringProperty taskProgressProperty;
     private HashMap<Integer, AgentTaskController> tasksControllerMapping;
 
     public DMStatisticsController() {
         isStartButtonClicked = new SimpleBooleanProperty(false);
-        missionTotalTimeProperty = new SimpleIntegerProperty(0);
-        averageTaskTimeProperty = new SimpleIntegerProperty(0);
-        processedTasksProperty = new SimpleIntegerProperty(0);
-        totalTasksProperty = new SimpleIntegerProperty(0);
+        missionTotalTimeProperty = new SimpleLongProperty(0);
+        averageTaskTimeProperty = new SimpleLongProperty(0);
+        processedTasksProperty = new SimpleLongProperty(0);
+        totalTasksProperty = new SimpleLongProperty(0);
         taskProgressProperty = new SimpleStringProperty("");
         tasksControllerMapping = new HashMap<>();
     }
 
     @FXML public void initialize() {
         pauseResumeButton.disableProperty().bind(isStartButtonClicked.not());
-        missionTotalTimeLabel.textProperty().bind(Bindings.format("%,d", missionTotalTimeProperty));
-        averageTaskTimeLabel.textProperty().bind(Bindings.format("%,d", averageTaskTimeProperty));
-        processedTasksLabel.textProperty().bind(Bindings.format("%,d", processedTasksProperty));
-        totalTasksLabel.textProperty().bind(Bindings.format("%,d", totalTasksProperty));
+        missionTotalTimeLabel.textProperty().bind(Bindings.concat("Decoding mission total time: ", Bindings.format("%,d ms", missionTotalTimeProperty)));
+        averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ms", averageTaskTimeProperty)));
+        processedTasksLabel.textProperty().bind(Bindings.concat("Processed tasks:  ", Bindings.format("%,d", processedTasksProperty)));
+        totalTasksLabel.textProperty().bind(Bindings.concat("Total tasks: ", Bindings.format("%,d", totalTasksProperty)));
     }
 
     @FXML void onPauseResumeButtonClicked(ActionEvent event) {
@@ -117,19 +118,19 @@ public class DMStatisticsController {
         this.bruteForceGridController = bruteForceGridController;
     }
 
-    public UIAdapter createUIAdapter() {
-        return new UIAdapter(
-                agentTaskData -> {
-                    createAgentTask(agentTaskData.hashCode());
-                },
-                agentTaskData -> {
-                    AgentTaskController agentTaskController = tasksControllerMapping.get(agentTaskData.hashCode());
+    public BruteForceUIAdapter createUIAdapter() {
+        return new BruteForceUIAdapter(
+                (agentTaskData) -> {
+                    AgentTaskController agentTaskController = tasksControllerMapping.get(agentTaskData.getTaskId());
                     if (agentTaskController != null) {
-                        agentTaskController.setCandidateMessege(agentTaskData.getCandidates());
+                        agentTaskController.setCandidateMessege(agentTaskData.getDecryptionCandidateFormat().toString());
+                    }
+                    else {
+                        createAgentTask(agentTaskData.getAgentId(), agentTaskData.getTaskId());
                     }
                 },
-                (delta) -> {
-                    processedTasksProperty.set(processedTasksProperty.get() + delta);
+                (processedAgentTasksAmount) -> {
+                    processedTasksProperty.set(processedAgentTasksAmount);
                 },
                 (totalTasks) -> {
                     totalTasksProperty.set(totalTasks);
@@ -139,25 +140,58 @@ public class DMStatisticsController {
                 },
                 (averageTaskTime) -> {
                     averageTaskTimeProperty.set(averageTaskTime);
-                }
-        );
+                },
+                (agentTaskData) -> {
+                    AgentTaskController agentTaskController = tasksControllerMapping.get(agentTaskData.getTaskId());
+                    if (agentTaskController != null) {
+                        agentTaskController.setTotalTime(agentTaskData.getTotalTaskTime());
+                    }
+                    else {
+                        //TODO erez: fix bug of task time
+                    }
+                });
     }
 
-    private void createAgentTask(Integer id) {
+    private void createAgentTask(String agentId, Integer taskId) {
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new URL("AgentTask.fxml"));
-            Node singleAgentTask = loader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgentTask.fxml"));
+            Parent load = fxmlLoader.load();
 
-            AgentTaskController agentTaskController = loader.getController();
-            agentTaskController.setId(id);
-            agentTaskController.setTotalTime(0);
+            AgentTaskController agentTaskController = fxmlLoader.getController();
+            agentTaskController.setId(agentId);
+            agentTaskController.setTotalTime(0L);
 
-            flowPaneCandidates.getChildren().add(singleAgentTask);
-            tasksControllerMapping.put(id, agentTaskController);
+            flowPaneCandidates.getChildren().add(load);
+            tasksControllerMapping.put(taskId, agentTaskController);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void bindTaskToUIComponents(Task<Boolean> aTask, Runnable onFinish) {
+        // task progress bar
+        taskProgressBar.progressProperty().bind(aTask.progressProperty());
+
+        // task percent label
+        taskProgressLabel.textProperty().bind(
+                Bindings.concat("Task progress: ", Bindings.concat(
+                        Bindings.format(
+                                "%.0f",
+                                Bindings.multiply(
+                                        aTask.progressProperty(),
+                                        100)),
+                        " %")));
+
+        // task cleanup upon finish
+        aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onTaskFinished(Optional.ofNullable(onFinish));
+        });
+    }
+
+    public void onTaskFinished(Optional<Runnable> onFinish) {
+        this.processedTasksLabel.textProperty().unbind();
+        this.taskProgressBar.progressProperty().unbind();
+        onFinish.ifPresent(Runnable::run);
     }
 
 }

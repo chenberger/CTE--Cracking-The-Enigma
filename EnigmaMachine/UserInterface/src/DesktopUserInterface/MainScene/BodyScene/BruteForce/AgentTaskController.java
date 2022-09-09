@@ -18,11 +18,11 @@ public class AgentTaskController {
         candidatesArea.setText(candidates);
     }
 
-    public void setId(Integer id) {
-        agentIdLabel.setText(id.toString());
+    public void setId(String id) {
+        agentIdLabel.setText("Agent id: " + id);
     }
 
-    public void setTotalTime(Integer time) {
-        taskTotalTimeLabel.setText(time.toString());
+    public void setTotalTime(Long time) {
+        taskTotalTimeLabel.setText("Task total time: " + time.toString());
     }
 }

@@ -257,11 +257,11 @@ public class EnigmaMachine implements Serializable {
         return processedInput;
     }
 
-    private List<Character> getCharsNotInMachineKeyboard(String inputToProcess) {
+    public List<Character> getCharsNotInMachineKeyboard(String inputToProcess) {
         return inputToProcess.chars().mapToObj(inputtedChar -> (char)inputtedChar).filter(inputtedChar -> !keyboard.containsKey(inputtedChar)).collect(Collectors.toList());
     }
 
-    private boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
+    public boolean containsCharNotInMAMachineKeyboard(String inputToProcess) {
         for(char letter: inputToProcess.toCharArray()){
             if(!keyboard.containsKey(letter)){
                 return true;

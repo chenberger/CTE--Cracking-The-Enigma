@@ -1,36 +1,37 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
-import BruteForce.DecipherStatistics;
-
-import java.util.Objects;
+import BruteForce.DecryptionCandidateFormat;
 
 public class AgentTaskData {
-    private final DecipherStatistics decipherStatistics;
-    private final Integer id;
+    private DecryptionCandidateFormat decryptionCandidateFormat;
+    private int taskId;
+    private long totalTaskTime;
+    private String agentId;
 
-    public AgentTaskData(DecipherStatistics decipherStatistics, Integer id) {
-        this.decipherStatistics = decipherStatistics;
-        this.id = id;
+    public AgentTaskData(int taskID, String agentId, DecryptionCandidateFormat decryptionCandidateFormat) {
+        this.decryptionCandidateFormat = decryptionCandidateFormat;
+        this.taskId = taskID;
+        this.agentId = agentId;
     }
 
-    public Integer getId() {
-        return id;
+    public AgentTaskData(int taskID, long totalTaskTime) {
+        this.totalTaskTime = totalTaskTime;
+        this.taskId = taskID;
     }
 
-    public String getCandidates() {
-        return decipherStatistics.toString();
+    public DecryptionCandidateFormat getDecryptionCandidateFormat() {
+        return decryptionCandidateFormat;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AgentTaskData)) return false;
-        AgentTaskData that = (AgentTaskData) o;
-        return decipherStatistics.equals(that.decipherStatistics) && id.equals(that.id);
+    public int getTaskId() {
+        return taskId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(decipherStatistics, id);
+    public long getTotalTaskTime() {
+        return totalTaskTime;
+    }
+
+    public String getAgentId() {
+        return agentId;
     }
 }

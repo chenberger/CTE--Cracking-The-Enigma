@@ -7,6 +7,7 @@ import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -107,5 +108,9 @@ public class MainController {
         bruteForceGridController.setEngineManager(enigmaMachineEngine);
 
         registerToEvents();
+    }
+
+    public void bindTaskToUIComponents(Task<Boolean> tasksManager, Runnable onFinish) {
+        bruteForceGridController.bindTaskToUIComponents(tasksManager, onFinish);
     }
 }
