@@ -7,8 +7,8 @@ import java.util.concurrent.*;
 
 public class Main {
     public static void main(String[] args) {
-/*        ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
-        consoleUserInterface.run();*/
+       ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
+        consoleUserInterface.run();
 
         ThreadPoolExecutor threadExecutor = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10));
         List<PrintTask> tasksList = new ArrayList<>();

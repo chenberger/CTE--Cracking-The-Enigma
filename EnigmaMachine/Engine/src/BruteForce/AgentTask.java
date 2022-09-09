@@ -8,18 +8,20 @@ import EnigmaMachineException.WordNotValidInDictionaryException;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class AgentTask {
     private final Integer taskSize;
     private final EnigmaMachine enigmaMachine;
     private final String encryptedString;
     private final Dictionary dictionary;
-    private final ExecutorService threadPoolExecutor;
+    private final ThreadPoolExecutor threadPoolExecutor;
     private final BruteForceUIAdapter bruteForceUIAdapter;
     private final DecipherStatistics decipherStatistics;
     private StartingRotorPositionSector startingRotorPositions;
 
-    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ExecutorService threadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
+    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ThreadPoolExecutor threadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
+
         this.taskSize = taskSize;
         this.enigmaMachine = enigmaMachine;
         this.encryptedString = encryptedString;

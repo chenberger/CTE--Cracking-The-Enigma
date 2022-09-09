@@ -1,6 +1,7 @@
 package Engine;
 
 import BruteForce.BruteForceUIAdapter;
+import BruteForce.DifficultyLevel;
 import DTO.BruteForceTask;
 import DTO.MachineDetails;
 import BruteForce.DecryptionManager;
@@ -45,6 +46,8 @@ public class EngineManager implements MachineOperations, Serializable {
     public EventHandler<Set<Character>> keyboardChangedHandler;
     public EventHandler<String> decryptionCandidateEventHandler;
     public EventHandler<Integer> maxAgentsAmountChangedHandler;
+    //string to test the dm
+    private String encryptedString = "";
 
     public EngineManager(){
         this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
@@ -139,6 +142,11 @@ public class EngineManager implements MachineOperations, Serializable {
         initializeSettings(randomSectors);
     }
 
+    @Override
+    public void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
+
+    }
+
 
     //region set Settings
     public void initializeSettings(List<Sector> settingsSector) throws MachineNotExistsException, RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException, SettingsFormatException, SettingsNotInitializedException {
@@ -155,12 +163,14 @@ public class EngineManager implements MachineOperations, Serializable {
 
     @Override
     public  void startBruteForceDeciphering(BruteForceTask bruteForceTask, UIAdapter uiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException {
+        initializeDecryptionManager(new BruteForceUIAdapter(),new BruteForceTask(getMaxAmountOfAgents(), DifficultyLevel.IMPOSSIBLE,10), dictionary);
         decryptionManager.startDeciphering();
     }
     public void initializeDecryptionManager(BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask,Dictionary dictionary) throws CloneNotSupportedException {
         decryptionManager.setUIAdapter(bruteForceUIAdapter);
         decryptionManager.setBruteForceTask(bruteForceTask);
         decryptionManager.setDictionary(dictionary);
+        decryptionManager.setEnigmaMachine(enigmaMachine);
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
@@ -286,6 +296,8 @@ public class EngineManager implements MachineOperations, Serializable {
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
         statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
+        this.encryptedString = encryptedStringFormat.getElements().toString();
+        startBruteForceDeciphering();
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
 
@@ -298,7 +310,7 @@ public class EngineManager implements MachineOperations, Serializable {
         if(dictionary != null) {
             inputToProcessAfterCleanFromExcludeChars = dictionary.validateWordsAfterCleanExcludeChars(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
             String processedMessege =  processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
-            decryptionManager.setDecryptedMessege(processedMessege);
+            decryptionManager.setDecryptedMessage(processedMessege);
 
             return processedMessege;
         }

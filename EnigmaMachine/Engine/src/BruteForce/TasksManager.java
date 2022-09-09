@@ -6,11 +6,8 @@ import EnigmaMachine.EnigmaMachine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import BruteForce.AgentThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+
 import java.util.stream.Collectors;
 
 import EnigmaMachine.Reflector;
@@ -18,9 +15,11 @@ import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.RotorIDSector;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
 
-public class TasksManager implements Runnable{
-
-    private ExecutorService TasksPool;
+public class TasksManager implements Runnable {
+    //TODO chen : if the task size is bigger then the mission size, ceil it to the mission size.
+    private static final int  MAX_QUEUE_SIZE = 1000;
+    private ThreadPoolExecutor tasksPool;
+    private DecipherStatistics decipherStatistics;
     private Integer totalTasksSize;
     private ExecutorService outputTasksPool;
     private BruteForceUIAdapter bruteForceUIAdapter;
@@ -28,11 +27,12 @@ public class TasksManager implements Runnable{
     private Dictionary dictionary;
     private Integer amountOfAgents;
     private List<Character> startingRotorsPositions;
+    private ExecutorService candidatesPool;
     private Integer taskSize;
     private EnigmaMachine enigmaMachine;
     private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
 
-    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask,BruteForceUIAdapter UIAdapter, Dictionary dictionary) throws Exception {
+    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, String decryptedMessege) throws Exception {
         this.enigmaMachine = enigmaMachine;
         this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
         this.encryptedString = encryptedString;
@@ -42,10 +42,14 @@ public class TasksManager implements Runnable{
         this.dictionary = dictionary;
         this.totalTasksSize = 0;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
-        this.TasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new AgentThreadFactory());
+        this.tasksPool = new ThreadPoolExecutor(amountOfAgents, Integer.MAX_VALUE, 5000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE));
+        tasksPool.setThreadFactory(new AgentThreadFactory());
+        decipherStatistics = new DecipherStatistics();
         this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
     }
-
+    public void start() throws Exception {
+        difficultyLevel.setTask(this);
+    }
     private List<Character> setAllRotorsToFirstLetterAtStart() {
         List<Character> startingRotorsPositions = new ArrayList<>();
         for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
@@ -56,43 +60,62 @@ public class TasksManager implements Runnable{
 
 
     public void setImpossibleTasks() throws Exception {
-        totalTasksSize*= binomial(enigmaMachine.getNumOfActiveRotors(), enigmaMachine.getAllRotors().size());
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist();
         for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
-            enigmaMachine.setRotorsInUseSettings((RotorIDSector) rotorCombination);
+            enigmaMachine.setRotorsInUseSettings(new RotorIDSector(rotorCombination));
             setHardTasks();
-            }
         }
+    }
 
 
 
     private List<List<Integer>> getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist() {
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = new ArrayList<>();
-        List<Integer> allPossibleRotors = enigmaMachine.getAllRotors().entrySet().stream().map(rotor -> rotor.getKey()).collect(Collectors.toList());
-        calculateAllPossibleRotorsIdsCombinations(allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors, 0);
+        List<Integer> allPossibleRotors = new ArrayList<>();
+        calculateAllPossibleRotorsIdsCombinations(enigmaMachine.getAllRotors().size(),1, enigmaMachine.getNumOfActiveRotors(), allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors);
         return allPossibleRotorsCombinationsFromAllRotors;
     }
 
-    private void calculateAllPossibleRotorsIdsCombinations(List<Integer> allPossibleRotors, List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors, int maxNumOfRotors) {
-        for (int j = maxNumOfRotors; j < allPossibleRotors.size(); j++) {
-            List<Integer> currentCombination = new ArrayList<>();
-            if(!currentCombination.contains(allPossibleRotors.get(j))) {
-                currentCombination.add(allPossibleRotors.get(j));
-                if(currentCombination.size() == enigmaMachine.getNumOfActiveRotors()) {
-                    allPossibleRotorsCombinationsFromAllRotors.add(currentCombination);
-                }
-                else {
-                    calculateAllPossibleRotorsIdsCombinations(allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors, j + 1);
-                }
-            }
+   // private void calculateAllPossibleRotorsIdsCombinations(List<Integer> allPossibleRotors, List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors, int maxNumOfRotors) {
+   //     List<Integer> currentCombination = new ArrayList<>();
+   //     for (int j = maxNumOfRotors; j < allPossibleRotors.size(); j++) {
+   //         if(!currentCombination.contains(allPossibleRotors.get(j))) {
+   //             currentCombination.add(allPossibleRotors.get(j));
+   //             if(currentCombination.size() == enigmaMachine.getNumOfActiveRotors()) {
+   //                 allPossibleRotorsCombinationsFromAllRotors.add(currentCombination);
+   //             }
+   //             else {
+   //                 calculateAllPossibleRotorsIdsCombinations(allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors, j + 1);
+   //             }
+   //         }
+   //     }
+   // }
+    public void calculateAllPossibleRotorsIdsCombinations(int totalNumberOfRotors, int left, int numberOfRotorsInUse, List<Integer> combination, List<List<Integer>> combinations) {
+        // Pushing this vector to a vector of vector
+        if (numberOfRotorsInUse == 0) {
+            combinations.add(new ArrayList<>(combination.stream().collect(Collectors.toList())));
+            return;
         }
+
+        // i iterates from left to n. First time
+        // left will be 1
+        for (int i = left; i <= totalNumberOfRotors; ++i)
+        {
+            combination.add(i);
+            calculateAllPossibleRotorsIdsCombinations(totalNumberOfRotors, i + 1, numberOfRotorsInUse - 1, combination, combinations);
+
+            // Popping out last inserted element
+            // from the vector
+            combination.remove(combination.size() - 1);
+        }
+
     }
 
 
     public void setHardTasks() throws Exception {
        List<List<Integer>> allPossibleRotorsCombinationsFromCurrentRotors = getAllPossibleRotorsCombinations();
        for(List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
-           enigmaMachine.setRotorsInUseSettings((RotorIDSector) rotorsCombination);
+           enigmaMachine.setRotorsInUseSettings(new RotorIDSector(rotorsCombination));
            setMediumTasks();
        }
     }
@@ -107,7 +130,6 @@ public class TasksManager implements Runnable{
     }
 
     private void calcPossibleRotorsCombinations(List<List<Integer>> allPossibleRotorsCombinations, List<Integer> currentRotorsInUse, List<Integer> currentRotors, int i) {
-        totalTasksSize *= factorial(currentRotorsInUse.size());
         for(int j = 0; j < currentRotorsInUse.size(); j++) {
             List<Integer> newCurrentRotors = new ArrayList<>(currentRotors);
             if(!newCurrentRotors.contains(currentRotorsInUse.get(j))) {
@@ -130,24 +152,56 @@ public class TasksManager implements Runnable{
         }
         return size * factorial(size - 1);
     }
+    private void calcMissionSize(){
+        switch (difficultyLevel) {
+            case EASY:
+                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                break;
+            case MEDIUM:
+                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalTasksSize *= enigmaMachine.getAllReflectors().size();
+                break;
+            case HARD:
+                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalTasksSize *= enigmaMachine.getAllReflectors().size();
+                totalTasksSize *= factorial(enigmaMachine.getNumOfActiveRotors());
+                break;
+            case IMPOSSIBLE:
+                totalTasksSize =(int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
+                totalTasksSize *= enigmaMachine.getAllReflectors().size();
+                totalTasksSize *= factorial(enigmaMachine.getNumOfActiveRotors());
+                totalTasksSize *= binomial(enigmaMachine.getNumOfActiveRotors(), enigmaMachine.getAllRotors().size());
+                break;
+        }
+    }
 
     public void setMediumTasks() throws Exception {
-        totalTasksSize *= enigmaMachine.getAllReflectors().size();
-        for (Reflector reflector : Reflector.class.getEnumConstants()) {
+
+        for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
             enigmaMachine.setReflector(reflector);
             setEasyTasks();
         }
     }
 
     public void setEasyTasks() throws Exception {
+        boolean isFirstAgent = true;
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
-        totalTasksSize = numOfPossibleRotorsPositions;
+        calcMissionSize();
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
         while(numOfPossibleRotorsPositions > 0) {
-            //Agent agent = new Agent
-            //TasksPool.execute(agent);
-            //TODO: implement the thread pool of the agentas
+            AgentTask agentTask = new AgentTask(taskSize, currentStartingRotorsPositions, enigmaMachine,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
+            Agent agent = new Agent(agentTask);
+            agent.call();
+           //if(isFirstAgent) {
+           //    tasksPool.execute(agent);
+           //    isFirstAgent = false;
+           //}
+            //tasksPool.getThreadFactory().newThread(agent).start();
+            //tasksPool.getQueue().put(agent);
+
+
             numOfPossibleRotorsPositions -= taskSize;
+
             currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
 
@@ -156,7 +210,11 @@ public class TasksManager implements Runnable{
 
     @Override
     public void run() {
-        ExecutorService exService = new ThreadPoolExecutor(2, 50, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(4), new AgentThreadFactory());
+        try {
+            difficultyLevel.setTask(this);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
