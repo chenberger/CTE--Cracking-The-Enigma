@@ -36,15 +36,12 @@ public class MainController {
     @FXML private Tab encryptDecryptTab;
     private SimpleBooleanProperty isMachineExsists;
     private SimpleBooleanProperty isCodeConfigurationSet;
-    private final EngineManager enigmaMachineEngine;
+    private EngineManager enigmaMachineEngine;
 
     public MainController() {
-        this.enigmaMachineEngine = new EngineManager();
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
         this.isMachineExsists = new SimpleBooleanProperty(false);
         this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
-
-        registerToEvents();
     }
 
     private void registerToEvents() {
@@ -55,22 +52,18 @@ public class MainController {
     public void initialize() {
         if(topBorderPaneController != null) {
             topBorderPaneController.setMainController(this);
-            topBorderPaneController.setEngineManager(enigmaMachineEngine);
         }
 
         if(machineGridController != null) {
             machineGridController.setMainController(this);
-            machineGridController.setEngineManager(enigmaMachineEngine);
         }
 
         if(encryptDecryptGridController != null) {
             encryptDecryptGridController.setMainController(this);
-            encryptDecryptGridController.setEngineManager(enigmaMachineEngine);
         }
 
         if(bruteForceGridController != null) {
             bruteForceGridController.setMainController(this);
-            bruteForceGridController.setEngineManager(enigmaMachineEngine);
         }
 
         encryptDecryptTab.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
@@ -104,5 +97,15 @@ public class MainController {
 
     public void machineLoaded() {
         isMachineExsists.set(true);
+    }
+
+    public void setEnigmaEngine(EngineManager engineManager) {
+        this.enigmaMachineEngine = engineManager;
+        topBorderPaneController.setEngineManager(enigmaMachineEngine);
+        machineGridController.setEngineManager(enigmaMachineEngine);
+        encryptDecryptGridController.setEngineManager(enigmaMachineEngine);
+        bruteForceGridController.setEngineManager(enigmaMachineEngine);
+
+        registerToEvents();
     }
 }

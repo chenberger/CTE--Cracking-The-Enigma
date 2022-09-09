@@ -75,11 +75,14 @@
                                                 <Insets left="10.0" />
                                              </VBox.margin>
                                           </TextFlow>
-                                          <HBox fx:id="StartingPositions" spacing="10.0">
+                                          <FlowPane fx:id="StartingPositions" prefWidth="500.0">
                                              <VBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </VBox.margin>
-                                          </HBox>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </FlowPane>
                                        </children>
                                     </VBox>
                                  </children>
@@ -183,11 +186,11 @@
                                           <VBox spacing="7.0">
                                              <children>
                                                 <Label maxWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" text="Please enter the id numbers of the rotors that will be in the Enigma machine:" wrapText="true" />
-                                                <HBox fx:id="RotorsId" spacing="10.0">
+                                                <FlowPane fx:id="RotorsId">
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </VBox.margin>
-                                                </HBox>
+                                                </FlowPane>
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

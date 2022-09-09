@@ -2,6 +2,7 @@ package Engine;
 
 import DTO.BruteForceTask;
 import DTO.MachineDetails;
+import DesktopUserInterface.MainScene.BodyScene.BruteForce.UIAdapter;
 import EnigmaMachineException.*;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.io.IOException;
 public interface MachineOperations {
     void setSettingsAutomatically() throws Exception;
 
-    void startBruteForceDeciphering(BruteForceTask bruteForceTask) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException;
+    void startBruteForceDeciphering(BruteForceTask bruteForceTask, UIAdapter uiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException;
 
     void startBruteForceDeciphering() throws CloneNotSupportedException;
 

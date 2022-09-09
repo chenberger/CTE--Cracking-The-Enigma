@@ -14,11 +14,11 @@ import javafx.scene.layout.VBox;
 import java.util.Set;
 
 public class BruteForceGridController {
+    @FXML private GridPane DMStatistics;
+    @FXML private DMStatisticsController DMStatisticsController;
     @FXML private GridPane BruteForceGrid;
     @FXML private GridPane candidatesAndProgressGrid;
-    @FXML private CandidatesAndProgressGridController candidatesAndProgressController;
     @FXML private GridPane dMOperationalGrid;
-    @FXML private DMOperationalGridController dmOperationalGridController;
     @FXML private GridPane encryptDecryptActionsGrid;
     @FXML private EncryptDecryptActionsGridController encryptDecryptActionsGridController;
     @FXML private VBox CurrentCodeConfigurationGrid;
@@ -44,18 +44,16 @@ public class BruteForceGridController {
     }
 
     public  void initialize(){
-        if(candidatesAndProgressController != null){
-            candidatesAndProgressController.setBruteForceGridController(this);
-        }
-        if(dmOperationalGridController != null){
-            dmOperationalGridController.setBruteForceGridController(this);
-        }
         if (encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setBruteForceGridController(this);
         }
 
         if(decryptionManagerController != null) {
             decryptionManagerController.setBruteForceGridController(this);
+        }
+
+        if(DMStatisticsController != null) {
+            DMStatisticsController.setBruteForceGridController(this);
         }
     }
 
@@ -86,13 +84,14 @@ public class BruteForceGridController {
         }
     }
 
-    public void startBruteForce(BruteForceTask bruteForceTask) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
+    public void startBruteForce(UIAdapter uiAdapter, Runnable onFinish) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
+        BruteForceTask bruteForceTask = decryptionManagerController.getBruteForceTask();
+
         if(bruteForceTask != null) {
-            enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask);
+            enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask, uiAdapter, onFinish);
         }
         else {
             throw  new IllegalArgumentException("Failed to start the brute force deciphering, The decryption settings not initialized");
         }
-
     }
 }

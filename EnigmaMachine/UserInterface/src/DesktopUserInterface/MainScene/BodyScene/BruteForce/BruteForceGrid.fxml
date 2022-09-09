@@ -7,29 +7,44 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="bruteForceGrid" prefHeight="550.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
+<GridPane fx:id="bruteForceGrid" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1195.0" minWidth="10.0" prefWidth="718.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="582.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1255.0" minWidth="0.0" prefWidth="510.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1300.0" minWidth="0.0" prefWidth="550.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints vgrow="NEVER" />
     <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+    <RowConstraints fillHeight="false" maxHeight="25.0" minHeight="5.0" prefHeight="25.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="480.0" minHeight="162.0" prefHeight="354.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="834.0" minHeight="358.0" prefHeight="622.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" source="../Machine/CurrentCodeConfiguration.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-      <AnchorPane prefHeight="201.0" prefWidth="709.0" GridPane.rowIndex="1">
+      <AnchorPane prefWidth="1000.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <fx:include fx:id="encryptDecryptActionsGrid" source="EncryptDecryptActionsGrid.fxml" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-            <Separator layoutX="10.0" layoutY="192.0" prefHeight="3.0" prefWidth="702.0" />
+            <fx:include fx:id="encryptDecryptActionsGrid" prefWidth="1000.0" source="EncryptDecryptActionsGrid.fxml" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <Separator layoutX="10.0" layoutY="195.0" prefHeight="0.0" prefWidth="1185.0" />
          </children>
          <GridPane.margin>
-            <Insets top="10.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </AnchorPane>
-      <fx:include fx:id="decryptionManager" source="DMOperational.fxml" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+         <children>
+            <fx:include fx:id="DMStatistics" maxWidth="1.7976931348623157E308" prefWidth="1300.0" source="DMStatistics.fxml" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+      </AnchorPane>
+      <fx:include fx:id="decryptionManager" source="DMOperational.fxml" GridPane.rowIndex="3" />
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" source="../Machine/CurrentCodeConfiguration.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+         </children>
+         <GridPane.margin>
+            <Insets left="70.0" />
+         </GridPane.margin>
+      </AnchorPane>
    </children>
 </GridPane>
