@@ -52,19 +52,21 @@ public class  Agent implements Runnable {
     public void run() {
         Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
+        int testCounter = 0;
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
-            // System.out.println("Agent " + Thread.currentThread().getName() + " is working");//to check
-
             try {
                 Instant startingTime = Instant.now();
-                validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
+                synchronized (this) {
+
+                    validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
+                }
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
                 String candidateMessage;
                 synchronized (this) {
                     candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
                 }
-                //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
+
                 if (candidateMessage.equals("UMBRELLA")) {
                     System.out.println("Found " + "UMBRELLA" + currentCodeConfigurationFormat);
                 }
@@ -76,11 +78,11 @@ public class  Agent implements Runnable {
                         System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
                         encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                         agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
-                                new AgentTaskData(taskId, agentId,
+                                new AgentTaskData(taskId, Thread.currentThread().getName(),
                                         new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                     }
-                } catch (WordNotValidInDictionaryException ignored) {
-                }
+                } catch (WordNotValidInDictionaryException ignored) {}
+
                 try {
                     synchronized (this) {
                         currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));
@@ -88,16 +90,13 @@ public class  Agent implements Runnable {
                 } catch (Exception e) {
                     break;
                 }
+            } catch (CloneNotSupportedException | StartingPositionsOfTheRotorException ignored) { }
+        }
 
-
-                synchronized (this) {
-                    long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
-                    agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
-                    tasksManager.agentTaskFinished(totalTaskTime);
-                }
-            } catch (CloneNotSupportedException | StartingPositionsOfTheRotorException e) {
-                throw new RuntimeException(e);
-            }
+        synchronized (this) {
+            long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toNanos();
+            agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
+            tasksManager.agentTaskFinished(totalTaskTime);
         }
     }
 

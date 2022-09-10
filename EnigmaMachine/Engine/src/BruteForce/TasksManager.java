@@ -58,11 +58,21 @@ public class TasksManager extends Task<Boolean> {
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),new AgentThreadFactory(amountOfAgents), new ThreadPoolExecutor.CallerRunsPolicy());
         decipherStatistics = new DecipherStatistics();
         this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        this.totalAgentTasksTime = 0;
-        this.totalAgentTasksAverageTime = 0;
 
+        initializeTaskData();
         calcMissionSize();
 
+    }
+
+    private void initializeTaskData() {
+        this.totalTaskSize = 1;
+        this.totalAgentTasksTime = 0;
+        this.totalAgentTasksAverageTime = 0;
+        this.currentTaskSize = 0;
+        this.bruteForceUIAdapter.updateTotalProcessedAgentTasks(currentTaskSize);
+        this.bruteForceUIAdapter.updateAverageTaskTime(0);
+        this.bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
+        updateProgress(currentTaskSize, totalTaskSize);
     }
 
     private List<Character> setAllRotorsToFirstLetterAtStart() {
@@ -223,9 +233,6 @@ public class TasksManager extends Task<Boolean> {
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
         while(numOfPossibleRotorsPositions > 0){
-            bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
-            updateProgress(currentTaskSize, totalTaskSize);
-
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine ,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
@@ -256,9 +263,11 @@ public class TasksManager extends Task<Boolean> {
     }
 
     public void agentTaskFinished(long agentTaskTimeDuration) {
+        bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
         totalAgentTasksTime+= agentTaskTimeDuration;
         totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;
         bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
+        updateProgress(currentTaskSize, totalTaskSize);
     }
 }
