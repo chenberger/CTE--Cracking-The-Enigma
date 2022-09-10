@@ -123,7 +123,7 @@ public class SettingsFormat implements Serializable {
 
     public void setSectorByType(Sector sector) {
         Sector sectorToUpdate = getSectorByType(sector.getType());
-        sectorToUpdate = sector;
+        sectorToUpdate.setElements(sector.getElements());
     }
 
     public void setIfPluginBoardSet(boolean pluginBoardSet) {
