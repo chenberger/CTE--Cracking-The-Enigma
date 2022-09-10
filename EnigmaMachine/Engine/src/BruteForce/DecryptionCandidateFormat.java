@@ -16,6 +16,6 @@ public class DecryptionCandidateFormat implements Serializable {
     @Override public String toString() {
         return  "Code configuration: " + currentCodeConfigurationFormat + System.lineSeparator() +
                 "Candidate message: " + candidate + System.lineSeparator() +
-                "Found in: "+ timeInNanoseconds + " nano seconds";
+                "Found in: "+ timeInNanoseconds + " nano seconds" + System.lineSeparator();
     }
 }

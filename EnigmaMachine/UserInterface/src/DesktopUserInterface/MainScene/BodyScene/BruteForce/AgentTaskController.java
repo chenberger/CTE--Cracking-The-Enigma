@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
+import java.util.Objects;
+
 public class AgentTaskController {
     @FXML private GridPane bruteForceGrid;
 
@@ -15,7 +17,12 @@ public class AgentTaskController {
     @FXML private TextArea candidatesArea;
 
     public void setCandidateMessege(String candidates) {
-        candidatesArea.setText(candidates);
+        if(candidatesArea.getText() == null || Objects.equals(candidatesArea.getText(), "")) {
+            candidatesArea.setText(candidates);
+        }
+        else{
+            candidatesArea.setText(candidatesArea.getText() + System.lineSeparator() + candidates);
+        }
     }
 
     public void setAgentId(String id) {
@@ -23,6 +30,6 @@ public class AgentTaskController {
     }
 
     public void setTotalTime(Long time) {
-        taskTotalTimeLabel.setText("Task total time: " + time.toString());
+        taskTotalTimeLabel.setText("Task total time: " + time.toString() + " ms");
     }
 }
