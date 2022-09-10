@@ -55,7 +55,7 @@ public class TasksManager extends Task<Boolean> {
 
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
         //TODO chen: set the number og agents from the T
-        this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),new AgentThreadFactory(amountOfAgents));
+        this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),new AgentThreadFactory(amountOfAgents), new ThreadPoolExecutor.CallerRunsPolicy());
         decipherStatistics = new DecipherStatistics();
         this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         this.totalAgentTasksTime = 0;
@@ -208,6 +208,7 @@ public class TasksManager extends Task<Boolean> {
         for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
             ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
             setSectorInMachine(reflectorIdSector);
+            enigmaMachine.setReflector(reflector);
             setEasyTasks();
         }
     }
@@ -225,15 +226,16 @@ public class TasksManager extends Task<Boolean> {
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
         int test = 3;
-        while(numOfPossibleRotorsPositions > 0) {
+        while(numOfPossibleRotorsPositions > 0){
+         //while(test > 0){
             bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
             updateProgress(currentTaskSize, totalTaskSize);
 
             --test;
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
-            AgentTask agentTask = new AgentTask(taskSize, currentStartingRotorsPositions, clonedEnigmaMachine ,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
+            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine ,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
-            new Thread(agent).start();
+            //new Thread(agent).start();
 
             //region test
            // lastTask -= taskSize;
@@ -243,24 +245,34 @@ public class TasksManager extends Task<Boolean> {
            // }
             //end region
             //ExecutorService executor = Executors.newFixedThreadPool(3);
+            if(numOfPossibleRotorsPositions == 1 )
+            {
+                System.out.println("last task");
+            }
+            System.out.println("numOfPossibleRotorsPositions: " + numOfPossibleRotorsPositions);
             //agent.run();
             tasksPool.prestartAllCoreThreads();
            if(isFirstAgent) {
                System.out.println("first agent ");
                isFirstAgent = false;
            }
-            //executor.execute(agent);
+            //tasksPool.execute(agent);
             tasksPool.getQueue().put(agent);
 
             numOfPossibleRotorsPositions -= taskSize;
 
             currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
+
+
     }
     @Override
     protected Boolean call() throws Exception {
         try {
             difficultyLevel.setTask(this);
+            //TOdo REMOVE
+            System.out.println("Shutting down executor");
+            tasksPool.shutdown();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
