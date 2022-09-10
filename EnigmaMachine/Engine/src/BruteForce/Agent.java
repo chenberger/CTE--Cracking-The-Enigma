@@ -67,10 +67,6 @@ public class  Agent implements Runnable {
                     candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
                 }
 
-                if (candidateMessage.equals("UMBRELLA")) {
-                    System.out.println("Found " + "UMBRELLA" + currentCodeConfigurationFormat);
-                }
-
                 try {
                     synchronized (this) {
 
@@ -94,7 +90,7 @@ public class  Agent implements Runnable {
         }
 
         synchronized (this) {
-            long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toNanos();
+            long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
             agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
             tasksManager.agentTaskFinished(totalTaskTime);
         }

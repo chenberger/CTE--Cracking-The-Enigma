@@ -292,8 +292,9 @@ public class EngineManager implements MachineOperations, Serializable {
         List<String> inputToProcessAfterCleanFromExcludeChars;
 
         if(dictionary != null) {
+            decryptionManager.setCodeConfigurationBeforeProcess(enigmaMachine.getCurrentSettingsFormat());
             inputToProcessAfterCleanFromExcludeChars = dictionary.validateWordsAfterCleanExcludeChars(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
-            String processedMessege =  processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
+            String processedMessege = processInput(String. join(" ", inputToProcessAfterCleanFromExcludeChars));
             decryptionManager.setDecryptedMessage(processedMessege);
 
             return processedMessege;
