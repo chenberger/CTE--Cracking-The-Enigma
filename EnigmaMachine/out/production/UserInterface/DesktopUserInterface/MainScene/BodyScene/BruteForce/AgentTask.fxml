@@ -35,7 +35,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <TextArea fx:id="candidatesArea" prefHeight="100.0" prefWidth="300.0" GridPane.rowIndex="2">
+      <TextArea fx:id="candidatesArea" prefHeight="100.0" prefWidth="315.0" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>

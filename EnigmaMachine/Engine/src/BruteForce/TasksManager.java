@@ -6,11 +6,18 @@ import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
+import EnigmaMachine.Settings.ReflectorIdSector;
 import EnigmaMachine.Settings.RotorIDSector;
+import EnigmaMachine.Settings.Sector;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
+import EnigmaMachineException.PluginBoardSettingsException;
+import EnigmaMachineException.ReflectorSettingsException;
+import EnigmaMachineException.RotorsInUseSettingsException;
+import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -195,9 +202,16 @@ public class TasksManager extends Task<Boolean> {
     public void setMediumTasks() throws Exception {
 
         for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
-            enigmaMachine.setReflector(reflector);
+            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
+            setSectorInMachine(reflectorIdSector);
             setEasyTasks();
         }
+    }
+
+    private void setSectorInMachine(Sector sectorToSet) throws ReflectorSettingsException, RotorsInUseSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException, CloneNotSupportedException {
+        sectorToSet.validateSector(enigmaMachine);
+        sectorToSet.setSectorInTheMachine(enigmaMachine);
+        sectorToSet.addSectorToSettingsFormat(enigmaMachine);
     }
 
     public void setEasyTasks() throws Exception {
@@ -207,16 +221,15 @@ public class TasksManager extends Task<Boolean> {
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
         int test = 3;
-        //while(numOfPossibleRotorsPositions > 0)
-        while(test > 0) {
-            //bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
-            //updateProgress(currentTaskSize, totalTaskSize);
-            //new Thread(agent).start();
+        while(numOfPossibleRotorsPositions > 0) {
+            bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
+            updateProgress(currentTaskSize, totalTaskSize);
 
             --test;
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             AgentTask agentTask = new AgentTask(taskSize, currentStartingRotorsPositions, clonedEnigmaMachine ,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
+            new Thread(agent).start();
 
             //region test
            // lastTask -= taskSize;
@@ -226,7 +239,7 @@ public class TasksManager extends Task<Boolean> {
            // }
             //end region
             //ExecutorService executor = Executors.newFixedThreadPool(3);
-            agent.run();
+            //agent.run();
             //tasksPool.prestartAllCoreThreads();
            if(isFirstAgent) {
                System.out.println("first agent ");
@@ -239,9 +252,6 @@ public class TasksManager extends Task<Boolean> {
 
             currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
-        tasksPool.shutdown();
-        System.out.println("end of setEasyTasks");
-
     }
     @Override
     protected Boolean call() throws Exception {
