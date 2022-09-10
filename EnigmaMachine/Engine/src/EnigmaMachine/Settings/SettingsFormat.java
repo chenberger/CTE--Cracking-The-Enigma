@@ -15,7 +15,11 @@ public class SettingsFormat implements Serializable {
         this.settingsFormat = new ArrayList<Sector>();
         this.isPluginBoardSet = false;
     }
-
+    public SettingsFormat(SettingsFormat settingsFormat) {
+        this.indexFormat = settingsFormat.indexFormat;
+        this.settingsFormat = new ArrayList<Sector>(settingsFormat.settingsFormat);
+        this.isPluginBoardSet = settingsFormat.isPluginBoardSet;
+    }
     public void advanceIndexFormat() {
         indexFormat++;
     }

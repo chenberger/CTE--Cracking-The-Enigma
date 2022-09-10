@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import jdk.nashorn.internal.runtime.logging.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -171,7 +172,17 @@ public class Rotor implements Decoder, Serializable {
     }
 
     public Object cloneRotor() {
-        return new Rotor(id, notch, isFirstRotor, mappingABC, startingRightCharToWindow);
+        return new Rotor(id, notch, isFirstRotor, cloneMapping(), startingRightCharToWindow);
+    }
+
+    private List<Pair<Character, Character>> cloneMapping() {
+        List<Pair<Character, Character>> clonedMapping = new ArrayList<>();
+
+        for(Pair<Character, Character> pair : mappingABC) {
+            clonedMapping.add(new Pair<>(pair.getKey(), pair.getValue()));
+        }
+
+        return clonedMapping;
     }
 
 

@@ -183,7 +183,7 @@ public class EngineManager implements MachineOperations, Serializable {
         enigmaMachine.setTheInitialCodeDefined(true);
     }
     private EnigmaMachine cloneMachine() throws CloneNotSupportedException {
-        EnigmaMachine clonedMachine = new EnigmaMachine(enigmaMachine.cloneRotors(), enigmaMachine.cloneReflector(), enigmaMachine.cloneKeyboard(), enigmaMachine.getNumOfActiveRotors());
+        EnigmaMachine clonedMachine = new EnigmaMachine(enigmaMachine.cloneRotors(), enigmaMachine.cloneReflectors(), enigmaMachine.cloneKeyboard(), enigmaMachine.getNumOfActiveRotors());
         return clonedMachine;
     }
 
@@ -282,8 +282,6 @@ public class EngineManager implements MachineOperations, Serializable {
         EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
         statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
         statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
-        this.encryptedString = encryptedStringFormat.getElements().toString();
-
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
 
