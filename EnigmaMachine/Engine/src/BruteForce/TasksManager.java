@@ -244,13 +244,13 @@ public class TasksManager extends Task<Boolean> {
             //end region
             //ExecutorService executor = Executors.newFixedThreadPool(3);
             //agent.run();
-            //tasksPool.prestartAllCoreThreads();
+            tasksPool.prestartAllCoreThreads();
            if(isFirstAgent) {
                System.out.println("first agent ");
                isFirstAgent = false;
            }
             //executor.execute(agent);
-            //tasksPool.getQueue().put(agent);
+            tasksPool.getQueue().put(agent);
 
             numOfPossibleRotorsPositions -= taskSize;
 
@@ -270,7 +270,7 @@ public class TasksManager extends Task<Boolean> {
 
     public void agentTaskFinished(long agentTaskTimeDuration) {
         totalAgentTasksTime+= agentTaskTimeDuration;
-        totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize;
+        totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;
         bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
     }

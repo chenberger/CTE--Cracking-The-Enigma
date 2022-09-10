@@ -50,7 +50,7 @@ public class  Agent implements Runnable {
     public void run() {
         Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
-
+        System.out.println("Reflector: " + enigmaMachine.getCurrentReflectorInUse().id());
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
             System.out.println("Agent " + Thread.currentThread().getName() + " is working");//to check
 
@@ -60,6 +60,7 @@ public class  Agent implements Runnable {
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
                 String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
+                System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
 
 
                 //try {
