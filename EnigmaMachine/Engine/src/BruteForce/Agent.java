@@ -25,15 +25,15 @@ public class  Agent implements Runnable {
     private int taskId;
 
     public Agent(AgentTask agentTask, TasksManager tasksManager) {
-        this.agentTask = agentTask;
-        //TODO chen: Chang the ids back to int from string
-        //Thread.currentThread().setName("1");
-        this.agentId = (Thread.currentThread().getName());
-        this.keyboard = agentTask.getKeyboard();
-        this.enigmaMachine = agentTask.getEnigmaMachine();
-        this.startingRotorPosition = agentTask.getStartingRotorPositions();
-        this.tasksManager = tasksManager;
-        this.taskId = staticTaskId++;
+        synchronized (this) {
+            this.agentTask = agentTask;
+            this.agentId = Thread.currentThread().getName();
+            this.keyboard = agentTask.getKeyboard();
+            this.enigmaMachine = agentTask.getEnigmaMachine();
+            this.startingRotorPosition = agentTask.getStartingRotorPositions();
+            this.tasksManager = tasksManager;
+            this.taskId = staticTaskId++;
+        }
     }
 
     static {
@@ -53,7 +53,7 @@ public class  Agent implements Runnable {
         Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
-           // System.out.println("Agent " + Thread.currentThread().getName() + " is working");//to check
+            // System.out.println("Agent " + Thread.currentThread().getName() + " is working");//to check
 
             try {
                 Instant startingTime = Instant.now();
@@ -64,7 +64,7 @@ public class  Agent implements Runnable {
                 synchronized (this) {
                     candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
                 }
-               //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
+                //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
                 if (candidateMessage.equals("UMBRELLA")) {
                     System.out.println("Found " + "UMBRELLA" + currentCodeConfigurationFormat);
                 }
@@ -88,15 +88,16 @@ public class  Agent implements Runnable {
                 } catch (Exception e) {
                     break;
                 }
+
+
+                synchronized (this) {
+                    long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
+                    agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
+                    tasksManager.agentTaskFinished(totalTaskTime);
+                }
+            } catch (CloneNotSupportedException | StartingPositionsOfTheRotorException e) {
+                throw new RuntimeException(e);
             }
-            catch (StartingPositionsOfTheRotorException | CloneNotSupportedException ignored) {}
-        }
-
-
-        long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
-        synchronized (this) {
-            agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
-            tasksManager.agentTaskFinished(totalTaskTime);
         }
     }
 

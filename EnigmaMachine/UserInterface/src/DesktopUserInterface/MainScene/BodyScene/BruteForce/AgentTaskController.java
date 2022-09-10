@@ -18,7 +18,7 @@ public class AgentTaskController {
         candidatesArea.setText(candidates);
     }
 
-    public void setId(String id) {
+    public void setAgentId(String id) {
         agentIdLabel.setText("Agent id: " + id);
     }
 
