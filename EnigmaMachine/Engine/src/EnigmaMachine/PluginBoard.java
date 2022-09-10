@@ -5,6 +5,7 @@ import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 public class PluginBoard implements Serializable {
 
@@ -41,6 +42,10 @@ public class PluginBoard implements Serializable {
 
     public Map<Character,Character> getAllPluggedPairs() {
         return pluggedPairs;
+    }
+
+    public List<Pair<Character, Character>> getPluginPairs() {
+        return null;
     }
 
     //endregion

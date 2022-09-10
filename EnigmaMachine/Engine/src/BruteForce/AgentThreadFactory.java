@@ -5,7 +5,10 @@ import java.util.concurrent.ThreadFactory;
 public class AgentThreadFactory implements ThreadFactory {
 
     private static int continuousId;
-
+    private final int amountOfAgents;
+    public AgentThreadFactory(int amountOfAgents) {
+        this.amountOfAgents = amountOfAgents;
+    }
     static {
         resetContinuousId();
     }
@@ -16,6 +19,6 @@ public class AgentThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        return new Thread(r, String.valueOf(continuousId++));
+        return new Thread(r, String.valueOf((continuousId++) % amountOfAgents + 1));
     }
 }

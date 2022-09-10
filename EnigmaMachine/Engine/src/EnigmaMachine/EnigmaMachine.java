@@ -1,5 +1,6 @@
 package EnigmaMachine;
 
+import Engine.StatisticsAndHistory.OriginalStringFormat;
 import EnigmaMachine.Settings.*;
 import EnigmaMachineException.PluginBoardSettingsException;
 import EnigmaMachineException.ReflectorSettingsException;
@@ -20,7 +21,7 @@ public class EnigmaMachine implements Serializable {
     private PluginBoard pluginBoard;
     private final Keyboard keyboard;
     private boolean isTheInitialCodeDefined;
-    private final SettingsFormat originalSettingsFormat;
+    private SettingsFormat originalSettingsFormat;
 
     public EnigmaMachine(Map<Integer, Rotor> rotors, Map<RomanNumber, Reflector> reflectors, Map<Character, Integer> keyboard, int numOfActiveRotors){
         this.rotors = rotors;
@@ -251,7 +252,7 @@ public class EnigmaMachine implements Serializable {
                     + "You can choose only from the following letters: " + keyboard.keySet());
         }
         String processedInput = "";
-        for(char letter: inputToProcess.toCharArray()){
+        for (char letter : inputToProcess.toCharArray()) {
             processedInput += decode(letter);
         }
         return processedInput;
@@ -290,18 +291,17 @@ public class EnigmaMachine implements Serializable {
     }
 
     private int decodeByDirection(int currentCharIndex, Direction direction) {
-
         List<Rotor> rotorsOrder = new ArrayList<>(rotorsInUse);
 
-        if(direction == Direction.BACKWARD) {
-            Collections.reverse(rotorsOrder);
+        if (direction == Direction.BACKWARD) {
+                Collections.reverse(rotorsOrder);
         }
 
         for (Rotor rotor : rotorsOrder) {
-           currentCharIndex = rotor.decode(currentCharIndex, direction);
+            currentCharIndex = rotor.decode(currentCharIndex, direction);
         }
-
         return currentCharIndex;
+
     }
     private Reflector findReflectorById(String reflectorInUseId) {
         for(Reflector reflector : reflectors.values()) {
@@ -376,7 +376,7 @@ public class EnigmaMachine implements Serializable {
         return clonedRotors;
     }
 
-    public Map<RomanNumber, Reflector> cloneReflector() {
+    public Map<RomanNumber, Reflector> cloneReflectors() {
         Map<RomanNumber, Reflector> clonedReflectors = new HashMap<>();
         for(Map.Entry<RomanNumber, Reflector> entry : reflectors.entrySet()) {
             clonedReflectors.put(entry.getKey(), (Reflector)entry.getValue().cloneReflector());
@@ -395,4 +395,18 @@ public class EnigmaMachine implements Serializable {
     public void setReflector(Reflector reflector) {
         reflectorInUse = reflector;
     }
+
+    public EnigmaMachine cloneMachine() throws CloneNotSupportedException {
+        EnigmaMachine clonedMachine = new EnigmaMachine(cloneRotors(), cloneReflectors(), cloneKeyboard(), getNumOfActiveRotors());
+        clonedMachine.setReflector(new Reflector(reflectorInUse.id(),reflectorInUse.getReflectedPairs()));
+        clonedMachine.setRotorsInUseSettings(new RotorIDSector(getCurrentRotorsInUse().stream().map(Rotor::id).collect(Collectors.toList())));
+        clonedMachine.setPluginBoardSettings(new PluginBoardSector(new ArrayList<>()));
+        clonedMachine.setOriginalSettingsFormat(new SettingsFormat((SettingsFormat)originalSettingsFormat.clone()));
+        return clonedMachine;
+    }
+
+    private void setOriginalSettingsFormat(SettingsFormat settingsFormat) {
+        originalSettingsFormat = settingsFormat;
+    }
+
 }

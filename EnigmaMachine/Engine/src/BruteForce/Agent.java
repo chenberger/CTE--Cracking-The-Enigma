@@ -5,9 +5,13 @@ import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Keyboard;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
+import EnigmaMachineException.WordNotValidInDictionaryException;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class  Agent implements Runnable {
 
@@ -24,6 +28,7 @@ public class  Agent implements Runnable {
 
     public Agent(AgentTask agentTask, TasksManager tasksManager) {
         this.agentTask = agentTask;
+        //TODO chen: Chang the ids back to int from string
         //Thread.currentThread().setName("1");
         this.agentId = (Thread.currentThread().getName());
         this.keyboard = agentTask.getKeyboard();
@@ -43,35 +48,38 @@ public class  Agent implements Runnable {
 
     public static int getStaticTaskId() {
         return staticTaskId;
-    }
 
+    }
     @Override
     public void run() {
         Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
 
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
-            System.out.println("Agent " + agentId + " is working");//to check
+            System.out.println("Agent " + Thread.currentThread().getName() + " is working");//to check
+            List<String> decryptStrings = new ArrayList<>();
+            //StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
+            //TODO chen: remove this
             try {
                 Instant startingTime = Instant.now();
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
+                String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
+                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
+                System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
+
+
                 try {
-                    String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
-                    String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
-
-
-                    //agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
-                    encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                     synchronized (this) {
+                        agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
+
+                        encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                         agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
                                 new AgentTaskData(taskId, agentId,
                                         new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                     }
-
-                }
-                catch (IllegalArgumentException ignored) {}
-
+                    decryptStrings.add(candidateMessage);
+                } catch (WordNotValidInDictionaryException ignored) {}
                 try {
                     synchronized (this) {
                         currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));

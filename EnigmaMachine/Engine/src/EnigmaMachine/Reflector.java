@@ -53,7 +53,15 @@ public class Reflector implements Cloneable, Serializable {
     }
 
     public Object cloneReflector() {
-        return new Reflector(id, new HashMap<Integer, Integer>(reflectorPairs));
+        return new Reflector(id, cloneReflectorPairs());
+    }
+
+    private Map<Integer, Integer> cloneReflectorPairs() {
+        return new HashMap<Integer, Integer>(reflectorPairs);
+    }
+
+    public Map<Integer, Integer> getReflectedPairs() {
+        return new HashMap<>(reflectorPairs);
     }
 
     //endregion

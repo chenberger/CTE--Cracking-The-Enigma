@@ -12,6 +12,7 @@ public interface MachineOperations {
 
     void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException;
 
+
     void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;
     MachineDetails displaySpecifications() throws Exception;
     String analyzeHistoryAndStatistics() throws Exception;
