@@ -35,7 +35,11 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </Label>
+<<<<<<< HEAD
       <TextArea fx:id="candidatesArea" prefHeight="100.0" prefWidth="315.0" GridPane.rowIndex="2">
+=======
+      <TextArea fx:id="candidatesArea" prefHeight="100.0" prefWidth="320.0" GridPane.rowIndex="2">
+>>>>>>> c3f4eb2 (cc)
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>

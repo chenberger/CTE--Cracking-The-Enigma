@@ -402,6 +402,7 @@ public class EnigmaMachine implements Serializable {
         clonedMachine.setRotorsInUseSettings(new RotorIDSector(getCurrentRotorsInUse().stream().map(Rotor::id).collect(Collectors.toList())));
         clonedMachine.setPluginBoardSettings(new PluginBoardSector(new ArrayList<>()));
         clonedMachine.setOriginalSettingsFormat(new SettingsFormat((SettingsFormat)originalSettingsFormat.clone()));
+        clonedMachine.setTheInitialCodeDefined(true);
         return clonedMachine;
     }
 
