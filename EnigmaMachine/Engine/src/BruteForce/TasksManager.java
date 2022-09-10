@@ -79,7 +79,9 @@ public class TasksManager extends Task<Boolean> {
     public void setImpossibleTasks() throws Exception {
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist();
         for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
-            enigmaMachine.setRotorsInUseSettings(new RotorIDSector(rotorCombination));
+            RotorIDSector rotorIDSector = new RotorIDSector(rotorCombination);
+            setSectorInMachine(rotorIDSector);
+
             setHardTasks();
         }
     }
@@ -132,7 +134,9 @@ public class TasksManager extends Task<Boolean> {
     public void setHardTasks() throws Exception {
        List<List<Integer>> allPossibleRotorsCombinationsFromCurrentRotors = getAllPossibleRotorsCombinations();
        for(List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
-           enigmaMachine.setRotorsInUseSettings(new RotorIDSector(rotorsCombination));
+           RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
+           setSectorInMachine(rotorIDSector);
+
            setMediumTasks();
        }
     }
