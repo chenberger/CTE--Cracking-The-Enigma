@@ -122,12 +122,12 @@ public class DMStatisticsController {
         return new BruteForceUIAdapter(
                 (agentTaskData) -> {
                     AgentTaskController agentTaskController = tasksControllerMapping.get(agentTaskData.getTaskId());
-                    if (agentTaskController != null) {
-                        agentTaskController.setCandidateMessege(agentTaskData.getDecryptionCandidateFormat().toString());
-                    }
-                    else {
+                    if (agentTaskController == null) {
                         createAgentTask(agentTaskData.getAgentId(), agentTaskData.getTaskId());
+                        agentTaskController = tasksControllerMapping.get(agentTaskData.getTaskId());
                     }
+
+                    agentTaskController.setCandidateMessege(agentTaskData.getDecryptionCandidateFormat().toString());
                 },
                 (processedAgentTasksAmount) -> {
                     processedTasksProperty.set(processedAgentTasksAmount);
@@ -146,9 +146,6 @@ public class DMStatisticsController {
                     if (agentTaskController != null) {
                         agentTaskController.setTotalTime(agentTaskData.getTotalTaskTime());
                     }
-                    else {
-                        //TODO erez: fix bug of task time
-                    }
                 });
     }
 
@@ -158,7 +155,7 @@ public class DMStatisticsController {
             Parent load = fxmlLoader.load();
 
             AgentTaskController agentTaskController = fxmlLoader.getController();
-            agentTaskController.setId(agentId);
+            agentTaskController.setAgentId(agentId);
             agentTaskController.setTotalTime(0L);
 
             flowPaneCandidates.getChildren().add(load);
