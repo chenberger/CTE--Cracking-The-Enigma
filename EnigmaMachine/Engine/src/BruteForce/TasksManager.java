@@ -64,9 +64,9 @@ public class TasksManager extends Task<Boolean> {
         calcMissionSize();
 
     }
-    public void start() throws Exception {
-        difficultyLevel.setTask(this);
-    }
+  //  public void start() throws Exception {
+  //      difficultyLevel.setTask(this);
+  //  }
     private List<Character> setAllRotorsToFirstLetterAtStart() {
         List<Character> startingRotorsPositions = new ArrayList<>();
         for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
@@ -81,7 +81,7 @@ public class TasksManager extends Task<Boolean> {
         for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
             RotorIDSector rotorIDSector = new RotorIDSector(rotorCombination);
             setSectorInMachine(rotorIDSector);
-
+            System.out.println("rotorIDSector: " + rotorIDSector);
             setHardTasks();
         }
     }
@@ -136,7 +136,7 @@ public class TasksManager extends Task<Boolean> {
        for(List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
            RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
            setSectorInMachine(rotorIDSector);
-
+           System.out.println("rotorIDSector: " + rotorIDSector);
            setMediumTasks();
        }
     }
@@ -208,7 +208,6 @@ public class TasksManager extends Task<Boolean> {
         for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
             ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
             setSectorInMachine(reflectorIdSector);
-            enigmaMachine.setReflector(reflector);
             setEasyTasks();
         }
     }
@@ -247,14 +246,14 @@ public class TasksManager extends Task<Boolean> {
             //ExecutorService executor = Executors.newFixedThreadPool(3);
             if(numOfPossibleRotorsPositions == 1 )
             {
-                System.out.println("last task");
+                //System.out.println("last task");
             }
-            System.out.println("numOfPossibleRotorsPositions: " + numOfPossibleRotorsPositions);
+           // System.out.println("numOfPossibleRotorsPositions: " + numOfPossibleRotorsPositions);
             //agent.run();
             tasksPool.prestartAllCoreThreads();
            if(isFirstAgent) {
-               System.out.println("first agent ");
-               isFirstAgent = false;
+               //System.out.println("first agent ");
+               //isFirstAgent = false;
            }
             //tasksPool.execute(agent);
             tasksPool.getQueue().put(agent);

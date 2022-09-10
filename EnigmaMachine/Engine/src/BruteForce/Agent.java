@@ -60,12 +60,18 @@ public class  Agent implements Runnable {
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
-                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
-                //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
-
+                String candidateMessage;
+                synchronized (this) {
+                    candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
+                }
+               //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + currentCodeConfigurationFormat);//to check
+                if (candidateMessage.equals("UMBRELLA")) {
+                    System.out.println("Found " + "UMBRELLA" + currentCodeConfigurationFormat);
+                }
 
                 try {
                     synchronized (this) {
+
                         agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
                         System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
                         encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
@@ -73,14 +79,13 @@ public class  Agent implements Runnable {
                                 new AgentTaskData(taskId, agentId,
                                         new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                     }
+                } catch (WordNotValidInDictionaryException ignored) {
                 }
-                catch (WordNotValidInDictionaryException ignored) {}
                 try {
                     synchronized (this) {
                         currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     break;
                 }
             }
