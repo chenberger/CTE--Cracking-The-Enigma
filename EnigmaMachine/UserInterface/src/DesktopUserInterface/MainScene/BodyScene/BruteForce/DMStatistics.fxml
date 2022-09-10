@@ -16,16 +16,16 @@
 
 <GridPane fx:id="machineStatisticsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@DMStatistics.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMStatisticsController">
       <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="62.0" prefWidth="271.0" />
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="191.0" />
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="232.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="300.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="300.0" />
       </columnConstraints>
       <rowConstraints>
       <RowConstraints vgrow="NEVER" />
-      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="55.0" prefHeight="68.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="71.0" prefHeight="75.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="83.0" minHeight="72.0" prefHeight="83.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="194.0" minHeight="167.0" prefHeight="176.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="83.0" prefHeight="40.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="194.0" vgrow="ALWAYS" />
       </rowConstraints>
       <opaqueInsets>
           <Insets />
@@ -88,12 +88,12 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
          </GridPane.margin>
       </HBox>
-      <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="3" GridPane.rowIndex="4">
          <content>
-            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" />
+            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" />
          </content>
       </ScrollPane>
-      <HBox prefHeight="40.0" prefWidth="221.0" spacing="5.0" GridPane.rowIndex="1">
+      <HBox prefHeight="48.0" prefWidth="261.0" spacing="5.0" GridPane.rowIndex="1">
          <children>
             <Label fx:id="missionTotalTimeLabel" text="Decoding mission total time:" wrapText="true">
                <font>
