@@ -6,10 +6,7 @@ import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
-import EnigmaMachine.Settings.ReflectorIdSector;
-import EnigmaMachine.Settings.RotorIDSector;
-import EnigmaMachine.Settings.Sector;
-import EnigmaMachine.Settings.StartingRotorPositionSector;
+import EnigmaMachine.Settings.*;
 import EnigmaMachineException.PluginBoardSettingsException;
 import EnigmaMachineException.ReflectorSettingsException;
 import EnigmaMachineException.RotorsInUseSettingsException;
@@ -42,9 +39,10 @@ public class TasksManager extends Task<Boolean> {
     private long currentTaskSize;
     private long totalAgentTasksTime;
     private long totalAgentTasksAverageTime;
+    private SettingsFormat settingsFormat;
 
 
-    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, String decryptedMessege) throws Exception {
+    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, SettingsFormat decryptedSettingsFormat) throws Exception {
         this.enigmaMachine = enigmaMachine;
         this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
         this.encryptedString = encryptedString;
@@ -52,16 +50,42 @@ public class TasksManager extends Task<Boolean> {
         this.amountOfAgents = bruteForceTask.getAmountOfAgents();
         this.taskSize = bruteForceTask.getTaskSize();
         this.dictionary = dictionary;
-
+        this.candidatesPool = candidatesPool;
+        this.settingsFormat = decryptedSettingsFormat;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
         //TODO chen: set the number og agents from the T
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),new AgentThreadFactory(amountOfAgents), new ThreadPoolExecutor.CallerRunsPolicy());
         decipherStatistics = new DecipherStatistics();
         this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
+        initializeMachineSettings();
         initializeTaskData();
         calcMissionSize();
 
+    }
+
+    private void initializeMachineSettings() {
+        enigmaMachine.clearSettings();
+
+        settingsFormat.getSettingsFormat().forEach(sector -> {
+            try {
+                sector.setSectorInTheMachine(enigmaMachine);
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        enigmaMachine.setTheInitialCodeDefined(true);
+        enigmaMachine.resetSettings();
+
+        enigmaMachine.clearSettings();
+        settingsFormat.getSettingsFormat().forEach(sector -> sector.addSectorToSettingsFormat(enigmaMachine));
+
+        if (enigmaMachine.isPluginBoardSet()) {
+            enigmaMachine.getOriginalSettingsFormat().setIfPluginBoardSet(true);
+        } else {
+            enigmaMachine.getOriginalSettingsFormat().setIfPluginBoardSet(false);
+        }
     }
 
     private void initializeTaskData() {
@@ -234,13 +258,13 @@ public class TasksManager extends Task<Boolean> {
 
         while(numOfPossibleRotorsPositions > 0){
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
-            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine ,encryptedString, dictionary, tasksPool, bruteForceUIAdapter, decipherStatistics);
+            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine ,encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
 
 
             System.out.println("numOfPossibleRotorsPositions: " + numOfPossibleRotorsPositions);
-            //agent.run();
-            tasksPool.prestartAllCoreThreads();
+            //new Thread(agent).start();
+
             tasksPool.getQueue().put(agent);
 
             numOfPossibleRotorsPositions -= taskSize;
@@ -251,10 +275,12 @@ public class TasksManager extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
         try {
+            tasksPool.prestartAllCoreThreads();
             difficultyLevel.setTask(this);
             //TOdo REMOVE
             System.out.println("Shutting down executor");
-            tasksPool.shutdown();
+            tasksPool.awaitTermination(10, TimeUnit.HOURS);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

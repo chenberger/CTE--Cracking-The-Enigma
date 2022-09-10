@@ -5,6 +5,7 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
+import EnigmaMachine.Settings.SettingsFormat;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class DecryptionManager {
     private String decryptedMessege;
     private  MainController mainController;
     private Runnable onFinish;
+    private SettingsFormat decryptedSettingsFormat;
 
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
@@ -63,7 +65,7 @@ public class DecryptionManager {
                         + "You can choose only from the following letters: " + enigmaMachine.getKeyboard().keySet());
             }
 
-            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter, dictionary, candidatesThreadPoolExecutor, decryptedMessege);
+            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter, dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat);
             mainController.bindTaskToUIComponents(tasksManager, onFinish);
 
             new Thread(tasksManager).start();
@@ -114,5 +116,9 @@ public class DecryptionManager {
         this.bruteForceUIAdapter = bruteForceUiAdapter;
         this.mainController = mainController;
         this.onFinish = onFinish;
+    }
+
+    public void setCodeConfigurationBeforeProcess(SettingsFormat currentSettingsFormat) {
+        this.decryptedSettingsFormat = currentSettingsFormat;
     }
 }
