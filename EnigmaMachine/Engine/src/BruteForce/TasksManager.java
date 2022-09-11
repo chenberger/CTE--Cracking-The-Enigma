@@ -288,7 +288,7 @@ public class TasksManager extends Task<Boolean> {
         return Boolean.TRUE;
     }
 
-    public void agentTaskFinished(long agentTaskTimeDuration) {
+    synchronized public void agentTaskFinished(long agentTaskTimeDuration) {
         bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
         totalAgentTasksTime+= agentTaskTimeDuration;
         totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;

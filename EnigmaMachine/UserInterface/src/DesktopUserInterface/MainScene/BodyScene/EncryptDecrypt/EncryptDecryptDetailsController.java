@@ -21,6 +21,7 @@ public class EncryptDecryptDetailsController {
     @FXML private ScrollPane encryptDecryptWordsScrollPane;
     @FXML private RadioButton fullWordButton;
     @FXML private RadioButton letterByLetterButton;
+    @FXML private Button clearButton;
     @FXML private TextField decodedWordsTextArea;
     @FXML private Label encryptDecryptTextLabel1;
     private EncryptDecryptGridController encryptDecryptGridController;
@@ -57,6 +58,13 @@ public class EncryptDecryptDetailsController {
         fullWordButton.disableProperty().bind(fileLoadedProperty.not());
         letterByLetterButton.disableProperty().bind(fileLoadedProperty.not());
     }
+
+
+    @FXML void onClearButtonClicked(ActionEvent event) {
+        encryptDecryptTextBox.setText("");
+        decodedWordsTextArea.setText("");
+    }
+
     private void setScrollPaneColor(){
         encryptDecryptWordsScrollPane.setStyle("-fx-background-color: transparent;");
     }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="119.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
+<GridPane prefHeight="262.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptDetailsController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints minWidth="500.0" />
@@ -24,8 +24,8 @@
       <RowConstraints maxHeight="47.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="47.0" minHeight="40.0" prefHeight="47.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.5" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -86,11 +86,11 @@
                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </padding>
               </Button>
-              <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="193.0" styleClass="reset-state-button" stylesheets="@EncryptDecryptDetails.css" text="Reset Machine State">
-                  <padding>
-                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                  </padding>
-              </Button>
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClearButtonClicked" prefHeight="31.0" prefWidth="191.0" styleClass="encryption-buttons" stylesheets="@EncryptDecryptDetails.css" text="Clear">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Button>
          </children>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
@@ -106,5 +106,13 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </VBox>
+        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="193.0" styleClass="reset-state-button" stylesheets="@EncryptDecryptDetails.css" text="Reset Machine State" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="200.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+        </Button>
     </children>
 </GridPane>
