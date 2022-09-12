@@ -91,4 +91,9 @@ public class StatisticsAndHistoryAnalyzer implements Serializable {
         processedStringsFormat.addStringToProcessedStringsFormat(original);
         processedStringsFormat.addStringToProcessedStringsFormat(encrypted);
     }
+
+    public void clearCurrentOriginalAndEncryptedStrings() {
+        processedStringsFormat = new ProcessedStringsFormat();
+        processedStringsFormat.clearCurrentOriginalAndEncryptedStrings();
+    }
 }

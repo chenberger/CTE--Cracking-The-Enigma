@@ -87,4 +87,9 @@ public class ProcessedStringsFormat implements Serializable {
             }
         }
     }
+
+    public void clearCurrentOriginalAndEncryptedStrings() {
+        originalStringFormat.clear();
+        encryptedStringFormat.clear();
+    }
 }

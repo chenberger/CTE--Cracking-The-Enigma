@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
+import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.MachineNotExistsException;
 import EnigmaMachineException.SettingsNotInitializedException;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -43,8 +44,8 @@ public class EncryptDecryptDetailsController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(!fullWordDecodingProperty.get() && newValue != null && newValue.length() > 0) {
-                    encryptDecryptGridController.decodeWord(String.valueOf(encryptDecryptTextBox.getText().charAt(0)));
                     encryptDecryptTextBox.setText(newValue);
+                    encryptDecryptGridController.decodeWord(String.valueOf(encryptDecryptTextBox.getText().charAt(newValue.length() - 1)));
                 }
             }
         });
@@ -69,15 +70,19 @@ public class EncryptDecryptDetailsController {
         encryptDecryptWordsScrollPane.setStyle("-fx-background-color: transparent;");
     }
     @FXML void onDecryptionButtonClicked(ActionEvent event) throws MachineNotExistsException, CloneNotSupportedException, SettingsNotInitializedException {
-            if(fullWordDecodingProperty.get()) {
-                encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
-                encryptDecryptTextBox.clear();
+            try {
+                if (fullWordDecodingProperty.get()) {
+                    encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
+                    encryptDecryptTextBox.clear();
+                } else {
+                    //TODO: chen - add statistics change only when pushes button.
+                    decodedWordsTextArea.clear();
+                }
+                if(encryptDecryptTextBox.textProperty().get().length() > 0 || fullWordDecodingProperty.get()) {
+                    encryptDecryptGridController.onFinishInput();
+                }
+            } catch (MachineNotExistsException | CloneNotSupportedException | IllegalArgumentException ignored) {
             }
-            else{
-                //TODO: chen - add statistics change only when pushes button.
-                decodedWordsTextArea.clear();
-            }
-            encryptDecryptGridController.onFinishInput();
             encryptDecryptTextBox.clear();
 }
     @FXML void onLetterByLetterButtonPressed(ActionEvent event) {
@@ -88,6 +93,7 @@ public class EncryptDecryptDetailsController {
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
         encryptDecryptGridController.resetMachineState();
+        encryptDecryptGridController.clearCurrentProccessedWord();
     }
     @FXML private void onFullWordButtonPressed(ActionEvent event){
         fullWordDecodingProperty.set(true);
@@ -117,6 +123,9 @@ public class EncryptDecryptDetailsController {
 
     public void clearDecodingTextArea() {
         encryptDecryptTextBox.clear();
+    }
+    public void clearDecodedTextArea() {
+        decodedWordsTextArea.clear();
     }
 
     public void keyboardButtonClicked(Character keyboardValue) {

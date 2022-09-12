@@ -25,7 +25,7 @@ public class TasksManager extends Task<Boolean> {
     private ThreadPoolExecutor tasksPool;
     private DecipherStatistics decipherStatistics;
     private Double totalCombinations;
-    private ExecutorService outputTasksPool;
+    //private ExecutorService outputTasksPool;
     private BruteForceUIAdapter bruteForceUIAdapter;
     private String encryptedString;
     private Dictionary dictionary;
@@ -56,7 +56,7 @@ public class TasksManager extends Task<Boolean> {
         //TODO chen: set the number og agents from the T
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),new AgentThreadFactory(amountOfAgents), new ThreadPoolExecutor.CallerRunsPolicy());
         decipherStatistics = new DecipherStatistics();
-        this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+        //this.outputTasksPool = new ThreadPoolExecutor(2, 50, 5000, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
         initializeMachineSettings();
         initializeTaskData();
