@@ -88,31 +88,31 @@ public class TasksManager extends Task<Boolean> {
     }
 
     private void initializeTaskData() {
-        this.totalTaskSize = 1;
         this.totalAgentTasksTime = 0;
         this.totalAgentTasksAverageTime = 0;
         this.currentTaskSize = 0;
         this.bruteForceUIAdapter.updateTotalProcessedAgentTasks(currentTaskSize);
-        this.bruteForceUIAdapter.updateAverageTaskTime(0);
+        this.bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         this.bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
-        updateProgress(currentTaskSize, totalTaskSize);
     }
 
     private List<Character> setAllRotorsToFirstLetterAtStart() {
         List<Character> startingRotorsPositions = new ArrayList<>();
+
         for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
             startingRotorsPositions.add(enigmaMachine.getKeyboard().getFirstCharacter());
         }
+
         return startingRotorsPositions;
     }
 
 
     public void setImpossibleTasks() throws Exception {
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist();
+
         for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
             RotorIDSector rotorIDSector = new RotorIDSector(rotorCombination);
             setSectorInMachine(rotorIDSector);
-            System.out.println("rotorIDSector: " + rotorIDSector);
             setHardTasks();
         }
     }
@@ -126,20 +126,6 @@ public class TasksManager extends Task<Boolean> {
         return allPossibleRotorsCombinationsFromAllRotors;
     }
 
-   // private void calculateAllPossibleRotorsIdsCombinations(List<Integer> allPossibleRotors, List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors, int maxNumOfRotors) {
-   //     List<Integer> currentCombination = new ArrayList<>();
-   //     for (int j = maxNumOfRotors; j < allPossibleRotors.size(); j++) {
-   //         if(!currentCombination.contains(allPossibleRotors.get(j))) {
-   //             currentCombination.add(allPossibleRotors.get(j));
-   //             if(currentCombination.size() == enigmaMachine.getNumOfActiveRotors()) {
-   //                 allPossibleRotorsCombinationsFromAllRotors.add(currentCombination);
-   //             }
-   //             else {
-   //                 calculateAllPossibleRotorsIdsCombinations(allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors, j + 1);
-   //             }
-   //         }
-   //     }
-   // }
     public void calculateAllPossibleRotorsIdsCombinations(int totalNumberOfRotors, int left, int numberOfRotorsInUse, List<Integer> combination, List<List<Integer>> combinations) {
         // Pushing this vector to a vector of vector
         if (numberOfRotorsInUse == 0) {
@@ -167,7 +153,6 @@ public class TasksManager extends Task<Boolean> {
        for(List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
            RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
            setSectorInMachine(rotorIDSector);
-           System.out.println("rotorIDSector: " + rotorIDSector);
            setMediumTasks();
        }
     }
@@ -227,15 +212,10 @@ public class TasksManager extends Task<Boolean> {
         }
 
         totalTaskSize = (long) (totalCombinations / taskSize);
-        currentTaskSize = 0;
         bruteForceUIAdapter.updateTotalAgentsTasks(totalTaskSize);
-        bruteForceUIAdapter.updateTotalProcessedAgentTasks(currentTaskSize);
-
-        updateProgress(currentTaskSize, totalTaskSize);
     }
 
     public void setMediumTasks() throws Exception {
-
         for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
             ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
             setSectorInMachine(reflectorIdSector);
@@ -243,50 +223,45 @@ public class TasksManager extends Task<Boolean> {
         }
     }
 
-    private void setSectorInMachine(Sector sectorToSet) throws ReflectorSettingsException, RotorsInUseSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException, CloneNotSupportedException {
+    private void setSectorInMachine(Sector<?> sectorToSet) throws ReflectorSettingsException, RotorsInUseSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException, CloneNotSupportedException {
         sectorToSet.validateSector(enigmaMachine);
         sectorToSet.setSectorInTheMachine(enigmaMachine);
         sectorToSet.addSectorToSettingsFormat(enigmaMachine);
     }
 
     public void setEasyTasks() throws Exception {
-        boolean isFirstAgent = true;
-       // int lastTask = totalTaskSize.intValue();
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
-        while(numOfPossibleRotorsPositions > 0){
+        while(numOfPossibleRotorsPositions > 0) {
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
-            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine ,encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
+            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
-
-            System.out.println("numOfPossibleRotorsPositions: " + numOfPossibleRotorsPositions);
 
             blockingQueue.put(agent);
             numOfPossibleRotorsPositions -= taskSize;
-
             currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
         }
     }
+
     @Override
     protected Boolean call() throws Exception {
         try {
             tasksPool.prestartAllCoreThreads();
             difficultyLevel.setTask(this);
-            //TOdo REMOVE
-            System.out.println("Shutting down executor");
-            tasksPool.awaitTermination(10, TimeUnit.HOURS);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
+        //TODO erez: what happen if not finished?
+        tasksPool.awaitTermination(10, TimeUnit.SECONDS);
         return Boolean.TRUE;
     }
 
     synchronized public void agentTaskFinished(long agentTaskTimeDuration) {
-        bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
         totalAgentTasksTime+= agentTaskTimeDuration;
+        bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
         totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;
         bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);

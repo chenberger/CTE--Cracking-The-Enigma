@@ -17,9 +17,6 @@ import java.util.Set;
 public class BruteForceGridController {
     @FXML private GridPane DMStatistics;
     @FXML private DMStatisticsController DMStatisticsController;
-    @FXML private GridPane BruteForceGrid;
-    @FXML private GridPane candidatesAndProgressGrid;
-    @FXML private GridPane dMOperationalGrid;
     @FXML private GridPane encryptDecryptActionsGrid;
     @FXML private EncryptDecryptActionsGridController encryptDecryptActionsGridController;
     @FXML private VBox CurrentCodeConfigurationGrid;

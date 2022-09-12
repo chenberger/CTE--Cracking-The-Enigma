@@ -11,6 +11,7 @@ import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +30,7 @@ public class MainController {
     @FXML private MachineGridController machineGridController;
     @FXML private ScrollPane encryptDecryptGrid;
     @FXML private EncryptDecryptGridController encryptDecryptGridController;
-    @FXML private GridPane bruteForceGrid;
+    @FXML private SplitPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
     @FXML private Tab machineTab;

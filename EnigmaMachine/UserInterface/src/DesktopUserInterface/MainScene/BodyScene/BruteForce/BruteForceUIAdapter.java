@@ -21,7 +21,7 @@ public class BruteForceUIAdapter {
         this.updateExistingAgentTaskTime = updateExistingAgentTaskTime;
     }
 
-    public void updateTotalAgentsTasks(Long totalTasks) {
+    public void updateTotalAgentsTasks(long totalTasks) {
         Platform.runLater(
                 () -> {
                     this.totalTasks.accept(totalTasks);
@@ -45,7 +45,7 @@ public class BruteForceUIAdapter {
         );
     }
 
-    public void updateTotalProcessedAgentTasks(Long processedAgentTasksAmount) {
+    public void updateTotalProcessedAgentTasks(long processedAgentTasksAmount) {
         Platform.runLater(
                 () -> totalProcessedAgentTasks.accept(processedAgentTasksAmount)
         );
