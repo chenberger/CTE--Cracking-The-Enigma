@@ -214,7 +214,7 @@ public class ConsoleUserInterface {
                 try {
                     System.out.println("Please enter a message that you want to encrypt/decrypt: ");
                     userInputToEncrypt = scanner.nextLine();
-                    encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase());
+                    encryptedMessage = enigmaMachineEngine.processInput(userInputToEncrypt.toUpperCase(), false);
                     continueOperation = false;
                     System.out.println("The message have been processed successfully" + System.lineSeparator() +
                             "The processed message is: " + encryptedMessage + System.lineSeparator());

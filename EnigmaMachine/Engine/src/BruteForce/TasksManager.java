@@ -7,16 +7,14 @@ import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.*;
-import EnigmaMachineException.PluginBoardSettingsException;
-import EnigmaMachineException.ReflectorSettingsException;
-import EnigmaMachineException.RotorsInUseSettingsException;
-import EnigmaMachineException.StartingPositionsOfTheRotorException;
+import EnigmaMachineException.*;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class TasksManager extends Task<Boolean> {
@@ -40,9 +38,11 @@ public class TasksManager extends Task<Boolean> {
     private long totalAgentTasksAverageTime;
     private SettingsFormat settingsFormat;
     private BlockingQueue<Runnable> blockingQueue;
+    private Consumer<Runnable> onCancel;
+    private Boolean isPaused;
 
 
-    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, SettingsFormat decryptedSettingsFormat) throws Exception {
+    public TasksManager(EnigmaMachine enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, BruteForceUIAdapter UIAdapter, Dictionary dictionary, ExecutorService candidatesPool, SettingsFormat decryptedSettingsFormat, Consumer<Runnable> onCancel) throws Exception {
         this.enigmaMachine = enigmaMachine;
         this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
         this.encryptedString = encryptedString;
@@ -52,6 +52,7 @@ public class TasksManager extends Task<Boolean> {
         this.dictionary = dictionary;
         this.candidatesPool = candidatesPool;
         this.settingsFormat = decryptedSettingsFormat;
+        this.onCancel = onCancel;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
         //TODO chen: set the number og agents from the T
         this.blockingQueue = new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE);
@@ -233,6 +234,14 @@ public class TasksManager extends Task<Boolean> {
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
+        if (isCancelled()) {
+            throw new TaskIsCanceledException();
+        }
+
+        if(Thread.currentThread().isInterrupted()) {
+            pauseMission();
+        }
+
         while(numOfPossibleRotorsPositions > 0) {
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
@@ -240,8 +249,36 @@ public class TasksManager extends Task<Boolean> {
 
             blockingQueue.put(agent);
             numOfPossibleRotorsPositions -= taskSize;
-            currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
+            try {
+                currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
+            }
+            catch (Exception e) {
+                break;
+            }
         }
+    }
+
+    synchronized private void pauseMission() {
+        isPaused = true;
+
+        while (isPaused) {
+            try{
+                this.wait();
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    synchronized public void resumeMission() {
+        isPaused = false;
+
+        while(!isPaused) {
+
+        }
+        this.notify();
     }
 
     @Override
@@ -250,19 +287,27 @@ public class TasksManager extends Task<Boolean> {
             tasksPool.prestartAllCoreThreads();
             difficultyLevel.setTask(this);
         }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
+        catch(TaskIsCanceledException ex) {
+            onCancel.accept(null);
+        }
+        catch (Exception  e) {
+            //System.out.println(e.getMessage());
         }
 
         //TODO erez: what happen if not finished?
-        tasksPool.awaitTermination(10, TimeUnit.SECONDS);
+        try {
+            tasksPool.awaitTermination(8, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e) {
+            System.out.println(e.getMessage() + Arrays.toString(e.getStackTrace()));
+        }
         return Boolean.TRUE;
     }
 
     synchronized public void agentTaskFinished(long agentTaskTimeDuration) {
         totalAgentTasksTime+= agentTaskTimeDuration;
         bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
-        totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;
+        totalAgentTasksAverageTime = totalAgentTasksTime * 1000 / currentTaskSize ;
         bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
         updateProgress(currentTaskSize, totalTaskSize);
