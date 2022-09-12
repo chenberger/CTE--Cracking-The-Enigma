@@ -359,4 +359,8 @@ public class EngineManager implements MachineOperations, Serializable {
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
+
+    public void clearCurrentProccessedWord() {
+        statisticsAndHistoryAnalyzer.clearCurrentOriginalAndEncryptedStrings();
+    }
 }

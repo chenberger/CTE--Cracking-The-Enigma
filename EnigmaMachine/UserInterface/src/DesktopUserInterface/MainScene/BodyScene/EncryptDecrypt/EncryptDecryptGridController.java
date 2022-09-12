@@ -71,7 +71,10 @@ public class EncryptDecryptGridController {
         }
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             EncryptDecryptDetailsController.clearDecodingTextArea();
+            EncryptDecryptDetailsController.clearDecodedTextArea();
+            enigmaMachineEngine.clearCurrentProccessedWord();
             new ErrorDialog(ex,"Unable to decode.");
+            throw new IllegalArgumentException();
         }
 
     }
@@ -134,5 +137,12 @@ public class EncryptDecryptGridController {
     public void keyBoardButtonClicked(Character keyboardCharacter) {
         isKeyboardButtonClicked = true;
         EncryptDecryptDetailsController.keyboardButtonClicked(keyboardCharacter);
+        //decodeWord(keyboardCharacter.toString());
+    }
+
+    public void clearCurrentProccessedWord() {
+        EncryptDecryptDetailsController.clearDecodingTextArea();
+        EncryptDecryptDetailsController.clearDecodedTextArea();
+        enigmaMachineEngine.clearCurrentProccessedWord();
     }
 }

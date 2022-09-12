@@ -17,4 +17,8 @@ public class StringFormat<T> implements Serializable {
     public List<T> getElements() {
         return elements;
     }
+
+    public void clear() {
+        elements.clear();
+    }
 }
