@@ -16,8 +16,8 @@
 
 <GridPane fx:id="machineStatisticsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@DMStatistics.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMStatisticsController">
       <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="300.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="-Infinity" prefWidth="430.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="270.0" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="300.0" />
       </columnConstraints>
       <rowConstraints>
@@ -90,7 +90,7 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
          <content>
-            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" />
+            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" />
          </content>
       </ScrollPane>
       <HBox prefHeight="48.0" prefWidth="261.0" spacing="5.0" GridPane.rowIndex="1">
@@ -121,6 +121,7 @@
          <children>
             <Button fx:id="startStopButton" mnemonicParsing="false" onAction="#onStartStopButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Start" HBox.hgrow="NEVER" />
             <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#onPauseResumeButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Pause" HBox.hgrow="NEVER" />
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClearButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Clear" />
          </children>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />

@@ -20,6 +20,7 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
     @FXML public TabPane tabPane;
@@ -113,5 +114,9 @@ public class MainController {
 
     public void bindTaskToUIComponents(Task<Boolean> tasksManager, Runnable onFinish) {
         bruteForceGridController.bindTaskToUIComponents(tasksManager, onFinish);
+    }
+
+    public void onTaskFinished(Optional<Runnable> onFinish) {
+        bruteForceGridController.onTaskFinished(onFinish);
     }
 }

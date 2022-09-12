@@ -71,9 +71,6 @@ public class EngineManager implements MachineOperations, Serializable {
         maxAgentsAmountChangedHandler.invoke(this, decryptionManager.getMaxCurrentAmountOfAgents());
     }
 
-    private void onDecryptionMangerFinished(){
-        decryptionCandidateEventHandler.invoke(this, decryptionManager.getDecryptionCandidatesStatistics());
-    }
     private void onDictionaryChanged() {
         dictionaryChangedHandler.invoke(this, dictionary);
     }
@@ -270,7 +267,7 @@ public class EngineManager implements MachineOperations, Serializable {
         statisticsAndHistoryAnalyzer.clearProcessedStringsFormat();
     }
     @Override
-    public String processInput(String inputToProcess) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
+    public String processInput(String inputToProcess, Boolean processFromDictionary) throws MachineNotExistsException, IllegalArgumentException, CloneNotSupportedException {
         if(inputToProcess.length() == 0) {
             throw new IllegalArgumentException("You must enter a message to process!!!");
         }
@@ -279,9 +276,13 @@ public class EngineManager implements MachineOperations, Serializable {
         String encryptedString = enigmaMachine.processedInput(inputToProcess);
         Instant end = Instant.now();
         long durationEncryptedTimeInNanoSeconds = Duration.between(start, end).toNanos();
-        EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
-        statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat,encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
-        statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
+
+        if(!processFromDictionary) {
+            EncryptedStringFormat encryptedStringFormat = new EncryptedStringFormat(encryptedString.chars().mapToObj(ch -> (char) ch).collect(Collectors.toList()));
+            statisticsAndHistoryAnalyzer.addToOriginalAndEncryptedStringsAndTime(originalStringFormat, encryptedStringFormat, durationEncryptedTimeInNanoSeconds);
+            statisticsAndHistoryAnalyzer.setIndexFormat(enigmaMachine.getOriginalSettingsFormat().getIndexFormat());
+        }
+
         onMachineDetailsChanged();
         onCurrentCodeConfigurationChanged();
 
@@ -294,7 +295,7 @@ public class EngineManager implements MachineOperations, Serializable {
         if(dictionary != null) {
             decryptionManager.setCodeConfigurationBeforeProcess(enigmaMachine.getCurrentSettingsFormat());
             inputToProcessAfterCleanFromExcludeChars = dictionary.validateWordsAfterCleanExcludeChars(Arrays.asList(inputToProcess.toUpperCase().split(" ")));
-            String processedMessege = processInput(String.join(" ", inputToProcessAfterCleanFromExcludeChars));
+            String processedMessege = processInput(String.join(" ", inputToProcessAfterCleanFromExcludeChars), true);
             decryptionManager.setDecryptedMessage(processedMessege);
 
             return processedMessege;
@@ -360,7 +361,19 @@ public class EngineManager implements MachineOperations, Serializable {
         this.mainController = mainController;
     }
 
-    public void clearCurrentProccessedWord() {
+    public void clearCurrentProcessedWord() {
         statisticsAndHistoryAnalyzer.clearCurrentOriginalAndEncryptedStrings();
+    }
+
+    public void stopBruteForceMission() {
+        decryptionManager.stopBruteForceMission();
+    }
+
+    public void pauseMission() {
+        decryptionManager.pauseMission();
+    }
+
+    public void resumeMission() {
+        decryptionManager.resumeMission();
     }
 }

@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class BruteForceGridController {
@@ -76,7 +77,6 @@ public class BruteForceGridController {
             Utils.checkIfMachineExistsAndInitialized(enigmaMachineEngine);
             processedString = enigmaMachineEngine.processInputsFromDictionary(textToDecode);
             encryptDecryptActionsGridController.setProcessedString(processedString);
-            //TODO erez: in that case of dict procces dont update the statistics !
         } catch (Exception ex) {
             new ErrorDialog(ex,"Failed to process words from the dictionary");
         }
@@ -100,5 +100,21 @@ public class BruteForceGridController {
 
     public void bindTaskToUIComponents(Task<Boolean> tasksManager, Runnable onFinish) {
         DMStatisticsController.bindTaskToUIComponents(tasksManager, onFinish);
+    }
+
+    public void onTaskFinished(Optional<Runnable> onFinish){
+        DMStatisticsController.onTaskFinished(onFinish);
+    }
+
+    public void stopBruteForceMission() {
+        enigmaMachineEngine.stopBruteForceMission();
+    }
+
+    public void pauseMission() {
+        enigmaMachineEngine.pauseMission();
+    }
+
+    public void resumeMission() {
+        enigmaMachineEngine.resumeMission();
     }
 }

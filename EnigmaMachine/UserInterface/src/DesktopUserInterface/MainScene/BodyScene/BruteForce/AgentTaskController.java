@@ -30,6 +30,6 @@ public class AgentTaskController {
     }
 
     public void setTotalTime(Long time) {
-        taskTotalTimeLabel.setText("Task total time: " + time.toString() + " ms");
+        taskTotalTimeLabel.setText("Task total time: " + time.toString() + " ns");
     }
 }

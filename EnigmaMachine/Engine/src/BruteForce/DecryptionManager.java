@@ -10,6 +10,7 @@ import EnigmaMachineException.IllegalAgentsAmountException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,27 +22,26 @@ public class DecryptionManager {
     private TasksManager tasksManager;
     private static final int MIN_AGENTS_AMOUNT = 2;
     private static final int MAX_AGENTS_AMOUNT = 50;
-    private Integer taskSize;
     private BruteForceUIAdapter bruteForceUIAdapter;
     private BruteForceTask bruteForceTask;
-    private DecipherStatistics decipherStatistics;
     private String decryptedMessege;
     private MainController mainController;
     private Runnable onFinish;
     private SettingsFormat decryptedSettingsFormat;
+    private Thread tasksManagerThread;
 
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
-        this.decipherStatistics = new DecipherStatistics();
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
+        this.decryptedMessege = null;
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
-        this.decipherStatistics = new DecipherStatistics();
         this.bruteForceTask = bruteForceTask;
         this.enigmaMachine = enigmaMachine;
         this.dictionary = dictionary;
-        this.candidatesThreadPoolExecutor = Executors.newCachedThreadPool();
+        this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
+        this.decryptedMessege = null;
     }
 
     public void setMaxCurrentAmountOfAgents(int maxCurrentAmountOfAgents) throws IllegalAgentsAmountException {
@@ -65,18 +65,17 @@ public class DecryptionManager {
                         + "You can choose only from the following letters: " + enigmaMachine.getKeyboard().keySet());
             }
 
-            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter, dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat);
+            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter,
+                                            dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
+                                            (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
             mainController.bindTaskToUIComponents(tasksManager, onFinish);
 
-            new Thread(tasksManager).start();
+            tasksManagerThread = new Thread(tasksManager);
+            tasksManagerThread.start();
         }//TODO chen: call task manager to start
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getDecryptionCandidatesStatistics() {
-        return decipherStatistics.toString();
     }
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {
@@ -120,5 +119,23 @@ public class DecryptionManager {
 
     public void setCodeConfigurationBeforeProcess(SettingsFormat currentSettingsFormat) {
         this.decryptedSettingsFormat = currentSettingsFormat;
+    }
+
+    public void stopBruteForceMission() {
+        tasksManager.cancel();
+
+        clearMission();
+    }
+
+    private void clearMission() {
+        this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
+    }
+
+    public void pauseMission() {
+        tasksManagerThread.interrupt();
+    }
+
+    public void resumeMission() {
+        tasksManager.resumeMission();
     }
 }

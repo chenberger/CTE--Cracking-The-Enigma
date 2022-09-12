@@ -16,7 +16,7 @@ public interface MachineOperations {
     void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;
     MachineDetails displaySpecifications() throws Exception;
     String analyzeHistoryAndStatistics() throws Exception;
-    String processInput(String inputToProcess) throws Exception;
+    String processInput(String inputToProcess, Boolean processFromDictionary) throws Exception;
     void saveStateMachineToFile(String path) throws IOException, MachineNotExistsException;
 
     void loadStateMachineFromFile(String path) throws IOException, ClassNotFoundException;

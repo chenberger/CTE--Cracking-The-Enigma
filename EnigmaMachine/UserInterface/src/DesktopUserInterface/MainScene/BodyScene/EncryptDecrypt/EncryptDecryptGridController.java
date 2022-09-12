@@ -60,7 +60,7 @@ public class EncryptDecryptGridController {
         }
 
         try {
-            String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase());
+            String decodeWord = enigmaMachineEngine.processInput(text.toUpperCase(), false);
             EncryptDecryptDetailsController.setDecodedWord(decodeWord);
 
             if(isKeyboardButtonClicked) {
@@ -72,7 +72,7 @@ public class EncryptDecryptGridController {
         catch (MachineNotExistsException | IllegalArgumentException | CloneNotSupportedException ex){
             EncryptDecryptDetailsController.clearDecodingTextArea();
             EncryptDecryptDetailsController.clearDecodedTextArea();
-            enigmaMachineEngine.clearCurrentProccessedWord();
+            enigmaMachineEngine.clearCurrentProcessedWord();
             new ErrorDialog(ex,"Unable to decode.");
             throw new IllegalArgumentException();
         }
@@ -143,6 +143,6 @@ public class EncryptDecryptGridController {
     public void clearCurrentProccessedWord() {
         EncryptDecryptDetailsController.clearDecodingTextArea();
         EncryptDecryptDetailsController.clearDecodedTextArea();
-        enigmaMachineEngine.clearCurrentProccessedWord();
+        enigmaMachineEngine.clearCurrentProcessedWord();
     }
 }

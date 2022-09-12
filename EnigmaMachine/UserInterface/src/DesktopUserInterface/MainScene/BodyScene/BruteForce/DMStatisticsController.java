@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
+import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import javafx.beans.binding.Bindings;
@@ -40,6 +41,7 @@ public class DMStatisticsController {
     @FXML private Label taskProgressLabel;
 
     @FXML private Button startStopButton;
+    @FXML private Button clearButton;
 
     @FXML private Button pauseResumeButton;
     @FXML FlowPane flowPaneCandidates;
@@ -56,33 +58,56 @@ public class DMStatisticsController {
     private SimpleLongProperty totalTasksProperty;
     private SimpleStringProperty taskProgressProperty;
     private HashMap<Integer, AgentTaskController> tasksControllerMapping;
+    private BruteForceFinished bruteForceFinished;
 
     public DMStatisticsController() {
-        isStartButtonClicked = new SimpleBooleanProperty(false);
-        missionTotalTimeProperty = new SimpleLongProperty(0);
-        averageTaskTimeProperty = new SimpleLongProperty(0);
-        processedTasksProperty = new SimpleLongProperty(0);
-        totalTasksProperty = new SimpleLongProperty(0);
-        taskProgressProperty = new SimpleStringProperty("");
-        tasksControllerMapping = new HashMap<>();
+            isStartButtonClicked = new SimpleBooleanProperty(false);
+            missionTotalTimeProperty = new SimpleLongProperty(0);
+            averageTaskTimeProperty = new SimpleLongProperty(0);
+            processedTasksProperty = new SimpleLongProperty(0);
+            totalTasksProperty = new SimpleLongProperty(0);
+            taskProgressProperty = new SimpleStringProperty("");
+            tasksControllerMapping = new HashMap<>();
     }
 
     @FXML public void initialize() {
+        initializeBindings();
+    }
+
+    private void initializeBindings() {
+
+
         pauseResumeButton.disableProperty().bind(isStartButtonClicked.not());
-        missionTotalTimeLabel.textProperty().bind(Bindings.concat("Decoding mission total time: ", Bindings.format("%,d ms", missionTotalTimeProperty)));
-        averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ms", averageTaskTimeProperty)));
+        clearButton.disableProperty().bind(isStartButtonClicked);
+        missionTotalTimeProperty.addListener((observable, oldValue, newValue) -> {
+            missionTotalTimeLabel.setText("Decoding mission cumulative time (MM:SS): " + Utils.formatDuration(newValue.longValue()));
+        });
+        averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ns", averageTaskTimeProperty)));
         processedTasksLabel.textProperty().bind(Bindings.concat("Processed tasks:  ", Bindings.format("%,d", processedTasksProperty)));
         totalTasksLabel.textProperty().bind(Bindings.concat("Total tasks: ", Bindings.format("%,d", totalTasksProperty)));
+        taskProgressLabel.setText("Task progress: 0 %");
+        bruteForceFinished = new BruteForceFinished(
+                (startLabel) -> {
+                    pauseResumeButton.setText(startLabel);
+                },
+                (pauseLabel) -> {
+                    startStopButton.setText(pauseLabel);
+                },
+                (stopButtonClicked) -> {
+                    isStartButtonClicked.set(stopButtonClicked);
+                }, START_LABEL, PAUSE_LABEL);
+    }
+    @FXML void onClearButtonClicked(ActionEvent event) {
+        clearPane();
     }
 
     @FXML void onPauseResumeButtonClicked(ActionEvent event) {
         if(Objects.equals(pauseResumeButton.getText(), PAUSE_LABEL)) {
-            //TODO erez: implement pause to brute force mission
-
+            bruteForceGridController.pauseMission();
             pauseResumeButton.setText(RESUME_LABEL);
         }
         else {
-            //TODO erez: implement resume tu brute force mission
+            bruteForceGridController.resumeMission();
             pauseResumeButton.setText(PAUSE_LABEL);
         }
     }
@@ -90,13 +115,10 @@ public class DMStatisticsController {
     @FXML private void onStartStopButtonClicked(ActionEvent event) {
         if(Objects.equals(startStopButton.getText(), START_LABEL)) {
             try {
+                clearPane();
                 bruteForceGridController.startBruteForce(
                         createUIAdapter(),
-                        () -> {
-                            startStopButton.setText(START_LABEL);
-                            isStartButtonClicked.set(false);
-                            pauseResumeButton.setText(PAUSE_LABEL);
-                        }
+                        bruteForceFinished
                 );
                 isStartButtonClicked.set(true);
                 startStopButton.setText(STOP_LABEL);
@@ -106,12 +128,22 @@ public class DMStatisticsController {
             }
         }
         else {
-            startStopButton.setText(START_LABEL);
-            isStartButtonClicked.set(false);
-            //TODO erez: implement stop brute force
+            bruteForceGridController.stopBruteForceMission();
+            onTaskFinished(Optional.ofNullable(bruteForceFinished));
         }
 
         pauseResumeButton.setText(PAUSE_LABEL);
+    }
+
+    private void clearPane() {
+        flowPaneCandidates.getChildren().clear();
+        tasksControllerMapping.clear();
+        missionTotalTimeProperty.set(0);
+        averageTaskTimeProperty.set(0);
+        processedTasksProperty.set(0);
+        totalTasksProperty.set(0);
+        taskProgressBar.setProgress(0);
+        taskProgressLabel.setText("Task progress: 0 %");
     }
 
     public void setBruteForceGridController(BruteForceGridController bruteForceGridController) {
@@ -187,8 +219,12 @@ public class DMStatisticsController {
     }
 
     public void onTaskFinished(Optional<Runnable> onFinish) {
-        this.processedTasksLabel.textProperty().unbind();
-        this.taskProgressBar.progressProperty().unbind();
+        //processedTasksLabel.textProperty().unbind();
+        taskProgressBar.progressProperty().unbind();
+        taskProgressLabel.textProperty().unbind();
+        //missionTotalTimeLabel.textProperty().unbind();
+        //averageTaskTimeLabel.textProperty().unbind();
+        //totalTasksLabel.textProperty().unbind();
         onFinish.ifPresent(Runnable::run);
     }
 
