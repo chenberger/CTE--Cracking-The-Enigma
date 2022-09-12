@@ -64,6 +64,7 @@ public class EncryptDecryptDetailsController {
     @FXML void onClearButtonClicked(ActionEvent event) {
         encryptDecryptTextBox.setText("");
         decodedWordsTextArea.setText("");
+        encryptDecryptGridController.clearCurrentProccessedWord();
     }
 
     private void setScrollPaneColor(){
