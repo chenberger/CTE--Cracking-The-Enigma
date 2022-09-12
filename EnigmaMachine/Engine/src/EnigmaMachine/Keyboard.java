@@ -28,7 +28,7 @@ public class Keyboard {
         return maxValueCharacter[0];
     }
 
-    public List<Character> increaseRotorPositions(List<Character> rotorsPositionsToIncrease) throws Exception {
+    synchronized public List<Character> increaseRotorPositions(List<Character> rotorsPositionsToIncrease) throws Exception {
         return increaseRotorPositions(rotorsPositionsToIncrease, 1);
     }
 

@@ -52,48 +52,43 @@ public class  Agent implements Runnable {
     public void run() {
         Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
-        int testCounter = 0;
+
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
             try {
                 Instant startingTime = Instant.now();
-                synchronized (this) {
 
-                    validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
-                }
+                validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
-                String candidateMessage;
-                synchronized (this) {
-                    candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
+                String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
+
+                //System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
+
+                try {
+
+                    agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
+                    //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
+                    encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
+                    agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
+                                                                     new AgentTaskData(taskId, Thread.currentThread().getName(),
+                                                                     new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                 }
+                catch (WordNotValidInDictionaryException ignored) {}
 
                 try {
-                    synchronized (this) {
-
-                        agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
-                        System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
-                        encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
-                        agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
-                                new AgentTaskData(taskId, Thread.currentThread().getName(),
-                                        new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
-                    }
-                } catch (WordNotValidInDictionaryException ignored) {}
-
-                try {
-                    synchronized (this) {
-                        currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));
-                    }
-                } catch (Exception e) {
+                    currentRotorPositions.setElements(keyboard.increaseRotorPositions(currentRotorPositions.getElements()));
+                }
+                catch (Exception e) {
                     break;
                 }
-            } catch (CloneNotSupportedException | StartingPositionsOfTheRotorException ignored) { }
+            }
+            catch (CloneNotSupportedException | StartingPositionsOfTheRotorException ignored) { }
         }
 
-        synchronized (this) {
-            long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
-            agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
-            tasksManager.agentTaskFinished(totalTaskTime);
-        }
+        long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
+        agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
+        tasksManager.agentTaskFinished(totalTaskTime);
+
     }
 
     private void validateAndSetStartingRotorPositions(StartingRotorPositionSector currentRotorPositions) throws StartingPositionsOfTheRotorException, CloneNotSupportedException {

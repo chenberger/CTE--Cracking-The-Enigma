@@ -51,7 +51,7 @@ public class BruteForceUIAdapter {
         );
     }
 
-    public void updateExistingAgentTask(AgentTaskData agentTaskData) {
+    synchronized public void updateExistingAgentTask(AgentTaskData agentTaskData) {
         Platform.runLater(
                 () -> {
                     this.updateExistingAgentTask.accept(agentTaskData);
@@ -59,7 +59,7 @@ public class BruteForceUIAdapter {
         );
     }
 
-    public void updateExistingAgentTaskTime(AgentTaskData agentTaskData) {
+    synchronized public void updateExistingAgentTaskTime(AgentTaskData agentTaskData) {
         Platform.runLater(
                 () -> {
                     this.updateExistingAgentTaskTime.accept(agentTaskData);
