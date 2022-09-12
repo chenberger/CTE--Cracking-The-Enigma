@@ -4,6 +4,7 @@ package EnigmaMachine;
 import javafx.util.Pair;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,15 @@ public class PluginBoard implements Serializable {
         return null;
     }
 
+    public List<Pair<Character, Character>> clonePluginBoard() {
+        List<Pair<Character, Character>> clonedPluginBoard = new ArrayList<>();
+        for (Map.Entry<Character, Character> entry : pluggedPairs.entrySet()) {
+            Character key = entry.getKey();
+            Character value = entry.getValue();
+            clonedPluginBoard.add(new Pair<>(key, value));
+        }
+        return clonedPluginBoard;
+    }
     //endregion
 
 }
