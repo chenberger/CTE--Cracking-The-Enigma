@@ -26,14 +26,14 @@ public class DecryptionManager {
     private BruteForceTask bruteForceTask;
     private DecipherStatistics decipherStatistics;
     private String decryptedMessege;
-    private  MainController mainController;
+    private MainController mainController;
     private Runnable onFinish;
     private SettingsFormat decryptedSettingsFormat;
 
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
         this.decipherStatistics = new DecipherStatistics();
-        this.candidatesThreadPoolExecutor = Executors.newCachedThreadPool();
+        this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;

@@ -1,60 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="bruteForceGrid" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1255.0" minWidth="0.0" prefWidth="510.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1200.0" minWidth="0.0" />
-  </columnConstraints>
-  <rowConstraints>
-      <RowConstraints vgrow="NEVER" />
-    <RowConstraints fillHeight="false" maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="338.0" minHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
-  </rowConstraints>
-   <children>
-      <AnchorPane maxWidth="-Infinity" prefHeight="262.0" prefWidth="1260.0" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+<SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0">
          <children>
-            <Separator prefHeight="10.0" prefWidth="1260.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding></Separator>
-            <fx:include fx:id="DMStatistics" maxWidth="1.7976931348623157E308" prefWidth="1000.0" source="DMStatistics.fxml" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <SplitPane dividerPositions="0.3620401337792642" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="445.0" prefWidth="1198.0">
+              <items>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="445.0" prefWidth="429.0">
+                    <content>
+                      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <fx:include fx:id="decryptionManager" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="150.0" source="DMOperational.fxml" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="443.0" prefWidth="759.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="445.0" prefWidth="761.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <fx:include fx:id="encryptDecryptActionsGrid" prefWidth="250.0" source="EncryptDecryptActionsGrid.fxml" VBox.vgrow="ALWAYS" />
+                                    <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" source="../Machine/CurrentCodeConfiguration.fxml" VBox.vgrow="ALWAYS" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+              </items>
+            </SplitPane>
          </children>
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" />
-         </GridPane.margin>
       </AnchorPane>
-      <AnchorPane prefHeight="263.0" prefWidth="745.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets bottom="5.0" />
-         </GridPane.margin>
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+        <content>
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="445.0" prefWidth="1203.0">
                <children>
-                  <fx:include fx:id="encryptDecryptActionsGrid" prefWidth="250.0" source="EncryptDecryptActionsGrid.fxml" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-                  <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" source="../Machine/CurrentCodeConfiguration.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+                  <fx:include fx:id="DMStatistics" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1000.0" source="DMStatistics.fxml" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
-               <padding>
-                  <Insets bottom="5.0" />
-               </padding>
-            </VBox>
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="337.0" prefWidth="437.0" GridPane.rowIndex="2">
-         <children>
-            <fx:include fx:id="decryptionManager" maxWidth="-Infinity" prefWidth="150.0" source="DMOperational.fxml" GridPane.rowIndex="3" />
-         </children>
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin>
-      </AnchorPane>
-   </children>
-</GridPane>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+  </items>
+</SplitPane>

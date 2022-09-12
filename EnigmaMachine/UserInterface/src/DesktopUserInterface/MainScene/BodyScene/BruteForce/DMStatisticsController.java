@@ -160,7 +160,8 @@ public class DMStatisticsController {
 
             flowPaneCandidates.getChildren().add(load);
             tasksControllerMapping.put(taskId, agentTaskController);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
