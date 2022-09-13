@@ -1,6 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
 import DTO.MachineDetails;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachine.RomanNumber;
 import EnigmaMachine.Settings.*;
@@ -13,13 +14,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ManuallyCodeController {
@@ -47,8 +46,10 @@ public class ManuallyCodeController {
     @FXML private TableColumn<PluggedPair, Character> firstCharColumn;
 
     @FXML private TableColumn<PluggedPair, Character> secondCharColumn;
+    @FXML private GridPane machineDetailsGrid;
 
     private List<Sector> codeConfigurationSectors;
+    private Map<SkinType, String> skinPaths;
 
     @FXML
     public void initialize() {
@@ -61,6 +62,15 @@ public class ManuallyCodeController {
 
         initializePluginPairsTable();
         codeConfigurationSectors = new ArrayList<>();
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "ManuallyCodeInitializerSkin" + skinIndex++ + ".css");
+        }
     }
 
     private void initializePluginPairsTable() {
@@ -236,5 +246,10 @@ public class ManuallyCodeController {
 
     public void setMachineDetails(MachineDetails machineDetails) {
         this.machineDetails = machineDetails;
+    }
+
+    public void setSkin(SkinType skinType) {
+        machineDetailsGrid.getStylesheets().clear();
+        machineDetailsGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 }

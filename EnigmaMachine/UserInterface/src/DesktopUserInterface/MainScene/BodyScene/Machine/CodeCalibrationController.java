@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
 import EnigmaMachine.Settings.Sector;
@@ -10,7 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CodeCalibrationController {
 
@@ -20,6 +23,22 @@ public class CodeCalibrationController {
     private MachineGridController machineGridController;
     private ManuallyCodeInitializerScene manuallyCodeInitializerScene;
     private EngineManager engineManager;
+    private Map<SkinType, String> skinPaths;
+    private SkinType currentSkinType;
+
+    @FXML public void initialize() {
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "CodeCalibrationSkin" + skinIndex++ + ".css");
+        }
+
+        currentSkinType = SkinType.CLASSIC;
+    }
 
     public void setMachineGridController(MachineGridController machineGridController) {
         this.machineGridController = machineGridController;
@@ -33,7 +52,7 @@ public class CodeCalibrationController {
         manuallyCodeInitializerScene= new ManuallyCodeInitializerScene();
 
         try {
-            manuallyCodeInitializerScene.show(engineManager.displaySpecifications(), this);
+            manuallyCodeInitializerScene.show(engineManager.displaySpecifications(), this, currentSkinType);
         }
         catch (MachineNotExistsException  | CloneNotSupportedException ex) {
             new ErrorDialog(ex, "Failed to set configuration code manually");
@@ -57,5 +76,11 @@ public class CodeCalibrationController {
 
     public void codeConfigurationSetSuccessfully() {
         manuallyCodeInitializerScene.close();
+    }
+
+    public void setSkin(SkinType skinType) {
+        currentSkinType = skinType;
+        CodeCalibrationGrid.getStylesheets().clear();
+        CodeCalibrationGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 }

@@ -1,6 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
-import DesktopUserInterface.MainScene.ErrorDialog;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import EnigmaMachineException.MachineNotExistsException;
 import EnigmaMachineException.SettingsNotInitializedException;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,7 +9,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -25,8 +28,9 @@ public class EncryptDecryptDetailsController {
     @FXML private Button clearButton;
     @FXML private TextField decodedWordsTextArea;
     @FXML private Label encryptDecryptTextLabel1;
+    @FXML private GridPane encryptDecryptGrid;
     private EncryptDecryptGridController encryptDecryptGridController;
-
+    private Map<SkinType, String> skinPaths;
     private SimpleBooleanProperty fullWordDecodingProperty;
     private SimpleBooleanProperty fileLoadedProperty;
 
@@ -58,9 +62,17 @@ public class EncryptDecryptDetailsController {
 
         fullWordButton.disableProperty().bind(fileLoadedProperty.not());
         letterByLetterButton.disableProperty().bind(fileLoadedProperty.not());
+
+        initializeSkins();
     }
 
-
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "EncryptDecryptDetailsSkin" + skinIndex++ + ".css");
+        }
+    }
     @FXML void onClearButtonClicked(ActionEvent event) {
         encryptDecryptTextBox.setText("");
         decodedWordsTextArea.setText("");
@@ -131,5 +143,10 @@ public class EncryptDecryptDetailsController {
 
     public void keyboardButtonClicked(Character keyboardValue) {
         encryptDecryptTextBox.setText(encryptDecryptTextBox.getText() + keyboardValue);
+    }
+
+    public void setSkin(SkinType skinType) {
+        encryptDecryptGrid.getStylesheets().clear();
+        encryptDecryptGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 }

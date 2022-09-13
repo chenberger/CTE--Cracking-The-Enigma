@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.BruteForceException;
@@ -21,6 +22,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -43,7 +45,6 @@ public class DMStatisticsController {
 
     @FXML private Button startStopButton;
     @FXML private Button clearButton;
-
     @FXML private Button pauseResumeButton;
     @FXML FlowPane flowPaneCandidates;
 
@@ -60,6 +61,8 @@ public class DMStatisticsController {
     private SimpleStringProperty taskProgressProperty;
     private HashMap<Integer, AgentTaskController> tasksControllerMapping;
     private BruteForceFinished bruteForceFinished;
+    private Map<SkinType, String> skinPaths;
+    private SkinType currentSkinType;
 
     public DMStatisticsController() {
             isStartButtonClicked = new SimpleBooleanProperty(false);
@@ -73,6 +76,17 @@ public class DMStatisticsController {
 
     @FXML public void initialize() {
         initializeBindings();
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "DMStatisticsSkin" + skinIndex++ + ".css");
+        }
+
+        currentSkinType = SkinType.CLASSIC;
     }
 
     private void initializeBindings() {
@@ -190,6 +204,7 @@ public class DMStatisticsController {
             AgentTaskController agentTaskController = fxmlLoader.getController();
             agentTaskController.setAgentId(agentId);
             agentTaskController.setTotalTime(0L);
+            agentTaskController.setSkin(currentSkinType);
 
             flowPaneCandidates.getChildren().add(load);
             tasksControllerMapping.put(taskId, agentTaskController);
@@ -229,4 +244,13 @@ public class DMStatisticsController {
         onFinish.ifPresent(Runnable::run);
     }
 
+    public void setSkin(SkinType skinType) {
+        currentSkinType = skinType;
+        machineStatisticsGridPane.getStylesheets().clear();
+        machineStatisticsGridPane.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+
+        for(AgentTaskController agentTaskController : tasksControllerMapping.values()) {
+            agentTaskController.setSkin(skinType);
+        }
+    }
 }

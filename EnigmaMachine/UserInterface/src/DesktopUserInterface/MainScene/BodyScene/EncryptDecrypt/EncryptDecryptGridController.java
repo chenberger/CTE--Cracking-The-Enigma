@@ -1,6 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
@@ -33,10 +34,12 @@ public class EncryptDecryptGridController {
     @FXML private MachineStatisticsGridPaneController machineStatisticController;
     @FXML private EncryptDecryptDetailsController EncryptDecryptDetailsController;
     @FXML private FlowPane keyboardFlowPane;
+    @FXML private ScrollPane encryptDecryptScrollPane;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
     private Map<Character, KeyboardButtonController> keyboardControllers;
     private boolean isKeyboardButtonClicked = false;
+    private Map<SkinType, String> skinPaths;
 
     public EncryptDecryptGridController() {
         keyboardControllers = new HashMap<>();
@@ -48,6 +51,15 @@ public class EncryptDecryptGridController {
         }
         if(machineStatisticController != null) {
             machineStatisticController.setEncryptDecryptGridController(this);
+        }
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "EncryptDecryptGridSkin" + skinIndex++ + ".css");
         }
     }
 
@@ -144,5 +156,15 @@ public class EncryptDecryptGridController {
         EncryptDecryptDetailsController.clearDecodingTextArea();
         EncryptDecryptDetailsController.clearDecodedTextArea();
         enigmaMachineEngine.clearCurrentProcessedWord();
+    }
+
+    public void setSkin(SkinType skinType) {
+        machineStatisticController.setSkin(skinType);
+        EncryptDecryptDetailsController.setSkin(skinType);
+        CurrentCodeConfigurationGridController.setSkin(skinType);
+
+        encryptDecryptScrollPane.getStylesheets().clear();
+        encryptDecryptScrollPane.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+
     }
 }

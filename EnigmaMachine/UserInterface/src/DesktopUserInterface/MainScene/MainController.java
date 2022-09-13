@@ -4,6 +4,7 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridControl
 import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -118,5 +119,11 @@ public class MainController {
 
     public void onTaskFinished(Optional<Runnable> onFinish) {
         bruteForceGridController.onTaskFinished(onFinish);
+    }
+
+    public void setSkin(SkinType skinType) {
+        machineGridController.setSkin(skinType);
+        encryptDecryptGridController.setSkin(skinType);
+        bruteForceGridController.setSkin(skinType);
     }
 }

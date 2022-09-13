@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+.question-labels {
+    -fx-text-fill:   #70655e;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Secular One', sans-serif;
+
+}
+.answer-labels {
+    -fx-text-fill:  #70655e;
+    -fx-font-size: 15px;
+
+}
+.machine-deatils {
+    -fx-font-size: 25px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-padding: 5px;
+     
+}
+
+#top{
+    -fx-background-image: url("machinedetails-image.png");
+    -fx-background-size: 100% 100%;
+}
+ .data-box {
+    -fx-border-style: ridge;
+    -fx-border-width: 3px;
+    -fx-border-color: #70655e;
+    -fx-border-radius: 20px;
+}
+ #machinedetails-image{
+    -fx-background-color:  #ede9e4;
+ }

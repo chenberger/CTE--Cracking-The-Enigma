@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane fx:id="machineDetailsGrid" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeController">
+<GridPane fx:id="machineDetailsGrid" stylesheets="@ManuallyCodeInitializerSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />
@@ -26,15 +26,15 @@
   <rowConstraints>
     <RowConstraints vgrow="NEVER" />
     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Manually Code Initializer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+      <Label id="Manually-Code-Initializer-label" alignment="CENTER" contentDisplay="CENTER" text="Manually Code Initializer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding>
          <GridPane.margin>
-            <Insets top="10.0" />
+            <Insets bottom="5.0" top="10.0" />
          </GridPane.margin>
          <font>
             <Font size="33.0" />
@@ -42,14 +42,14 @@
       </Label>
       <SplitPane dividerPositions="0.29797979797979796" GridPane.columnSpan="2" GridPane.rowIndex="1">
         <items>
-          <AnchorPane id="buttons-area" stylesheets="@ManuallyCodeInitializer.css">
+          <AnchorPane id="buttons-area">
                <children>
                   <VBox prefHeight="350.0" prefWidth="232.0" spacing="20.0">
                      <children>
-                        <Button fx:id="rotorIdButton" mnemonicParsing="false" onAction="#OnRotorIdButtonClicked" prefWidth="200.0" styleClass="buttons" stylesheets="@ManuallyCodeInitializer.css" text="Rotor Id" />
-                        <Button fx:id="startingPositionsButton" mnemonicParsing="false" onAction="#OnStartingPositionsButtonClicked" prefWidth="200.0" styleClass="buttons" stylesheets="@ManuallyCodeInitializer.css" text="Starting Position of the Rotors" />
-                        <Button fx:id="reflectorButton" mnemonicParsing="false" onAction="#OnReflectorButtonClicked" prefWidth="200.0" styleClass="buttons" stylesheets="@ManuallyCodeInitializer.css" text="Reflector" />
-                        <Button fx:id="pluginBoardButton" mnemonicParsing="false" onAction="#OnPluginBoardButtonClicked" prefWidth="200.0" styleClass="buttons" stylesheets="@ManuallyCodeInitializer.css" text="Plugin Board" />
+                        <Button fx:id="rotorIdButton" mnemonicParsing="false" onAction="#OnRotorIdButtonClicked" prefWidth="200.0" styleClass="buttons" text="Rotor Id" />
+                        <Button fx:id="startingPositionsButton" mnemonicParsing="false" onAction="#OnStartingPositionsButtonClicked" prefWidth="200.0" styleClass="buttons" text="Starting Position of the Rotors" />
+                        <Button fx:id="reflectorButton" mnemonicParsing="false" onAction="#OnReflectorButtonClicked" prefWidth="200.0" styleClass="buttons" text="Reflector" />
+                        <Button fx:id="pluginBoardButton" mnemonicParsing="false" onAction="#OnPluginBoardButtonClicked" prefWidth="200.0" styleClass="buttons" text="Plugin Board" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="120.0" />
@@ -135,22 +135,22 @@
                                     <HBox spacing="15.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <Label prefHeight="70.0" text="Add plugin pair:" wrapText="true" HBox.hgrow="ALWAYS" />
-                                          <ChoiceBox fx:id="leftPluggedPairChoiceBox" prefHeight="32.0" HBox.hgrow="NEVER">
+                                          <ChoiceBox fx:id="leftPluggedPairChoiceBox" prefHeight="37.0" prefWidth="50.0" styleClass="inside-buttons" HBox.hgrow="NEVER">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
                                              </HBox.margin>
                                           </ChoiceBox>
-                                          <ChoiceBox fx:id="rightPluggedPairChoiceBox" prefHeight="32.0" HBox.hgrow="NEVER">
+                                          <ChoiceBox fx:id="rightPluggedPairChoiceBox" prefHeight="37.0" prefWidth="50.0" styleClass="inside-buttons" HBox.hgrow="NEVER">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
                                              </HBox.margin>
                                           </ChoiceBox>
-                                          <Button fx:id="addPluginPairButton" mnemonicParsing="false" onAction="#OnAddPluginPairButtonClicked" prefHeight="32.0" text="Add" HBox.hgrow="NEVER">
+                                          <Button fx:id="addPluginPairButton" mnemonicParsing="false" onAction="#OnAddPluginPairButtonClicked" prefHeight="37.0" prefWidth="54.0" styleClass="inside-buttons" text="Add" HBox.hgrow="NEVER">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="deletePluginPairButton" mnemonicParsing="false" onAction="#OnDeletePluginPairButtonClicked" text="Delete" HBox.hgrow="NEVER">
+                                          <Button fx:id="deletePluginPairButton" mnemonicParsing="false" onAction="#OnDeletePluginPairButtonClicked" styleClass="inside-buttons" text="Delete" HBox.hgrow="NEVER">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
                                              </HBox.margin>
@@ -212,8 +212,8 @@
          <children>
             <HBox spacing="10.0">
                <children>
-                  <Button fx:id="setCodeButton" mnemonicParsing="false" onAction="#OnSetCodeButtonClicked" text="Set Code" />
-                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#OnClearButtonClicked" text="Clear" />
+                  <Button fx:id="setCodeButton" mnemonicParsing="false" onAction="#OnSetCodeButtonClicked" styleClass="inside-buttons" text="Set Code" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#OnClearButtonClicked" styleClass="inside-buttons" text="Clear" />
                </children>
             </HBox>
          </children>

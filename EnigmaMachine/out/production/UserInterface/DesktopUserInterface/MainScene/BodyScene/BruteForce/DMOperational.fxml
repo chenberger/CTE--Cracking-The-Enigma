@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane stylesheets="@DMManager.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DecryptionManagerController">
+<GridPane id="DMO-image" fx:id="dmManagerGrid" prefHeight="346.0" prefWidth="458.0" stylesheets="@DMOperationalSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DecryptionManagerController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="423.0" prefWidth="423.0" />
+    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="423.0" prefWidth="450.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="230.0" vgrow="SOMETIMES" />
@@ -25,18 +25,18 @@
    <children>
       <VBox>
          <children>
-            <Label id="dm-settings-label" stylesheets="@DMOperational.css" text="Decryption Manager Settings">
+            <Label id="dm-settings-label" prefHeight="61.0" prefWidth="500.0" text="Decryption Manager Settings">
                <font>
                   <Font size="30.0" />
                </font>
                <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Label>
             <Separator prefHeight="6.0" prefWidth="200.0" />
             <HBox prefHeight="49.0" prefWidth="701.0" spacing="10.0">
                <children>
-                  <Label prefHeight="67.0" prefWidth="222.0" text="Amount of agents to activate:" wrapText="true" />
+                  <Label prefHeight="67.0" prefWidth="222.0" styleClass="DMO-label" text="Amount of agents to activate:" wrapText="true" />
                   <VBox prefHeight="67.0" prefWidth="198.0">
                      <children>
                         <Label fx:id="agentsAmountLabel" prefHeight="21.0" prefWidth="70.0" text="0">
@@ -62,7 +62,7 @@
             <Separator prefHeight="6.0" prefWidth="200.0" />
             <HBox prefHeight="56.0" prefWidth="698.0" spacing="20.0">
                <children>
-                  <Label prefHeight="36.0" prefWidth="124.0" text="Difficulty Level:" />
+                  <Label prefHeight="36.0" prefWidth="124.0" styleClass="DMO-label" text="Difficulty Level:" />
                   <ComboBox fx:id="difficultyLevelComboBox" onAction="#onDifficultyLevelComboBoxChosen" prefHeight="31.0" prefWidth="233.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -76,7 +76,7 @@
             <Separator prefWidth="200.0" />
             <HBox prefHeight="41.0" prefWidth="398.0" spacing="35.0">
                <children>
-                  <Label prefHeight="36.0" prefWidth="106.0" text="Task Size:" />
+                  <Label prefHeight="36.0" prefWidth="106.0" styleClass="DMO-label" text="Task Size:" />
                   <TextField fx:id="taskSizeTextField" prefHeight="31.0" prefWidth="235.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -95,7 +95,7 @@
       </VBox>
       <VBox GridPane.rowIndex="1">
          <children>
-            <Button fx:id="setButton" mnemonicParsing="false" onAction="#onSetButtonClicked" prefHeight="31.0" prefWidth="75.0" text="Set">
+            <Button id="DMO-set-buttom" fx:id="setButton" mnemonicParsing="false" onAction="#onSetButtonClicked" prefHeight="31.0" prefWidth="75.0" text="Set">
                <VBox.margin>
                   <Insets bottom="5.0" left="60.0" top="5.0" />
                </VBox.margin>

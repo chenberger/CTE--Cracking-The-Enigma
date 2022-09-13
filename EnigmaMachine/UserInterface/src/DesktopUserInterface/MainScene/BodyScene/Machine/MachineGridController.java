@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
@@ -7,6 +8,9 @@ import EnigmaMachineException.*;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MachineGridController {
     @FXML private GridPane machineGrid;
@@ -18,6 +22,7 @@ public class MachineGridController {
     @FXML private GridPane codeCalibrationGrid;
      private MainController mainController;
      private EngineManager enigmaMachineEngine;
+    private Map<SkinType, String> skinPaths;
 
      public void initialize() {
          if(machineDetailsGridController != null) {
@@ -31,7 +36,16 @@ public class MachineGridController {
          if(machineDetailsGrid != null) {
             machineDetailsGrid.setStyle("-fx-background-color:transparent;");
          }
+         initializeSkins();
      }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "MachineGridSkin" + skinIndex++ + ".css");
+        }
+    }
 
     private void registerToEvents() {
         enigmaMachineEngine.currentCodeConfigurationHandler.add(machineDetailsGridController::currentCodeChanged);
@@ -64,5 +78,14 @@ public class MachineGridController {
 
     public boolean isMachineExists() {
          return enigmaMachineEngine.isMachineExists();
+    }
+
+    public void setSkin(SkinType skinType) {
+         codeCalibrationGridController.setSkin(skinType);
+         machineDetailsGridController.setSkin(skinType);
+         currentCodeConfigurationGridController.setSkin(skinType);
+
+        machineGrid.getStylesheets().clear();
+        machineGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 }

@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#encrypted-word-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e01111;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.encryption-buttons{
+    -fx-background-image: url("backgrounddetails2.jpg");
+    -fx-background-size: 100% 100%;
+    -fx-text-fill: #ffffff;
+    -fx-font-size:15px
+}
+
+.encryption-buttons:hover{
+    -fx-background-color: rgb(12, 13, 13);
+    -fx-text-fill:  #1b8b13;
+}
+.encrypt-grid-pane{
+    -fx-max-width: 100%;
+    -fx-min-width: 500px;
+    -fx-jusitfy-content: center;
+    -fx-alignment: center;
+    -fx-display: inline-block;
+    -fx-position: relative;
+    -fx-transform: translate(-50%);
+    -fx-float: center;
+    -fx-background-color: transparent;
+    -fx-display: none;
+}
+
+#process-messege-label {
+    -fx-text-fill: #1b8b13;
+    -fx-font-family: 'Press Start 2P', cursive;
+    -fx-font-size: 20px;
+    -fx-padding: 5px;
+}
+#EDAG-image{
+    -fx-background-color: Linear-gradient(to right bottom, #390c41, #030507, #150841);
+}
+.edag-label{
+    -fx-text-fill: #1b8b13;
+    -fx-font-family: 'Secular One', sans-serif;
+}

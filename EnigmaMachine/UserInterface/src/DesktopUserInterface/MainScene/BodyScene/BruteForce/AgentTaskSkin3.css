@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
+
+#AgentTask-background{
+    -fx-background-color: rgba(23, 6, 34, 0.941);
+
+}
+.AgentTask-label{
+    -fx-text-fill:rgb(233, 224, 237);
+    -fx-font-family: 'Work Sans', sans-serif;
+}

@@ -1,0 +1,46 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.set-buttons {
+    -fx-background-color:  #ff7b07; 
+    -fx-text-fill:  #f5f7f4;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ff7b07; 
+    -fx-border-width: 2px;
+    -fx-padding: 5px;
+    -fx-font-size: 15px;
+    
+    -fx-z-index: 1;
+}
+
+.set-buttons::after{
+    -fx-content: "";
+    -fx-position: absolute;
+    -fx-top:0%;
+    -fx-left:0%;
+    -fx-width:100%;
+    -fx-height:100%;
+    -fx-background: rgba(0, 0, 0 ,0.5);
+    -fx-position: relative;
+    -fx-z-index: -1;
+    -fx-transition: transform 200ms ease-in;
+}
+.set-buttons::after{
+    -fx-transform: scaleX(0);
+    -fx-transform-origin: right;
+}
+.set-buttons:hover::after {
+    -fx-transform: scaleX(1);
+    -fx-transform-origin: left;
+}
+    
+#grid-pane {
+    -fx-background-color:Linear-gradient(to right, #302b53, #8879fa);
+}
+#code-calibration-label {
+    -fx-font-family: 'Lobster', cursive;
+    -fx-font-size: 40px;
+    -fx-text-fill: #c70f77;
+    -fx-padding: 5px;
+}
