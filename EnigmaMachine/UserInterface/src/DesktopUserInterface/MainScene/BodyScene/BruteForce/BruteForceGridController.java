@@ -89,8 +89,10 @@ public class BruteForceGridController {
             try {
                 enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask, bruteForceUiAdapter, onFinish);
             }
-            catch (IllegalArgumentException ex) {
+            catch (IllegalArgumentException |BruteForceException ex) {
                 new ErrorDialog(ex, "Failed to start brute force analyzer");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         else {
