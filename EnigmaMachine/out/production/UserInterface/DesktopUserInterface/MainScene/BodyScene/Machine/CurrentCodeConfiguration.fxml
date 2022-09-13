@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="vbox-image" fx:id="CodeCalibrationGrid" minHeight="-Infinity" minWidth="50.0" prefHeight="148.0" prefWidth="417.0" spacing="20.0" stylesheets="@CurrentCodeConfigurationSkin2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController">
+<VBox id="vbox-image" fx:id="CodeCalibrationGrid" minHeight="-Infinity" minWidth="50.0" prefHeight="148.0" prefWidth="417.0" spacing="20.0" stylesheets="@CurrentCodeConfigurationSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController">
    <children>
       <AnchorPane id="code-configuration-frame" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="407.0" VBox.vgrow="NEVER">
          <children>
