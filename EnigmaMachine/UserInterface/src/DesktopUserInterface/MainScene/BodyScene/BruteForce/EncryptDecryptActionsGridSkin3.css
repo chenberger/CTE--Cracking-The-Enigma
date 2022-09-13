@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
+
+
+#encrypted-word-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e01111;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.encryption-buttons{
+    -fx-text-fill: #ffffff;
+    -fx-background-color: Linear-gradient(to top left, #71a176, #c2bbf8,);
+    -fx-border-radius: 10px;
+    -fx-border-color: #1d0445;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px
+}
+
+.encryption-buttons:hover{
+    -fx-background-color: #1d0445;
+    -fx-text-fill: #fefefe;
+    -fx-border-radius: 10px;
+    -fx-border-color: #1d0445;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px
+}
+.encrypt-grid-pane{
+    -fx-max-width: 100%;
+    -fx-min-width: 500px;
+    -fx-jusitfy-content: center;
+    -fx-alignment: center;
+    -fx-display: inline-block;
+    -fx-position: relative;
+    -fx-transform: translate(-50%);
+    -fx-float: center;
+    -fx-background-color: transparent;
+    -fx-display: none;
+}
+
+#process-messege-label {
+    -fx-text-fill: #db55a1;
+    -fx-font-family: 'Lobster', cursive;
+    -fx-font-size: 30px;
+    -fx-padding: 10;
+    -fx-background-image: url("Bruteforce-image.jpg");
+}
+#EDAG-image{
+    -fx-background-color: Linear-gradient(to top right, #fd9b45, #bb826e, #c2bbf8, #71a176,);
+}
+.edag-label{
+    -fx-text-fill: #1d0445;
+    -fx-font-family: 'Work Sans', sans-serif;
+}

@@ -1,0 +1,22 @@
+#current-code-component {
+    -fx-text-fill: white;
+    -fx-fill-height: true;
+    -fx-fit-to-height: true;
+    -fx-text-alignment: center;
+    -fx-fill-width: true;
+    -fx-fit-to-width: true;
+}
+
+#process-anchor {
+    -fx-background-color: rgba(87, 63, 130, 0.726);
+}
+
+#statistics-anchor{
+    -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
+    -fx-background-size: 150% 200%;
+    -fx-background-position: bottom right;
+}
+
+#keyboard-anchor {
+    -fx-background-color:Linear-gradient(to right, #8879fa, #976452);
+}

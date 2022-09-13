@@ -1,0 +1,36 @@
+#buttons-area{
+    -fx-background-color: rgba(148, 156, 159, 0.726);
+}
+
+.buttons {
+    -fx-background-radius: 15px;
+    -fx-text-fill: rgba(8, 47, 60, 0.726);
+    -fx-border-radius: 15px;
+    -fx-border-color: rgba(8, 47, 60, 0.726);
+    -fx-border-width: 2px;
+}
+
+.buttons:hover {
+    -fx-background-color: rgba(8, 47, 60, 0.726);
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+#Manually-Code-Initializer-label{
+    -fx-text-fill: rgba(251, 253, 253, 0.726);
+    -fx-border-radius: 15px;
+    -fx-border-color: rgba(8, 47, 60, 0.726);
+    -fx-border-width: 2px;
+    -fx-font-size: 27px;
+    -fx-padding: 8px;
+    -fx-background-color: Linear-gradient(to right, #7a839a, #80408b);
+    -fx-background-radius: 15px;
+}
+.inside-buttons{
+    -fx-background-color: rgba(8, 47, 60, 0.726);
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+.inside-buttons:hover{
+    -fx-background-color: rgba(21, 77, 96, 0.726);
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+   
+

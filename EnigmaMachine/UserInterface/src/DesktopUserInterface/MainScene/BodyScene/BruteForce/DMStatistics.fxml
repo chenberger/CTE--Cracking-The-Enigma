@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="machineStatisticsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@DMStatistics.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMStatisticsController">
+<GridPane fx:id="machineStatisticsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="DNS-image" stylesheets="@DMStatisticsSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.DMStatisticsController">
       <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="-Infinity" prefWidth="430.0" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="651.0" minWidth="10.0" prefWidth="270.0" />
@@ -33,7 +33,7 @@
       <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="3" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
          <children>
-            <Label fx:id="taskProgressLabel" prefHeight="27.0" prefWidth="190.0" text="Task progress:" wrapText="true">
+            <Label fx:id="taskProgressLabel" prefHeight="27.0" prefWidth="190.0" styleClass="DMS-label" text="Task progress:" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -50,7 +50,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="totalTasksLabel" prefHeight="27.0" prefWidth="238.0" text="Total tasks:" wrapText="true">
+            <Label fx:id="totalTasksLabel" prefHeight="27.0" prefWidth="238.0" styleClass="DMS-label" text="Total tasks:" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -65,7 +65,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
          <children>
-            <Label fx:id="machineStatisticsHeader" alignment="CENTER" contentDisplay="CENTER" styleClass="statistics-header" stylesheets="@MachineStatistics.css" text="Candidate messeges Statistics" textAlignment="CENTER">
+            <Label fx:id="machineStatisticsHeader" alignment="CENTER" contentDisplay="CENTER" styleClass="statistics-header" text="Candidate messeges Statistics" textAlignment="CENTER">
                <padding>
                   <Insets bottom="5.0" top="5.0" />
                </padding>
@@ -78,7 +78,7 @@
       </VBox>
       <HBox prefHeight="38.0" prefWidth="276.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
          <children>
-            <Label fx:id="processedTasksLabel" prefHeight="27.0" prefWidth="256.0" text="Processed tasks: " wrapText="true" HBox.hgrow="NEVER">
+            <Label fx:id="processedTasksLabel" prefHeight="27.0" prefWidth="256.0" styleClass="DMS-label" text="Processed tasks: " wrapText="true" HBox.hgrow="NEVER">
                <font>
                   <Font size="18.0" />
                </font>
@@ -90,12 +90,12 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
          <content>
-            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" />
+            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="998.0" styleClass="DNS-image" />
          </content>
       </ScrollPane>
       <HBox prefHeight="48.0" prefWidth="261.0" spacing="5.0" GridPane.rowIndex="1">
          <children>
-            <Label fx:id="missionTotalTimeLabel" text="Decoding mission total time:" wrapText="true">
+            <Label fx:id="missionTotalTimeLabel" styleClass="DMS-label" text="Decoding mission total time:" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -107,7 +107,7 @@
       </HBox>
       <HBox prefHeight="30.0" prefWidth="267.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <Label fx:id="averageTaskTimeLabel" text="Average task time per agent:" wrapText="true">
+            <Label fx:id="averageTaskTimeLabel" styleClass="DMS-label" text="Average task time per agent:" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -119,9 +119,9 @@
       </HBox>
       <HBox prefHeight="60.0" prefWidth="256.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
-            <Button fx:id="startStopButton" mnemonicParsing="false" onAction="#onStartStopButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Start" HBox.hgrow="NEVER" />
-            <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#onPauseResumeButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Pause" HBox.hgrow="NEVER" />
-            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClearButtonClicked" prefHeight="50.0" prefWidth="130.0" text="Clear" />
+            <Button id="DMS-buttons-start" fx:id="startStopButton" mnemonicParsing="false" onAction="#onStartStopButtonClicked" prefHeight="50.0" prefWidth="130.0" styleClass="DMS-buttons" text="Start" HBox.hgrow="NEVER" />
+            <Button id="DMS-button-pause" fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#onPauseResumeButtonClicked" prefHeight="50.0" prefWidth="130.0" styleClass="DMS-buttons" text="Pause" HBox.hgrow="NEVER" />
+            <Button id="DMS-buttons-clear" fx:id="clearButton" mnemonicParsing="false" onAction="#onClearButtonClicked" prefHeight="50.0" prefWidth="130.0" styleClass="DMS-buttons" text="Clear" />
          </children>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />

@@ -1,0 +1,16 @@
+.statistics-header {
+    -fx-text-fill: #0e7806;
+    -fx-font-family: 'Press Start 2P', cursive;
+    -fx-font-size: 15px;
+}
+.statistics-text-box {
+    border: 1px solid rgb(1, 33, 6);
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#MachineStatistics-image{
+    -fx-background-image: url("backgroundEncryptDecrypt12.jpg");
+    -fx-background-size: 100% 100%;
+}
+

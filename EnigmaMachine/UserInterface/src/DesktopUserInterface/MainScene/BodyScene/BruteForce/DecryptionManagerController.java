@@ -2,6 +2,7 @@ package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
 import BruteForce.DifficultyLevel;
 import DTO.BruteForceTask;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.DecryptionManagerSettingsException;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DecryptionManagerController {
@@ -21,23 +24,20 @@ public class DecryptionManagerController {
 
     @FXML private Label agentsAmountLabel;
     @FXML private Label succsesSetLabel;
-
     @FXML private Slider agentsAmountSlider;
-
     @FXML private ComboBox<String> difficultyLevelComboBox;
-
     @FXML private TextField taskSizeTextField;
 
     @FXML private Button startStopButton;
 
     @FXML private Button pauseResumeButton;
-
     @FXML private Button setButton;
+    @FXML private GridPane dmManagerGrid;
 
     private BruteForceTask bruteForceTask;
-
     private BruteForceGridController bruteForceGridController;
     private SimpleStringProperty agentsAmountProperty;
+    private Map<SkinType, String> skinPaths;
 
     public DecryptionManagerController() {
         this.agentsAmountProperty = new SimpleStringProperty("");
@@ -46,6 +46,15 @@ public class DecryptionManagerController {
     @FXML public void initialize() {
         agentsAmountLabel.textProperty().bind(agentsAmountProperty);
         difficultyLevelComboBox.setItems(FXCollections.observableArrayList(Arrays.stream(DifficultyLevel.values()).map(Enum::name).collect(Collectors.toList())));
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "DMOperationalSkin" + skinIndex++ + ".css");
+        }
     }
 
     @FXML void onDifficultyLevelComboBoxChosen(ActionEvent event) {
@@ -123,5 +132,10 @@ public class DecryptionManagerController {
 
     public BruteForceTask getBruteForceTask() {
         return bruteForceTask;
+    }
+
+    public void setSkin(SkinType skinType) {
+        dmManagerGrid.getStylesheets().clear();
+        dmManagerGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 }

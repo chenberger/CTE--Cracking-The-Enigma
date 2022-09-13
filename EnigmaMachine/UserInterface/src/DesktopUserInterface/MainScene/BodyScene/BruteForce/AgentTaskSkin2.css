@@ -1,0 +1,9 @@
+
+#AgentTask-background{
+    -fx-background-color: rgb(203, 197, 207);
+
+}
+.AgentTask-label{
+    -fx-text-fill:rgb(50, 48, 51);
+    
+}

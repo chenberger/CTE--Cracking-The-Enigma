@@ -2,6 +2,7 @@ package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
 import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
+import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
@@ -116,5 +117,12 @@ public class BruteForceGridController {
 
     public void resumeMission() {
         enigmaMachineEngine.resumeMission();
+    }
+
+    public void setSkin(SkinType skinType) {
+        decryptionManagerController.setSkin(skinType);
+        encryptDecryptActionsGridController.setSkin(skinType);
+        CurrentCodeConfigurationGridController.setSkin(skinType);
+        DMStatisticsController.setSkin(skinType);
     }
 }
