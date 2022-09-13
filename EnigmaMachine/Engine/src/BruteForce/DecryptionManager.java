@@ -6,6 +6,7 @@ import DesktopUserInterface.MainScene.MainController;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.SettingsFormat;
+import EnigmaMachineException.BruteForceException;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
 import java.util.ArrayList;
@@ -57,25 +58,25 @@ public class DecryptionManager {
         return maxCurrentAmountOfAgents;
     }
 
-    public void startDeciphering() throws IllegalArgumentException{
+    public void startDeciphering() throws Exception {
         try {
-            if(decryptedMessege != null && enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessege))) {
-                List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
-                throw new IllegalArgumentException("Error: The input contains char/s that are not in the machine keyboard which are: " + lettersNotInAbc + System.lineSeparator()
-                        + "You can choose only from the following letters: " + enigmaMachine.getKeyboard().keySet());
+            if(decryptedMessege == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessege))) {
+                //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
+                throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
             }
 
             tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter,
                                             dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
                                             (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
             mainController.bindTaskToUIComponents(tasksManager, onFinish);
-
+            
             tasksManagerThread = new Thread(tasksManager);
             tasksManagerThread.start();
-        }//TODO chen: call task manager to start
-        catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            throw new BruteForceException("You must enter a string to process before start deciphering");//TODO chen: call task manager to start
         }
+
+
     }
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {

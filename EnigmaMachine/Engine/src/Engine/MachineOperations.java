@@ -10,7 +10,7 @@ import java.io.IOException;
 public interface MachineOperations {
     void setSettingsAutomatically() throws Exception;
 
-    void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws CloneNotSupportedException, DecryptionMessegeNotInitializedException;
+    void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws Exception;
 
 
     void resetSettings() throws MachineNotExistsException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException, SettingsNotInitializedException;

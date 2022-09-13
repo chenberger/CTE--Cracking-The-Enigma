@@ -2,6 +2,7 @@ package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
+import EnigmaMachineException.BruteForceException;
 import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
