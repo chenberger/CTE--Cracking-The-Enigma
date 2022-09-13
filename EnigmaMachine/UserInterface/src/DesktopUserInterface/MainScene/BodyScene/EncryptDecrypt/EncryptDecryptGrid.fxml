@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane id="main-scroll" fx:id="encryptDecryptScrollPane" fitToHeight="true" fitToWidth="true" stylesheets="@EncryptDecryptGridSkin2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
+<ScrollPane id="main-scroll" fx:id="encryptDecryptScrollPane" fitToHeight="true" fitToWidth="true" stylesheets="@EncryptDecryptGridSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
       <GridPane fx:id="encryptDecryptGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1.0" minWidth="1.0">
         <columnConstraints>
           <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
