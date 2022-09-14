@@ -16,6 +16,7 @@ public class Dictionary {
     public void setDictionary(String words, String excludeChars){
         this.words.clear();
         this.excludeChars.clear();
+
         this.excludeChars.addAll(excludeChars.toUpperCase().chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
 
         cleanDictionaryFromExcludeChars(Arrays.asList(words.toUpperCase().trim().split(" ")));

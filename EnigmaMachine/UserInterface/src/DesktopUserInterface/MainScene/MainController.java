@@ -7,6 +7,7 @@ import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;
 import Engine.EngineManager;
+import EnigmaMachineException.MachineNotExistsException;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.Event;
@@ -101,6 +102,8 @@ public class MainController {
 
     public void machineLoaded() {
         isMachineExsists.set(true);
+        //isCodeConfigurationSet.set(false);
+        //currentCodeConfigurationGridControllers.forEach(CurrentCodeConfigurationController::clearTextArea);
     }
 
     public void setEnigmaEngine(EngineManager engineManager) {
@@ -126,4 +129,6 @@ public class MainController {
         encryptDecryptGridController.setSkin(skinType);
         bruteForceGridController.setSkin(skinType);
     }
+
+
 }

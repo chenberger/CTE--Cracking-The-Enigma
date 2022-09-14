@@ -127,4 +127,7 @@ public class BruteForceGridController {
         CurrentCodeConfigurationGridController.setSkin(skinType);
         DMStatisticsController.setSkin(skinType);
     }
+
+    public void setNewDictionary() {
+    }
 }
