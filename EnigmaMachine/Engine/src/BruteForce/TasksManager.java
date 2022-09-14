@@ -275,11 +275,7 @@ public class TasksManager extends Task<Boolean> {
 
     synchronized public void resumeMission() {
         isPaused = false;
-
-        while(!isPaused) {
-
-        }
-        this.notify();
+git         this.notify();
     }
 
     @Override

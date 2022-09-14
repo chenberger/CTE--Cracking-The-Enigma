@@ -49,7 +49,6 @@ public class AutoCompleteBox<T> implements EventHandler{
         if(list.isEmpty()) this.comboBox.hide();
 
         this.comboBox.setItems(list);
-        this.comboBox.show();
     }
 
     private void moveCaret(int textLength) {

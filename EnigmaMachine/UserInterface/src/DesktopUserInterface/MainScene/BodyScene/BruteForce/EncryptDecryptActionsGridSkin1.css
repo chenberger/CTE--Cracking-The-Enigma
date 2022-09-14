@@ -16,8 +16,8 @@
 }
 
 .encryption-buttons:hover{
-    -fx-background-color:#ede9e4;
-    -fx-text-fill:#8db57b;
+    -fx-background-color:#c1e2b2;
+    -fx-text-fill: #fafef8;
     -fx-font-size: 13px;
     -fx-font-family: 'Secular One', sans-serif;
     
