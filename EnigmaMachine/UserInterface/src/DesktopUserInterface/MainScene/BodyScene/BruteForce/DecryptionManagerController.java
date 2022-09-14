@@ -5,6 +5,8 @@ import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachineException.DecryptionManagerSettingsException;
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,7 +77,20 @@ public class DecryptionManagerController {
             new ErrorDialog(decryptionManagerSettingsException, "Failed to set the decryption settings");
         }
         else {
+            SequentialTransition t = new SequentialTransition();
             succsesSetLabel.setText("Success to initialize settings");
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.5), succsesSetLabel);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            t.getChildren().add(fadeIn);
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1.5), succsesSetLabel);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+            fadeOut.setOnFinished(e -> succsesSetLabel.setText(""));
+            t.getChildren().add(fadeOut);
+
+            t.play();
+
             this.bruteForceTask = bruteForceTask;
         }
     }
