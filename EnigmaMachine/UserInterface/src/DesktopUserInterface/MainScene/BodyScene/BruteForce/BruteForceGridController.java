@@ -97,7 +97,7 @@ public class BruteForceGridController {
             }
         }
         else {
-            throw  new IllegalArgumentException("Failed to start the brute force deciphering, The decryption settings not initialized");
+            throw new IllegalArgumentException("Failed to start the brute force deciphering, The decryption settings not initialized");
         }
     }
 
@@ -127,7 +127,7 @@ public class BruteForceGridController {
         CurrentCodeConfigurationGridController.setSkin(skinType);
         DMStatisticsController.setSkin(skinType);
     }
+    public void clear() {
 
-    public void setNewDictionary() {
     }
 }

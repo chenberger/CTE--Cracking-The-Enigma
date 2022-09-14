@@ -9,8 +9,6 @@ import EnigmaMachine.Settings.SettingsFormat;
 import EnigmaMachineException.BruteForceException;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,8 +73,6 @@ public class DecryptionManager {
         }catch (Exception e) {
             throw new BruteForceException("You must enter a string to process before start deciphering");//TODO chen: call task manager to start
         }
-
-
     }
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {

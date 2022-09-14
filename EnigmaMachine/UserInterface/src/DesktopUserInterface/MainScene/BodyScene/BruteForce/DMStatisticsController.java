@@ -3,7 +3,6 @@ package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import EnigmaMachineException.BruteForceException;
 import EnigmaMachineException.DecryptionMessegeNotInitializedException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -97,7 +96,7 @@ public class DMStatisticsController {
         missionTotalTimeProperty.addListener((observable, oldValue, newValue) -> {
             missionTotalTimeLabel.setText("Decoding mission cumulative time (MM:SS): " + Utils.formatDuration(newValue.longValue()));
         });
-        averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ns", averageTaskTimeProperty)));
+        averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ms", averageTaskTimeProperty)));
         processedTasksLabel.textProperty().bind(Bindings.concat("Processed tasks:  ", Bindings.format("%,d", processedTasksProperty)));
         totalTasksLabel.textProperty().bind(Bindings.concat("Total tasks: ", Bindings.format("%,d", totalTasksProperty)));
         taskProgressLabel.setText("Task progress: 0 %");

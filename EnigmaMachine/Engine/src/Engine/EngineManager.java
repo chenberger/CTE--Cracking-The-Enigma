@@ -152,7 +152,7 @@ public class EngineManager implements MachineOperations, Serializable {
 
     @Override
     public void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws Exception {
-        decryptionManager.initialize(bruteForceTask, bruteForceUiAdapter, onFinish, enigmaMachine, dictionary, mainController);
+        decryptionManager.initialize(bruteForceTask, bruteForceUiAdapter, onFinish, enigmaMachine.cloneMachine(), dictionary, mainController);
         decryptionManager.startDeciphering();
     }
 
