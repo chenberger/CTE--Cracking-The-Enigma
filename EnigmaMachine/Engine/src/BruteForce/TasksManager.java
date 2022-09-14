@@ -62,6 +62,7 @@ public class TasksManager extends Task<Boolean> {
         initializeMachineSettings();
         initializeTaskData();
         calcMissionSize();
+
     }
 
     private void initializeMachineSettings() {
@@ -212,7 +213,12 @@ public class TasksManager extends Task<Boolean> {
                 break;
         }
 
-        totalTaskSize = (long) (totalCombinations / taskSize);
+        if(taskSize > Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors())) {
+            totalTaskSize = (long) (totalCombinations / Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors()));
+        }
+        else {
+            totalTaskSize = (long) (totalCombinations / taskSize);
+        }
         bruteForceUIAdapter.updateTotalAgentsTasks(totalTaskSize);
     }
 
@@ -270,12 +276,11 @@ public class TasksManager extends Task<Boolean> {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     synchronized public void resumeMission() {
         isPaused = false;
-git         this.notify();
+        this.notifyAll();
     }
 
     @Override
@@ -283,28 +288,27 @@ git         this.notify();
         try {
             tasksPool.prestartAllCoreThreads();
             difficultyLevel.setTask(this);
+
+            while(blockingQueue.size() > 0) {}
+            candidatesPool.awaitTermination(8, TimeUnit.SECONDS);
         }
         catch(TaskIsCanceledException ex) {
             onCancel.accept(null);
+            candidatesPool.awaitTermination(8, TimeUnit.MILLISECONDS);
+            tasksPool.awaitTermination(8, TimeUnit.MILLISECONDS);
         }
         catch (Exception  e) {
             //System.out.println(e.getMessage());
         }
 
         //TODO erez: what happen if not finished?
-        try {
-            tasksPool.awaitTermination(8, TimeUnit.SECONDS);
-        }
-        catch (InterruptedException e) {
-            System.out.println(e.getMessage() + Arrays.toString(e.getStackTrace()));
-        }
         return Boolean.TRUE;
     }
 
     synchronized public void agentTaskFinished(long agentTaskTimeDuration) {
         totalAgentTasksTime+= agentTaskTimeDuration;
         bruteForceUIAdapter.updateTotalProcessedAgentTasks(++currentTaskSize);
-        totalAgentTasksAverageTime = totalAgentTasksTime * 1000 / currentTaskSize ;
+        totalAgentTasksAverageTime = totalAgentTasksTime / currentTaskSize ;
         bruteForceUIAdapter.updateAverageTaskTime(totalAgentTasksAverageTime);
         bruteForceUIAdapter.updateMissionTotalTime(totalAgentTasksTime);
         updateProgress(currentTaskSize, totalTaskSize);

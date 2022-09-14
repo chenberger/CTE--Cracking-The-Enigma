@@ -108,6 +108,7 @@ public class EncryptDecryptDetailsController {
         encryptDecryptGridController.resetMachineState();
         encryptDecryptGridController.clearCurrentProccessedWord();
     }
+
     @FXML private void onFullWordButtonPressed(ActionEvent event){
         fullWordDecodingProperty.set(true);
         encryptDecryptButton.setText("Process");

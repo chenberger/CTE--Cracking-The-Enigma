@@ -109,6 +109,8 @@ public class EncryptDecryptGridController {
     }
 
     private void initializeKeyboard(Object source, Set<Character> keyboard) {
+        keyboardFlowPane.getChildren().clear();
+        keyboardControllers.clear();
         keyboard.forEach(this::createKeyboardButton);
     }
 
@@ -166,5 +168,8 @@ public class EncryptDecryptGridController {
         encryptDecryptScrollPane.getStylesheets().clear();
         encryptDecryptScrollPane.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
 
+    }
+
+    public void clear() {
     }
 }
