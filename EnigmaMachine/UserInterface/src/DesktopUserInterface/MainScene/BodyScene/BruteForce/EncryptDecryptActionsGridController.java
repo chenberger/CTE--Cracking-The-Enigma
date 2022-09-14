@@ -29,8 +29,6 @@ public class EncryptDecryptActionsGridController {
 
     @FXML public void initialize() {
         autoCompleteDictionaryBox = new AutoCompleteBox<String>(dictionarySearchComboBox);
-        dictionarySearchComboBox.setDisable(true);
-        addWordFromDictButton.setDisable(true);
         initializeSkins();
     }
 
