@@ -6,6 +6,7 @@ import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.GeneralEnigmaMachineException;
 import EnigmaMachineException.IllegalAgentsAmountException;
+import EnigmaMachineException.MachineNotExistsException;
 import EnigmaMachineException.NotXmlFileException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -66,8 +67,9 @@ public class TopBorderPaneController {
             enigmaMachineEngine.setMachineDetailsFromXmlFile(selectedFile.getPath());
             CurrentFilePathTextField.setText(selectedFile.getPath());
             mainController.machineLoaded();
+
         }
-        catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException | IllegalAgentsAmountException ex) {
+        catch (NotXmlFileException| /*CloneNotSupportedException |MachineNotExistsException|*/ JAXBException | FileNotFoundException | GeneralEnigmaMachineException | IllegalAgentsAmountException ex) {
             new ErrorDialog(ex, "Failed to load the enigma machine from xml file");
         }
     }

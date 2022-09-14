@@ -25,7 +25,9 @@ public class CurrentCodeConfigurationController {
             skinPaths.put(skin, "CurrentCodeConfigurationSkin" + skinIndex++ + ".css");
         }
     }
-
+    public void clearTextArea() {
+        currentCodeConfigurationTextArea.clear();
+    }
     public void setCodeConfiguration(String currentMachineSettings) {
         currentCodeConfigurationTextArea.setText(currentMachineSettings);
     }
