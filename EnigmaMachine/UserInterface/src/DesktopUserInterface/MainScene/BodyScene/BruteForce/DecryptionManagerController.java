@@ -154,4 +154,12 @@ public class DecryptionManagerController {
         dmManagerGrid.getStylesheets().clear();
         dmManagerGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
+
+    public void clear() {
+        agentsAmountProperty.set("");
+        agentsAmountSlider.setValue(1);
+        difficultyLevelComboBox.setValue(null);
+        taskSizeTextField.setText("");
+        succsesSetLabel.setText("");
+    }
 }

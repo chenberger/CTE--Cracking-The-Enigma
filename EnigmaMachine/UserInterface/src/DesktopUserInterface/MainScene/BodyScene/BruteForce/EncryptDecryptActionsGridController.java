@@ -57,6 +57,7 @@ public class EncryptDecryptActionsGridController {
 
     @FXML private void onaAdWordFromDictButtonClicked(ActionEvent event) {
         encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + dictionarySearchComboBox.getEditor().getText());
+        dictionarySearchComboBox.getEditor().setText("");
     }
 
     public void setDictionary(Object source, Dictionary dictionary) {
@@ -68,5 +69,11 @@ public class EncryptDecryptActionsGridController {
     public void setSkin(SkinType skinType) {
         encryptDecryptActionGrid.getStylesheets().clear();
         encryptDecryptActionGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+    }
+
+    public void clearTexts() {
+        encryptedDecryptedWordText.clear();
+        processedWordText.clear();
+        dictionarySearchComboBox.getEditor().setText("");
     }
 }

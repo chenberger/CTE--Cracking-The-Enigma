@@ -88,7 +88,7 @@ public class EncryptDecryptDetailsController {
                     encryptDecryptGridController.decodeWord(encryptDecryptTextBox.getText());
                     encryptDecryptTextBox.clear();
                 } else {
-                    //TODO: chen - add statistics change only when pushes button.
+
                     decodedWordsTextArea.clear();
                 }
                 if(encryptDecryptTextBox.textProperty().get().length() > 0 || fullWordDecodingProperty.get()) {
@@ -149,5 +149,10 @@ public class EncryptDecryptDetailsController {
     public void setSkin(SkinType skinType) {
         encryptDecryptGrid.getStylesheets().clear();
         encryptDecryptGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+    }
+
+    public void clear() {
+        encryptDecryptTextBox.clear();
+        decodedWordsTextArea.clear();
     }
 }

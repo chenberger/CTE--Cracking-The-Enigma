@@ -170,6 +170,7 @@ public class EncryptDecryptGridController {
 
     }
 
-    public void clear() {
+    public void clearTexts(){
+        EncryptDecryptDetailsController.clear();
     }
 }

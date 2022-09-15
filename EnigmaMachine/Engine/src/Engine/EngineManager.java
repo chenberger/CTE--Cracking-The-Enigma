@@ -111,6 +111,7 @@ public class EngineManager implements MachineOperations, Serializable {
             onDictionaryChanged();
             onKeyboardChanged();
             onMaxAgentsAmountChanged();
+            decryptionManager = new DecryptionManager();
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException();

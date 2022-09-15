@@ -71,7 +71,7 @@ public class DecryptionManager {
             tasksManagerThread = new Thread(tasksManager);
             tasksManagerThread.start();
         }catch (Exception e) {
-            throw new BruteForceException("You must enter a string to process before start deciphering");//TODO chen: call task manager to start
+            throw new BruteForceException("You must enter a string to process before start deciphering");
         }
     }
 
