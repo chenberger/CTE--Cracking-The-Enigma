@@ -8,6 +8,7 @@ import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.*;
 import EnigmaMachineException.*;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -235,20 +236,29 @@ public class TasksManager extends Task<Boolean> {
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
-        if (isCancelled()) {
-            throw new TaskIsCanceledException();
-        }
-
-        if(Thread.currentThread().isInterrupted()) {
-            pauseMission();
-        }
-
         while(numOfPossibleRotorsPositions > 0) {
+            if (isCancelled()) {
+                System.out.println("==== cancelled !!!!");
+                throw new TaskIsCanceledException();
+            }
+
+            if(Thread.currentThread().isInterrupted()) {
+                System.out.println("==== interrupt !!!!");
+                pauseMission();
+            }
+
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
 
-            blockingQueue.put(agent);
+            try {
+                blockingQueue.put(agent);
+            }
+            catch (InterruptedException ex) {
+                System.out.println("==== interrupt2 !!!!");
+                pauseMission();
+                blockingQueue.put(agent);
+            }
             numOfPossibleRotorsPositions -= taskSize;
             try {
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
@@ -261,15 +271,18 @@ public class TasksManager extends Task<Boolean> {
 
     synchronized private void pauseMission() {
         isPaused = true;
-
+        System.out.println("==== going to sleep for while, isPause = " + isPaused.toString());
         while (isPaused) {
             try{
                 this.wait();
+                System.out.println("===== still sleeping, isPause = " + isPaused.toString());
             }
             catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        System.out.println("==== finally continue work");
     }
 
     synchronized public void resumeMission() {
@@ -286,13 +299,18 @@ public class TasksManager extends Task<Boolean> {
             while(blockingQueue.size() > 0) {}
             candidatesPool.awaitTermination(8, TimeUnit.SECONDS);
         }
-        catch(TaskIsCanceledException ex) {
-            onCancel.accept(null);
+        catch(TaskIsCanceledException  | InterruptedException ex) {
+            Platform.runLater(() -> {
+                onCancel.accept(null);
+            });
+
             candidatesPool.awaitTermination(8, TimeUnit.MILLISECONDS);
             tasksPool.awaitTermination(8, TimeUnit.MILLISECONDS);
+            System.out.println("==== cancel or interrupt exception: " + ex.getMessage());
+            ex.printStackTrace();
         }
         catch (Exception  e) {
-            //System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         //TODO erez: what happen if not finished?
