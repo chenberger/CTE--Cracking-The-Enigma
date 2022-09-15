@@ -130,7 +130,7 @@ public class BruteForceGridController {
 
     public void clearTexts() {
         encryptDecryptActionsGridController.clearTexts();
-        encryptDecryptActionsGridController.initialize();
+        encryptDecryptActionsGridController.clearTexts();
         DMStatisticsController.clear();
         decryptionManagerController.clear();
     }

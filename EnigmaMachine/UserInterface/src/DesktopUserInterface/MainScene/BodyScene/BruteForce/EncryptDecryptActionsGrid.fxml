@@ -83,7 +83,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </HBox>
-      <Button fx:id="addWordFromDictButton" mnemonicParsing="false" onAction="#onaAdWordFromDictButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Add Word" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="addWordFromDictButton" mnemonicParsing="false" onAction="#onAddWordFromDictButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Add Word" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>

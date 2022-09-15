@@ -6,12 +6,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class AutoCompleteBox<T> implements EventHandler{
     private ComboBox comboBox;
     private Set<T> data;
-
 
     public AutoCompleteBox(final ComboBox comboBox) {
         this.comboBox = comboBox;
@@ -20,12 +20,11 @@ public class AutoCompleteBox<T> implements EventHandler{
 
     private void doAutoCompleteBox() {
         this.comboBox.setEditable(true);
-
+        this.comboBox.getEditor().setText(null);;
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             comboBox.getEditor().setText(oldValue.toString() + newValue.toString());
             comboBox.show();
         });
-
         this.comboBox.setOnKeyPressed(t -> comboBox.hide());
         this.comboBox.setOnKeyReleased(AutoCompleteBox.this);
     }
@@ -56,7 +55,7 @@ public class AutoCompleteBox<T> implements EventHandler{
     }
 
     public void setData(Set<T> data) {
-        this.data = data;
+        this.data = new HashSet<>(data);
         setItems();
     }
 }

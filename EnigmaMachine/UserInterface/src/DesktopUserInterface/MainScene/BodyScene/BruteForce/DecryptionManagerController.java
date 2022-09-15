@@ -161,5 +161,6 @@ public class DecryptionManagerController {
         difficultyLevelComboBox.setValue(null);
         taskSizeTextField.setText("");
         succsesSetLabel.setText("");
+        bruteForceTask = null;
     }
 }

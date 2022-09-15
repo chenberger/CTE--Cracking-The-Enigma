@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class EncryptDecryptActionsGridController {
     private BruteForceGridController bruteForceGridController;
@@ -55,7 +56,7 @@ public class EncryptDecryptActionsGridController {
         processedWordText.setText(processedString);
     }
 
-    @FXML private void onaAdWordFromDictButtonClicked(ActionEvent event) {
+    @FXML private void onAddWordFromDictButtonClicked(ActionEvent event) {
         encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + dictionarySearchComboBox.getEditor().getText());
         dictionarySearchComboBox.getEditor().setText("");
     }

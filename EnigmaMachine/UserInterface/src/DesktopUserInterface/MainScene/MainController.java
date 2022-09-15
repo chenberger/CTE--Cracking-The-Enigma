@@ -103,7 +103,6 @@ public class MainController {
         isMachineExsists.set(true);
         isCodeConfigurationSet.set(false);
         currentCodeConfigurationGridControllers.forEach(CurrentCodeConfigurationController::clearTextArea);
-
         encryptDecryptGridController.clearTexts();
         bruteForceGridController.clearTexts();
 
