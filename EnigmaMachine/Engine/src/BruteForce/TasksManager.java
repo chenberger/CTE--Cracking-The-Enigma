@@ -102,7 +102,6 @@ public class TasksManager extends Task<Boolean> {
         for (int i = 0; i < enigmaMachine.getNumOfActiveRotors(); i++) {
             startingRotorsPositions.add(enigmaMachine.getKeyboard().getFirstCharacter());
         }
-
         return startingRotorsPositions;
     }
 
@@ -116,8 +115,6 @@ public class TasksManager extends Task<Boolean> {
             setHardTasks();
         }
     }
-
-
 
     private List<List<Integer>> getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist() {
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = new ArrayList<>();
@@ -259,7 +256,6 @@ public class TasksManager extends Task<Boolean> {
             catch (Exception e) {
                 break;
             }
-
         }
     }
 
@@ -278,11 +274,7 @@ public class TasksManager extends Task<Boolean> {
 
     synchronized public void resumeMission() {
         isPaused = false;
-<<<<<<< HEAD
         this.notifyAll();
-=======
-        this.notify();
->>>>>>> 4d67b9e (reset fixed)
     }
 
     @Override
