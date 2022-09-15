@@ -129,6 +129,7 @@ public class DecryptionManager {
     }
 
     public void pauseMission() {
+        System.out.println("=== try to pause ");
         tasksManagerThread.interrupt();
     }
 
