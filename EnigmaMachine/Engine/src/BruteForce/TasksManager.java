@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class TasksManager extends Task<Boolean> {
-    //TODO chen : if the task size is bigger then the mission size, ceil it to the mission size.
     private static final int  MAX_QUEUE_SIZE = 1000;
     private ThreadPoolExecutor tasksPool;
     private DecipherStatistics decipherStatistics;
@@ -54,7 +53,6 @@ public class TasksManager extends Task<Boolean> {
         this.settingsFormat = decryptedSettingsFormat;
         this.onCancel = onCancel;
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
-        //TODO chen: set the number og agents from the T
         this.blockingQueue = new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE);
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 5000, TimeUnit.SECONDS, blockingQueue ,new AgentThreadFactory(amountOfAgents), new ThreadPoolExecutor.CallerRunsPolicy());
         decipherStatistics = new DecipherStatistics();
@@ -280,7 +278,11 @@ public class TasksManager extends Task<Boolean> {
 
     synchronized public void resumeMission() {
         isPaused = false;
+<<<<<<< HEAD
         this.notifyAll();
+=======
+        this.notify();
+>>>>>>> 4d67b9e (reset fixed)
     }
 
     @Override

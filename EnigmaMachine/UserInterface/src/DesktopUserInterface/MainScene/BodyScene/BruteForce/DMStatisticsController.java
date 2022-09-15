@@ -252,4 +252,10 @@ public class DMStatisticsController {
             agentTaskController.setSkin(skinType);
         }
     }
+
+    public void clear() {
+        clearPane();
+        initialize();
+
+    }
 }

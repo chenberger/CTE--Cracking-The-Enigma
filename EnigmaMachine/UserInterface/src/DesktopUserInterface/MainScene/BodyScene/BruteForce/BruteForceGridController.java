@@ -127,7 +127,11 @@ public class BruteForceGridController {
         CurrentCodeConfigurationGridController.setSkin(skinType);
         DMStatisticsController.setSkin(skinType);
     }
-    public void clear() {
 
+    public void clearTexts() {
+        encryptDecryptActionsGridController.clearTexts();
+        encryptDecryptActionsGridController.initialize();
+        DMStatisticsController.clear();
+        decryptionManagerController.clear();
     }
 }
