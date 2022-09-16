@@ -4,6 +4,7 @@ import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
 import java.util.HashMap;
@@ -16,8 +17,8 @@ public class MachineDetailsController {
     @FXML private Label currentAmountRotorsLabel;
     @FXML private Label totalAmountReflectorsLabel;
     @FXML private Label messagesAmountLabel;
-    @FXML private Label originalCodeLabel;
-    @FXML private Label currentCodeLabel;
+    @FXML private TextArea originalCodeLabel;
+    @FXML private TextArea currentCodeLabel;
     private Map<SkinType, String> skinPaths;
     private MachineGridController machineGridController;
 
