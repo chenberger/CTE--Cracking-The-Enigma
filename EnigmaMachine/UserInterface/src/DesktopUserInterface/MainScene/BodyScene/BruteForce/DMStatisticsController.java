@@ -256,6 +256,5 @@ public class DMStatisticsController {
     public void clear() {
         clearPane();
         initialize();
-
     }
 }
