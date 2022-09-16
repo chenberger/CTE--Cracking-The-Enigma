@@ -166,7 +166,6 @@ public class EncryptDecryptGridController {
 
         encryptDecryptGrid.getStylesheets().clear();
         encryptDecryptGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
-
     }
 
     public void clearTexts(){

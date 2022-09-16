@@ -8,7 +8,6 @@ import EnigmaMachine.Reflector;
 import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.*;
 import EnigmaMachineException.*;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -298,14 +297,23 @@ public class TasksManager extends Task<Boolean> {
             candidatesPool.awaitTermination(8, TimeUnit.SECONDS);
         }
         catch(TaskIsCanceledException  | InterruptedException ex) {
-            Platform.runLater(() -> {
-                onCancel.accept(null);
-            });
+            candidatesPool.awaitTermination(1, TimeUnit.NANOSECONDS);
+            tasksPool.awaitTermination(1, TimeUnit.NANOSECONDS);
 
-            candidatesPool.awaitTermination(8, TimeUnit.MILLISECONDS);
-            tasksPool.awaitTermination(8, TimeUnit.MILLISECONDS);
-            System.out.println("==== cancel or interrupt exception: " + ex.getMessage());
-            ex.printStackTrace();
+            tasksPool.shutdown();
+            try {
+                tasksPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            } catch (InterruptedException e) {}
+
+            candidatesPool.shutdown();
+            try {
+                candidatesPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            } catch (InterruptedException e) {}
+
+
+/*            Platform.runLater(() -> {
+                onCancel.accept(null);
+            });*/
         }
         catch (Exception  e) {
             System.out.println(e.getMessage());

@@ -94,7 +94,7 @@ public class DMStatisticsController {
         pauseResumeButton.disableProperty().bind(isStartButtonClicked.not());
         clearButton.disableProperty().bind(isStartButtonClicked);
         missionTotalTimeProperty.addListener((observable, oldValue, newValue) -> {
-            missionTotalTimeLabel.setText("Decoding mission cumulative time (MM:SS): " + Utils.formatDuration(newValue.longValue()));
+            missionTotalTimeLabel.setText("Decoding mission cumulative time (HH:MM:SS): " + Utils.formatDuration(newValue.longValue()));
         });
         averageTaskTimeLabel.textProperty().bind(Bindings.concat("Average task time per agent: ", Bindings.format("%,d ms", averageTaskTimeProperty)));
         processedTasksLabel.textProperty().bind(Bindings.concat("Processed tasks:  ", Bindings.format("%,d", processedTasksProperty)));

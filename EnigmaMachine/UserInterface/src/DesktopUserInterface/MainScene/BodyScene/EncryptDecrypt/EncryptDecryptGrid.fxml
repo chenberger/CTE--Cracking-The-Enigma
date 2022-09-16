@@ -16,7 +16,7 @@
        <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
      </columnConstraints>
      <rowConstraints>
-       <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+       <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="150.0" vgrow="ALWAYS" />
        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
       <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
      </rowConstraints>
@@ -37,9 +37,9 @@
          <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
             </AnchorPane>
       </children>
-   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" prefHeight="135.0" prefWidth="695.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" prefWidth="695.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
       <children>
-         <VBox id="currentcode-vbox" layoutX="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="1258.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="10.0">
+         <VBox id="currentcode-vbox" layoutX="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1258.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="10.0">
             <children>
                <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1200.0" source="../Machine/CurrentCodeConfiguration.fxml" VBox.vgrow="NEVER" />
                <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="NEVER" />
@@ -67,9 +67,9 @@
    </AnchorPane>
    <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="1">
       <children>
-         <SplitPane id="split-pane" dividerPositions="0.5766481334392375" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="1261.0" styleClass="backgroundTab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <SplitPane id="split-pane" dividerPositions="0.5766481334392375" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="1261.0" styleClass="backgroundTab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
            <items>
-             <AnchorPane id="process-anchor" minHeight="0.0" minWidth="0.0" prefHeight="307.0" prefWidth="729.0" styleClass="backgroundTab">
+             <AnchorPane id="process-anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="290.0" prefWidth="729.0" styleClass="backgroundTab">
                   <children>
                      <fx:include fx:id="EncryptDecryptDetails" minHeight="-Infinity" minWidth="-Infinity" source="EncryptDecryptDetails.fxml" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" />
                   </children>
