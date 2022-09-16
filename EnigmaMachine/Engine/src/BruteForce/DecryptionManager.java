@@ -28,11 +28,13 @@ public class DecryptionManager {
     private Runnable onFinish;
     private SettingsFormat decryptedSettingsFormat;
     private Thread tasksManagerThread;
+    private Boolean isMissionOnProgress;
 
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
         this.decryptedMessege = null;
+        this.isMissionOnProgress = false;
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
@@ -41,6 +43,7 @@ public class DecryptionManager {
         this.dictionary = dictionary;
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
         this.decryptedMessege = null;
+        this.isMissionOnProgress = false;
     }
 
     public void setMaxCurrentAmountOfAgents(int maxCurrentAmountOfAgents) throws IllegalAgentsAmountException {
@@ -67,6 +70,8 @@ public class DecryptionManager {
                                             dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
                                             (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
             mainController.bindTaskToUIComponents(tasksManager, onFinish);
+            tasksManager.valueProperty().addListener((observable, oldValue, newValue) -> {isMissionOnProgress = false; });
+            isMissionOnProgress = true;
             
             tasksManagerThread = new Thread(tasksManager);
             tasksManagerThread.start();
@@ -119,6 +124,7 @@ public class DecryptionManager {
     }
 
     public void stopBruteForceMission() {
+        this.isMissionOnProgress = false;
         tasksManager.cancel();
 
         clearMission();
@@ -135,5 +141,9 @@ public class DecryptionManager {
 
     public void resumeMission() {
         tasksManager.resumeMission();
+    }
+
+    public boolean onProgress() {
+        return isMissionOnProgress;
     }
 }

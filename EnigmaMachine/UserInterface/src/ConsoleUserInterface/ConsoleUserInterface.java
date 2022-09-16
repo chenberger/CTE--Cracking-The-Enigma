@@ -256,6 +256,8 @@ public class ConsoleUserInterface {
                 System.out.println("machine not exists");
             } catch (CloneNotSupportedException e) {
                 System.out.println("failed to clone");
+            } catch (BruteForceInProgressException e) {
+                throw new RuntimeException(e);
             } finally {
                 if(!operationSuccessful) {
                     continueOperation = shouldContinueInOperation();

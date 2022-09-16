@@ -93,7 +93,12 @@ public class EngineManager implements MachineOperations, Serializable {
     //endregion
 
     //region JAXB Translation
-    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException, MachineNotExistsException, CloneNotSupportedException {
+    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException, MachineNotExistsException, CloneNotSupportedException, BruteForceInProgressException {
+        if(decryptionManager != null && decryptionManager.onProgress()) {
+            throw new BruteForceInProgressException("Failed to load xml file while brute force mission on progress" +
+                    System.lineSeparator() + "Please stop the brute force and try again");
+        }
+
         JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
         try {
             InputStream inputStream = new FileInputStream(machineDetailsXmlFilePath);
@@ -111,6 +116,9 @@ public class EngineManager implements MachineOperations, Serializable {
             onDictionaryChanged();
             onKeyboardChanged();
             onMaxAgentsAmountChanged();
+            if(decryptionManager.onProgress()) {
+                decryptionManager.stopBruteForceMission();
+            }
             decryptionManager = new DecryptionManager();
         }
         catch (FileNotFoundException e) {
