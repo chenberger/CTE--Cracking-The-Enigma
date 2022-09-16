@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -30,7 +29,7 @@ public class MainController {
     @FXML private GridPane topBorderPane;
     @FXML private GridPane machineGrid;
     @FXML private MachineGridController machineGridController;
-    @FXML private ScrollPane encryptDecryptGrid;
+    @FXML private GridPane encryptDecryptGrid;
     @FXML private EncryptDecryptGridController encryptDecryptGridController;
     @FXML private SplitPane bruteForceGrid;
     @FXML private BruteForceGridController bruteForceGridController;
