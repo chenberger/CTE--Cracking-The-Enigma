@@ -1,0 +1,5 @@
+.main-background {
+   -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
+   -fx-background-size: 150% 200%;
+   -fx-background-position: bottom;
+}
