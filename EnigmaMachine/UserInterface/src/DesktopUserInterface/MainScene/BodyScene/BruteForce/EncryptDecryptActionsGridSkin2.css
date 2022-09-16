@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
 
 #encrypted-word-title{
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-color: #e01111;
     -fx-margin-top: 10px;
