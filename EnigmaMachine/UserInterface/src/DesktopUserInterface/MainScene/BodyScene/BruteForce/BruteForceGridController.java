@@ -86,7 +86,7 @@ public class BruteForceGridController {
     public void startBruteForce(BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws IllegalArgumentException, DecryptionMessegeNotInitializedException, CloneNotSupportedException {
         BruteForceTask bruteForceTask = decryptionManagerController.getBruteForceTask();
 
-        if(bruteForceTask != null) {
+        if(bruteForceTask != null && encryptDecryptActionsGridController.getProccesesedString() != null) {
             try {
                 enigmaMachineEngine.startBruteForceDeciphering(bruteForceTask, bruteForceUiAdapter, onFinish);
             }

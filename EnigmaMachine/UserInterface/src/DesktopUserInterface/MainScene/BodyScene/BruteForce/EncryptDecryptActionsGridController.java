@@ -77,4 +77,8 @@ public class EncryptDecryptActionsGridController {
         processedWordText.clear();
         dictionarySearchComboBox.getEditor().setText("");
     }
+
+    public String getProccesesedString() {
+        return processedWordText.getText().equals("") ? null : processedWordText.getText();
+    }
 }
