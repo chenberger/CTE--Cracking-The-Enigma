@@ -89,8 +89,6 @@ public class DMStatisticsController {
     }
 
     private void initializeBindings() {
-
-
         pauseResumeButton.disableProperty().bind(isStartButtonClicked.not());
         clearButton.disableProperty().bind(isStartButtonClicked);
         missionTotalTimeProperty.addListener((observable, oldValue, newValue) -> {
@@ -156,7 +154,7 @@ public class DMStatisticsController {
         averageTaskTimeProperty.set(0);
         processedTasksProperty.set(0);
         totalTasksProperty.set(0);
-        taskProgressBar.setProgress(0);
+        taskProgressBar.setProgress(0.0);
         taskProgressLabel.setText("Task progress: 0 %");
     }
 

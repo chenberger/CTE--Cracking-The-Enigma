@@ -4,10 +4,7 @@ import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
-import EnigmaMachineException.GeneralEnigmaMachineException;
-import EnigmaMachineException.IllegalAgentsAmountException;
-import EnigmaMachineException.MachineNotExistsException;
-import EnigmaMachineException.NotXmlFileException;
+import EnigmaMachineException.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,7 +67,7 @@ public class TopBorderPaneController {
 
         }
         catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException |
-               IllegalAgentsAmountException | MachineNotExistsException | CloneNotSupportedException ex) {
+               IllegalAgentsAmountException | MachineNotExistsException | CloneNotSupportedException | BruteForceInProgressException ex) {
             new ErrorDialog(ex, "Failed to load the enigma machine from xml file");
         }
     }

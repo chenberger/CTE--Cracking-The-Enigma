@@ -250,13 +250,17 @@ public class TasksManager extends Task<Boolean> {
             AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
             Agent agent = new Agent(agentTask,this);
 
-            try {
-                blockingQueue.put(agent);
-            }
-            catch (InterruptedException ex) {
-                System.out.println("==== interrupt2 !!!!");
-                pauseMission();
-                blockingQueue.put(agent);
+            boolean isMissionInsertedToQueue = false;
+
+            while(!isMissionInsertedToQueue) {
+                try {
+                    blockingQueue.put(agent);
+                    isMissionInsertedToQueue = true;
+                }
+                catch (InterruptedException ex) {
+                    System.out.println("==== interrupt2 !!!!");
+                    pauseMission();
+                }
             }
             numOfPossibleRotorsPositions -= taskSize;
             try {
@@ -297,6 +301,7 @@ public class TasksManager extends Task<Boolean> {
             candidatesPool.awaitTermination(8, TimeUnit.SECONDS);
         }
         catch(TaskIsCanceledException  | InterruptedException ex) {
+            while(blockingQueue.size() > 0) {}
             candidatesPool.awaitTermination(1, TimeUnit.NANOSECONDS);
             tasksPool.awaitTermination(1, TimeUnit.NANOSECONDS);
 
@@ -320,6 +325,7 @@ public class TasksManager extends Task<Boolean> {
         }
 
         //TODO erez: what happen if not finished?
+        //TODO chen: delete prints
         return Boolean.TRUE;
     }
 
