@@ -13,7 +13,7 @@
 }
 
 #current-code {
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(16, 15, 15);
     -fx-tab-max-height: 100%;
     -fx-text-overrun: scroll;
     -fx-fill-width: true;

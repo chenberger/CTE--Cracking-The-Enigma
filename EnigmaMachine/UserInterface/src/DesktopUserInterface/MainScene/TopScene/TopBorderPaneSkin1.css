@@ -32,7 +32,6 @@
 #current-file-path-label{
     -fx-font-size: 15px;
     -fx-text-alignment: center;
-    -fx-text-overrun: scroll;
     -fx-text-fill: #549939;
 }
 #enigma-label{

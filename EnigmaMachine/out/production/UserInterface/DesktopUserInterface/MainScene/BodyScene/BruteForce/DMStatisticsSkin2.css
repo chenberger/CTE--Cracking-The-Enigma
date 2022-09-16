@@ -9,13 +9,13 @@
     -fx-padding: 5px;
 }
 .statistics-text-box {
-    border: 1px solid #000;
-    padding: 0.5em;
-    margin-bottom: 0.5em;
+    -fx-padding: 0.5em;
+    -fx-margin-bottom: 0.5em;
 }
 .DNS-image{
-    -fx-background-color: Linear-gradient(to right bottom, #150841, #030507, #390c41, #150841, #030507, #390c41,);
+    -fx-background-color: Linear-gradient(to right bottom, #150841, #030507, #390c41, #150841, #030507, #390c41);
 }
+
 .DMS-label{
     -fx-text-fill: #1b8b13;
     -fx-font-family: 'Secular One', sans-serif;
