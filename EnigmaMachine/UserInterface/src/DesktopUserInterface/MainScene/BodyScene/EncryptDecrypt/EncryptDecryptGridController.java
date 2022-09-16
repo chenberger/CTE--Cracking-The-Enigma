@@ -34,7 +34,6 @@ public class EncryptDecryptGridController {
     @FXML private MachineStatisticsGridPaneController machineStatisticController;
     @FXML private EncryptDecryptDetailsController EncryptDecryptDetailsController;
     @FXML private FlowPane keyboardFlowPane;
-    @FXML private ScrollPane encryptDecryptScrollPane;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
     private Map<Character, KeyboardButtonController> keyboardControllers;
@@ -165,8 +164,8 @@ public class EncryptDecryptGridController {
         EncryptDecryptDetailsController.setSkin(skinType);
         CurrentCodeConfigurationGridController.setSkin(skinType);
 
-        encryptDecryptScrollPane.getStylesheets().clear();
-        encryptDecryptScrollPane.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+        encryptDecryptGrid.getStylesheets().clear();
+        encryptDecryptGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
 
     }
 

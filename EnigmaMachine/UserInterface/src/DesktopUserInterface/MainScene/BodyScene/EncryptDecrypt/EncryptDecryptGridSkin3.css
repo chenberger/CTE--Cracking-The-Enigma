@@ -8,15 +8,29 @@
 }
 
 #process-anchor {
-    -fx-background-color: rgba(87, 63, 130, 0.726);
+    -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
+    -fx-background-size: 150% 200%;
+    -fx-background-position: bottom;
 }
 
 #statistics-anchor{
     -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
     -fx-background-size: 150% 200%;
-    -fx-background-position: bottom right;
+    -fx-background-position: bottom;
 }
 
 #keyboard-anchor {
     -fx-background-color:Linear-gradient(to right, #8879fa, #976452);
+}
+
+#split-pane {
+    -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
+    -fx-background-size: 150% 200%;
+    -fx-background-position: bottom;
+}
+
+.backgroundTab {
+    -fx-background-image: url("EncryptDecryptDetails-image3.jpg");
+    -fx-background-size: 150% 200%;
+    -fx-background-position: bottom;
 }

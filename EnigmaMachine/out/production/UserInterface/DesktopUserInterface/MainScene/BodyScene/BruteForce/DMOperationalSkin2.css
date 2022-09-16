@@ -11,7 +11,7 @@
     -fx-padding: 10px;
 }
 #DMO-image{
-    -fx-background-color: Linear-gradient(to right bottom, #150841, #030507, #390c41, );
+    -fx-background-color: Linear-gradient(to right bottom, #150841, #030507, #390c41);
    
 }
 .DMO-label{

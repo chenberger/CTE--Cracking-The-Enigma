@@ -24,7 +24,6 @@
     -fx-background-size: 100% 100%;
 }
  .data-box {
-    -fx-border-style: ridge;
     -fx-border-width: 3px;
     -fx-border-color: #70655e;
     -fx-border-radius: 20px;
