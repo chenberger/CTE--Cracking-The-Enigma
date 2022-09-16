@@ -17,9 +17,10 @@ public class Utils {
     }
 
     public static String formatDuration(long millis) {
+        long HH = TimeUnit.MILLISECONDS.toHours(millis);
         long MM = TimeUnit.MILLISECONDS.toMinutes(millis) % 60;
         long SS = TimeUnit.MILLISECONDS.toSeconds(millis) % 60;
 
-        return String.format("%02d:%02d", MM, SS);
+        return String.format("%02d:%02d:%02d", HH, MM, SS);
     }
 }

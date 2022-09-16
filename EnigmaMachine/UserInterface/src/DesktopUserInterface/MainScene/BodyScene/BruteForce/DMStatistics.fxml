@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -26,7 +25,7 @@
       <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="71.0" prefHeight="75.0" vgrow="NEVER" />
       <RowConstraints maxHeight="83.0" prefHeight="40.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="194.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="400.0" vgrow="ALWAYS" />
       </rowConstraints>
       <opaqueInsets>
           <Insets />
@@ -123,13 +122,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
          </GridPane.margin>
       </HBox>
-      <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+      <ScrollPane fitToWidth="true" prefHeight="400.0" prefWidth="1000.0" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0">
-               <children>
-                  <FlowPane fx:id="flowPaneCandidates" maxHeight="500.0" maxWidth="1.7976931348623157E308" prefWidth="1000.0" styleClass="DNS-image" />
-               </children>
-            </AnchorPane>
+            <FlowPane fx:id="flowPaneCandidates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1000.0" styleClass="DNS-image" />
         </content>
       </ScrollPane>
       </children>

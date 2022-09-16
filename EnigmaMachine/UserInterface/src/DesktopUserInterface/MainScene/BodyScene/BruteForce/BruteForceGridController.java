@@ -136,13 +136,15 @@ public class BruteForceGridController {
     }
 
     public void setSkin(SkinType skinType) {
-        bruteForceGrid.getStylesheets().clear();
-        bruteForceGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
-
         decryptionManagerController.setSkin(skinType);
         encryptDecryptActionsGridController.setSkin(skinType);
         CurrentCodeConfigurationGridController.setSkin(skinType);
         DMStatisticsController.setSkin(skinType);
+
+        bruteForceGrid.getStylesheets().clear();
+        System.out.println(skinPaths.get(skinType));
+        System.out.println(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+        bruteForceGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 
     public void clearTexts() {

@@ -69,7 +69,8 @@ public class TopBorderPaneController {
             mainController.machineLoaded();
 
         }
-        catch (NotXmlFileException| /*CloneNotSupportedException |MachineNotExistsException|*/ JAXBException | FileNotFoundException | GeneralEnigmaMachineException | IllegalAgentsAmountException ex) {
+        catch (NotXmlFileException | JAXBException | FileNotFoundException | GeneralEnigmaMachineException |
+               IllegalAgentsAmountException | MachineNotExistsException | CloneNotSupportedException ex) {
             new ErrorDialog(ex, "Failed to load the enigma machine from xml file");
         }
     }

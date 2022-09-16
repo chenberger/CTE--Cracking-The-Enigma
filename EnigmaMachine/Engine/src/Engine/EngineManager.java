@@ -93,7 +93,7 @@ public class EngineManager implements MachineOperations, Serializable {
     //endregion
 
     //region JAXB Translation
-    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException {
+    public void setMachineDetailsFromXmlFile(String machineDetailsXmlFilePath) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException, MachineNotExistsException, CloneNotSupportedException {
         JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
         try {
             InputStream inputStream = new FileInputStream(machineDetailsXmlFilePath);
@@ -117,7 +117,7 @@ public class EngineManager implements MachineOperations, Serializable {
             throw new FileNotFoundException();
         }
         catch (JAXBException | MachineNotExistsException | CloneNotSupportedException e){
-            throw new RuntimeException();
+            throw e;
         } catch (IllegalAgentsAmountException e) {
             throw e;
         }
