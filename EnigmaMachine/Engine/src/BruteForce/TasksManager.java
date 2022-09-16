@@ -277,9 +277,7 @@ public class TasksManager extends Task<Boolean> {
                 this.wait();
                 System.out.println("===== still sleeping, isPause = " + isPaused.toString());
             }
-            catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            catch (InterruptedException e) { }
         }
 
         System.out.println("==== finally continue work");
