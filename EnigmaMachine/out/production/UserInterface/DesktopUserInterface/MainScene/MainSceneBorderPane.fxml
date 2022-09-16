@@ -23,7 +23,7 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <fx:include fx:id="encryptDecryptGrid" source="BodyScene/EncryptDecrypt/EncryptDecryptGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                              <fx:include fx:id="encryptDecryptGrid" source="BodyScene/EncryptDecrypt/EncryptDecryptGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -32,7 +32,7 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <fx:include fx:id="bruteForceGrid" source="BodyScene/BruteForce/BruteForceGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="84.0" />
+                              <fx:include fx:id="bruteForceGrid" source="BodyScene/BruteForce/BruteForceGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </content>

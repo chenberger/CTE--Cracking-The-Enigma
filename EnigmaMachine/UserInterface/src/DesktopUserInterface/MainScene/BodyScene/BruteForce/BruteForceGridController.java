@@ -10,9 +10,12 @@ import Engine.EngineManager;
 import EnigmaMachineException.*;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,8 +28,10 @@ public class BruteForceGridController {
     @FXML private CurrentCodeConfigurationController CurrentCodeConfigurationGridController;
     @FXML private GridPane decryptionManager;
     @FXML private DecryptionManagerController decryptionManagerController;
+    @FXML SplitPane bruteForceGrid;
     private MainController mainController;
     private EngineManager enigmaMachineEngine;
+    private Map<SkinType, String> skinPaths;
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -43,7 +48,7 @@ public class BruteForceGridController {
         registerToEvents();
     }
 
-    public  void initialize(){
+    @FXML public  void initialize(){
         if (encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setBruteForceGridController(this);
         }
@@ -54,6 +59,15 @@ public class BruteForceGridController {
 
         if(DMStatisticsController != null) {
             DMStatisticsController.setBruteForceGridController(this);
+        }
+        initializeSkins();
+    }
+
+    private void initializeSkins() {
+        int skinIndex = 1;
+        skinPaths = new HashMap<>();
+        for(SkinType skin : SkinType.values()) {
+            skinPaths.put(skin, "BruteForceGridSkin" + skinIndex++ + ".css");
         }
     }
 
@@ -122,6 +136,9 @@ public class BruteForceGridController {
     }
 
     public void setSkin(SkinType skinType) {
+        bruteForceGrid.getStylesheets().clear();
+        bruteForceGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+
         decryptionManagerController.setSkin(skinType);
         encryptDecryptActionsGridController.setSkin(skinType);
         CurrentCodeConfigurationGridController.setSkin(skinType);

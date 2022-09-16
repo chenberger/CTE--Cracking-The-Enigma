@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-   <GridPane fx:id="encryptDecryptGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1.0" minWidth="1.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
+<GridPane fx:id="encryptDecryptGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1.0" minWidth="1.0" styleClass="backgroundTab" stylesheets="@EncryptDecryptGridSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController">
      <columnConstraints>
        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
        <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
@@ -59,7 +58,7 @@
          <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
       </GridPane.margin>
       <children>
-         <FlowPane fx:id="keyboardFlowPane" layoutX="-7.0" minHeight="100.0" minWidth="-Infinity" prefHeight="300.0" prefWidth="1239.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+         <FlowPane id="keyboard-anchor" fx:id="keyboardFlowPane" layoutX="-7.0" minHeight="100.0" minWidth="-Infinity" prefHeight="300.0" prefWidth="1239.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
@@ -68,14 +67,14 @@
    </AnchorPane>
    <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="1">
       <children>
-         <SplitPane id="split-pane" dividerPositions="0.5766481334392375" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="1261.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <SplitPane id="split-pane" dividerPositions="0.5766481334392375" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="1261.0" styleClass="backgroundTab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
            <items>
-             <AnchorPane id="process-anchor" minHeight="0.0" minWidth="0.0" prefHeight="307.0" prefWidth="729.0">
+             <AnchorPane id="process-anchor" minHeight="0.0" minWidth="0.0" prefHeight="307.0" prefWidth="729.0" styleClass="backgroundTab">
                   <children>
                      <fx:include fx:id="EncryptDecryptDetails" minHeight="-Infinity" minWidth="-Infinity" source="EncryptDecryptDetails.fxml" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" />
                   </children>
                </AnchorPane>
-             <AnchorPane id="statistics-anchor" minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="530.0">
+             <AnchorPane id="statistics-anchor" minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="530.0" styleClass="backgroundTab">
                   <children>
                      <fx:include fx:id="machineStatistic" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="MachineStatistics.fxml" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   </children>
