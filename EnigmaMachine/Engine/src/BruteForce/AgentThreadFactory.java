@@ -19,6 +19,6 @@ public class AgentThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        return new Thread(r, String.valueOf((continuousId++) /*% amountOfAgents + 1*/));
+        return new Thread(r, String.valueOf((continuousId++) % amountOfAgents + 1));
     }
 }
