@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DTO/DTO.iml" filepath="$PROJECT_DIR$/DTO/DTO.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DekstopUserInterface/DekstopUserInterface.iml" filepath="$PROJECT_DIR$/DekstopUserInterface/DekstopUserInterface.iml" />
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/EnigmaMachine.iml" filepath="$PROJECT_DIR$/EnigmaMachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/UserInterface/UserInterface.iml" filepath="$PROJECT_DIR$/UserInterface/UserInterface.iml" />
