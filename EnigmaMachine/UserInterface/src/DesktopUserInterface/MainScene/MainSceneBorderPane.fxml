@@ -12,7 +12,7 @@
    <content>
       <BorderPane fx:id="borderPane" maxHeight="-Infinity" minHeight="1000.0" minWidth="1280.0" prefHeight="1000.0">
          <center>
-            <TabPane fx:id="tabPane" maxHeight="730.0" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="750.0" tabMaxWidth="2000.0">
+            <TabPane fx:id="tabPane" maxHeight="700.0" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="750.0" tabMaxWidth="2000.0">
                <tabs>
                   <Tab fx:id="machineTab" onSelectionChanged="#OnMachineTabSelected" text="Machine">
                      <content>
