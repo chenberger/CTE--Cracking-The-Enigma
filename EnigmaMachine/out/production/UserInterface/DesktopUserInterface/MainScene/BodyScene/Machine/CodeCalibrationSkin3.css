@@ -30,9 +30,10 @@
     -fx-transform: scaleX(0);
     -fx-transform-origin: right;
 }
-.set-buttons:hover::after {
+.set-buttons:hover{
     -fx-transform: scaleX(1);
     -fx-transform-origin: left;
+    -fx-background-color: #984904;
 }
     
 #grid-pane {
