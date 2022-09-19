@@ -237,12 +237,12 @@ public class TasksManager extends Task<Boolean> {
 
         while(numOfPossibleRotorsPositions > 0) {
             if (isCancelled()) {
-                System.out.println("==== cancelled !!!!");
+                //System.out.println("==== cancelled !!!!");
                 throw new TaskIsCanceledException();
             }
 
             if(Thread.currentThread().isInterrupted()) {
-                System.out.println("==== interrupt !!!!");
+                //System.out.println("==== interrupt !!!!");
                 pauseMission();
             }
 
@@ -258,7 +258,7 @@ public class TasksManager extends Task<Boolean> {
                     isMissionInsertedToQueue = true;
                 }
                 catch (InterruptedException ex) {
-                    System.out.println("==== interrupt2 !!!!");
+                    //System.out.println("==== interrupt2 !!!!");
                     pauseMission();
                 }
             }
@@ -274,16 +274,16 @@ public class TasksManager extends Task<Boolean> {
 
     synchronized private void pauseMission() {
         isPaused = true;
-        System.out.println("==== going to sleep for while, isPause = " + isPaused.toString());
+        //System.out.println("==== going to sleep for while, isPause = " + isPaused.toString());
         while (isPaused) {
             try{
                 this.wait();
-                System.out.println("===== still sleeping, isPause = " + isPaused.toString());
+                //System.out.println("===== still sleeping, isPause = " + isPaused.toString());
             }
             catch (InterruptedException e) { }
         }
 
-        System.out.println("==== finally continue work");
+        //System.out.println("==== finally continue work");
     }
 
     synchronized public void resumeMission() {
