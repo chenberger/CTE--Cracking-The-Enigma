@@ -14,7 +14,7 @@
     -fx-padding: 10px
 }
 #DMO-image{
-    -fx-background-color: Linear-gradient(to bottom right, #71a176, #c2bbf8, #bb826e, #fd9b45,);
+    -fx-background-color: Linear-gradient(to bottom right, #71a176, #c2bbf8, #bb826e, #fd9b45);
    
 }
 .DMO-label{
@@ -23,7 +23,7 @@
 }
 #DMO-set-buttom {
     -fx-text-fill: #ffffff;
-    -fx-background-color: Linear-gradient(to bottom right, #c2bbf8, #bb826e, #fd9b45,);
+    -fx-background-color: Linear-gradient(to bottom right, #c2bbf8, #bb826e, #fd9b45);
     -fx-border-radius: 10px;
     -fx-border-color: #1d0445;
     -fx-border-width: 2px;
