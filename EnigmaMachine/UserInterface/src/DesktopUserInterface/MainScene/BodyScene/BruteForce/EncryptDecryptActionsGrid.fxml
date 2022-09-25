@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="EDAG-image" fx:id="encryptDecryptActionGrid" prefHeight="119.0" prefWidth="388.0" stylesheets="@EncryptDecryptActionsGridSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.EncryptDecryptActionsGridController">
+<GridPane fx:id="encryptDecryptActionGrid" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.BruteForce.EncryptDecryptActionsGridController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints maxWidth="575.0" minWidth="500.0" prefWidth="575.0" />
@@ -28,23 +28,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-        <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefHeight="31.0" prefWidth="190.0" styleClass="encryption-buttons" text="Proccess" GridPane.columnIndex="2" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </GridPane.margin>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-        </Button>
-        <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="190.0" styleClass="encryption-buttons" text="Reset Machine State" GridPane.columnIndex="2" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </Button>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.5" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
               <Label fx:id="encryptDecryptTextLabel" styleClass="edag-label" text="Processed word:">
                <padding>
@@ -52,25 +36,47 @@
                </padding>
             </Label>
             <TextField fx:id="processedWordText" editable="false" prefHeight="31.0" prefWidth="365.0" />
+              <Button fx:id="ResetMachineStateButton" mnemonicParsing="false" onAction="#onResetMachineStateButtonClicked" prefHeight="31.0" prefWidth="190.0" styleClass="encryption-buttons" text="Reset Machine State">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
          </children>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
          <children>
             <Label fx:id="encryptDecryptTextLabel1" styleClass="edag-label" text="Word to process:">
                <padding>
                   <Insets bottom="5.0" top="5.0" />
                </padding>
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin>
             </Label>
-            <TextField fx:id="encryptedDecryptedWordText" prefHeight="31.0" prefWidth="365.0" />
+            <TextField fx:id="encryptedDecryptedWordText" prefHeight="31.0" prefWidth="365.0">
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin></TextField>
+              <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefWidth="190.0" text="Proccess">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="5.0" top="30.0" />
+               </HBox.margin>
+              </Button>
          </children>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </HBox>
-      <HBox prefHeight="31.0" prefWidth="439.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox prefHeight="31.0" prefWidth="439.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
             <Label fx:id="encryptDecryptTextLabel11" prefHeight="31.0" prefWidth="221.0" styleClass="edag-label" text="Choose word from Dictionary:">
                <padding>
@@ -78,19 +84,19 @@
                </padding>
             </Label>
             <ComboBox fx:id="dictionarySearchComboBox" prefHeight="31.0" prefWidth="256.0" promptText="type here to search word" styleClass="edag-label" />
+            <Button fx:id="addWordFromDictButton" mnemonicParsing="false" onAction="#onAddWordFromDictButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Add Word">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
          </children>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </HBox>
-      <Button fx:id="addWordFromDictButton" mnemonicParsing="false" onAction="#onAddWordFromDictButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Add Word" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </Button>
       <VBox prefHeight="48.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
          <children>
             <Label id="process-messege-label" text="Process messege from Dictionary">

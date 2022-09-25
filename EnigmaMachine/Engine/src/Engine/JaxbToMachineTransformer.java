@@ -1,6 +1,7 @@
 package Engine;
 
 import BruteForce.DecryptionManager;
+import BruteForce.DifficultyLevel;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
 import EnigmaMachine.RomanNumber;
@@ -32,15 +33,15 @@ public class JaxbToMachineTransformer {
         return (CTEEnigma) u.unmarshal(in);
     }
 
-    public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma, DecryptionManager decryptionManager, Dictionary dictionary) throws GeneralEnigmaMachineException, IllegalAgentsAmountException {
+    public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma, DecryptionManager decryptionManager, Dictionary dictionary, BattleField battleField) throws GeneralEnigmaMachineException, IllegalAgentsAmountException {
         List<Character> generatedABC;
         ABCNotValidException abcNotValidException = new ABCNotValidException();
         checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
         generatedABC = getABCFromString(JAXBGeneratedEnigma.getCTEMachine().getABC().trim());
         abcNotValidException.addExceptionsToTheList();
         throwExceptionIfAlphabetNotValid(abcNotValidException);
-
-        decryptionManager.setMaxCurrentAmountOfAgents(JAXBGeneratedEnigma.getCTEDecipher().getAgents());
+        validateBattleField(JAXBGeneratedEnigma.getCTEBattlefield());
+        battleField = new BattleField(JAXBGeneratedEnigma.getCTEBattlefield().getBattleName(), JAXBGeneratedEnigma.getCTEBattlefield().getLevel(), JAXBGeneratedEnigma.getCTEBattlefield().getAllies());
         dictionary.setDictionary(JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getWords(), JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getExcludeChars());
 
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
@@ -61,6 +62,40 @@ public class JaxbToMachineTransformer {
         }
         else {
             throw enigmaMachineException;
+        }
+    }
+
+    private void validateBattleField(CTEBattlefield cteBattlefield) {
+        BattleFieldNotValidException battleFieldNotValidException = new BattleFieldNotValidException();
+        validateNumberOfAllies(cteBattlefield.getAllies(), battleFieldNotValidException);
+        validateDifficulty(cteBattlefield.getLevel(), battleFieldNotValidException);
+        validateBattleFieldName(cteBattlefield.getBattleName(), battleFieldNotValidException);
+        if(battleFieldNotValidException.shouldThrowException()){
+            enigmaMachineException.addException(battleFieldNotValidException);
+        }
+    }
+
+    private void validateNumberOfAllies(int allies, BattleFieldNotValidException battleFieldNotValidException) {
+        if(allies < 1){
+            battleFieldNotValidException.addIllegalNumberOfAlliesException();
+        }
+    }
+
+    private void validateBattleFieldName(String battleName, BattleFieldNotValidException battleFieldNotValidException) {
+        if(battleName == null || battleName.trim().equals("")){
+            battleFieldNotValidException.addIllegalBattleFieldNameException();
+        }
+    }
+
+    private void validateDifficulty(String level, BattleFieldNotValidException battleFieldNotValidException) {
+        boolean isLevelValid = false;
+        for (DifficultyLevel difficulty : DifficultyLevel.values()) {
+            if(difficulty.name().equals(level.toUpperCase())){
+                isLevelValid = true;
+            }
+        }
+        if(!isLevelValid){
+            battleFieldNotValidException.addIllegalLevelException();
         }
     }
 
