@@ -5,10 +5,7 @@ import DTO.BruteForceTask;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
-import Engine.StatisticsAndHistory.EncryptedStringFormat;
-import Engine.StatisticsAndHistory.OriginalStringFormat;
-import Engine.StatisticsAndHistory.ProcessedStringsFormat;
-import Engine.StatisticsAndHistory.StatisticsAndHistoryAnalyzer;
+import Engine.StatisticsAndHistory.*;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachine.Settings.SettingsFormat;
@@ -32,6 +29,8 @@ public class EngineManager implements MachineOperations, Serializable {
     //region private data members
     private EnigmaMachine enigmaMachine;
     private Dictionary dictionary;
+
+    private BattleField battleField;
     private DecryptionManager decryptionManager;
     private StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private MainController mainController;
@@ -106,7 +105,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 throw new NotXmlFileException();
             }
             CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma, decryptionManager, dictionary);
+            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma, decryptionManager, dictionary, battleField);
 
             if(statisticsAndHistoryAnalyzer != null) {
                 statisticsAndHistoryAnalyzer.clear();
