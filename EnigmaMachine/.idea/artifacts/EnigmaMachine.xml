@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EnigmaMachine">
+    <output-path>$PROJECT_DIR$/out/artifacts/EnigmaMachine</output-path>
+    <root id="archive" name="EnigmaMachine.war">
+      <element id="module-output" name="WEB-EnigmaEngine" />
+    </root>
+  </artifact>
+</component>
