@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import servletUtils.ServletUtils;
+import servletUtils.SessionUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -35,13 +36,16 @@ public class FileUploadedServlet extends HttpServlet {
             JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
             try {
                 CTEEnigma cteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-                if(ServletUtils.getUserManager(request.getServletContext()).isUserExists(cteEnigma.getCTEBattlefield().getBattleName())){
+                if(ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())){
                     out.print("File is already uploaded");
+                    response.setStatus(HttpServletResponse.SC_CONFLICT);
                 }
                 else {
                     ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
                     out.println("File uploaded successfully!");
-                    ServletUtils.getUserManager(request.getServletContext()).addUser(cteEnigma.getCTEBattlefield().getBattleName());
+                    ServletUtils.getUBoatManager(request.getServletContext()).addUBoat(SessionUtils.getUsername(request), ServletUtils.getEngineManager(request.getServletContext()).getCurrentEnigmaMachine()
+                    , cteEnigma.getCTEBattlefield());
+                    response.setStatus(HttpServletResponse.SC_OK);
                 }
             }
              catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |
