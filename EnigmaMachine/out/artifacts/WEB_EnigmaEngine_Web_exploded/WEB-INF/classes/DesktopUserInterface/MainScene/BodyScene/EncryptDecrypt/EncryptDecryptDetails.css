@@ -1,0 +1,45 @@
+#encrypted-word-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e01111;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.encryption-buttons{
+    -fx-background-color: rgba(83, 116, 138, 0.726);
+    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
+}
+.encryption-buttons:hover{
+    -fx-background-color: rgb(47, 151, 177);
+
+}
+.reset-state-button {
+    -fx-background-color: rgba(241, 200, 4, 0.94);
+    -fx-text-fill: #0c0b0b;
+    -fx-font-size: 15px;
+}
+
+.reset-state-button:hover{
+    -fx-background-color: rgb(252, 173, 3);
+}
+.encrypt-grid-pane{
+    -fx-max-width: 100%;
+    -fx-min-width: 800px;
+    -fx-jusitfy-content: center;
+    -fx-alignment: center;
+    -fx-display: inline-block;
+    -fx-position: relative;
+    -fx-transform: translate(-50%);
+    -fx-float: center;
+    -fx-background-color: transparent;
+    -fx-display: none;
+}
+
+#process-messege-label {
+    -fx-text-fill: rgba(83, 116, 138, 0.726);
+    -fx-font: Arial, BOLD;
+    -fx-font-size: 32px;
+}
+

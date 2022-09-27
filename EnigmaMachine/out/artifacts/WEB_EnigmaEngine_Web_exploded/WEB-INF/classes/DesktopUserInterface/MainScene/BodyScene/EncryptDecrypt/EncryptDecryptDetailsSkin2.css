@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#encrypted-word-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e01111;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.encryption-buttons{
+    -fx-background-color: rgba(25, 7, 56, 0.726);
+    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
+    fx-border-radius: 10px;
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-width: 2px;
+    -fx-font-size:15px
+}
+.encryption-buttons:hover{
+    -fx-background-color: rgba(61, 114, 128, 0.662);
+
+}
+.reset-state-button {
+    -fx-background-color: rgba(25, 7, 56, 0.726);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    fx-border-radius: 10px;
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-width: 2px;
+    -fx-font-size:15px
+}
+
+.reset-state-button:hover{
+    -fx-background-color: rgb(184, 102, 61);
+}
+.encrypt-grid-pane{
+    -fx-max-width: 100%;
+    -fx-min-width: 800px;
+    -fx-jusitfy-content: center;
+    -fx-alignment: center;
+    -fx-display: inline-block;
+    -fx-position: relative;
+    -fx-float: center;
+    -fx-background-color: transparent;
+    -fx-display: none;
+}
+
+#process-messege-label {
+    -fx-text-fill: #0e7806;
+    -fx-font-family: 'Press Start 2P', cursive;
+    -fx-font-size: 20px;
+}
+
+#EDDetails-image{
+    -fx-background-image: url("backgroundEncryptDecrypt1.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.buttons{
+    -fx-text-fill: #17ff07;
+    -fx-font-family: 'Secular One', sans-serif;
+}

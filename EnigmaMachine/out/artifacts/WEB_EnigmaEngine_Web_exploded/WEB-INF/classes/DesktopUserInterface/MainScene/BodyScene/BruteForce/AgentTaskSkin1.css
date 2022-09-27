@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+#AgentTask-background{
+    -fx-background-color: Linear-gradient(to top right, #8db57b, #2a384c);
+}
+
+.AgentTask-label{
+    -fx-text-fill:#050504;
+    -fx-font-size: 20px;
+     -fx-font-family: 'Secular One', sans-serif;
+}

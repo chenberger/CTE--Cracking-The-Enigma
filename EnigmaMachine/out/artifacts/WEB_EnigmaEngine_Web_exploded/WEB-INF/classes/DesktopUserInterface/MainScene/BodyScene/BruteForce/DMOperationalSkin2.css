@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+#decipher {
+    -fx-background-image: url("dechiper.png");
+    -fx-background-size: 100% 100%;    
+}
+#dm-settings-label {
+    -fx-text-fill: #1b8b13;
+    -fx-font-family: 'Press Start 2P', cursive;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+}
+#DMO-image{
+    -fx-background-color: Linear-gradient(to right bottom, #150841, #030507, #390c41);
+   
+}
+.DMO-label{
+    -fx-text-fill: #1b8b13;
+    -fx-font-family: 'Secular One', sans-serif;
+}
+#DMO-set-buttom {
+    -fx-background-image: url("backgrounddetails2.jpg");
+    -fx-background-size: 100% 100%;
+    -fx-text-fill: #ffffff;
+}
+#DMO-set-buttom:hover{
+    -fx-background-color: rgb(12, 13, 13);
+    -fx-text-fill:  #1b8b13;
+}

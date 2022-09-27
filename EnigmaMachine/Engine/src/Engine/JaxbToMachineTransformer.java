@@ -12,8 +12,10 @@ import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class JaxbToMachineTransformer {
 
     private final GeneralEnigmaMachineException enigmaMachineException;
-    JaxbToMachineTransformer(){
+    public JaxbToMachineTransformer(){
         this.enigmaMachineException = new GeneralEnigmaMachineException();
     }
 
@@ -32,16 +34,16 @@ public class JaxbToMachineTransformer {
         Unmarshaller u = jc.createUnmarshaller();
         return (CTEEnigma) u.unmarshal(in);
     }
-
     public EnigmaMachine transformJAXBClassesToEnigmaMachine(CTEEnigma JAXBGeneratedEnigma, DecryptionManager decryptionManager, Dictionary dictionary, BattleField battleField) throws GeneralEnigmaMachineException, IllegalAgentsAmountException {
         List<Character> generatedABC;
+
         ABCNotValidException abcNotValidException = new ABCNotValidException();
         checkIfABCIsValid(JAXBGeneratedEnigma.getCTEMachine().getABC(), abcNotValidException);
         generatedABC = getABCFromString(JAXBGeneratedEnigma.getCTEMachine().getABC().trim());
         abcNotValidException.addExceptionsToTheList();
         throwExceptionIfAlphabetNotValid(abcNotValidException);
         validateBattleField(JAXBGeneratedEnigma.getCTEBattlefield());
-        battleField = new BattleField(JAXBGeneratedEnigma.getCTEBattlefield().getBattleName(), JAXBGeneratedEnigma.getCTEBattlefield().getLevel(), JAXBGeneratedEnigma.getCTEBattlefield().getAllies());
+        battleField.setBattleField(JAXBGeneratedEnigma.getCTEBattlefield());
         dictionary.setDictionary(JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getWords(), JAXBGeneratedEnigma.getCTEDecipher().getCTEDictionary().getExcludeChars());
 
         List<CTERotor> CTERotors = JAXBGeneratedEnigma.getCTEMachine().getCTERotors().getCTERotor();
@@ -440,4 +442,6 @@ public class JaxbToMachineTransformer {
         }
         return machineKeyBoard;
     }
+
+
 }

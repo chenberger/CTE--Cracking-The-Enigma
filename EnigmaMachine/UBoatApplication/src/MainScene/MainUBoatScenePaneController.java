@@ -1,13 +1,14 @@
 package MainScene;
 
 import Engine.EngineManager;
+import LoginPane.UBoatLoginPaneController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 
 public class MainUBoatScenePaneController {
 
     @FXML private GridPane UBoatLoginPane;
-    @FXML private LoginPane.UBoatLoginPaneController UBoatLoginPaneController;
+    @FXML private UBoatLoginPaneController UBoatLoginPaneController;
 
     public static void setEnigmaEngine(EngineManager engineManager) {
 
