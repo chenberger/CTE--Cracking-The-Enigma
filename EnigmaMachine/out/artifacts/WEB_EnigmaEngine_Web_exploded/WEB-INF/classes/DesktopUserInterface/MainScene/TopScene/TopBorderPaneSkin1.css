@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+#load-machine-button:hover {
+    -fx-background-color: #8db57b;
+    -fx-text-fill: #ffffff;
+}
+
+#load-machine-button {
+    -fx-background-image: url("loadFileIcon.png");
+    -fx-background-size: 25 25;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 5 18; 
+    
+}
+
+#loaded-file-path {
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+
+}
+.top-buttons{
+     -fx-background-color: #2a384c;
+     -fx-text-fill: #ffffff;
+     -fx-font-size: 20px;
+     -fx-font-family: 'Secular One', sans-serif;
+}
+
+#enigma-image{
+    -fx-background-image: url("topscene-image.jpg");
+    -fx-background-size: 100% 110%;
+}
+#current-file-path-label{
+    -fx-font-size: 15px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #549939;
+}
+#enigma-label{
+    -fx-font-family: "Lucida Console", "Courier New", monospace;
+    -fx-font-size: 28px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-padding: 5px;
+}
+
+#top-background{
+    -fx-background-color:  #ede9e4;
+}
+#skin {
+    -fx-background-color: #2a384c;
+     -fx-text-fill: #ffffff;
+}
+
+#skin-hbox {
+    -fx-background-color:  #ede9e4;
+}
+
+.combo-box .list-cell:selected:empty{
+    -fx-background-color: #2a384c;
+}
+
+.combo-box .list-cell:filled:selected .text{
+    -fx-fill: #ffffff;
+}

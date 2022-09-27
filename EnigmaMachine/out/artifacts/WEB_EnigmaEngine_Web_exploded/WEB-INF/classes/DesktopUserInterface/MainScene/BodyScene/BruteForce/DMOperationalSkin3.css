@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
+
+
+#decipher {
+    -fx-background-image: url("dechiper.png");
+    -fx-background-size: 100% 100%;    
+}
+#dm-settings-label {
+    -fx-font-family: 'Lobster', cursive;
+    -fx-font-size: 33px;
+    -fx-background-image: url("Bruteforce-image.jpg");
+    -fx-text-fill: #c70f77;
+    -fx-padding: 10px
+}
+#DMO-image{
+    -fx-background-color: Linear-gradient(to bottom right, #71a176, #c2bbf8, #bb826e, #fd9b45);
+   
+}
+.DMO-label{
+    -fx-text-fill: #1d0445;
+    -fx-font-family: 'Work Sans', sans-serif;
+}
+#DMO-set-buttom {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: Linear-gradient(to bottom right, #c2bbf8, #bb826e, #fd9b45);
+    -fx-border-radius: 10px;
+    -fx-border-color: #1d0445;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px
+    
+}
+#DMO-set-buttom:hover{
+    -fx-background-color: #1d0445;
+    -fx-text-fill: #fefefe;
+    -fx-border-radius: 10px;
+    -fx-border-color: #1d0445;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px
+}

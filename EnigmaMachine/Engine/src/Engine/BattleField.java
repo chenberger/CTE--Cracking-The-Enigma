@@ -1,6 +1,7 @@
 package Engine;
 
 import BruteForce.DifficultyLevel;
+import Jaxb.Schema.Generated.CTEBattlefield;
 
 public class BattleField {
     /* this class is the battle field class, it contains the battle field name, the level of the battle field and the number of allies in the battle field */
@@ -13,6 +14,11 @@ public class BattleField {
         this.battleFieldName = battleFieldName;
         this.level = stringToDifficultyLevel(level);
         this.allies = allies;
+    }
+    public BattleField(){
+        this.battleFieldName = "";
+        this.level = DifficultyLevel.EASY;
+        this.allies = 0;
     }
 
     private DifficultyLevel stringToDifficultyLevel(String level) {
@@ -46,6 +52,12 @@ public class BattleField {
     }
     public void setAllies(int allies) {
         this.allies = allies;
+    }
+
+    public void setBattleField(CTEBattlefield cteBattlefield) {
+        this.battleFieldName = cteBattlefield.getBattleName();
+        this.level = stringToDifficultyLevel(cteBattlefield.getLevel());
+        this.allies = cteBattlefield.getAllies();
     }
     // end of getters and setters region
 }

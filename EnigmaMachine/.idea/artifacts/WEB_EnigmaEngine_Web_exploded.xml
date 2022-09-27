@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="WEB-EnigmaEngine:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="WEB-EnigmaEngine/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="WEB-EnigmaEngine" />
+          <element id="module-output" name="DTO" />
+          <element id="module-output" name="Engine" />
+          <element id="module-output" name="UserInterface" />
+          <element id="module-output" name="UBoatApplication" />
+        </element>
+      </element>
+      <element id="library" level="project" name="controlsfx-8.40.14" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+.statistics-header {
+    -fx-text-fill:  #8db57b;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 32px;
+}
+
+.statistics-text-box {
+    -fx-padding: 0.5em;
+    -fx-margin-bottom: 0.5em;
+}
+
+#MachineStatistics-image{
+    -fx-background-color:  #ede9e4;
+}

@@ -1,0 +1,53 @@
+package FileUploadedServlet;
+
+import Engine.JaxbToMachineTransformer;
+import EnigmaMachineException.*;
+import Jaxb.Schema.Generated.CTEEnigma;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import servletUtils.ServletUtils;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Collection;
+
+@WebServlet(name = "FileUploadedServlet", urlPatterns = "/fileUploaded")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
+public class FileUploadedServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        Collection<Part> parts = request.getParts();
+        for(Part part : parts) {
+            InputStream inputStream = part.getInputStream();
+            JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
+            try {
+                CTEEnigma cteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
+                if(ServletUtils.getUserManager(request.getServletContext()).isUserExists(cteEnigma.getCTEBattlefield().getBattleName())){
+                    out.print("File is already uploaded");
+                }
+                else {
+                    ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
+                    out.println("File uploaded successfully!");
+                    ServletUtils.getUserManager(request.getServletContext()).addUser(cteEnigma.getCTEBattlefield().getBattleName());
+                }
+            }
+             catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |
+                    MachineNotExistsException | CloneNotSupportedException | BruteForceInProgressException e) {
+                out.println(e.getMessage());
+            }
+        }
+    }
+}

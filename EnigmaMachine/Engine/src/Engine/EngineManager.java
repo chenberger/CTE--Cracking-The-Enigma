@@ -51,7 +51,7 @@ public class EngineManager implements MachineOperations, Serializable {
         this.dictionary = new Dictionary();
         this.enigmaMachine = null;
         this.decryptionManager = new DecryptionManager();
-
+        this.battleField = new BattleField();
         initializeEventHandlers();
     }
 
@@ -105,6 +105,7 @@ public class EngineManager implements MachineOperations, Serializable {
                 throw new NotXmlFileException();
             }
             CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
+
             enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma, decryptionManager, dictionary, battleField);
 
             if(statisticsAndHistoryAnalyzer != null) {
@@ -129,7 +130,68 @@ public class EngineManager implements MachineOperations, Serializable {
             throw e;
         }
     }
+    public void setMachineDetailsFromXmlFile(InputStream inputStream) throws GeneralEnigmaMachineException, JAXBException, NotXmlFileException, FileNotFoundException, IllegalAgentsAmountException, MachineNotExistsException, CloneNotSupportedException, BruteForceInProgressException {
+        if(decryptionManager != null && decryptionManager.onProgress()) {
+            throw new BruteForceInProgressException("Failed to load xml file while brute force mission on progress" +
+                    System.lineSeparator() + "Please stop the brute force and try again");
+        }
 
+        JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
+        try {
+            CTEEnigma CteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
+
+            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(CteEnigma, decryptionManager, dictionary, battleField);
+
+            if(statisticsAndHistoryAnalyzer != null) {
+                statisticsAndHistoryAnalyzer.clear();
+            }
+
+            onMachineDetailsChanged();
+            onDictionaryChanged();
+            onKeyboardChanged();
+            onMaxAgentsAmountChanged();
+            if(decryptionManager.onProgress()) {
+                decryptionManager.stopBruteForceMission();
+            }
+            decryptionManager = new DecryptionManager();
+        }
+        catch (JAXBException | MachineNotExistsException | CloneNotSupportedException e){
+            throw e;
+        } catch (IllegalAgentsAmountException e) {
+            throw e;
+        }
+    }
+
+    public void setMachineDetailsFromXmlFile(CTEEnigma cteEnigma) throws GeneralEnigmaMachineException, IllegalAgentsAmountException, MachineNotExistsException, CloneNotSupportedException, BruteForceInProgressException {
+        if(decryptionManager != null && decryptionManager.onProgress()) {
+            throw new BruteForceInProgressException("Failed to load xml file while brute force mission on progress" +
+                    System.lineSeparator() + "Please stop the brute force and try again");
+        }
+
+        JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
+        try {
+
+            enigmaMachine = jaxbToMachineTransformer.transformJAXBClassesToEnigmaMachine(cteEnigma, decryptionManager, dictionary, battleField);
+
+            if(statisticsAndHistoryAnalyzer != null) {
+                statisticsAndHistoryAnalyzer.clear();
+            }
+
+            onMachineDetailsChanged();
+            onDictionaryChanged();
+            onKeyboardChanged();
+            onMaxAgentsAmountChanged();
+            if(decryptionManager.onProgress()) {
+                decryptionManager.stopBruteForceMission();
+            }
+            decryptionManager = new DecryptionManager();
+        }
+        catch (MachineNotExistsException | CloneNotSupportedException e){
+            throw e;
+        } catch (IllegalAgentsAmountException e) {
+            throw e;
+        }
+    }
     //endregion
 
     //region Operations implements
@@ -356,11 +418,21 @@ public class EngineManager implements MachineOperations, Serializable {
     public void setCurrentStatisticsAndHistory(StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer) {
         this.statisticsAndHistoryAnalyzer = statisticsAndHistoryAnalyzer;
     }
-
+    public EnigmaMachine getEnigmaMachine() {
+        return enigmaMachine;
+    }
+    public BattleField getBattlefield() {
+        return this.battleField;
+    }
+    public DecryptionManager getDecryptionManager() {
+        return this.decryptionManager;
+    }
     public Set<String> getDictionary() {
         return dictionary.getDictionary();
     }
-
+    public Dictionary getDictionaryObject() {
+        return dictionary;
+    }
     public int getMaxAmountOfAgents() {
         return decryptionManager.getMaxCurrentAmountOfAgents();
     }
