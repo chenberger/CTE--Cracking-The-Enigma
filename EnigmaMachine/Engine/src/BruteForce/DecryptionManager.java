@@ -23,7 +23,7 @@ public class DecryptionManager {
     private static final int MAX_AGENTS_AMOUNT = 50;
     private BruteForceUIAdapter bruteForceUIAdapter;
     private BruteForceTask bruteForceTask;
-    private String decryptedMessege;
+    private String decryptedMessage;
     private MainController mainController;
     private Runnable onFinish;
     private SettingsFormat decryptedSettingsFormat;
@@ -33,7 +33,7 @@ public class DecryptionManager {
     public DecryptionManager() {
         this.bruteForceUIAdapter = null;
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
-        this.decryptedMessege = null;
+        this.decryptedMessage = null;
         this.isMissionOnProgress = false;
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
@@ -42,7 +42,7 @@ public class DecryptionManager {
         this.enigmaMachine = enigmaMachine;
         this.dictionary = dictionary;
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
-        this.decryptedMessege = null;
+        this.decryptedMessage = null;
         this.isMissionOnProgress = false;
     }
 
@@ -61,12 +61,12 @@ public class DecryptionManager {
 
     public void startDeciphering() throws Exception {
         try {
-            if(decryptedMessege == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessege))) {
+            if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
                 //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
                 throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
             }
 
-            tasksManager = new TasksManager(enigmaMachine, decryptedMessege, bruteForceTask, bruteForceUIAdapter,
+            tasksManager = new TasksManager(enigmaMachine, decryptedMessage, bruteForceTask, bruteForceUIAdapter,
                                             dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
                                             (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
             mainController.bindTaskToUIComponents(tasksManager, onFinish);
@@ -103,7 +103,7 @@ public class DecryptionManager {
 
 
     public void setDecryptedMessage(String processedMessage) {
-        this.decryptedMessege = processedMessage;
+        this.decryptedMessage = processedMessage;
     }
 
     public void setEnigmaMachine(EnigmaMachine enigmaMachine) {

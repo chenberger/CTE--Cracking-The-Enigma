@@ -13,7 +13,7 @@ import servletUtils.SessionUtils;
 
 import java.io.IOException;
 
-import static Constants.ServletConstants.USERNAME;
+import static Constants.ServletConstants.USER_NAME;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/users/Login")
 public class LoginServlet extends HttpServlet {
@@ -38,9 +38,9 @@ public class LoginServlet extends HttpServlet {
     // you can use absolute paths, but then you need to build them from scratch, starting from the context path
     // ( can be fetched from request.getContextPath() ) and then the 'absolute' path from it.
     // Each method with it's pros and cons...
-    private final String CHAT_ROOM_URL = "../chatroom/chatroom.html";
-    private final String SIGN_UP_URL = "../signup/signup.html";
-    private final String LOGIN_ERROR_URL = "/pages/loginerror/login_attempt_after_error.jsp";  // must start with '/' since will be used in request dispatcher...
+    //private final String CHAT_ROOM_URL = "../chatroom/chatroom.html";
+   //private final String SIGN_UP_URL = "../signup/signup.html";
+   //private final String LOGIN_ERROR_URL = "/pages/loginerror/login_attempt_after_error.jsp";  // must start with '/' since will be used in request dispatcher...
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,16 +53,17 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String user = request.getParameter(USER_NAME);
         String usernameFromSession = SessionUtils.getUsername(request);
         UsersManager userManager = ServletUtils.getUserManager(getServletContext());
         if (usernameFromSession == null) {
             //user is not logged in yet
-            String usernameFromParameter = request.getParameter(USERNAME);
+            String usernameFromParameter = request.getParameter(USER_NAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter -
                 //redirect back to the index page
                 //this return an HTTP code back to the browser telling it to load
-                response.sendRedirect(SIGN_UP_URL);
+                response.setStatus(HttpServletResponse.SC_CONFLICT);
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
@@ -80,7 +81,7 @@ public class LoginServlet extends HttpServlet {
 
                         userManager.addUser(usernameFromParameter);
 
-                        request.getSession(true).setAttribute(ServletConstants.USERNAME, usernameFromParameter);
+                        request.getSession(true).setAttribute(ServletConstants.USER_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);

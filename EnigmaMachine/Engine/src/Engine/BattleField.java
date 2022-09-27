@@ -59,5 +59,9 @@ public class BattleField {
         this.level = stringToDifficultyLevel(cteBattlefield.getLevel());
         this.allies = cteBattlefield.getAllies();
     }
+
+    public Object getBattleName() {
+        return this.battleFieldName;
+    }
     // end of getters and setters region
 }

@@ -24,6 +24,8 @@ public class  Agent implements Runnable {
     private TasksManager tasksManager;
     private int taskId;
 
+    private String AllieName;
+
     public Agent(AgentTask agentTask, TasksManager tasksManager) {
         synchronized (this) {
             this.agentTask = agentTask;
@@ -39,7 +41,9 @@ public class  Agent implements Runnable {
     static {
         resetTaskId();
     }
-
+    public void setAllieName(String allieName) {
+        AllieName = allieName;
+    }
     private static void resetTaskId() {
         staticTaskId = 1;
     }
