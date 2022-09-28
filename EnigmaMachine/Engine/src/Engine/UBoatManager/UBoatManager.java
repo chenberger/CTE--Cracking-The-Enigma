@@ -33,7 +33,9 @@ public class UBoatManager {
                         currentEnigmaMachine.getNumOfActiveRotors())));
         //uBoatsBattleFields.put(username, new BattleField(battleField.getBattleName(),battleField.getLevel(),battleField.getAllies()));
     }
-
+    public UBoat getUBoat(String username) {
+        return  uBoats.get(username);
+    }
     public String getUBoatByBattleName(String battleName) {
         return uBoats.values().stream().filter(uBoat -> uBoat.getBattleField().getBattleName().equals(battleName)).findFirst().get().getName();
     }

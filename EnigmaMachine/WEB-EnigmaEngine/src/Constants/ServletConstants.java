@@ -11,5 +11,8 @@ public class ServletConstants {
 
     public static final String U_BOAT_NAME = "uBoatName";
     public static final String U_BOAT_NAME_ERROR = "uBoatName_error";
+    public static final String BATTLE_NAME = "battleName";
+    public static final String TASK_SIZE = "taskSize";
+    public static final String NUMBER_OF_AGENTS = "numberOfAgents";
 
 }
