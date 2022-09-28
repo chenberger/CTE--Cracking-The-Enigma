@@ -31,6 +31,7 @@ public class AllieLoginServlet extends HttpServlet {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(ALLIE_NAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 //response.sendRedirect(SIGN_UP_URL);
             } else {
                 //normalize the username value

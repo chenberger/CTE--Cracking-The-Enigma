@@ -1,4 +1,4 @@
-package chat.client.util.http;
+package Utils;
 
 import Utils.SimpleCookieManager;
 import okhttp3.Call;

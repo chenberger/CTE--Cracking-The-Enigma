@@ -25,6 +25,10 @@ public class AlliesManager {
     public void addAllie(String usernameFromParameter) {
         allies.put(usernameFromParameter, new Allie(usernameFromParameter));
     }
+
+    public Allie getAllie(String allieNameFromSession) {
+        return allies.get(allieNameFromSession);
+    }
     //TODO chen: maybe should add setters for battleName and level
    //public Allie getAllieByName(String allieName) {
 
