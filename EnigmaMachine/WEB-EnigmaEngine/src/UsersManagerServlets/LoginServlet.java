@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet {
                     else {
 
                         userManager.addUser(usernameFromParameter);
-
+                        response.getWriter().println("User created successfully" + System.lineSeparator() + "Users in list: " + ServletUtils.getUserManager(getServletContext()).getUsers());
                         request.getSession(true).setAttribute(ServletConstants.USER_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());

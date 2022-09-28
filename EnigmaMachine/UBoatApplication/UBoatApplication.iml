@@ -8,6 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="UserInterface" />
-    <orderEntry type="library" name="okHttp" level="project" />
+    <orderEntry type="library" exported="" name="okHttp" level="project" />
+    <orderEntry type="module" module-name="ClientAppsCommons" exported="" />
   </component>
 </module>
