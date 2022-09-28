@@ -19,4 +19,12 @@ public class MainUBoatScenePaneController {
             UBoatLoginPaneController.setMainUBoatScenePaneController(this);
         }
     }
+
+    public void setUserName(String userName) {
+
+    }
+
+    public void switchToCompetitionRoom() {
+
+    }
 }

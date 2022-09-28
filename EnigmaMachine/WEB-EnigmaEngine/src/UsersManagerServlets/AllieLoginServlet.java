@@ -48,7 +48,6 @@ public class AllieLoginServlet extends HttpServlet {
                     else {
 
                         alliesManager.addAllie(usernameFromParameter);
-
                         request.getSession(true).setAttribute(ALLIE_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());

@@ -7,18 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AlliesManager {
-    private final Map<String, DecryptionManager> allies;
-    private BattleField battleField;
+    private final Map<String, Allie> allies;
 
     public AlliesManager() {
         allies = new HashMap<>();
-        this.battleField = new BattleField();
     }
-    public void setBattleField(BattleField battleField) {
-        this.battleField = battleField;
-    }
+
     //region Getters and Setters
-    public Map<String, DecryptionManager> getAllies() {
+    public Map<String, Allie> getAllies() {
         return allies;
     }
 
@@ -27,9 +23,9 @@ public class AlliesManager {
     }
 
     public void addAllie(String usernameFromParameter) {
-        allies.put(usernameFromParameter, new DecryptionManager());
+        allies.put(usernameFromParameter, new Allie(usernameFromParameter));
     }
-
+    //TODO chen: maybe should add setters for battleName and level
    //public Allie getAllieByName(String allieName) {
 
    //}

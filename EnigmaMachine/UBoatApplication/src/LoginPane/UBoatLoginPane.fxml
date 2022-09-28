@@ -37,21 +37,16 @@
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField promptText="Enter U Boat Name">
+                  <TextField fx:id="registerTextField" prefHeight="31.0" prefWidth="314.0" promptText="Enter U Boat Name">
                      <HBox.margin>
                         <Insets left="20.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button alignment="CENTER" mnemonicParsing="false" text="Register">
-                     <HBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
                </children>
             </HBox>
          </children>
       </AnchorPane>
-      <Button alignment="CENTER" mnemonicParsing="false" prefHeight="53.0" prefWidth="220.0" text="Load Machine" textFill="#12972b" GridPane.rowIndex="1">
+      <Button fx:id="registerButton" alignment="CENTER" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="53.0" prefWidth="220.0" text="Register" textFill="#12972b" GridPane.rowIndex="1">
          <font>
             <Font name="Arial Black" size="24.0" />
          </font>
@@ -59,12 +54,7 @@
             <Insets left="20.0" />
          </GridPane.margin>
       </Button>
-      <Label text="Machine Successfully Loaded" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="220.0" text="Quit" textFill="#dd0000" GridPane.rowIndex="2">
+      <Button fx:id="quitButton" mnemonicParsing="false" onAction="#onQuitButtonClicked" prefHeight="53.0" prefWidth="220.0" text="Quit" textFill="#dd0000" GridPane.rowIndex="2">
          <font>
             <Font name="Arial Black" size="24.0" />
          </font>

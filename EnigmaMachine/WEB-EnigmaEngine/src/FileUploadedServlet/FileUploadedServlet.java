@@ -37,7 +37,7 @@ public class FileUploadedServlet extends HttpServlet {
             try {
                 CTEEnigma cteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
                 if(ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())){
-                    out.print("File is already uploaded");
+                    out.print("File is already uploaded" + " by: "+ ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
                     response.setStatus(HttpServletResponse.SC_CONFLICT);
                 }
                 else {
