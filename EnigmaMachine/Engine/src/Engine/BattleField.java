@@ -87,5 +87,17 @@ public class BattleField {
         this.alliesInBattleField.add(allie);
         this.numberOfTeamsInBattleField++;
     }
+
+    public List<String> getTeams() {
+        List<String> teams = new ArrayList<>();
+        for (Allie allie : alliesInBattleField) {
+            teams.add(allie.getTeamName());
+        }
+        return teams;
+    }
+
+    public List<Allie> getAlliesInBattle() {
+        return alliesInBattleField;
+    }
     // end of getters and setters region
 }

@@ -41,7 +41,7 @@
       <children>
          <VBox id="currentcode-vbox" layoutX="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1258.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="10.0">
             <children>
-               <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1200.0" source="../Machine/CurrentCodeConfiguration.fxml" VBox.vgrow="NEVER" />
+               <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1200.0" source="../../../../../../UBoatApplication/src/CurrentCodeConfigurationPane/CurrentCodeConfiguration.fxml" VBox.vgrow="NEVER" />
                <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="NEVER" />
             </children>
             <padding>

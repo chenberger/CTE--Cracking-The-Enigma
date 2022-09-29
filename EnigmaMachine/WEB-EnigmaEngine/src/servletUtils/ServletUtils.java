@@ -13,7 +13,7 @@ public class ServletUtils {
     private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
     private static final String CHAT_MANAGER_ATTRIBUTE_NAME = "chatManager";
     private static final String ENGINE_MANAGER_ATTRIBUTE_NAME = "engineManager";
-    private static final String UBOAT_MANAGER_ATTRIBUTE_NAME = "uBoatManager";
+    private static final String U_BOAT_MANAGER_ATTRIBUTE_NAME = "uBoatManager";
     private static final String ALLIES_MANAGER_ATTRIBUTE_NAME = "alliesManager";
     private static final String AGENTS_MANAGER_ATTRIBUTE_NAME = "agentsManager";
     /*
@@ -59,11 +59,11 @@ public class ServletUtils {
    //}
     public static UBoatManager getUBoatManager(ServletContext servletContext) {
         synchronized (uBoatManagerLock) {
-            if (servletContext.getAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME) == null) {
-                servletContext.setAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
+            if (servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME) == null) {
+                servletContext.setAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
             }
         }
-        return (UBoatManager) servletContext.getAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME);
+        return (UBoatManager) servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME);
     }
     public static AlliesManager getAlliesManager(ServletContext servletContext) {
         synchronized (alliesManagerLock) {
@@ -90,5 +90,15 @@ public class ServletUtils {
             }
         }
         return INT_PARAMETER_ERROR;
+    }
+
+    public static UBoatManager getUBoatsManager(ServletContext servletContext) {
+        synchronized (uBoatManagerLock) {
+            if (servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME) == null) {
+                servletContext.setAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
+            }
+            return (UBoatManager) servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME);
+        }
+
     }
 }

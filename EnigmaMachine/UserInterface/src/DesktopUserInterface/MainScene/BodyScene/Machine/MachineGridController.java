@@ -1,5 +1,7 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import CodeCalibrationPane.CodeCalibrationController;
+import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;

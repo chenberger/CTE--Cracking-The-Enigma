@@ -1,6 +1,8 @@
 package CompetitionPane;
 
+import Engine.UBoatManager.UBoat;
 import Utils.HttpClientUtil;
+import com.google.gson.Gson;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -13,17 +15,20 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
+import static Utils.Constants.GSON_INSTANCE;
+
 public class AlliesInBattleRefresher extends TimerTask {
 
     private final Consumer<String> httpRequestLoggerConsumer;
-    private final Consumer<List<String>> usersListConsumer;
+    private final Consumer<List<UBoat>> uBoatListConsumer;
     private int requestNumber;
     private final BooleanProperty shouldUpdate;
 
-    public AlliesInBattleRefresher(BooleanProperty shouldUpdate, Consumer<String> httpRequestLoggerConsumer, Consumer<List<String>> usersListConsumer) {
+    public AlliesInBattleRefresher(BooleanProperty shouldUpdate, Consumer<String> httpRequestLoggerConsumer, Consumer<List<UBoat>> uBoatsListConsumer) {
         this.shouldUpdate = shouldUpdate;
         this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
-        this.usersListConsumer = usersListConsumer;
+        this.uBoatListConsumer = uBoatsListConsumer;
         requestNumber = 0;
     }
 
@@ -35,21 +40,21 @@ public class AlliesInBattleRefresher extends TimerTask {
         }
 
         final int finalRequestNumber = ++requestNumber;
-        httpRequestLoggerConsumer.accept("About to invoke: " + Constants.USERS_LIST + " | Users Request # " + finalRequestNumber);
-        HttpClientUtil.runAsync(Constants.USERS_LIST, new Callback() {
+        httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+        HttpClientUtil.runAsync(U_BOATS_LIST_SERVLET, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Ended with failure...");
 
             }
-
+            //TODO chen: make sure that this is the syntax to transform u boat list from the server to the client
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonArrayOfUsersNames = response.body().string();
-                httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
-                String[] usersNames = GSON_INSTANCE.fromJson(jsonArrayOfUsersNames, String[].class);
-                usersListConsumer.accept(Arrays.asList(usersNames));
+                String jsonArrayOfUBoats = response.body().string();
+                httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUBoats);
+                UBoat[] usersNames = new Gson().fromJson(jsonArrayOfUBoats, UBoat[].class);
+                uBoatListConsumer.accept(Arrays.asList(usersNames));
             }
         });
     }

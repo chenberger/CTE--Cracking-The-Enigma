@@ -5,6 +5,7 @@ import BruteForce.DecryptionManager;
 import BruteForce.DifficultyLevel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Allie {
@@ -38,5 +39,17 @@ public class Allie {
         allieFields.add(String.valueOf(taskSize));
         allieFields.add(String.valueOf(agents.size()));
         return allieFields;
+    }
+
+    public String getTeamName() {
+        return Name;
+    }
+
+    public List<Agent> getAgents() {
+        return agents;
+    }
+
+    public long getTaskSize() {
+        return taskSize;
     }
 }

@@ -13,10 +13,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.UBoatCompetitionPane">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CompetitionPane.UBoatCompetitionPaneController">
    <children>
-      <GridPane layoutX="-14.0" layoutY="-45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane fx:id="UBoatCompetitionPane" layoutX="-14.0" layoutY="-45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,11 +29,11 @@
               <items>
                 <AnchorPane minHeight="398.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0">
                      <children>
-                        <TableView prefHeight="398.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="teamsTableView" prefHeight="398.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn prefWidth="120.0" text="Team Name" />
-                            <TableColumn prefWidth="150.0" text="Number Of Agents" />
-                              <TableColumn prefWidth="120.0" text="Team Name" />
+                            <TableColumn fx:id="teamNameCol" prefWidth="120.0" text="Team Name" />
+                            <TableColumn fx:id="numOfAgentsCol" prefWidth="150.0" text="Number Of Agents" />
+                              <TableColumn fx:id="taskSizeCol" prefWidth="120.0" text="Task Size" />
                           </columns>
                            <padding>
                               <Insets bottom="10.0" />
@@ -55,7 +54,7 @@
                            <children>
                               <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="176.0" layoutY="105.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <content>
-                                    <fx:include source="../../../UserInterface/src/DesktopUserInterface/MainScene/BodyScene/BruteForce/EncryptDecryptActionsGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include fx:id="encryptDecryptActionsGrid" source="../EncryptDecryptActionsPane/EncryptDecryptActionsGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -96,7 +95,7 @@
               <items>
                 <AnchorPane minHeight="350.0" minWidth="600.0">
                      <children>
-                        <fx:include source="../CandidatesPane/UBoatCandidatesPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include fx:id="uBoatCandidatesPane" source="../CandidatesPane/UBoatCandidatesPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="200.0" minWidth="500.0" prefHeight="160.0" prefWidth="100.0">
@@ -105,12 +104,12 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <fx:include source="../../../UserInterface/src/DesktopUserInterface/MainScene/BodyScene/Machine/CurrentCodeConfiguration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include fx:id="currentCodeConfigurationPane" source="../CurrentCodeConfigurationPane/CurrentCodeConfiguration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <fx:include source="../../../UserInterface/src/DesktopUserInterface/MainScene/BodyScene/Machine/CodeCalibration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include fx:id="codeCalibration" source="../CodeCalibrationPane/CodeCalibration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                           </items>

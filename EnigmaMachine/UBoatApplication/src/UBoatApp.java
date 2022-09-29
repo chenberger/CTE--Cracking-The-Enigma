@@ -1,5 +1,6 @@
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
+import LoginPane.UBoatLoginPaneController;
 import MainScene.MainUBoatScenePaneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,17 +14,19 @@ import java.net.URL;
 
 public class UBoatApp extends Application {
     private static final String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/MainScene/MainUBoatScenePane.fxml";
-    private MainUBoatScenePaneController mainUBoatScenePaneController;
+    private static final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/LoginPane/UBoatLoginPane.fxml";
+    private UBoatLoginPaneController uBoatLoginPaneController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("U-Boat");
-        URL loginPage = getClass().getResource(MAIN_PAGE_FXML_RESOURCE_LOCATION);
+        URL loginPage = getClass().getResource(LOGIN_PAGE_FXML_RESOURCE_LOCATION);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPage);
             Parent root = fxmlLoader.load();
-            mainUBoatScenePaneController = fxmlLoader.getController();
+            uBoatLoginPaneController = fxmlLoader.getController();
+
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);

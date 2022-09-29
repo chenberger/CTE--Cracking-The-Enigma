@@ -21,8 +21,8 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" styleClass="main-background" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <fx:include fx:id="encryptDecryptActionsGrid" prefWidth="250.0" source="EncryptDecryptActionsGrid.fxml" VBox.vgrow="ALWAYS" />
-                              <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" source="../Machine/CurrentCodeConfiguration.fxml" VBox.vgrow="ALWAYS" />
+                              <fx:include fx:id="encryptDecryptActionsGrid" prefWidth="250.0" source="../../../../../../UBoatApplication/src/EncryptDecryptActionsPane/EncryptDecryptActionsGrid.fxml" VBox.vgrow="ALWAYS" />
+                              <fx:include fx:id="CurrentCodeConfigurationGrid" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="500.0" source="../../../../../../UBoatApplication/src/CurrentCodeConfigurationPane/CurrentCodeConfiguration.fxml" VBox.vgrow="ALWAYS" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" />
