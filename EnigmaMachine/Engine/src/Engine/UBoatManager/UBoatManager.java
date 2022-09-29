@@ -4,8 +4,11 @@ import Engine.BattleField;
 import EnigmaMachine.EnigmaMachine;
 import Jaxb.Schema.Generated.CTEBattlefield;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UBoatManager {
     private final Map<String, UBoat> uBoats;
@@ -38,5 +41,11 @@ public class UBoatManager {
     }
     public String getUBoatByBattleName(String battleName) {
         return uBoats.values().stream().filter(uBoat -> uBoat.getBattleField().getBattleName().equals(battleName)).findFirst().get().getName();
+    }
+    public Map<String, UBoat> getUBoats() {
+        return uBoats;
+    }
+    public List<UBoat> getUBoatsAsList() {
+        return uBoats.values().stream().collect(Collectors.toList());
     }
 }

@@ -1,7 +1,8 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
+import EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import DTO.BruteForceTask;
-import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
+import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -49,9 +50,9 @@ public class BruteForceGridController {
     }
 
     @FXML public  void initialize(){
-        if (encryptDecryptActionsGridController != null){
-            encryptDecryptActionsGridController.setBruteForceGridController(this);
-        }
+        //if (encryptDecryptActionsGridController != null){
+        //    encryptDecryptActionsGridController.setBruteForceGridController(this);
+        //}
 
         if(decryptionManagerController != null) {
             decryptionManagerController.setBruteForceGridController(this);

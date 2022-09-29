@@ -1,6 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt;
 
-import DesktopUserInterface.MainScene.BodyScene.Machine.CurrentCodeConfigurationController;
+import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;

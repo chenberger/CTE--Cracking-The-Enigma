@@ -27,7 +27,7 @@
         <content>
           <AnchorPane prefHeight="180.0" prefWidth="684.0">
                <children>
-                  <fx:include fx:id="currentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="CurrentCodeConfiguration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
+                  <fx:include fx:id="currentCodeConfigurationGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="../../../../../../UBoatApplication/src/CurrentCodeConfigurationPane/CurrentCodeConfiguration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="10.0" />
                      </padding></fx:include>
@@ -45,7 +45,7 @@
         <content>
           <AnchorPane id="current-code" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="516.0">
                <children>
-                  <fx:include fx:id="codeCalibrationGrid" source="CodeCalibration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+                  <fx:include fx:id="codeCalibrationGrid" source="../../../../../../UBoatApplication/src/CodeCalibrationPane/CodeCalibration.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
                </children>
             </AnchorPane>
         </content>

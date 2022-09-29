@@ -3,9 +3,13 @@ package LoginPane;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import MainScene.MainUBoatScenePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
+import Utils.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -17,8 +21,10 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class UBoatLoginPaneController {
+    private static final String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/MainScene/MainUBoatScenePane.fxml";
     private MainUBoatScenePaneController mainUBoatScenePaneController;
 
     @FXML
@@ -52,7 +58,7 @@ public class UBoatLoginPaneController {
 
         //updateHttpStatusLine("New request is launched for: " + finalUrl);
 
-        chat.client.util.http.HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
 
         @Override
         public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -70,15 +76,28 @@ public class UBoatLoginPaneController {
                 );
             } else {
                 Platform.runLater(() -> {
-                    updateUserName(userName);
-                    mainUBoatScenePaneController.switchToCompetitionRoom();
+                    showMainUBoatScene();
+                    mainUBoatScenePaneController.setActive();
                 });
             }
         }
     });
     }
 
-    private void updateUserName(String userName) {
-        mainUBoatScenePaneController.setUserName(userName);
+    private void showMainUBoatScene() {
+        Scene scene = UBoatLoginPane.getScene();
+        URL url = getClass().getResource(MAIN_PAGE_FXML_RESOURCE_LOCATION);
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        try {
+            Parent root = fxmlLoader.load();
+            mainUBoatScenePaneController = fxmlLoader.getController();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
+
 }

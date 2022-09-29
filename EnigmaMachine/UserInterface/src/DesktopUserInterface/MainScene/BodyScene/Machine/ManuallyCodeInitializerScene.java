@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import CodeCalibrationPane.CodeCalibrationController;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import javafx.fxml.FXMLLoader;

@@ -5,6 +5,8 @@ import Engine.BattleField;
 import EnigmaMachine.EnigmaMachine;
 import Jaxb.Schema.Generated.CTEBattlefield;
 
+import java.util.List;
+
 public class UBoat {
     private String name;
     private BattleField battleField;
@@ -30,5 +32,9 @@ public class UBoat {
     }
     public EnigmaMachine getEnigmaMachine() {
         return enigmaMachine;
+    }
+
+    public List<String> getTeams() {
+        return battleField.getTeams();
     }
 }
