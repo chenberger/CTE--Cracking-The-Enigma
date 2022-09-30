@@ -1,5 +1,8 @@
-package BruteForce;
+package Engine.AgentsManager;
 
+import BruteForce.DecryptionCandidateFormat;
+import BruteForce.DecryptionCandidateTaskHandler;
+import BruteForce.TasksManager;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.AgentTaskData;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Keyboard;
@@ -11,8 +14,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 
-public class  Agent implements Runnable {
-
+public class AgentWorker implements Runnable{
     private final String agentId;
     private Keyboard keyboard;
 
@@ -26,7 +28,7 @@ public class  Agent implements Runnable {
 
     private String AllieName;
 
-    public Agent(AgentTask agentTask, TasksManager tasksManager) {
+    public AgentWorker(AgentTask agentTask, TasksManager tasksManager) {
         synchronized (this) {
             this.agentTask = agentTask;
             this.agentId = Thread.currentThread().getName();
@@ -41,9 +43,7 @@ public class  Agent implements Runnable {
     static {
         resetTaskId();
     }
-    public void setAllieName(String allieName) {
-        AllieName = allieName;
-    }
+
     private static void resetTaskId() {
         staticTaskId = 1;
     }
@@ -74,8 +74,8 @@ public class  Agent implements Runnable {
                     //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
                     encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                     agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
-                                                                     new AgentTaskData(taskId, Thread.currentThread().getName(),
-                                                                     new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
+                            new AgentTaskData(taskId, Thread.currentThread().getName(),
+                                    new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                 }
                 catch (WordNotValidInDictionaryException ignored) {}
 
@@ -102,4 +102,3 @@ public class  Agent implements Runnable {
         enigmaMachine.resetSettings();
     }
 }
-

@@ -10,4 +10,6 @@ public class UBoatsServletsPaths {
     public static final String ALLIES_LIST_SERVLET = FULL_SERVER_PATH + "/AlliesList";
     public static final String AGENTS_LIST_SERVLET = FULL_SERVER_PATH + "/AgentsList";
     public static final String U_BOATS_LIST_SERVLET = FULL_SERVER_PATH + "/UBoatsList";
+    public static final String GET_MACHINE_CONFIG_SERVLET = FULL_SERVER_PATH + "/machine/GetMachineConfig";
+    public static final String SET_MACHINE_CONFIG_SERVLET = FULL_SERVER_PATH + "/machine/SetMachineConfig";
 }

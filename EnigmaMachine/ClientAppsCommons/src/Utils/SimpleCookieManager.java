@@ -49,6 +49,9 @@ public class SimpleCookieManager implements CookieJar {
                     });
         }
     }
+    public String getSessionId(String host) {
+        return cookies.get(host).get("JSESSIONID").value();
+    }
 
     public void removeCookiesOf(String domain) {
         synchronized (this) {

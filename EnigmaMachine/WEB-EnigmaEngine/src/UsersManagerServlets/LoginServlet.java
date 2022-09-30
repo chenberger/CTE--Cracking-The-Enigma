@@ -12,6 +12,7 @@ import servletUtils.SessionUtils;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static Constants.ServletConstants.USER_NAME;
 
@@ -31,7 +32,24 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if(request.getParameter(USER_NAME).equals("get_session_id")) {
+            getSessionId(request, response);
+        }
+        else {
+            processRequest(request, response);
+        }
+    }
+
+    private void getSessionId(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html");
+        response.setStatus(HttpServletResponse.SC_OK);
+        try (PrintWriter out = response.getWriter()) {
+            String sessionId = request.getSession().getId();
+            out.print(sessionId);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     // urls that starts with forward slash '/' are considered absolute
     // urls that doesn't start with forward slash '/' are considered relative to the place where this servlet request comes from
@@ -80,8 +98,10 @@ public class LoginServlet extends HttpServlet {
                     else {
 
                         userManager.addUser(usernameFromParameter);
-                        response.getWriter().println("User created successfully" + System.lineSeparator() + "Users in list: " + ServletUtils.getUserManager(getServletContext()).getUsers());
                         request.getSession(true).setAttribute(ServletConstants.USER_NAME, usernameFromParameter);
+                        String name = SessionUtils.getUsername(request);
+                        response.getWriter().println("User created successfully" + System.lineSeparator() + "Users in list: " + ServletUtils.getUserManager(getServletContext()).getUsers());
+
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
