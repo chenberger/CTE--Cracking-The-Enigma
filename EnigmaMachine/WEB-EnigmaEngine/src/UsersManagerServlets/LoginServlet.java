@@ -72,10 +72,10 @@ public class LoginServlet extends HttpServlet {
                     if (userManager.isUserExists(usernameFromParameter)) {
                         String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
 
-                        request.setAttribute(ServletConstants.USER_NAME_ERROR, errorMessage);
+                        //request.setAttribute(ServletConstants.USER_NAME_ERROR, errorMessage);
+                        response.setStatus(HttpServletResponse.SC_CONFLICT);
                         response.getWriter().println(errorMessage);
 
-                        //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                     }
                     else {
 

@@ -7,6 +7,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
+import MachineDetailsPane.MachineDetailsController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;

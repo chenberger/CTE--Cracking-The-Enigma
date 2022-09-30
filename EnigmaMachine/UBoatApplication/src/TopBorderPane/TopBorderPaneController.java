@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
+
 
 public class TopBorderPaneController {
     private MainUBoatScenePaneController mainUBoatScenePaneController;
@@ -18,7 +20,7 @@ public class TopBorderPaneController {
     public void setMainUBoatScenePaneController(MainUBoatScenePaneController mainUBoatScenePaneController) {
         this.mainUBoatScenePaneController = mainUBoatScenePaneController;
     }
-    @FXML private void onLoadMachineButtonClicked(ActionEvent event) {
+    @FXML private void onLoadMachineButtonClicked(ActionEvent event) throws IOException {
         mainUBoatScenePaneController.loadMachine();
     }
 
