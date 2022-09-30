@@ -8,6 +8,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
+import UBoatMachinePane.UBoatMachinePaneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,6 +30,7 @@ public class CodeCalibrationController {
     private Map<SkinType, String> skinPaths;
     private SkinType currentSkinType;
     private UBoatCompetitionPaneController uBoatCompetitionPaneController;
+    private UBoatMachinePaneController UboatMachinePaneController;
 
     @FXML public void initialize() {
         initializeSkins();
@@ -90,5 +92,9 @@ public class CodeCalibrationController {
 
     public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
         this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
+    }
+
+    public void setUBoatMachinePaneController(UBoatMachinePaneController uBoatMachinePaneController) {
+        this.UboatMachinePaneController = uBoatMachinePaneController;
     }
 }

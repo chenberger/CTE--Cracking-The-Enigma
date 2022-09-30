@@ -72,7 +72,7 @@ public class UBoatLoginPaneController {
             if (response.code() != 200) {
                 String responseBody = response.body().string();
                 Platform.runLater(() ->
-                       new ErrorDialog(new Exception("Something went wrong. "), responseBody)
+                       new ErrorDialog(new Exception("Unable to register, please try again with different name. "), responseBody)
                 );
             } else {
                 Platform.runLater(() -> {

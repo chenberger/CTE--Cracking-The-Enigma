@@ -3,6 +3,8 @@ package RegistrationServlets;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
 import Engine.BattleField;
+import Engine.UBoatManager.UBoat;
+import Engine.UBoatManager.UBoatManager;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,7 +35,9 @@ public class RegisterToBattleServlet extends HttpServlet {
         String allieNameFromSession = SessionUtils.getAllieName(request);
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Allie allie = alliesManager.getAllie(allieNameFromSession);
-        BattleField battleField = ServletUtils.getUBoatManager(getServletContext()).getUBoat(request.getParameter(USER_NAME)).getBattleField();
+        UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+        UBoat currentBoat = uBoatManager.getUBoat(request.getParameter(USER_NAME));
+        BattleField battleField = currentBoat.getBattleField();
 
         if (allieNameFromSession == null || allieNameFromSession.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -46,7 +50,6 @@ public class RegisterToBattleServlet extends HttpServlet {
             else {
                 battleField.addTeam(allie);
                 //create the response json string
-
                 allie.setBattleName(battleField.getBattleFieldName());
                 Gson gson = new Gson();
                 List<String> allieFields = allie.getAllieFields();

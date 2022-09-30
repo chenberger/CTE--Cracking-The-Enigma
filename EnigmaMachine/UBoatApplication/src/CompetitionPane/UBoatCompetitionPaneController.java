@@ -192,4 +192,5 @@ public class UBoatCompetitionPaneController implements Closeable {
     public void setActive() {
         startListRefresher();
     }
+
 }

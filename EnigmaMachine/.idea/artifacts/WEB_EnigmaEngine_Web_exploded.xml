@@ -10,6 +10,12 @@
           <element id="module-output" name="Engine" />
           <element id="module-output" name="UserInterface" />
           <element id="module-output" name="UBoatApplication" />
+          <element id="module-output" name="ClientAppsCommons" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="gson" />
+          <element id="library" level="project" name="okHttp" />
+          <element id="library" level="application" name="gson" />
         </element>
       </element>
       <element id="library" level="project" name="controlsfx-8.40.14" />

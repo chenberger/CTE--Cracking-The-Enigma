@@ -1,7 +1,9 @@
-package DesktopUserInterface.MainScene.BodyScene.Machine;
+package MachineDetailsPane;
 
 import DTO.MachineDetails;
+import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.Common.SkinType;
+import UBoatMachinePane.UBoatMachinePaneController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -21,6 +23,7 @@ public class MachineDetailsController {
     @FXML private TextArea currentCodeLabel;
     private Map<SkinType, String> skinPaths;
     private MachineGridController machineGridController;
+    private UBoatMachinePaneController UBoatMachinePaneController;
 
     @FXML public void initialize() {
         initializeSkins();
@@ -54,5 +57,9 @@ public class MachineDetailsController {
     public void setSkin(SkinType skinType) {
         machineDetailsGrid.getStylesheets().clear();
         machineDetailsGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
+    }
+
+    public void setUBoatMachinePaneController(UBoatMachinePaneController uBoatMachinePaneController) {
+        this.UBoatMachinePaneController = uBoatMachinePaneController;
     }
 }

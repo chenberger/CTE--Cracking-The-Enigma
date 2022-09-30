@@ -41,7 +41,7 @@
                               <Insets bottom="10.0" top="40.0" />
                            </HBox.margin>
                            <children>
-                              <Button fx:id="loadMachineButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#onLoadMachineButtonClicked" prefHeight="50.0" prefWidth="200.0" styleClass="top-buttons" stylesheets="@../../../UserInterface/src/DesktopUserInterface/MainScene/TopScene/TopBorderPaneSkin1.css" text="Load Machine" textFill="#019703" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                              <Button fx:id="loadMachineButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#onLoadMachineButtonClicked" prefHeight="50.0" prefWidth="200.0" styleClass="top-buttons" stylesheets="@TopBorderPaneSkin1.css" text="Load Machine" textFill="#019703" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
                                  <font>
                                     <Font name="Arial Bold" size="23.0" />
                                  </font>
@@ -55,7 +55,7 @@
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label id="current-file-path-label" fx:id="CurrentFilePathLabel" minHeight="20.0" minWidth="178.0" stylesheets="@../../../UserInterface/src/DesktopUserInterface/MainScene/TopScene/TopBorderPaneSkin1.css" text="Currently Loaded File Path:" textAlignment="CENTER" textFill="#090309">
+                                    <Label id="current-file-path-label" fx:id="CurrentFilePathLabel" minHeight="20.0" minWidth="178.0" stylesheets="@TopBorderPaneSkin1.css" text="Currently Loaded File Path:" textAlignment="CENTER" textFill="#090309">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -68,7 +68,7 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                        <children>
-                                          <Label fx:id="CurrentFilePathTextLabel" prefHeight="30.0" prefWidth="430.0" styleClass="top-buttons" stylesheets="@../../../UserInterface/src/DesktopUserInterface/MainScene/TopScene/TopBorderPaneSkin1.css" text="There is no any file loaded" textFill="#322424" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label fx:id="CurrentFilePathTextLabel" prefHeight="30.0" prefWidth="430.0" styleClass="top-buttons" stylesheets="@TopBorderPaneSkin1.css" text="There is no any file loaded" textFill="#322424" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <padding>
                                                 <Insets bottom="20.0" top="20.0" />
                                              </padding>
