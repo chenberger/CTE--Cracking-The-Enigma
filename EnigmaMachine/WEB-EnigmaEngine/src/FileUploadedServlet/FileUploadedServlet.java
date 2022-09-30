@@ -30,6 +30,7 @@ public class FileUploadedServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
+        String name = SessionUtils.getUsername(request) != null ? SessionUtils.getUsername(request) : "Guest";
         Collection<Part> parts = request.getParts();
         for(Part part : parts) {
             InputStream inputStream = part.getInputStream();
@@ -44,11 +45,12 @@ public class FileUploadedServlet extends HttpServlet {
                 }
                 else {
                     ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    out.println("File uploaded successfully!");
+
                     ServletUtils.getUBoatManager(request.getServletContext()).addUBoat(SessionUtils.getUsername(request), ServletUtils.getEngineManager(request.getServletContext()).getCurrentEnigmaMachine()
                     , cteEnigma.getCTEBattlefield());
+                    response.setStatus(HttpServletResponse.SC_OK);
 
+                    out.println("File uploaded successfully!");
                 }
             }
              catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |

@@ -54,6 +54,14 @@ public class EngineManager implements MachineOperations, Serializable {
         this.battleField = new BattleField();
         initializeEventHandlers();
     }
+    public  EngineManager(EnigmaMachine enigmaMachine){
+        this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
+        this.dictionary = new Dictionary();
+        this.enigmaMachine = enigmaMachine;
+        this.decryptionManager = new DecryptionManager();
+        this.battleField = new BattleField();
+        initializeEventHandlers();
+    }
 
     //region events
     private void initializeEventHandlers() {
@@ -318,6 +326,17 @@ public class EngineManager implements MachineOperations, Serializable {
                                  enigmaMachine.getCurrentSettingsFormat());
     }
 
+    public MachineDetails displaySpecifications(EnigmaMachine enigmaMachine, StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer) throws MachineNotExistsException, CloneNotSupportedException {
+        if(!isMachineExists(enigmaMachine)) {
+            throw new MachineNotExistsException();
+        }
+
+        return new MachineDetails(enigmaMachine,
+                statisticsAndHistoryAnalyzer.getMessagesCounter(),
+                enigmaMachine.getOriginalSettingsFormat(),
+                enigmaMachine.getCurrentSettingsFormat());
+    }
+
     @Override
     public String analyzeHistoryAndStatistics() throws MachineNotExistsException {
         if(!isMachineExists()) {
@@ -390,7 +409,9 @@ public class EngineManager implements MachineOperations, Serializable {
     public boolean isMachineExists() {
         return enigmaMachine != null;
     }
-
+    public boolean isMachineExists(EnigmaMachine enigmaMachine) {
+        return enigmaMachine != null;
+    }
     public boolean isMachineSettingInitialized() {
         return enigmaMachine.isTheInitialCodeDefined();
     }

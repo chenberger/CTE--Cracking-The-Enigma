@@ -62,8 +62,8 @@ public class MachineGridController {
     }
 
     public void setEngineManager(EngineManager enigmaMachineEngine) {
-         this.enigmaMachineEngine = enigmaMachineEngine;
-         this.codeCalibrationGridController.setEngineManager(enigmaMachineEngine);
+         //this.enigmaMachineEngine = enigmaMachineEngine;
+         //this.codeCalibrationGridController.setEngineManager(enigmaMachineEngine);
 
          registerToEvents();
     }

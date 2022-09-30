@@ -1,5 +1,6 @@
-package BruteForce;
+package Engine.AgentsManager;
 
+import BruteForce.DecipherStatistics;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;

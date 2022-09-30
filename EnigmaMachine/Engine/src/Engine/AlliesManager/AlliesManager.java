@@ -30,9 +30,11 @@ public class AlliesManager {
         return allies.get(allieNameFromSession);
     }
     //TODO chen: maybe should add setters for battleName and level
-   //public Allie getAllieByName(String allieName) {
+    public void removeAllie(String allieName){
+        allies.get(allieName).setBattleName(null);
+        allies.get(allieName).setTaskSize(0);
 
-   //}
+    }
     //endregion
 
 }

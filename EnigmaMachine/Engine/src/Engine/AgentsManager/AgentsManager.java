@@ -1,7 +1,5 @@
 package Engine.AgentsManager;
 
-import BruteForce.Agent;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,5 +17,9 @@ public class AgentsManager {
 
     public void addAgent(String usernameFromParameter, String allieTeam, int numberOfThreads, long tasksClonedFromServerEachTime) {
         //agents.put(usernameFromParameter, new Agent());
+    }
+
+    public Agent getAgent(String parameter) {
+        return agents.get(parameter);
     }
 }

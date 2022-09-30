@@ -2,6 +2,10 @@ package BruteForce;
 
 import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
+import Engine.AgentsManager.Agent;
+import Engine.AgentsManager.AgentTask;
+import Engine.AgentsManager.AgentThreadFactory;
+import Engine.AgentsManager.AgentWorker;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
@@ -248,7 +252,7 @@ public class TasksManager extends Task<Boolean> {
 
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
-            Agent agent = new Agent(agentTask,this);
+            AgentWorker agent = new AgentWorker(agentTask,this);
 
             boolean isMissionInsertedToQueue = false;
 

@@ -14,5 +14,7 @@ public class ServletConstants {
     public static final String BATTLE_NAME = "battleName";
     public static final String TASK_SIZE = "taskSize";
     public static final String NUMBER_OF_AGENTS = "numberOfAgents";
+    public static final String NUMBER_OF_THREADS = "numberOfThreads";
+    public static final String NUMBER_OF_PULLED_TASKS = "numberOfPulledTasks";
 
 }

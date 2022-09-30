@@ -26,6 +26,7 @@ import java.util.List;
 
 public class MainUBoatScenePaneController {
 
+    private String currentSessionId;
     @FXML private GridPane UBoatLoginPane;
     @FXML private UBoatLoginPaneController UBoatLoginPaneController;
     @FXML private AnchorPane topBorderPane;
@@ -40,6 +41,7 @@ public class MainUBoatScenePaneController {
 
     }
     public MainUBoatScenePaneController() {
+        currentSessionId = null;
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
         this.isMachineExsists = new SimpleBooleanProperty(false);
         this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
@@ -74,20 +76,24 @@ public class MainUBoatScenePaneController {
                 new FileChooser.ExtensionFilter("XML Files", "*.xml")
         );
         File selectedFile = fileChooser.showOpenDialog(getStageWindow());
+
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
+        getCurrentSessionId();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file", selectedFile.getAbsolutePath(),
+                .addFormDataPart("file",selectedFile.getAbsolutePath(),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File(selectedFile.getAbsolutePath())))
                 .build();
-
         Request request = new Request.Builder()
                 .url(UBoatsServletsPaths.FILE_UPLOADED_SERVLET)
                 .method("POST", body)
+                .addHeader("cookie", String.format("JSESSIONID=%s",currentSessionId))
                 .build();
+
         Response response = client.newCall(request).execute();
+
         try {
 
             if(response.code() == 200) {
@@ -109,7 +115,40 @@ public class MainUBoatScenePaneController {
         }
 
     }
-        //updateHttpStatusLine("New request is launched for: " + finalUrl);
+
+    private void getCurrentSessionId() {
+        String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
+                .newBuilder()
+                .addQueryParameter("username", "get_session_id")
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> new ErrorDialog(e, "Error while getting session id"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    currentSessionId= response.body().string();
+                }
+                else{
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            }
+        });
+        ;
+    }
+
+    //updateHttpStatusLine("New request is launched for: " + finalUrl);
 
         //HttpClientUtil.runAsync(finalUrl, new Callback() {
 //
@@ -146,5 +185,6 @@ public class MainUBoatScenePaneController {
     public void setCompetitionPaneDisabled() {
         UBoatCompetitionPane.setDisable(true);
     }
+
 
 }

@@ -1,11 +1,10 @@
 package Engine.AlliesManager;
 
-import BruteForce.Agent;
+import Engine.AgentsManager.Agent;
 import BruteForce.DecryptionManager;
 import BruteForce.DifficultyLevel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Allie {
@@ -52,4 +51,9 @@ public class Allie {
     public long getTaskSize() {
         return taskSize;
     }
+
+    public void addAgent(Agent agent) {
+        agents.add(agent);
+    }
+
 }

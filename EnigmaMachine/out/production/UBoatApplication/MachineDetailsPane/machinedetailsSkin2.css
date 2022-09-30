@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 #machinedetails-image{
-    -fx-background-image: url("background.jpg");
+    -fx-background-image: url("../../../UserInterface/src/DesktopUserInterface/MainScene/BodyScene/Machine/background.jpg");
     -fx-background-size: 100% 200%;
     -fx-background-position: middle;
 }
@@ -24,7 +24,7 @@
 }
    
 #top{
-    -fx-background-image: url("backgrounddetails2.jpg");
+    -fx-background-image: url("../../../UserInterface/src/DesktopUserInterface/MainScene/BodyScene/Machine/backgrounddetails2.jpg");
     -fx-background-size: 100% 100%;
 }
  .data-box {

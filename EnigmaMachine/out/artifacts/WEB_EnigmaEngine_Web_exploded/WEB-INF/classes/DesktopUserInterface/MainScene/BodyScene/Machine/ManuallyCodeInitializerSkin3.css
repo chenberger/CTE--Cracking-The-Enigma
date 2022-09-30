@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
 
 #buttons-area{
-    -fx-background-image: url("machinedetails-background3.jpg");
+    -fx-background-image: url("../../../../../../UBoatApplication/src/MachineDetailsPane/machinedetails-background3.jpg");
     -fx-background-size: 150% 150%;
     -fx-animation: bg-animation 5s infinite ;
 }
