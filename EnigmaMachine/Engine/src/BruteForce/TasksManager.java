@@ -134,7 +134,7 @@ public class TasksManager extends Task<Boolean> {
             return;
         }
 
-        // i iterates from left to n. First time
+        // I iterate from left to n. First time
         // left will be 1
         for (int i = left; i <= totalNumberOfRotors; ++i)
         {

@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static Utils.Constants.ACTION;
+
 public class CodeCalibrationController {
 
     @FXML private GridPane CodeCalibrationGrid;
@@ -105,12 +107,13 @@ public class CodeCalibrationController {
     }
 
     @FXML void OnSetRandomCodeButtonClicked(ActionEvent event) {
-        machineGridController.setAutomaticCodeConfiguration();
+        //machineGridController.setAutomaticCodeConfiguration();
+        //uBoatCompetitionPaneController.setAutomaticCodeConfiguration();
+        setSettingsAutomatically();
     }
 
     public void codeConfigurationSetted(List<Sector> codeConfigurationSectors) {
         initializeEngineSettings(codeConfigurationSectors);
-
     }
 
     private void initializeEngineSettings(List<Sector> codeConfigurationSectors) {
@@ -119,7 +122,7 @@ public class CodeCalibrationController {
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.SET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
-                .addQueryParameter("initializeEngineSettings", json)
+                .addQueryParameter(ACTION, json)
                 .build()
                 .toString();
 
@@ -140,9 +143,59 @@ public class CodeCalibrationController {
                             new ErrorDialog(new Exception("Unable to initialize engine settings"), responseBody)
                     );
                 }
+                else {
+                    Gson gson = new Gson();
+                    MachineDetails machineDetails = gson.fromJson(response.body().string(), MachineDetails.class);
+                    Platform.runLater(() -> {
+                            uBoatCompetitionPaneController.setNewConfiguration(machineDetails.getCurrentMachineSettings());
+                    });
+                }
             }
         });
 
+    }
+    public void setAutomaticCodeConfiguration() {
+        setSettingsAutomatically();
+    }
+
+    private void setSettingsAutomatically() {
+        String finalUrl = HttpUrl.parse(UBoatsServletsPaths.SET_MACHINE_CONFIG_SERVLET)
+                .newBuilder()
+                .addQueryParameter("action", "set_machine_config_automatically")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> new ErrorDialog(e, "Error while setting machine configuration"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+
+                   Platform.runLater(() -> {
+                       try {
+                           Gson gson = new Gson();
+                           String machineDetails = gson.fromJson(response.body().string(), String.class);
+                           uBoatCompetitionPaneController.setNewConfiguration(machineDetails);
+                           //new ErrorDialog(new Exception(response.body().string()), "Machine configuration setted successfully");
+                       } catch (IOException e) {
+                           throw new RuntimeException(e);
+                       }
+                   });
+                }
+                else{
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()), "Error while setting machine configuration");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            }
+        });
     }
 
 

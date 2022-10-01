@@ -77,7 +77,7 @@ public class UBoatLoginPaneController {
             } else {
                 Platform.runLater(() -> {
                     showMainUBoatScene();
-                    mainUBoatScenePaneController.setActive();
+
                 });
             }
         }
@@ -92,6 +92,7 @@ public class UBoatLoginPaneController {
             Parent root = fxmlLoader.load();
             mainUBoatScenePaneController = fxmlLoader.getController();
             scene.setRoot(root);
+            mainUBoatScenePaneController.setActive();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,4 +12,5 @@ public class UBoatsServletsPaths {
     public static final String U_BOATS_LIST_SERVLET = FULL_SERVER_PATH + "/UBoatsList";
     public static final String GET_MACHINE_CONFIG_SERVLET = FULL_SERVER_PATH + "/machine/GetMachineConfig";
     public static final String SET_MACHINE_CONFIG_SERVLET = FULL_SERVER_PATH + "/machine/SetMachineConfig";
+    public static final String PROCESS_WORD_SERVLET = FULL_SERVER_PATH + "/machine/ProcessWord";
 }

@@ -5,6 +5,7 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridControl
 import DesktopUserInterface.MainScene.Common.AutoCompleteBox;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import Engine.Dictionary;
+import UBoatServletsPaths.UBoatsServletsPaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import okhttp3.HttpUrl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +54,19 @@ public class EncryptDecryptActionsGridController {
     }
 
     @FXML private void onDecryptionButtonClicked(ActionEvent event) {
-        bruteForceGridController.decodeFromDictionary(encryptedDecryptedWordText.getText());
+        //bruteForceGridController.decodeFromDictionary(encryptedDecryptedWordText.getText());
+        String wordToProcess = encryptedDecryptedWordText.getText();
+        if (wordToProcess.isEmpty()) {
+            return;
+        }
+
+        //noinspection ConstantConditions
+        String finalUrl = HttpUrl
+                .parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
+                .newBuilder()
+                .addQueryParameter("wordToProcess", wordToProcess)
+                .build()
+                .toString();
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
             bruteForceGridController.resetMachineState();

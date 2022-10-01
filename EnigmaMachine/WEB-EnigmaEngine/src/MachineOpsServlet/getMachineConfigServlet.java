@@ -17,7 +17,7 @@ import servletUtils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "SetMachineConfigServlet",urlPatterns = {"/machine/GetMachineConfig"})
+@WebServlet(name = "GetMachineConfigServlet",urlPatterns = {"/machine/GetMachineConfig"})
 public class getMachineConfigServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

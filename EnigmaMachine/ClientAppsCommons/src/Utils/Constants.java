@@ -10,4 +10,5 @@ public class Constants {
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static Gson GSON_INSTANCE = new Gson();
     public static final long REFRESH_RATE = 2000;
+    public static final String ACTION = "action";
 }
