@@ -3,11 +3,13 @@ package MainScene;
 import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
+import EnigmaMachineException.*;
 import LoginPane.UBoatLoginPaneController;
 import TopBorderPane.TopBorderPaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.Constants;
 import Utils.HttpClientUtil;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -56,6 +58,7 @@ public class MainUBoatScenePaneController {
         if(topBorderPane != null) {
             topBorderPaneController.setMainUBoatScenePaneController(this);
         }
+
         UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not()/*.or(isCodeConfigurationSet.not()*/);
     }
 
@@ -89,32 +92,53 @@ public class MainUBoatScenePaneController {
         Request request = new Request.Builder()
                 .url(UBoatsServletsPaths.FILE_UPLOADED_SERVLET)
                 .method("POST", body)
-                .addHeader("cookie", String.format("JSESSIONID=%s",currentSessionId))
+                .addHeader("Cookie", "JSESSIONID="+currentSessionId)
                 .build();
 
         Response response = client.newCall(request).execute();
-
-        try {
-
-            if(response.code() == 200) {
-                isMachineExsists.set(true);
-                topBorderPaneController.setMachineExists(true);
-                topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
-            }
-            else{
-                Platform.runLater(() -> {
-                    try {
-                        new ErrorDialog(new Exception(response.body().string()), "Error while uploading file");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Platform.runLater(() -> new ErrorDialog(e, "Error while uploading file"));
+        if(response.code() == 200) {
+            isMachineExsists.set(true);
+            topBorderPaneController.disableLoadMachineButton();
+            //new ErrorDialog(new Exception(response.body().string()),"Machine loaded successfully");
+            topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
         }
+        else {
+            new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
+        }
+       //String finalUrl = HttpUrl.parse(UBoatsServletsPaths.FILE_UPLOADED_SERVLET).
+       //        newBuilder()
+       //        .addQueryParameter("file", selectedFile.getAbsolutePath())
+       //        .build()
+       //        .toString();
+       //HttpClientUtil.runAsync(finalUrl, new Callback() {
+       //    @Override
+       //    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+       //        Platform.runLater(() -> {
+       //            new ErrorDialog(new Exception("Error while loading machine"), e.getMessage());
+       //        });
+       //    }
 
+       //    @Override
+       //    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+       //        if (response.code() == 200) {
+       //            Platform.runLater(() -> {
+       //                isMachineExsists.set(true);
+       //                try {
+       //                    new ErrorDialog(new Exception(response.body().string()), "Machine loaded successfully");
+       //                } catch (IOException e) {
+       //                    throw new RuntimeException(e);
+       //                }
+       //            });
+       //        } else {
+       //            Platform.runLater(() -> {
+       //                new ErrorDialog(new Exception(response.message()), "Cannot upload machine" );
+       //            });
+       //        }
+       //    }
+       //});
     }
+
+
 
     private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
@@ -147,6 +171,7 @@ public class MainUBoatScenePaneController {
         });
         ;
     }
+
 
     //updateHttpStatusLine("New request is launched for: " + finalUrl);
 

@@ -22,4 +22,5 @@ public class UBoatMachinePaneController {
             codeCalibrationPaneController.setUBoatMachinePaneController(this);
         }
     }
+
 }

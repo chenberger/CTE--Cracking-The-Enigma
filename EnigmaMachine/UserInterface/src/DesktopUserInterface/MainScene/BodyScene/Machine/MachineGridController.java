@@ -8,9 +8,11 @@ import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
 import MachineDetailsPane.MachineDetailsController;
+import MainScene.MainUBoatScenePaneController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import okhttp3.HttpUrl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class MachineGridController {
     @FXML private CurrentCodeConfigurationController currentCodeConfigurationGridController;
     @FXML private GridPane codeCalibrationGrid;
      private MainController mainController;
+
      private EngineManager enigmaMachineEngine;
     private Map<SkinType, String> skinPaths;
 
@@ -61,6 +64,7 @@ public class MachineGridController {
         this.mainController.addCurrentCodeConfigurationController(currentCodeConfigurationGridController);
     }
 
+
     public void setEngineManager(EngineManager enigmaMachineEngine) {
          //this.enigmaMachineEngine = enigmaMachineEngine;
          //this.codeCalibrationGridController.setEngineManager(enigmaMachineEngine);
@@ -69,6 +73,7 @@ public class MachineGridController {
     }
 
     public void setAutomaticCodeConfiguration() {
+
          try {
              enigmaMachineEngine.setSettingsAutomatically();
          }

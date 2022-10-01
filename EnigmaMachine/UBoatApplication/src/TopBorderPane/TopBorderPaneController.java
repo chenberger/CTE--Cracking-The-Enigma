@@ -31,4 +31,8 @@ public class TopBorderPaneController {
     public void setFileUploadedName(String name) {
         CurrentFilePathTextLabel.setText(name);
     }
+
+    public void disableLoadMachineButton() {
+        loadMachineButton.setDisable(true);
+    }
 }

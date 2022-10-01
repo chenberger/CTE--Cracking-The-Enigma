@@ -4,12 +4,14 @@ import Api.UpdateHttpLine;
 import CandidatesPane.UBoatCandidatesPaneController;
 import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import CodeCalibrationPane.CodeCalibrationController;
+import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
 import MainScene.MainUBoatScenePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -48,7 +50,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML private GridPane codeCalibration;
     @FXML private CodeCalibrationController codeCalibrationController;
     @FXML private VBox currentCodeConfigurationPane;
-    @FXML private CurrentCodeConfigurationController currentCodeConfigurationController;
+    @FXML private CurrentCodeConfigurationController currentCodeConfigurationPaneController;
     @FXML private AnchorPane uBoatCandidatesPane;
     @FXML private UBoatCandidatesPaneController uBoatCandidatesPaneController;
     @FXML private GridPane UBoatCompetitionPane;
@@ -65,8 +67,8 @@ public class UBoatCompetitionPaneController implements Closeable {
             encryptDecryptActionsGridController.setUBoatCompetitionPaneController(this);
             //TODO chen/erez: check why the above controller does not get loaded
         }
-        if(currentCodeConfigurationController != null){
-            currentCodeConfigurationController.setUBoatCompetitionPaneController(this);
+        if(currentCodeConfigurationPaneController != null){
+            currentCodeConfigurationPaneController.setUBoatCompetitionPaneController(this);
         }
         if(uBoatCandidatesPaneController != null){
             uBoatCandidatesPaneController.setUBoatCompetitionPaneController(this);
@@ -74,12 +76,19 @@ public class UBoatCompetitionPaneController implements Closeable {
         if(codeCalibrationController != null){
             codeCalibrationController.setUBoatCompetitionPaneController(this);
         }
+        //setHttpStatusUpdate((UpdateHttpLine.HttpStatusUpdate) this);
     }
     public UBoatCompetitionPaneController() {
         autoUpdate = new SimpleBooleanProperty();
         totalUsers = new SimpleIntegerProperty();
         UBoatName = "";
+
     }
+
+    private void setHttpStatusUpdate(UpdateHttpLine.HttpStatusUpdate httpStatusUpdate) {
+        this.httpStatusUpdate = httpStatusUpdate;
+    }
+
     public void setMainUBoatScenePaneController(MainUBoatScenePaneController mainUBoatScenePaneController) {
         this.mainUBoatScenePaneController = mainUBoatScenePaneController;
     }
@@ -93,6 +102,7 @@ public class UBoatCompetitionPaneController implements Closeable {
       //});
     }
     private void updateTeamsTable(List<UBoat> boats) {
+        new  ErrorDialog(new Exception("updateTeamsTable"), "updateTeamsTable");
         clearTeamsTable();
         getCurrentUBoat();
         UBoat currentBoat = boats.stream().filter(boat -> boat.getName().equals(UBoatName)).findFirst().orElse(null);
@@ -118,7 +128,7 @@ public class UBoatCompetitionPaneController implements Closeable {
         }
 
         teamsTableView.setItems(data);
-        teamsTableView.refresh();
+        //teamsTableView.refresh();;
     }
 
     private void getCurrentUBoat() {
@@ -148,7 +158,12 @@ public class UBoatCompetitionPaneController implements Closeable {
                     );
                 } else {
                     Platform.runLater(() -> {
-                        String responseBody = response.body().toString();
+                        String responseBody = null;
+                        try {
+                            responseBody = new Gson().fromJson(response.body().string(), String.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         UBoatName = responseBody;
                     });
 
@@ -173,10 +188,27 @@ public class UBoatCompetitionPaneController implements Closeable {
     public void startListRefresher() {
         alliesInBattleRefresher = new AlliesInBattleRefresher(
                 autoUpdate,
-                httpStatusUpdate::updateHttpLine,
                 this::updateTeamsTable);
         timer = new Timer();
         timer.schedule(alliesInBattleRefresher, REFRESH_RATE, REFRESH_RATE);
+        addRowToTeams();
+    }
+
+    private void addRowToTeams() {
+        teamNameCol.setCellValueFactory(new PropertyValueFactory<>("Team Name"));
+        numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<>("Number Of Agents"));
+        taskSizeCol.setCellValueFactory(new PropertyValueFactory<>("Task Size"));
+
+        System.out.println("addRowToTeams");
+        ObservableList<List<String>> data = teamsTableView.getItems();
+        List<String> row = new ArrayList<>();
+
+        row.add("Team Name2");
+        row.add("Number Of Agents2");
+        row.add("Task Size2");
+        data.add(row);
+        teamsTableView.setItems(data);
+        teamsTableView.refresh();
     }
 
     @Override
@@ -191,6 +223,10 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     public void setActive() {
         startListRefresher();
+    }
+
+    public void setNewConfiguration(String currentCodeConfiguration) {
+        currentCodeConfigurationPaneController.setCodeConfiguration(currentCodeConfiguration);
     }
 
 }

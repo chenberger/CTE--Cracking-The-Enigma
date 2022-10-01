@@ -1,5 +1,7 @@
 package MachineOpsServlet;
 
+import Engine.EngineManager;
+import Engine.UBoatManager.UBoat;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
 import com.google.gson.Gson;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import servletUtils.ServletUtils;
+import servletUtils.SessionUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,9 +21,13 @@ public class SetMachineConfigServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
         try {
-            processRequest(request, response);
+            if(request.getParameter("action").toString().equals("set_machine_config_automatically")){
+                setMachineConfigAutomatically(request,response);
+            }else {
+                processRequest(request, response);
+            }
         } catch (ReflectorSettingsException e) {
             throw new RuntimeException(e);
         } catch (RotorsInUseSettingsException e) {
@@ -37,15 +44,35 @@ public class SetMachineConfigServlet extends HttpServlet {
             throw new RuntimeException(e);
         } catch (PluginBoardSettingsException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    private void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
+
+
+        EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
+        engine.setSettingsAutomatically();
+        Gson gson = new Gson();
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().print(gson.toJson(engine.displaySpecifications().getCurrentMachineSettings()));
+        response.getWriter().flush();
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try {
             Gson gson = new Gson();
-            List<Sector> sectors = gson.fromJson(request.getParameter("sectors"), List.class);
-            ServletUtils.getUBoatManager(getServletContext()).getUBoat(request.getParameter("username")).getEngineManager().initializeSettings(sectors);
+            EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
+            List<Sector> sectors = gson.fromJson(request.getParameter("action"), List.class);
+            EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
+            engineManager.initializeSettings(sectors);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(gson.toJson(engine.displaySpecifications().getCurrentMachineSettings()));
+            response.getWriter().flush();
+
         } catch (SettingsNotInitializedException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println(e.getMessage());

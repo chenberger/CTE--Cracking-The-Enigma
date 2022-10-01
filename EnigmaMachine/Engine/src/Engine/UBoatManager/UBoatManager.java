@@ -30,10 +30,7 @@ public class UBoatManager {
 
     public void addUBoat(String username, EnigmaMachine currentEnigmaMachine, CTEBattlefield battleField) throws CloneNotSupportedException {
 
-        uBoats.put(username, new UBoat(username,battleField,
-                new EnigmaMachine(currentEnigmaMachine.cloneRotors(),
-                        currentEnigmaMachine.cloneReflectors(), currentEnigmaMachine.cloneKeyboard(),
-                        currentEnigmaMachine.getNumOfActiveRotors())));
+        uBoats.put(username, new UBoat(username,battleField, currentEnigmaMachine));
         //uBoatsBattleFields.put(username, new BattleField(battleField.getBattleName(),battleField.getLevel(),battleField.getAllies()));
     }
     public UBoat getUBoat(String username) {
