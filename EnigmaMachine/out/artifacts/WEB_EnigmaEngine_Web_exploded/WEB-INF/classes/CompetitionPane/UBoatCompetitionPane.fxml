@@ -65,7 +65,7 @@
                                  <content>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Button minHeight="30.0" minWidth="110.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="120.0" text="Log Out" textFill="#d30000" HBox.hgrow="ALWAYS">
+                                          <Button fx:id="logOutButton" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="33.0" prefWidth="120.0" text="Log Out" textFill="#d30000" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets left="50.0" top="10.0" />
                                              </HBox.margin>
@@ -73,7 +73,7 @@
                                                 <Font name="Arial" size="18.0" />
                                              </font>
                                           </Button>
-                                          <Button alignment="CENTER" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="120.0" text="Ready" textFill="#2da10a" HBox.hgrow="ALWAYS">
+                                          <Button fx:id="readyButton" alignment="CENTER" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onReadyButtonClicked" prefHeight="33.0" prefWidth="120.0" text="Ready" textFill="#2da10a" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets left="25.0" top="10.0" />
                                              </HBox.margin>

@@ -46,4 +46,8 @@ public class CurrentCodeConfigurationController {
     public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
         this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
     }
+
+    public void setCurrentConfig() {
+
+    }
 }

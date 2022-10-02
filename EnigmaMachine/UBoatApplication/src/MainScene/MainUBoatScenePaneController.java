@@ -29,6 +29,7 @@ import java.util.List;
 public class MainUBoatScenePaneController {
 
     private String currentSessionId;
+
     @FXML private GridPane UBoatLoginPane;
     @FXML private UBoatLoginPaneController UBoatLoginPaneController;
     @FXML private AnchorPane topBorderPane;
@@ -101,6 +102,7 @@ public class MainUBoatScenePaneController {
             topBorderPaneController.disableLoadMachineButton();
             //new ErrorDialog(new Exception(response.body().string()),"Machine loaded successfully");
             topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
+            UBoatCompetitionPaneController.setDictionary();
         }
         else {
             new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
@@ -139,7 +141,9 @@ public class MainUBoatScenePaneController {
     }
 
 
-
+    public void setNewConfiguration(String configuration){
+        UBoatCompetitionPaneController.setNewConfiguration(configuration);
+    }
     private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()

@@ -1,6 +1,7 @@
 package Engine.UBoatManager;
 
 import Engine.BattleField;
+import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import Jaxb.Schema.Generated.CTEBattlefield;
 
@@ -28,9 +29,9 @@ public class UBoatManager {
         return uBoats.values().stream().anyMatch(uBoat -> uBoat.getBattleField().getBattleName().equals(battleName));
     }
 
-    public void addUBoat(String username, EnigmaMachine currentEnigmaMachine, CTEBattlefield battleField) throws CloneNotSupportedException {
+    public void addUBoat(String username, EnigmaMachine currentEnigmaMachine, CTEBattlefield battleField, Dictionary dictionary) throws CloneNotSupportedException {
 
-        uBoats.put(username, new UBoat(username,battleField, currentEnigmaMachine));
+        uBoats.put(username, new UBoat(username,battleField, currentEnigmaMachine, dictionary));
         //uBoatsBattleFields.put(username, new BattleField(battleField.getBattleName(),battleField.getLevel(),battleField.getAllies()));
     }
     public UBoat getUBoat(String username) {

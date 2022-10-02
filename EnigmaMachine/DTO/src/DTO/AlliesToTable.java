@@ -1,36 +1,38 @@
 package DTO;
 
+import java.util.List;
+
 public class AlliesToTable {
-    private String teamName;
-    private Integer numberOfAgents;
-    private Integer TaskSize;
+    private List<String> teams;
+    private List<Integer> numberOfAgentsForEachAllie;
+    private List<Long> TasksSize;
 
     private String boatName;
 
-    AlliesToTable(String teamName, Integer numberOfAgents, Integer TaskSize, String boatName) {
-        this.teamName = teamName;
-        this.numberOfAgents = numberOfAgents;
-        this.TaskSize = TaskSize;
+    public AlliesToTable(List<String> teams, List<Integer> numberOfAgentsForEachAllie, List<Long> TasksSize, String boatName) {
+        this.teams = teams;
+        this.numberOfAgentsForEachAllie = numberOfAgentsForEachAllie;
+        this.TasksSize = TasksSize;
         this.boatName = boatName;
     }
     //region getters and setters
-    public String getTeamName() {
-        return teamName;
+    public List<String> getTeams() {
+        return teams;
     }
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setTeams(List<String> teams) {
+        this.teams = teams;
     }
-    public Integer getNumberOfAgents() {
-        return numberOfAgents;
+    public List<Integer> getNumberOfAgentsForEachAllie() {
+        return numberOfAgentsForEachAllie;
     }
-    public void setNumberOfAgents(Integer numberOfAgents) {
-        this.numberOfAgents = numberOfAgents;
+    public void setNumberOfAgentsForEachAllie(List<Integer> numberOfAgentsForEachAllie) {
+        this.numberOfAgentsForEachAllie = numberOfAgentsForEachAllie;
     }
-    public Integer getTaskSize() {
-        return TaskSize;
+    public List<Long> getTasksSize() {
+        return TasksSize;
     }
-    public void setTaskSize(Integer taskSize) {
-        TaskSize = taskSize;
+    public void setTasksSize(List<Long> tasksSize) {
+        TasksSize = tasksSize;
     }
     public String getBoatName() {
         return boatName;

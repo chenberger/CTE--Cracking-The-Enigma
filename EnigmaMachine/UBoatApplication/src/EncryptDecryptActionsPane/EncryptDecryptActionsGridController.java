@@ -4,8 +4,12 @@ import CompetitionPane.UBoatCompetitionPaneController;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController;
 import DesktopUserInterface.MainScene.Common.AutoCompleteBox;
 import DesktopUserInterface.MainScene.Common.SkinType;
-import Engine.Dictionary;
+import DesktopUserInterface.MainScene.ErrorDialog;
+import EnigmaMachineException.*;
 import UBoatServletsPaths.UBoatsServletsPaths;
+import Utils.HttpClientUtil;
+import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,11 +17,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static Utils.Constants.ACTION;
 
 public class EncryptDecryptActionsGridController {
     private BruteForceGridController bruteForceGridController;
@@ -35,6 +48,7 @@ public class EncryptDecryptActionsGridController {
 
     @FXML public void initialize() {
         autoCompleteDictionaryBox = new AutoCompleteBox<String>(dictionarySearchComboBox);
+        //setDictionarySearchComboBox();
         initializeSkins();
     }
 
@@ -62,14 +76,38 @@ public class EncryptDecryptActionsGridController {
 
         //noinspection ConstantConditions
         String finalUrl = HttpUrl
-                .parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
+                .parse(UBoatsServletsPaths.PROCESS_WORD_SERVLET)
                 .newBuilder()
                 .addQueryParameter("wordToProcess", wordToProcess)
                 .build()
                 .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                       new ErrorDialog(new Exception("Error, Error while trying to decrypt word: " + wordToProcess) , "Error"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception("Error, Error while trying to decrypt word: " + wordToProcess) , "Error");
+                }
+                else{
+                    String decryptedWord = response.body().string();
+                    Platform.runLater(() -> {
+                        processedWordText.setText(decryptedWord);
+                        uBoatCompetitionPaneController.getCurrentConfig();
+                        //uBoatCompetitionPaneController.addDecryptedWord(decryptedWord);
+                    });
+                }
+            }
+        });
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
-            bruteForceGridController.resetMachineState();
+            //bruteForceGridController.resetMachineState();
+            resetMachineState();
     }
 
     public void setProcessedString(String processedString) {
@@ -80,12 +118,85 @@ public class EncryptDecryptActionsGridController {
         encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + dictionarySearchComboBox.getEditor().getText());
         dictionarySearchComboBox.getEditor().setText("");
     }
-
-    public void setDictionary(Object source, Dictionary dictionary) {
-        this.autoCompleteDictionaryBox.setData(dictionary.getDictionary());
+    public void setDictionarySearchComboBox() {
+        setAutoCompleteBoxDictionary();
         dictionarySearchComboBox.setDisable(false);
         addWordFromDictButton.setDisable(false);
     }
+
+    private void setAutoCompleteBoxDictionary() {
+
+        String finalUrl = HttpUrl
+                .parse(UBoatsServletsPaths.DICTIONARY_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getDictionary")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        new ErrorDialog(new Exception("Error, Error while trying to get dictionary") , "Error"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception("Error, Error while trying to get dictionary") , "Error");
+                }
+                else{
+                    String dict = response.body().string();
+                    Platform.runLater(() -> {
+                        Gson gson = new Gson();
+                        System.out.println("dictionary got " );
+                        autoCompleteDictionaryBox.setData(gson.fromJson(dict, Set.class));
+                    });
+                }
+            }
+        });
+    }
+    private void resetMachineState(){
+
+        String finalUrl = HttpUrl
+                .parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "resetMachineState")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Platform.runLater(() ->
+                            new ErrorDialog(new Exception("Error, Error while trying to reset machine state" + e) , "Error"));
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code() != 200) {
+                        new ErrorDialog(new Exception("Error, Error while trying to reset machine state") , "Error");
+                    }
+                    else{
+                        String dict = response.body().string();
+                        Platform.runLater(() -> {
+                            Gson gson = new Gson();
+                            System.out.println("success in reset machine state " );
+                            try {
+                                uBoatCompetitionPaneController.setNewConfiguration(gson.fromJson(response.body().string(), String.class));
+                            } catch (IOException e) {
+                                new ErrorDialog(new Exception("Error, Error while trying to reset machine state, " + e) , "Error");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    //public void setDictionary(Object source, Dictionary dictionary) {
+    //    this.autoCompleteDictionaryBox.setData(dictionary.getDictionary());
+    //    dictionarySearchComboBox.setDisable(false);
+    //    addWordFromDictButton.setDisable(false);
+    //}
 
     public void setSkin(SkinType skinType) {
         encryptDecryptActionGrid.getStylesheets().clear();

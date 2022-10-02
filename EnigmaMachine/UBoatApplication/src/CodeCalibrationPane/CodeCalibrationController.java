@@ -9,6 +9,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
+import MainScene.MainUBoatScenePaneController;
 import UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
@@ -36,6 +37,7 @@ public class CodeCalibrationController {
     @FXML private GridPane CodeCalibrationGrid;
     @FXML private Button setRandomCodeButton;
     @FXML private Button setManuallyCodeButton;
+    private MainUBoatScenePaneController mainUBoatScenePaneController;
     private MachineGridController machineGridController;
     private ManuallyCodeInitializerScene manuallyCodeInitializerScene;
     //private EngineManager engineManager;
@@ -61,7 +63,9 @@ public class CodeCalibrationController {
     public void setMachineGridController(MachineGridController machineGridController) {
         this.machineGridController = machineGridController;
     }
-
+    public void setMainUBoatScenePaneController(MainUBoatScenePaneController mainUBoatScenePaneController) {
+        this.mainUBoatScenePaneController = mainUBoatScenePaneController;
+    }
     //public void setEngineManager(EngineManager engineManager) {
     //    this.engineManager = engineManager;
     //}

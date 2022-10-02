@@ -36,7 +36,7 @@ public class FileUploadedServlet extends HttpServlet {
      response.setCharacterEncoding("UTF-8");
      PrintWriter out = response.getWriter();
 
-     String name = "chen";//SessionUtils.getUsername(request) != null ? SessionUtils.getUsername(request) : "Guest";
+     String name = SessionUtils.getUsername(request) != null ? SessionUtils.getUsername(request) : "Guest";
      Collection<Part> parts = request.getParts();
      for(Part part : parts) {
          InputStream inputStream = part.getInputStream();
@@ -53,7 +53,7 @@ public class FileUploadedServlet extends HttpServlet {
                  ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
 
                  ServletUtils.getUBoatManager(request.getServletContext()).addUBoat(name, ServletUtils.getEngineManager(request.getServletContext()).getCurrentEnigmaMachine()
-                 , cteEnigma.getCTEBattlefield());
+                 , cteEnigma.getCTEBattlefield(), ServletUtils.getEngineManager(request.getServletContext()).getDictionaryObject());
                  response.setStatus(HttpServletResponse.SC_OK);
 
                  out.println("File uploaded successfully by" + " " + name);

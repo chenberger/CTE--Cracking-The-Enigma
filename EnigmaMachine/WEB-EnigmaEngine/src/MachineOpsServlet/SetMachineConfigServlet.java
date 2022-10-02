@@ -16,6 +16,8 @@ import servletUtils.SessionUtils;
 import java.io.IOException;
 import java.util.List;
 
+import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
+
 @WebServlet(name = "SetMachineConfigServlet",urlPatterns = {"/machine/SetMachineConfig"})
 public class SetMachineConfigServlet extends HttpServlet {
     @Override
@@ -23,10 +25,14 @@ public class SetMachineConfigServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         try {
-            if(request.getParameter("action").toString().equals("set_machine_config_automatically")){
-                setMachineConfigAutomatically(request,response);
-            }else {
-                processRequest(request, response);
+            if(request.getParameter("action").toString().equals("set_machine_config_automatically")) {
+                setMachineConfigAutomatically(request, response);
+            }
+            else if(request.getParameter("action").toString().equals("reset_machine_config")) {
+                resetMachineConfig(request, response);
+            }
+            else {
+                setMachineConfigManually(request, response);
             }
         } catch (ReflectorSettingsException e) {
             throw new RuntimeException(e);
@@ -50,19 +56,28 @@ public class SetMachineConfigServlet extends HttpServlet {
 
     }
 
-    private void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
-
-
-        EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
-        engine.setSettingsAutomatically();
-        Gson gson = new Gson();
-
+    private void resetMachineConfig(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, CloneNotSupportedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, ServletException, IOException {
+        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
+        EngineManager engine = uBoat.getEngineManager();
+        engine.resetSettings();
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print(gson.toJson(engine.displaySpecifications().getCurrentMachineSettings()));
-        response.getWriter().flush();
+        request.getRequestDispatcher(GET_MACHINE_CONFIG_SERVLET).include(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    private void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
+
+        synchronized (this) {
+            EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
+            engine.setSettingsAutomatically();
+            Gson gson = new Gson();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(gson.toJson(engine.displaySpecifications().getCurrentMachineSettings()));
+            response.getWriter().flush();
+        }
+    }
+
+    private void setMachineConfigManually(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try {
             Gson gson = new Gson();
             EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
