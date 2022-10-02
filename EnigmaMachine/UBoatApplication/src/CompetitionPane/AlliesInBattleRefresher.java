@@ -1,9 +1,9 @@
 package CompetitionPane;
 
 import DTO.AlliesToTable;
-import Engine.UBoatManager.UBoat;
 import Utils.HttpClientUtil;
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -16,21 +16,20 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static UBoatServletsPaths.UBoatsServletsPaths.ALLIES_LIST_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
 import static Utils.Constants.GSON_INSTANCE;
 
 public class AlliesInBattleRefresher extends TimerTask {
 
     //private final Consumer<String> httpRequestLoggerConsumer;
-    private final Consumer<List<UBoat>> uBoatListConsumer;
+    private final Consumer<AlliesToTable> alliesToTableConsumer;
     private int requestNumber;
     private final BooleanProperty shouldUpdate;
 
-    public AlliesInBattleRefresher(BooleanProperty shouldUpdate/*, Consumer<String> httpRequestLoggerConsumer*/, Consumer<List<UBoat>> uBoatsListConsumer) {
+    public AlliesInBattleRefresher(BooleanProperty shouldUpdate/*, Consumer<String> httpRequestLoggerConsumer*/, Consumer<AlliesToTable> alliesToTableConsumer) {
         this.shouldUpdate = shouldUpdate;
         //this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
-        this.uBoatListConsumer = uBoatsListConsumer;
+        this.alliesToTableConsumer = alliesToTableConsumer;
         requestNumber = 0;
     }
 
@@ -54,17 +53,26 @@ public class AlliesInBattleRefresher extends TimerTask {
             //TODO chen: make sure that this is the syntax to transform u boat list from the server to the client
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonArrayOfUBoats = response.body().string();
-                System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUBoats);
-                if(jsonArrayOfUBoats.trim().equals("[]")){
-                    System.out.println("No UBoats in the battle");
+                String jsonAlliesToTable = response.body().string();
+                System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonAlliesToTable);
+                if(jsonAlliesToTable.trim().equals("[]") || jsonAlliesToTable.trim().equals("") || response.code() != 200){
+                    System.out.println("No Allies in the battle");
                 }
                 else {
-                    UBoat[] uBoats = GSON_INSTANCE.fromJson(jsonArrayOfUBoats, UBoat[].class);
-                    System.out.println("UBoats in the battle: " + jsonArrayOfUBoats);
-                    uBoatListConsumer.accept(Arrays.asList(uBoats));
+                    AlliesToTable alliesToTable = extractAlliesToTableFromJson(jsonAlliesToTable);
+                    System.out.println("UBoats in the battle: " + jsonAlliesToTable);
+                    alliesToTableConsumer.accept(alliesToTable);
                 }
             }
         });
+    }
+
+    private AlliesToTable extractAlliesToTableFromJson(String jsonAlliesToTable) {
+        JsonObject jsonObject = JsonParser.parseString(jsonAlliesToTable).getAsJsonObject();
+        List<String> alliesNames = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("teams"), String[].class));
+        List<Integer> numberOfAgentsForEachAllie = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("numberOfAgentsForEachAllie"), Integer[].class));
+        List<Long> tasksSize = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("TasksSize"), Long[].class));
+        String uBoatName = jsonObject.get("boatName").getAsString();
+        return new AlliesToTable(alliesNames, numberOfAgentsForEachAllie, tasksSize, uBoatName);
     }
 }

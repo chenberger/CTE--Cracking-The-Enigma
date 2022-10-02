@@ -4,6 +4,7 @@ import Api.UpdateHttpLine;
 import CandidatesPane.UBoatCandidatesPaneController;
 import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import CodeCalibrationPane.CodeCalibrationController;
+import DTO.AlliesToTable;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
@@ -19,7 +20,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -36,6 +39,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
+import static Utils.Constants.ACTION;
 import static Utils.Constants.REFRESH_RATE;
 
 public class UBoatCompetitionPaneController implements Closeable {
@@ -47,6 +52,8 @@ public class UBoatCompetitionPaneController implements Closeable {
     private final IntegerProperty totalUsers;
     private UpdateHttpLine.HttpStatusUpdate httpStatusUpdate;
     private MainUBoatScenePaneController mainUBoatScenePaneController;
+    @FXML private Button logOutButton;
+    @FXML private Button readyButton;
     @FXML private GridPane codeCalibration;
     @FXML private CodeCalibrationController codeCalibrationController;
     @FXML private VBox currentCodeConfigurationPane;
@@ -61,6 +68,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML private javafx.scene.control.TableColumn<List<String>, String> teamNameCol;
     @FXML private javafx.scene.control.TableColumn<List<String>, String> numOfAgentsCol;
     @FXML private javafx.scene.control.TableColumn<List<String>, String> taskSizeCol;
+    private SimpleBooleanProperty isReady;
 
     @FXML public void initialize(){
         if(encryptDecryptActionsGridController != null){
@@ -76,11 +84,12 @@ public class UBoatCompetitionPaneController implements Closeable {
         if(codeCalibrationController != null){
             codeCalibrationController.setUBoatCompetitionPaneController(this);
         }
-        //setHttpStatusUpdate((UpdateHttpLine.HttpStatusUpdate) this);
+        readyButton.disableProperty().bind(isReady.not());
     }
     public UBoatCompetitionPaneController() {
         autoUpdate = new SimpleBooleanProperty();
         totalUsers = new SimpleIntegerProperty();
+        this.isReady = new SimpleBooleanProperty(false);
         UBoatName = "";
 
     }
@@ -101,14 +110,14 @@ public class UBoatCompetitionPaneController implements Closeable {
       //    totalUsers.set(usersNames.size());
       //});
     }
-    private void updateTeamsTable(List<UBoat> boats) {
+    private void updateTeamsTable(AlliesToTable alliesToTable) {
         new  ErrorDialog(new Exception("updateTeamsTable"), "updateTeamsTable");
         clearTeamsTable();
-        getCurrentUBoat();
-        UBoat currentBoat = boats.stream().filter(boat -> boat.getName().equals(UBoatName)).findFirst().orElse(null);
-        List<String> teams = currentBoat.getBattleField().getTeams();
-        List<String> numOfAgentsList = getNumOfAgentsFromAllAllies(currentBoat.getBattleField().getAlliesInBattle());
-        List<Long> taskSize = currentBoat.getBattleField().getAlliesInBattle().stream().map(Allie::getTaskSize).collect(Collectors.toList());
+
+        String currentUBoatName = alliesToTable.getBoatName();
+        List<String> teams = alliesToTable.getTeams();
+        List<Integer> numOfAgentsList = alliesToTable.getNumberOfAgentsForEachAllie();
+        List<Long> taskSize = alliesToTable.getTasksSize();
 
         javafx.scene.control.TableColumn<List<String>, String> teamsCol = new javafx.scene.control.TableColumn<>("Team Name");
         javafx.scene.control.TableColumn<List<String>, String> numOfAgentsCol = new javafx.scene.control.TableColumn<>("Number Of Agents");
@@ -122,15 +131,40 @@ public class UBoatCompetitionPaneController implements Closeable {
         for (int i = 0; i < teams.size(); i++) {
             List<String> row = new ArrayList<>();
             row.add(teams.get(i));
-            row.add(numOfAgentsList.get(i));
+            row.add(numOfAgentsList.get(i).toString());
             row.add(taskSize.get(i).toString());
             data.add(row);
         }
 
         teamsTableView.setItems(data);
-        //teamsTableView.refresh();;
+        teamsTableView.refresh();
     }
+    public void getCurrentMachineConfiguration(){
+        String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getMachineConfiguration")
+                .build().toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(e, "Failed to get machine configuration");
+            }
 
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseStr = response.body().string();
+                if (response.isSuccessful()) {
+                    MachineDetails machineConfiguration = new Gson().fromJson(responseStr, MachineDetails.class);
+                    Platform.runLater(() -> {
+                        currentCodeConfigurationPaneController.setCodeConfiguration(machineConfiguration.getCurrentMachineSettings());
+                        //currentCodeConfigurationPaneController.updateMachineConfiguration();
+                    });
+                } else {
+                    new ErrorDialog(new Exception(responseStr), "Failed to get machine configuration");
+                }
+            }
+        });
+    }
     private void getCurrentUBoat() {
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.U_BOATS_LIST_SERVLET)
@@ -229,4 +263,17 @@ public class UBoatCompetitionPaneController implements Closeable {
         currentCodeConfigurationPaneController.setCodeConfiguration(currentCodeConfiguration);
     }
 
+    public void setDictionary() {
+        encryptDecryptActionsGridController.setDictionarySearchComboBox();
+    }
+
+    public void getCurrentConfig() {
+        currentCodeConfigurationPaneController.setCurrentConfig();
+    }
+
+    @FXML public void onReadyButtonClicked(ActionEvent actionEvent) {
+    }
+
+    @FXML public void onLogOutButtonClicked(ActionEvent actionEvent) {
+    }
 }

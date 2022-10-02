@@ -35,15 +35,14 @@ public class getMachineConfigServlet extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
-        if(request.getParameter("action").equals("displaySpecifications")){
-            MachineDetails machineDetails = engine.displaySpecifications();
-            response.setStatus(HttpServletResponse.SC_OK);
-            Gson gson = new Gson();
-            String jsonResponse = gson.toJson(machineDetails);
-            try (PrintWriter out = response.getWriter()) {
-                out.print(jsonResponse);
-                out.flush();
-            }
+        MachineDetails machineDetails = engine.displaySpecifications();
+        response.setStatus(HttpServletResponse.SC_OK);
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(machineDetails);
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
         }
+
     }
 }

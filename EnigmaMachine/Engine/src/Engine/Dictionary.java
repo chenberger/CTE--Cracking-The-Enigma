@@ -13,6 +13,16 @@ public class Dictionary {
         this.words = new HashSet<>();
         this.excludeChars = new HashSet<>();
     }
+    public Dictionary(Set<String> words, Set<Character> excludeChars) {
+        this.words = words;
+        this.excludeChars = excludeChars;
+    }
+    public Set<String> cloneWords() {
+        return new HashSet<>(words);
+    }
+    public Set<Character> cloneExcludeChars() {
+        return new HashSet<>(excludeChars);
+    }
     public void setDictionary(String words, String excludeChars){
         this.words.clear();
         this.excludeChars.clear();
@@ -30,6 +40,9 @@ public class Dictionary {
 
     public Set<String> getDictionary() {
         return words;
+    }
+    public Set<Character> getExcludeChars() {
+        return excludeChars;
     }
 
     public List<String> validateWordsAfterCleanExcludeChars(List<String> wordsToCheck) throws WordNotValidInDictionaryException {

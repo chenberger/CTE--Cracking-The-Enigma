@@ -23,13 +23,26 @@ public class ProcessWordServlet extends HttpServlet {
                     .getUBoat(SessionUtils.getUsername(request)).getEngineManager();
             String processedWord = engineManager.processInputsFromDictionary(wordToProcess);
             Gson gson = new Gson();
-            String json = gson.toJson(processedWord);
+            String processedWordWithSpecialChars = getProcessedWordWithSpecialChars(processedWord);
+            String json = gson.toJson(processedWordWithSpecialChars);
             out.println(json);
             out.flush();
-            
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getProcessedWordWithSpecialChars(String processedWord) {
+        StringBuilder processedWordWithSpecialChars = new StringBuilder();
+        for (int i = 0; i < processedWord.length(); i++) {
+            if (processedWord.charAt(i) == '\'') {
+                processedWordWithSpecialChars.append("\'");
+            } else {
+                processedWordWithSpecialChars.append(processedWord.charAt(i));
+            }
+        }
+        return processedWordWithSpecialChars.toString();
     }
 
 }

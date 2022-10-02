@@ -58,4 +58,5 @@ public class AutoCompleteBox<T> implements EventHandler{
         this.data = new HashSet<>(data);
         setItems();
     }
+
 }

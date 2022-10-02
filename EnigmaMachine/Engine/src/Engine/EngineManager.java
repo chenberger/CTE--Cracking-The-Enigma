@@ -261,7 +261,9 @@ public class EngineManager implements MachineOperations, Serializable {
         EnigmaMachine clonedMachine = new EnigmaMachine(enigmaMachine.cloneRotors(), enigmaMachine.cloneReflectors(), enigmaMachine.cloneKeyboard(), enigmaMachine.getNumOfActiveRotors());
         return clonedMachine;
     }
-
+    public void setDictionary(Dictionary dictionary){
+        this.dictionary = dictionary;
+    }
     private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
         AtomicReference<Boolean> needToThrowException = new AtomicReference<>(false);
         StringBuilder exceptionMessage = new StringBuilder();
