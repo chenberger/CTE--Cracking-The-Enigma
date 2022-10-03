@@ -15,8 +15,8 @@ public class AgentsManager {
         return agents.containsKey(usernameFromParameter);
     }
 
-    public void addAgent(String usernameFromParameter, String allieTeam, int numberOfThreads, long tasksClonedFromServerEachTime) {
-        //agents.put(usernameFromParameter, new Agent());
+    public void addAgent(String usernameFromParameter) {
+        agents.put(usernameFromParameter, new Agent(usernameFromParameter));
     }
 
     public Agent getAgent(String parameter) {

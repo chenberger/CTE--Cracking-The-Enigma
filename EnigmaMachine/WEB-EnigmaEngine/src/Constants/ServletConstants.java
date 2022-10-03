@@ -17,4 +17,6 @@ public class ServletConstants {
     public static final String NUMBER_OF_THREADS = "numberOfThreads";
     public static final String NUMBER_OF_PULLED_TASKS = "numberOfPulledTasks";
 
+    public static final String USERNAME = "username";
+    public static final String AgentName = "AgentName";
 }

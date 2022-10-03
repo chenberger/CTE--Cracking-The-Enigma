@@ -33,7 +33,7 @@
                           <columns>
                             <TableColumn fx:id="teamNameCol" prefWidth="120.0" text="Team Name" />
                             <TableColumn fx:id="numOfAgentsCol" prefWidth="150.0" text="Number Of Agents" />
-                              <TableColumn fx:id="taskSizeCol" prefWidth="120.0" text="Task Size" />
+                              <TableColumn fx:id="taskSizeCol" prefWidth="130.0" text="Task Size" />
                           </columns>
                            <padding>
                               <Insets bottom="10.0" />

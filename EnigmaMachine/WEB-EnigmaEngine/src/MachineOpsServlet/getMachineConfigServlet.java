@@ -3,7 +3,6 @@ package MachineOpsServlet;
 import DTO.MachineDetails;
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
-import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.MachineNotExistsException;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -24,7 +23,7 @@ public class getMachineConfigServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         try {
-            processRequest(request, response);
+            getCurrentMachineConfig(request, response);
         } catch (MachineNotExistsException e) {
             throw new RuntimeException(e);
         } catch (CloneNotSupportedException e) {
@@ -32,13 +31,13 @@ public class getMachineConfigServlet extends HttpServlet {
         }
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
+    private void getCurrentMachineConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
         response.setStatus(HttpServletResponse.SC_OK);
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(machineDetails);
+        String jsonResponse = gson.toJson(machineDetails.getCurrentMachineSettings());
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
             out.flush();

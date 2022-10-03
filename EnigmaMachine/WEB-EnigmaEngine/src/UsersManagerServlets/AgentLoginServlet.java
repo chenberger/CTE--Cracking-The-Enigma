@@ -12,6 +12,8 @@ import servletUtils.SessionUtils;
 
 import java.io.IOException;
 
+import static Constants.ServletConstants.AGENT_NAME;
+
 @WebServlet(name = "AgentLoginServlet", urlPatterns = "/agents/Login")
 public class AgentLoginServlet extends HttpServlet {
     @Override
@@ -26,13 +28,14 @@ public class AgentLoginServlet extends HttpServlet {
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
         if (agentNameFromSession == null) {
             //user is not logged in yet
-            String usernameFromParameter = request.getParameter("AgentName");
-            String allieTeamName = request.getParameter("AllieTeamName");
-            int numberOfWorkingThreads = Integer.parseInt(request.getParameter("NumberOfWorkingThreads"));
-            long numberOfClonedTasks = Long.parseLong(request.getParameter("NumberOfClonedTasks"));
+            String usernameFromParameter = request.getParameter(AGENT_NAME);
+            //String allieTeamName = request.getParameter("AllieTeamName");
+            //int numberOfWorkingThreads = Integer.parseInt(request.getParameter("NumberOfWorkingThreads"));
+            //long numberOfClonedTasks = Long.parseLong(request.getParameter("NumberOfClonedTasks"));
 
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //response.sendRedirect(SIGN_UP_URL);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
@@ -49,8 +52,8 @@ public class AgentLoginServlet extends HttpServlet {
                     else {
 
                         //alliesManager.addAllie(usernameFromParameter);
-                        agentsManager.addAgent(usernameFromParameter, allieTeamName, numberOfWorkingThreads, numberOfClonedTasks);
-                        request.getSession(true).setAttribute("AgentName", usernameFromParameter);
+                        agentsManager.addAgent(usernameFromParameter);
+                        request.getSession(true).setAttribute(AGENT_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);

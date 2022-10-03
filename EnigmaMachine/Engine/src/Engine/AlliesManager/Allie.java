@@ -6,6 +6,7 @@ import BruteForce.DifficultyLevel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Allie {
     private String Name;
@@ -17,10 +18,10 @@ public class Allie {
 
     private DifficultyLevel level;
     public Allie(String name){
-        Name = name;
-        agents = new ArrayList<>();
-        decryptionManager = new DecryptionManager();
-        this.taskSize = 0;
+        this.Name = name;
+        this.agents = new ArrayList<>();
+        this.decryptionManager = new DecryptionManager();
+        this.taskSize = 1000;
     }
     public void setLevel(String level) {
         this.level = DifficultyLevel.valueOf(level.toUpperCase());
@@ -46,6 +47,9 @@ public class Allie {
 
     public List<Agent> getAgents() {
         return agents;
+    }
+    public List<String> getAgentsNames(){
+        return agents.stream().map(Agent::getAgentName).collect(Collectors.toList());
     }
 
     public long getTaskSize() {
