@@ -61,7 +61,7 @@ public class SetMachineConfigServlet extends HttpServlet {
         EngineManager engine = uBoat.getEngineManager();
         engine.resetSettings();
         response.setStatus(HttpServletResponse.SC_OK);
-        request.getRequestDispatcher(GET_MACHINE_CONFIG_SERVLET).include(request, response);
+        //request.getRequestDispatcher(GET_MACHINE_CONFIG_SERVLET).include(request, response);
     }
 
     private void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
@@ -81,7 +81,7 @@ public class SetMachineConfigServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
             EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
-            List<Sector> sectors = gson.fromJson(request.getParameter("action"), List.class);
+            List<Sector> sectors = getListOfSectorsFromJson(request.getParameter("sectors"));
             EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
             engineManager.initializeSettings(sectors);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -92,5 +92,10 @@ public class SetMachineConfigServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println(e.getMessage());
         }
+    }
+    //TODO chen: generate the json into list of sectors
+    private List<Sector> getListOfSectorsFromJson(String sectors) {
+        //gson.fromJson(request.getParameter("action"), List.class);
+        return null;
     }
 }

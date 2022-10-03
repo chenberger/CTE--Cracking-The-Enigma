@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static Utils.Constants.ACTION;
+import static Utils.Constants.GSON_INSTANCE;
 
 public class EncryptDecryptActionsGridController {
     private BruteForceGridController bruteForceGridController;
@@ -95,10 +96,10 @@ public class EncryptDecryptActionsGridController {
                     new ErrorDialog(new Exception("Error, Error while trying to decrypt word: " + wordToProcess) , "Error");
                 }
                 else{
-                    String decryptedWord = response.body().string();
+                    String decryptedWord = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                     Platform.runLater(() -> {
                         processedWordText.setText(decryptedWord);
-                        uBoatCompetitionPaneController.getCurrentConfig();
+                        uBoatCompetitionPaneController.getCurrentMachineConfiguration();
                         //uBoatCompetitionPaneController.addDecryptedWord(decryptedWord);
                     });
                 }
@@ -107,7 +108,10 @@ public class EncryptDecryptActionsGridController {
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
             //bruteForceGridController.resetMachineState();
+            encryptedDecryptedWordText.setText("");
+            processedWordText.setText("");
             resetMachineState();
+            uBoatCompetitionPaneController.getCurrentMachineConfiguration();
     }
 
     public void setProcessedString(String processedString) {
@@ -159,9 +163,9 @@ public class EncryptDecryptActionsGridController {
     private void resetMachineState(){
 
         String finalUrl = HttpUrl
-                .parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
+                .parse(UBoatsServletsPaths.SET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
-                .addQueryParameter(ACTION, "resetMachineState")
+                .addQueryParameter(ACTION, "reset_machine_config")
                 .build()
                 .toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
@@ -178,12 +182,13 @@ public class EncryptDecryptActionsGridController {
                         new ErrorDialog(new Exception("Error, Error while trying to reset machine state") , "Error");
                     }
                     else{
-                        String dict = response.body().string();
+
                         Platform.runLater(() -> {
                             Gson gson = new Gson();
                             System.out.println("success in reset machine state " );
                             try {
-                                uBoatCompetitionPaneController.setNewConfiguration(gson.fromJson(response.body().string(), String.class));
+                                String originalConfiguration = response.body().string();
+                                uBoatCompetitionPaneController.setNewConfiguration(gson.fromJson(originalConfiguration, String.class));
                             } catch (IOException e) {
                                 new ErrorDialog(new Exception("Error, Error while trying to reset machine state, " + e) , "Error");
                             }

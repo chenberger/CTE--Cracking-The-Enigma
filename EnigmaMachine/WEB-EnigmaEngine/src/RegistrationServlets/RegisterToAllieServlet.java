@@ -27,12 +27,12 @@ public class RegisterToAllieServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int numberOfThreads = request.getParameter(NUMBER_OF_THREADS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_THREADS)) : 0;
-        long numberOfPulledTasks = request.getParameter(NUMBER_OF_PULLED_TASKS) != null ? Long.parseLong(request.getParameter(NUMBER_OF_PULLED_TASKS)) : 0;
+        //int numberOfThreads = request.getParameter(NUMBER_OF_THREADS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_THREADS)) : 0;
+        //long numberOfPulledTasks = request.getParameter(NUMBER_OF_PULLED_TASKS) != null ? Long.parseLong(request.getParameter(NUMBER_OF_PULLED_TASKS)) : 0;
         String agentNameFromSession = SessionUtils.getAgentName(request);
 
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
-        Agent agent = agentsManager.getAgent(request.getParameter(USER_NAME));
+        Agent agent = agentsManager.getAgent(agentNameFromSession);
         Allie currentAllie = ServletUtils.getAlliesManager(getServletContext()).getAllie(request.getParameter(ALLIE_NAME));
 
         if(agentNameFromSession == null || agentNameFromSession.isEmpty()){

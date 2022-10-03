@@ -9,6 +9,7 @@ import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
+import EnigmaMachine.Settings.SettingsFormat;
 import MainScene.MainUBoatScenePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
@@ -40,8 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
-import static Utils.Constants.ACTION;
-import static Utils.Constants.REFRESH_RATE;
+import static Utils.Constants.*;
 
 public class UBoatCompetitionPaneController implements Closeable {
 
@@ -73,7 +73,6 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML public void initialize(){
         if(encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setUBoatCompetitionPaneController(this);
-            //TODO chen/erez: check why the above controller does not get loaded
         }
         if(currentCodeConfigurationPaneController != null){
             currentCodeConfigurationPaneController.setUBoatCompetitionPaneController(this);
@@ -111,7 +110,13 @@ public class UBoatCompetitionPaneController implements Closeable {
       //});
     }
     private void updateTeamsTable(AlliesToTable alliesToTable) {
-        new  ErrorDialog(new Exception("updateTeamsTable"), "updateTeamsTable");
+        //new  ErrorDialog(new Exception("updateTeamsTable"), "updateTeamsTable");
+        Platform.runLater(() -> {
+           //ObservableList<List<String>> items = teamsTableView.getItems();
+           //items.clear();
+           //items.addAll(alliesToTable.getTeams());
+           //totalUsers.set(alliesToTable.getTeams().size());
+
         clearTeamsTable();
 
         String currentUBoatName = alliesToTable.getBoatName();
@@ -127,7 +132,7 @@ public class UBoatCompetitionPaneController implements Closeable {
         numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<>("Number Of Agents"));
         taskSizeCol.setCellValueFactory(new PropertyValueFactory<>("Task Size"));
 
-        ObservableList<List<String>> data = FXCollections.observableArrayList();
+        ObservableList<List<String>> data = teamsTableView.getItems();
         for (int i = 0; i < teams.size(); i++) {
             List<String> row = new ArrayList<>();
             row.add(teams.get(i));
@@ -137,12 +142,13 @@ public class UBoatCompetitionPaneController implements Closeable {
         }
 
         teamsTableView.setItems(data);
-        teamsTableView.refresh();
+        //teamsTableView.refresh();
+        });
     }
     public void getCurrentMachineConfiguration(){
         String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
-                .addQueryParameter(ACTION, "getMachineConfiguration")
+                .addQueryParameter(ACTION, "get_current_configuration")
                 .build().toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
@@ -154,9 +160,9 @@ public class UBoatCompetitionPaneController implements Closeable {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseStr = response.body().string();
                 if (response.isSuccessful()) {
-                    MachineDetails machineConfiguration = new Gson().fromJson(responseStr, MachineDetails.class);
+                    String currentMachineConfiguration =GSON_INSTANCE.fromJson(responseStr, String.class);
                     Platform.runLater(() -> {
-                        currentCodeConfigurationPaneController.setCodeConfiguration(machineConfiguration.getCurrentMachineSettings());
+                        currentCodeConfigurationPaneController.setCodeConfiguration(currentMachineConfiguration);
                         //currentCodeConfigurationPaneController.updateMachineConfiguration();
                     });
                 } else {
@@ -165,6 +171,7 @@ public class UBoatCompetitionPaneController implements Closeable {
             }
         });
     }
+
     private void getCurrentUBoat() {
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.U_BOATS_LIST_SERVLET)
@@ -207,7 +214,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     }
 
     private void clearTeamsTable() {
-        teamsTableView.getColumns().clear();
+        teamsTableView.getItems().clear();
     }
 
 
@@ -225,25 +232,24 @@ public class UBoatCompetitionPaneController implements Closeable {
                 this::updateTeamsTable);
         timer = new Timer();
         timer.schedule(alliesInBattleRefresher, REFRESH_RATE, REFRESH_RATE);
-        addRowToTeams();
     }
 
-    private void addRowToTeams() {
-        teamNameCol.setCellValueFactory(new PropertyValueFactory<>("Team Name"));
-        numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<>("Number Of Agents"));
-        taskSizeCol.setCellValueFactory(new PropertyValueFactory<>("Task Size"));
-
-        System.out.println("addRowToTeams");
-        ObservableList<List<String>> data = teamsTableView.getItems();
-        List<String> row = new ArrayList<>();
-
-        row.add("Team Name2");
-        row.add("Number Of Agents2");
-        row.add("Task Size2");
-        data.add(row);
-        teamsTableView.setItems(data);
-        teamsTableView.refresh();
-    }
+    //private void addRowToTeams() {
+    //    teamNameCol.setCellValueFactory(new PropertyValueFactory<>("Team Name"));
+    //    numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<>("Number Of Agents"));
+    //    taskSizeCol.setCellValueFactory(new PropertyValueFactory<>("Task Size"));
+//
+    //    System.out.println("addRowToTeams");
+    //    ObservableList<List<String>> data = teamsTableView.getItems();
+    //    List<String> row = new ArrayList<>();
+//
+    //    row.add("Team Name2");
+    //    row.add("Number Of Agents2");
+    //    row.add("Task Size2");
+    //    data.add(row);
+    //    teamsTableView.setItems(data);
+    //    teamsTableView.refresh();
+    //}
 
     @Override
     public void close() {
@@ -267,9 +273,6 @@ public class UBoatCompetitionPaneController implements Closeable {
         encryptDecryptActionsGridController.setDictionarySearchComboBox();
     }
 
-    public void getCurrentConfig() {
-        currentCodeConfigurationPaneController.setCurrentConfig();
-    }
 
     @FXML public void onReadyButtonClicked(ActionEvent actionEvent) {
     }
