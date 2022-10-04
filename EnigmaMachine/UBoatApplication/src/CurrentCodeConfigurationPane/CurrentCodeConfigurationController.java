@@ -1,7 +1,7 @@
 package CurrentCodeConfigurationPane;
 
-import CompetitionPane.UBoatCompetitionPaneController;
 import DesktopUserInterface.MainScene.Common.SkinType;
+import UBoatMachinePane.UBoatMachinePaneController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -13,8 +13,8 @@ public class CurrentCodeConfigurationController {
 
     @FXML private VBox CodeCalibrationGrid;
     @FXML private TextArea currentCodeConfigurationTextArea;
+    private UBoatMachinePaneController uBoatMachinePaneController;
     private Map<SkinType, String> skinPaths;
-    private UBoatCompetitionPaneController uBoatCompetitionPaneController;
 
     @FXML public void initialize() {
         initializeSkins();
@@ -43,8 +43,8 @@ public class CurrentCodeConfigurationController {
         CodeCalibrationGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
 
-    public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
-        this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
+    public void setUBoatCompetitionPaneController(UBoatMachinePaneController uBoatMachinePaneController) {
+        this.uBoatMachinePaneController = uBoatMachinePaneController;
     }
 
     public void setCurrentConfig() {

@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
+
+#buttons-area{
+    -fx-background-image: url("../../../../../../UBoatApplication/src/MachineDetailsPane/machinedetails-background3.jpg");
+    -fx-background-size: 150% 150%;
+    -fx-animation: bg-animation 5s infinite ;
+}
+
+@keyframes bg-animation{
+0%{
+    -fx-background-position: left;
+}
+100%{
+    -fx-background-position: right;
+}
+}
+
+.buttons {
+    -fx-background-radius: 15px;
+    -fx-text-fill: rgba(8, 47, 60, 0.726);
+    -fx-border-radius: 15px;
+    -fx-border-color: rgba(8, 47, 60, 0.726);
+    -fx-border-width: 2px;
+}
+
+.buttons:hover {
+    -fx-background-color: rgba(8, 47, 60, 0.726);
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+#Manually-Code-Initializer-label{
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 15px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-font-size: 27px;
+    -fx-padding: 12px;
+    -fx-background-image: url("headline-image.jpg");
+    -fx-background-size: 120% 120%;
+    -fx-background-radius: 15px;
+    -fx-font-family: 'Work Sans', sans-serif;
+}
+.inside-buttons{
+    -fx-background-color: #ff7b07;
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+.inside-buttons:hover{
+    -fx-background-color: #fba559;
+    -fx-text-fill: rgba(255, 255, 255, 0.726);
+}
+   
+

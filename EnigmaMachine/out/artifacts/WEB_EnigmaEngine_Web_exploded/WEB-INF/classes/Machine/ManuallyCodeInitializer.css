@@ -1,0 +1,12 @@
+#buttons-area{
+    -fx-background-color: rgba(83, 116, 138, 0.726);
+}
+
+.buttons {
+    -fx-background-color: #d4a337;
+    -fx-background-radius: 15px;
+    -fx-text-fill: #ffffff;
+}
+.buttons:hover {
+    -fx-background-color: rgb(240, 211, 174);
+}

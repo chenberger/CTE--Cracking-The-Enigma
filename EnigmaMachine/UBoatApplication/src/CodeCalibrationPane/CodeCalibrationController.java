@@ -1,14 +1,11 @@
 package CodeCalibrationPane;
 
-import CompetitionPane.UBoatCompetitionPaneController;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeInitializerScene;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import Engine.EngineManager;
 import EnigmaMachine.Settings.Sector;
-import EnigmaMachineException.*;
 import MainScene.MainUBoatScenePaneController;
 import UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
@@ -43,9 +40,7 @@ public class CodeCalibrationController {
     //private EngineManager engineManager;
     private Map<SkinType, String> skinPaths;
     private SkinType currentSkinType;
-    private UBoatCompetitionPaneController uBoatCompetitionPaneController;
-    private UBoatMachinePaneController UboatMachinePaneController;
-
+    private UBoatMachinePaneController uBoatMachinePaneController;
     @FXML public void initialize() {
         initializeSkins();
     }
@@ -151,7 +146,7 @@ public class CodeCalibrationController {
                     Gson gson = new Gson();
                     MachineDetails machineDetails = gson.fromJson(response.body().string(), MachineDetails.class);
                     Platform.runLater(() -> {
-                            uBoatCompetitionPaneController.setNewConfiguration(machineDetails.getCurrentMachineSettings());
+                        uBoatMachinePaneController.setNewConfiguration(machineDetails.getCurrentMachineSettings());
                     });
                 }
             }
@@ -182,7 +177,7 @@ public class CodeCalibrationController {
                        try {
                            Gson gson = new Gson();
                            String machineDetails = gson.fromJson(response.body().string(), String.class);
-                           uBoatCompetitionPaneController.setNewConfiguration(machineDetails);
+                           uBoatMachinePaneController.setNewConfiguration(machineDetails);
                            //new ErrorDialog(new Exception(response.body().string()), "Machine configuration setted successfully");
                        } catch (IOException e) {
                            throw new RuntimeException(e);
@@ -212,12 +207,7 @@ public class CodeCalibrationController {
         CodeCalibrationGrid.getStylesheets().clear();
         CodeCalibrationGrid.getStylesheets().add(String.valueOf(getClass().getResource(skinPaths.get(skinType))));
     }
-
-    public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
-        this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
-    }
-
     public void setUBoatMachinePaneController(UBoatMachinePaneController uBoatMachinePaneController) {
-        this.UboatMachinePaneController = uBoatMachinePaneController;
+        this.uBoatMachinePaneController = uBoatMachinePaneController;
     }
 }

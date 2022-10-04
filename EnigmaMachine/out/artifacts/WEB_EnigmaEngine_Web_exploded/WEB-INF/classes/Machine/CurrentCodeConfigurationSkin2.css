@@ -1,0 +1,36 @@
+ 
+ @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+ #title{
+    -fx-fill-height: true;
+    -fx-resize: true;
+    -fx-text-fill:    #23be18;
+    -fx-font-family: 'Press Start 2P', cursive;
+    -fx-font-size: 20px;
+ }
+#code-configuration-frame {
+    -fx-fill-height: true;
+    -fx-resize: true;
+}
+
+#current-code {
+    -fx-text-fill: rgb(16, 15, 15);
+    -fx-tab-max-height: 100%;
+    -fx-text-overrun: scroll;
+    -fx-fill-width: true;
+    -fx-fill-height: true;
+    -fx-fit-to-width: true;
+    -fx-background-color: rgb(7, 10, 49);
+    -fx-border-width: 3px;
+    -fx-font-size: 25px;
+}
+
+#current-code .content {
+    -fx-background-color: rgba(236, 231, 241, 0.726);    
+}
+
+#vbox-image{
+    -fx-background-image: url("background.jpg");
+    -fx-background-size: 100% 200%;
+    -fx-background-position: bottom right;
+
+}
