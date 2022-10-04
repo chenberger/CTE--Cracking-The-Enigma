@@ -64,7 +64,7 @@ public class MainUBoatScenePaneController {
             machineGridController.setMainUBoatScenePaneController(this);
         }
 
-        UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not()/*.or(isCodeConfigurationSet.not()*/);
+        UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
     }
 
 
@@ -218,5 +218,9 @@ public class MainUBoatScenePaneController {
     public void setCodeConfiguration(String currentMachineConfiguration) {
         machineGridController.setCodeConfiguration(currentMachineConfiguration);
 
+    }
+
+    public void newCodeConfigurationSetted() {
+        isCodeConfigurationSet.set(true);
     }
 }

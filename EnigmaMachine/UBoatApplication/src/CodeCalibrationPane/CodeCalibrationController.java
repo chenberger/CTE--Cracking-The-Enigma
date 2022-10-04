@@ -42,6 +42,8 @@ public class CodeCalibrationController {
     private SkinType currentSkinType;
     private UBoatMachinePaneController uBoatMachinePaneController;
     @FXML public void initialize() {
+        setRandomCodeButton.setDisable(true);
+        setManuallyCodeButton.setDisable(true);
         initializeSkins();
     }
 
