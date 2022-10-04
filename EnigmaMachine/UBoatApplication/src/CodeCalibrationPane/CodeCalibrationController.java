@@ -212,4 +212,9 @@ public class CodeCalibrationController {
     public void setUBoatMachinePaneController(UBoatMachinePaneController uBoatMachinePaneController) {
         this.uBoatMachinePaneController = uBoatMachinePaneController;
     }
+
+    public void newFileLoaded() {
+        setRandomCodeButton.setDisable(false);
+        setManuallyCodeButton.setDisable(false);
+    }
 }

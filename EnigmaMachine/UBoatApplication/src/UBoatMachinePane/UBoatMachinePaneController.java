@@ -45,4 +45,8 @@ public class UBoatMachinePaneController {
         currentCodeConfigurationPaneController.setCodeConfiguration(currentCodeConfiguration);
         mainUBoatScenePaneController.newCodeConfigurationSetted();
     }
+
+    public void newFileLoaded() {
+        codeCalibrationPaneController.newFileLoaded();
+    }
 }
