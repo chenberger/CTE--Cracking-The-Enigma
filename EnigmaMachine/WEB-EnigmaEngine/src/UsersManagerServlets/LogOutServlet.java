@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import javafx.application.Platform;
 import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
@@ -19,12 +20,17 @@ public class LogOutServlet extends HttpServlet {
         UsersManager userManager = ServletUtils.getUserManager(request.getServletContext());
 
         if (usernameFromSession != null) {
+            removeBoatFromBoatsManager(request, usernameFromSession);
             System.out.println("Clearing session for " + usernameFromSession);
             userManager.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);
+            System.out.println("Users Registered:" + userManager.getUsers());
 
-            // used mainly for the web version. irrelevant in the desktop client version
-            response.sendRedirect(request.getContextPath() + "/index.html");
+
         }
+    }
+
+    private void removeBoatFromBoatsManager(HttpServletRequest request, String usernameFromSession) {
+        ServletUtils.getUBoatManager(request.getServletContext()).removeUBoat(usernameFromSession);
     }
 }

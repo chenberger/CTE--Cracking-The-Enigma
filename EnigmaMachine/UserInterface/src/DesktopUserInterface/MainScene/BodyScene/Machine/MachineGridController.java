@@ -1,18 +1,15 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
-import CodeCalibrationPane.CodeCalibrationController;
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.EngineManager;
 import EnigmaMachineException.*;
-import MachineDetailsPane.MachineDetailsController;
-import MainScene.MainUBoatScenePaneController;
+import MainScene.UBoatMachinePane.MachineDetailsPane.MachineDetailsController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import okhttp3.HttpUrl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +18,7 @@ public class MachineGridController {
     @FXML private GridPane machineGrid;
     @FXML private GridPane machineDetailsGrid;
     @FXML private MachineDetailsController machineDetailsGridController;
-    @FXML private CodeCalibrationController codeCalibrationGridController;
+    //@FXML private CodeCalibrationController codeCalibrationGridController;
     @FXML private VBox currentCodeConfigurationGrid;
     @FXML private CurrentCodeConfigurationController currentCodeConfigurationGridController;
     @FXML private GridPane codeCalibrationGrid;
@@ -35,9 +32,9 @@ public class MachineGridController {
              machineDetailsGridController.setMachineGridController(this);
          }
 
-         if(codeCalibrationGridController != null) {
-             codeCalibrationGridController.setMachineGridController(this);
-         }
+        // if(codeCalibrationGridController != null) {
+        //     codeCalibrationGridController.setMachineGridController(this);
+       //  }
 
          if(machineDetailsGrid != null) {
             machineDetailsGrid.setStyle("-fx-background-color:transparent;");
@@ -56,7 +53,7 @@ public class MachineGridController {
     private void registerToEvents() {
         enigmaMachineEngine.currentCodeConfigurationHandler.add(machineDetailsGridController::currentCodeChanged);
         enigmaMachineEngine.currentCodeConfigurationHandler.add(currentCodeConfigurationGridController::currentCodeChanged);
-        enigmaMachineEngine.machineDetailsHandler.add(machineDetailsGridController::machineDetailsChanged);
+        //enigmaMachineEngine.machineDetailsHandler.add(machineDetailsGridController::machineDetailsChanged);
     }
 
     public void setMainController(MainController mainController) {
@@ -89,7 +86,7 @@ public class MachineGridController {
     }
 
     public void setSkin(SkinType skinType) {
-         codeCalibrationGridController.setSkin(skinType);
+         //codeCalibrationGridController.setSkin(skinType);
          machineDetailsGridController.setSkin(skinType);
          currentCodeConfigurationGridController.setSkin(skinType);
 

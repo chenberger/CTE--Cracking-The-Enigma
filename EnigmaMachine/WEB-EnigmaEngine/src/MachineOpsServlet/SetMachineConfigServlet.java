@@ -2,9 +2,11 @@ package MachineOpsServlet;
 
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
+import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +16,9 @@ import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 
@@ -81,20 +85,33 @@ public class SetMachineConfigServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
             EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
-            List<Sector> sectors = getListOfSectorsFromJson(request.getParameter("sectors"));
+            List<Sector> sectors =  gson.fromJson(request.getParameter("sectors"), ArrayList.class);
             EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
             engineManager.initializeSettings(sectors);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().print(gson.toJson(engine.displaySpecifications().getCurrentMachineSettings()));
             response.getWriter().flush();
 
-        } catch (SettingsNotInitializedException e) {
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println(e.getMessage());
         }
     }
+
+    //private List<Sector> settingsToSectors(Sector[] settings) {
+    //    List<Sector> sectors = new ArrayList<>();
+    //    for (Sector sector : settings) {
+    //        sectors.add(sector);
+    //    }
+    //    return sectors;
+    //}
+
     //TODO chen: generate the json into list of sectors
     private List<Sector> getListOfSectorsFromJson(String sectors) {
+        List<Sector> sectorsList = new ArrayList<>();
+        String[] sectorsArray = sectors.split(",");
+
+
         //gson.fromJson(request.getParameter("action"), List.class);
         return null;
     }

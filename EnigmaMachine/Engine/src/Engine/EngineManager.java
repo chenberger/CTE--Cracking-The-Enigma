@@ -7,6 +7,7 @@ import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.StatisticsAndHistory.*;
 import EnigmaMachine.EnigmaMachine;
+import EnigmaMachine.Settings.RotorIDSector;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachine.Settings.SettingsFormat;
 import EnigmaMachineException.*;
@@ -267,6 +268,10 @@ public class EngineManager implements MachineOperations, Serializable {
     private void validateMachineSettings(List<Sector> sectorSettings) throws RotorsInUseSettingsException, StartingPositionsOfTheRotorException, ReflectorSettingsException, CloneNotSupportedException, PluginBoardSettingsException {
         AtomicReference<Boolean> needToThrowException = new AtomicReference<>(false);
         StringBuilder exceptionMessage = new StringBuilder();
+        sectorSettings.get(0).validateSector(enigmaMachine);
+        sectorSettings.get(1).validateSector(enigmaMachine);
+        sectorSettings.get(2).validateSector(enigmaMachine);
+        sectorSettings.get(3).validateSector(enigmaMachine);
 
         sectorSettings.forEach(sector -> {
             try {

@@ -22,6 +22,7 @@ public class Allie {
         this.agents = new ArrayList<>();
         this.decryptionManager = new DecryptionManager();
         this.taskSize = 1000;
+        this.battleName = "";
     }
     public void setLevel(String level) {
         this.level = DifficultyLevel.valueOf(level.toUpperCase());
@@ -51,7 +52,12 @@ public class Allie {
     public List<String> getAgentsNames(){
         return agents.stream().map(Agent::getAgentName).collect(Collectors.toList());
     }
-
+    public void setBattleField(String battleFieldName) {
+        this.battleName = battleFieldName;
+    }
+    public String getBattleName() {
+        return battleName;
+    }
     public long getTaskSize() {
         return taskSize;
     }
@@ -60,4 +66,7 @@ public class Allie {
         agents.add(agent);
     }
 
+    public void removeTeamFromBattle() {
+        battleName = "";
+    }
 }
