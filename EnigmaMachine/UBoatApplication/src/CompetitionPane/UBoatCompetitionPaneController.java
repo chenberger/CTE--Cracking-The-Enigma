@@ -2,14 +2,12 @@ package CompetitionPane;
 
 import Api.UpdateHttpLine;
 import CandidatesPane.UBoatCandidatesPaneController;
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import CodeCalibrationPane.CodeCalibrationController;
+import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DTO.AlliesToTable;
-import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
-import EnigmaMachine.Settings.SettingsFormat;
 import MainScene.MainUBoatScenePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
@@ -19,11 +17,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -37,15 +35,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.*;
 
 public class UBoatCompetitionPaneController implements Closeable {
 
-    String UBoatName;
+    private String UBoatName;
     private Timer timer;
     private TimerTask alliesInBattleRefresher;
     private final BooleanProperty autoUpdate;
@@ -64,10 +64,10 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML private GridPane encryptDecryptActionsGrid;
     @FXML private EncryptDecryptActionsPane.EncryptDecryptActionsGridController encryptDecryptActionsGridController;
 
-    @FXML private TableView<List<String>> teamsTableView;
-    @FXML private javafx.scene.control.TableColumn<List<String>, String> teamNameCol;
-    @FXML private javafx.scene.control.TableColumn<List<String>, String> numOfAgentsCol;
-    @FXML private javafx.scene.control.TableColumn<List<String>, String> taskSizeCol;
+    @FXML private TableView<TeamsTable> teamsTableView;
+    @FXML private TableColumn<TeamsTable, String> teamNameCol;
+    @FXML private TableColumn<TeamsTable, Integer> numOfAgentsCol;
+    @FXML private TableColumn<TeamsTable, Long> taskSizeCol;
     private SimpleBooleanProperty isReady;
 
     @FXML public void initialize(){
@@ -84,7 +84,15 @@ public class UBoatCompetitionPaneController implements Closeable {
             codeCalibrationController.setUBoatCompetitionPaneController(this);
         }
         readyButton.disableProperty().bind(isReady.not());
+        initializeCompetitionTable();
     }
+
+    private void initializeCompetitionTable() {
+        teamNameCol.setCellValueFactory(new PropertyValueFactory<TeamsTable, String>("teamName"));
+        numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<TeamsTable, Integer>("numOfAgents"));
+        taskSizeCol.setCellValueFactory(new PropertyValueFactory<TeamsTable, Long>("taskSize"));
+    }
+
     public UBoatCompetitionPaneController() {
         autoUpdate = new SimpleBooleanProperty();
         totalUsers = new SimpleIntegerProperty();
@@ -118,31 +126,17 @@ public class UBoatCompetitionPaneController implements Closeable {
            //totalUsers.set(alliesToTable.getTeams().size());
 
         clearTeamsTable();
-
         String currentUBoatName = alliesToTable.getBoatName();
         List<String> teams = alliesToTable.getTeams();
         List<Integer> numOfAgentsList = alliesToTable.getNumberOfAgentsForEachAllie();
         List<Long> taskSize = alliesToTable.getTasksSize();
 
-        javafx.scene.control.TableColumn<List<String>, String> teamsCol = new javafx.scene.control.TableColumn<>("Team Name");
-        javafx.scene.control.TableColumn<List<String>, String> numOfAgentsCol = new javafx.scene.control.TableColumn<>("Number Of Agents");
-        javafx.scene.control.TableColumn<List<String>, String> taskSizeCol = new javafx.scene.control.TableColumn<>("Task Size");
-        //TODO chen: check if the 3 rows below are needed
-        teamsCol.setCellValueFactory(new PropertyValueFactory<>("Team Name"));
-        numOfAgentsCol.setCellValueFactory(new PropertyValueFactory<>("Number Of Agents"));
-        taskSizeCol.setCellValueFactory(new PropertyValueFactory<>("Task Size"));
-
-        ObservableList<List<String>> data = teamsTableView.getItems();
         for (int i = 0; i < teams.size(); i++) {
-            List<String> row = new ArrayList<>();
-            row.add(teams.get(i));
-            row.add(numOfAgentsList.get(i).toString());
-            row.add(taskSize.get(i).toString());
-            data.add(row);
+            TeamsTable teamToAdd = new TeamsTable(teams.get(i), numOfAgentsList.get(i), taskSize.get(i));
+            ObservableList<TeamsTable> tableData = teamsTableView.getItems();
+            tableData.add(teamToAdd);
+            teamsTableView.setItems(tableData);
         }
-
-        teamsTableView.setItems(data);
-        //teamsTableView.refresh();
         });
     }
     public void getCurrentMachineConfiguration(){
