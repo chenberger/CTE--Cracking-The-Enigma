@@ -23,6 +23,13 @@ public class getMachineConfigServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         try {
+            if(request.getParameter("action").toString().equals("displaySpecifications")) {
+                getMachineSpecifications(request, response);
+            }
+            else {
+                getCurrentMachineConfig(request, response);
+            }
+
             getCurrentMachineConfig(request, response);
         } catch (MachineNotExistsException e) {
             throw new RuntimeException(e);
@@ -31,12 +38,27 @@ public class getMachineConfigServlet extends HttpServlet {
         }
     }
 
+    private void getMachineSpecifications(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException, IOException {
+        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
+        EngineManager engine = uBoat.getEngineManager();
+        MachineDetails machineDetails = engine.displaySpecifications();
+        response.setStatus(HttpServletResponse.SC_OK);
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(machineDetails);
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+
+    }
+
     private void getCurrentMachineConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
         response.setStatus(HttpServletResponse.SC_OK);
         Gson gson = new Gson();
+        //TODO: return it to get machine config
         String jsonResponse = gson.toJson(machineDetails.getCurrentMachineSettings());
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
