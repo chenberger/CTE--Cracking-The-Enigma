@@ -2,8 +2,6 @@ package CompetitionPane;
 
 import Api.UpdateHttpLine;
 import CandidatesPane.UBoatCandidatesPaneController;
-import CodeCalibrationPane.CodeCalibrationController;
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DTO.AlliesToTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
@@ -26,7 +24,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -54,10 +51,6 @@ public class UBoatCompetitionPaneController implements Closeable {
     private MainUBoatScenePaneController mainUBoatScenePaneController;
     @FXML private Button logOutButton;
     @FXML private Button readyButton;
-    @FXML private GridPane codeCalibration;
-    @FXML private CodeCalibrationController codeCalibrationController;
-    @FXML private VBox currentCodeConfigurationPane;
-    @FXML private CurrentCodeConfigurationController currentCodeConfigurationPaneController;
     @FXML private AnchorPane uBoatCandidatesPane;
     @FXML private UBoatCandidatesPaneController uBoatCandidatesPaneController;
     @FXML private GridPane UBoatCompetitionPane;
@@ -74,15 +67,10 @@ public class UBoatCompetitionPaneController implements Closeable {
         if(encryptDecryptActionsGridController != null){
             encryptDecryptActionsGridController.setUBoatCompetitionPaneController(this);
         }
-        if(currentCodeConfigurationPaneController != null){
-            currentCodeConfigurationPaneController.setUBoatCompetitionPaneController(this);
-        }
         if(uBoatCandidatesPaneController != null){
             uBoatCandidatesPaneController.setUBoatCompetitionPaneController(this);
         }
-        if(codeCalibrationController != null){
-            codeCalibrationController.setUBoatCompetitionPaneController(this);
-        }
+
         readyButton.disableProperty().bind(isReady.not());
         initializeCompetitionTable();
     }
@@ -156,7 +144,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                 if (response.isSuccessful()) {
                     String currentMachineConfiguration =GSON_INSTANCE.fromJson(responseStr, String.class);
                     Platform.runLater(() -> {
-                        currentCodeConfigurationPaneController.setCodeConfiguration(currentMachineConfiguration);
+                        mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
                         //currentCodeConfigurationPaneController.updateMachineConfiguration();
                     });
                 } else {
@@ -259,10 +247,6 @@ public class UBoatCompetitionPaneController implements Closeable {
         startListRefresher();
     }
 
-    public void setNewConfiguration(String currentCodeConfiguration) {
-        currentCodeConfigurationPaneController.setCodeConfiguration(currentCodeConfiguration);
-    }
-
     public void setDictionary() {
         encryptDecryptActionsGridController.setDictionarySearchComboBox();
     }
@@ -272,5 +256,9 @@ public class UBoatCompetitionPaneController implements Closeable {
     }
 
     @FXML public void onLogOutButtonClicked(ActionEvent actionEvent) {
+    }
+
+    public void setNewConfiguration(String currentMachineConfiguration) {
+        mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
     }
 }

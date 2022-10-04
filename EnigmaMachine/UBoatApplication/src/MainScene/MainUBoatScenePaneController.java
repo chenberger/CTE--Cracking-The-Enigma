@@ -3,17 +3,14 @@ package MainScene;
 import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
-import EnigmaMachineException.*;
 import LoginPane.UBoatLoginPaneController;
 import TopBorderPane.TopBorderPaneController;
+import UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
-import Utils.Constants;
 import Utils.HttpClientUtil;
-import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -36,6 +33,9 @@ public class MainUBoatScenePaneController {
     @FXML private TopBorderPaneController topBorderPaneController;
     @FXML private AnchorPane UBoatCompetitionPane;
     @FXML private CompetitionPane.UBoatCompetitionPaneController UBoatCompetitionPaneController;
+
+    @FXML private AnchorPane machineGrid;
+    @FXML private UBoatMachinePaneController machineGridController;
     private SimpleBooleanProperty isMachineExsists;
     private SimpleBooleanProperty isCodeConfigurationSet;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
@@ -58,6 +58,10 @@ public class MainUBoatScenePaneController {
         }
         if(topBorderPane != null) {
             topBorderPaneController.setMainUBoatScenePaneController(this);
+        }
+
+        if(machineGridController != null) {
+            machineGridController.setMainUBoatScenePaneController(this);
         }
 
         UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not()/*.or(isCodeConfigurationSet.not()*/);
@@ -139,11 +143,6 @@ public class MainUBoatScenePaneController {
        //    }
        //});
     }
-
-
-    public void setNewConfiguration(String configuration){
-        UBoatCompetitionPaneController.setNewConfiguration(configuration);
-    }
     private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()
@@ -216,4 +215,8 @@ public class MainUBoatScenePaneController {
     }
 
 
+    public void setCodeConfiguration(String currentMachineConfiguration) {
+        machineGridController.setCodeConfiguration(currentMachineConfiguration);
+
+    }
 }
