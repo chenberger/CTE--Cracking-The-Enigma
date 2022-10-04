@@ -1,6 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
-import EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
+import MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

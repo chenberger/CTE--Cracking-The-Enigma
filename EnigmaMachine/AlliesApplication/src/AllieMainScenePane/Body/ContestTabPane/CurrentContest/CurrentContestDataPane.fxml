@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="240.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.CurrentContest.CurrentContestDataPaneController">
+   <children>
+      <VBox layoutX="237.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane>
+               <children>
+                  <Label alignment="CENTER" text="Contest Data" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <padding>
+                        <Insets bottom="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <TableView prefHeight="212.0" prefWidth="600.0">
+              <columns>
+                <TableColumn prefWidth="118.0" text="BattleField" />
+                <TableColumn minWidth="0.0" prefWidth="122.0" text="Boat Name" />
+                  <TableColumn minWidth="0.0" prefWidth="118.0" text="Contest Status" />
+                  <TableColumn minWidth="0.0" prefWidth="144.0" text="Difficulty" />
+                  <TableColumn minWidth="0.0" prefWidth="202.0" text="Teams Registered/needed" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

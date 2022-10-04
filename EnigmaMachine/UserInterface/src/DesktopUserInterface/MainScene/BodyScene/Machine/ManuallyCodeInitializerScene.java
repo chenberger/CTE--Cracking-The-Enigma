@@ -1,8 +1,9 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
-import CodeCalibrationPane.CodeCalibrationController;
+import MainScene.UBoatMachinePane.CodeCalibrationPane.CodeCalibrationController;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.Common.SkinType;
+import MainScene.UBoatMachinePane.CodeCalibrationPane.ManuallyCodeController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

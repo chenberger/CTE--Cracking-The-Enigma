@@ -99,5 +99,13 @@ public class BattleField {
     public List<Allie> getAlliesInBattle() {
         return alliesInBattleField;
     }
+
+    public void removeAlliesFromBattle() {
+        for(Allie allie : alliesInBattleField){
+            allie.removeTeamFromBattle();
+        }
+        this.alliesInBattleField.clear();
+        this.numberOfTeamsInBattleField = 0;
+    }
     // end of getters and setters region
 }

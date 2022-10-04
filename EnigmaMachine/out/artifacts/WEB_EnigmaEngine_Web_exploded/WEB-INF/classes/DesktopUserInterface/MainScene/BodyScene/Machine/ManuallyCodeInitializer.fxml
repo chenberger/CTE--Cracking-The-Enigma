@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane fx:id="machineDetailsGrid" stylesheets="@ManuallyCodeInitializerSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeController">
+<GridPane fx:id="machineDetailsGrid" stylesheets="@ManuallyCodeInitializerSkin1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.UBoatMachinePane.CodeCalibrationPane.ManuallyCodeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />

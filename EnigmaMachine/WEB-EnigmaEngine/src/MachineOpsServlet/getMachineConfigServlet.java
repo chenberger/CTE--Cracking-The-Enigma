@@ -26,14 +26,33 @@ public class getMachineConfigServlet extends HttpServlet {
             if(request.getParameter("action").toString().equals("displaySpecifications")) {
                 getMachineSpecifications(request, response);
             }
+            else if(request.getParameter("action").toString().equals("displayRawMachineDetails")) {
+                getRawMachineDetails(request, response);
+            }
             else {
                 getCurrentMachineConfig(request, response);
             }
 
-            getCurrentMachineConfig(request, response);
         } catch (MachineNotExistsException e) {
             throw new RuntimeException(e);
         } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void getRawMachineDetails(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
+        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
+        EngineManager engine = uBoat.getEngineManager();
+        MachineDetails machineDetails = engine.displaySpecifications();
+        machineDetails = new MachineDetails(engine.getEnigmaMachine(), 0, machineDetails.getOriginalSettingsFormat(),machineDetails.getOriginalSettingsFormat());
+        response.setStatus(HttpServletResponse.SC_OK);
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(machineDetails);
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -48,6 +67,9 @@ public class getMachineConfigServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
             out.flush();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -64,6 +86,8 @@ public class getMachineConfigServlet extends HttpServlet {
             out.print(jsonResponse);
             out.flush();
         }
-
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,11 +1,13 @@
 package MainScene;
 
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
+
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
 import LoginPane.UBoatLoginPaneController;
+
+import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import TopBorderPane.TopBorderPaneController;
-import UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
 import javafx.application.Platform;
@@ -24,14 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainUBoatScenePaneController {
-
     private String currentSessionId;
+    private UBoatMachinePaneController uBoatMachinePaneController;
     @FXML private GridPane UBoatLoginPane;
     @FXML private UBoatLoginPaneController UBoatLoginPaneController;
     @FXML private AnchorPane topBorderPane;
     @FXML private TopBorderPaneController topBorderPaneController;
     @FXML private AnchorPane UBoatCompetitionPane;
-    @FXML private CompetitionPane.UBoatCompetitionPaneController UBoatCompetitionPaneController;
+    @FXML private MainScene.CompetitionPane.UBoatCompetitionPaneController UBoatCompetitionPaneController;
 
     @FXML private AnchorPane machineGrid;
     @FXML private UBoatMachinePaneController machineGridController;
@@ -62,10 +64,15 @@ public class MainUBoatScenePaneController {
         if(machineGridController != null) {
             machineGridController.setMainUBoatScenePaneController(this);
         }
+        if(uBoatMachinePaneController != null) {
+            uBoatMachinePaneController.setMainUBoatScenePaneController(this);
+        }
 
         UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
     }
-
+    public void machineDetailsChanged(){
+        machineGridController.machineDetailsChanged();
+    }
 
     public void switchToCompetitionRoom() {
         UBoatLoginPane.setVisible(false);
@@ -107,41 +114,12 @@ public class MainUBoatScenePaneController {
             topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
             UBoatCompetitionPaneController.setDictionary();
             machineGridController.newFileLoaded();
+
         }
         else {
             new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
         }
-       //String finalUrl = HttpUrl.parse(UBoatsServletsPaths.FILE_UPLOADED_SERVLET).
-       //        newBuilder()
-       //        .addQueryParameter("file", selectedFile.getAbsolutePath())
-       //        .build()
-       //        .toString();
-       //HttpClientUtil.runAsync(finalUrl, new Callback() {
-       //    @Override
-       //    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-       //        Platform.runLater(() -> {
-       //            new ErrorDialog(new Exception("Error while loading machine"), e.getMessage());
-       //        });
-       //    }
 
-       //    @Override
-       //    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-       //        if (response.code() == 200) {
-       //            Platform.runLater(() -> {
-       //                isMachineExsists.set(true);
-       //                try {
-       //                    new ErrorDialog(new Exception(response.body().string()), "Machine loaded successfully");
-       //                } catch (IOException e) {
-       //                    throw new RuntimeException(e);
-       //                }
-       //            });
-       //        } else {
-       //            Platform.runLater(() -> {
-       //                new ErrorDialog(new Exception(response.message()), "Cannot upload machine" );
-       //            });
-       //        }
-       //    }
-       //});
     }
     private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
@@ -217,10 +195,13 @@ public class MainUBoatScenePaneController {
 
     public void setCodeConfiguration(String currentMachineConfiguration) {
         machineGridController.setCodeConfiguration(currentMachineConfiguration);
-
     }
 
     public void newCodeConfigurationSetted() {
         isCodeConfigurationSet.set(true);
+    }
+
+    public void close() {
+        Platform.exit();
     }
 }

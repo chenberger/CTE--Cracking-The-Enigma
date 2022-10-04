@@ -11,4 +11,5 @@ public class Constants {
     public final static Gson GSON_INSTANCE = new Gson();
     public static final long REFRESH_RATE = 2000;
     public static final String ACTION = "action";
+    public static final String DISPLAY_SPECIFICATIONS = "displaySpecifications";
 }

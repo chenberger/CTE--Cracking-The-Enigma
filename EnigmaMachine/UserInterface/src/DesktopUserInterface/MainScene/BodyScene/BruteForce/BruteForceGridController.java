@@ -1,8 +1,8 @@
 package DesktopUserInterface.MainScene.BodyScene.BruteForce;
 
-import EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
+import MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import DTO.BruteForceTask;
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.Common.Utils;
 import DesktopUserInterface.MainScene.ErrorDialog;

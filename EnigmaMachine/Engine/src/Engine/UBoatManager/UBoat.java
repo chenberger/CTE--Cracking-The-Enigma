@@ -53,4 +53,8 @@ public class UBoat {
     public List<String> getTeams() {
         return battleField.getTeams();
     }
+
+    public void removeAlliesFromBattle() {
+        battleField.removeAlliesFromBattle();
+    }
 }

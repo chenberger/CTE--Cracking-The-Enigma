@@ -2,7 +2,7 @@ package DesktopUserInterface.MainScene;
 
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController;
 import DesktopUserInterface.MainScene.BodyScene.EncryptDecrypt.EncryptDecryptGridController;
-import CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.TopScene.TopBorderPaneController;

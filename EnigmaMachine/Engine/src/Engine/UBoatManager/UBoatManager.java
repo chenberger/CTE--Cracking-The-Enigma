@@ -46,4 +46,10 @@ public class UBoatManager {
     public List<UBoat> getUBoatsAsList() {
         return uBoats.values().stream().collect(Collectors.toList());
     }
+
+    public void removeUBoat(String usernameFromSession) {
+        UBoat boatToRemove = uBoats.get(usernameFromSession);
+        boatToRemove.removeAlliesFromBattle();
+        uBoats.remove(usernameFromSession);
+    }
 }
