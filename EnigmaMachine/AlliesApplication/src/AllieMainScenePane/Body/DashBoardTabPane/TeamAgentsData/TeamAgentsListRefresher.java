@@ -9,6 +9,7 @@ import javafx.beans.property.BooleanProperty;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,7 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LIST_SERVLET;
+import static Utils.Constants.ACTION;
 import static Utils.Constants.GSON_INSTANCE;
 
 public class TeamAgentsListRefresher extends TimerTask {
@@ -37,13 +39,14 @@ public class TeamAgentsListRefresher extends TimerTask {
     @Override
     public void run() {
 
-        if (!shouldUpdate.get()) {
-            return;
-        }
+        //if (!shouldUpdate.get()) {
+        //    return;
+        //}
 
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
         System.out.println("About to invoke: " + ALLIES_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+
         HttpClientUtil.runAsync(ALLIES_LIST_SERVLET, new Callback() {
 
             @Override

@@ -93,7 +93,14 @@ public class EncryptDecryptActionsGridController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
-                    new ErrorDialog(new Exception("Error, Error while trying to decrypt word: " + wordToProcess) , "Error");
+                    Platform.runLater(() ->
+                    {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()) , "Error while trying to decrypt word: " + wordToProcess);
+                        } catch (IOException e) {
+                            //throw new RuntimeException(e);
+                        }
+                    });
                 }
                 else{
                     String decryptedWord = GSON_INSTANCE.fromJson(response.body().string(), String.class);

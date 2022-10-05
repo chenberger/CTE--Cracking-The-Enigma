@@ -19,19 +19,23 @@ public class ProcessWordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String wordToProcess = request.getParameter("wordToProcess");
-            EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext())
-                    .getUBoat(SessionUtils.getUsername(request)).getEngineManager();
-            String processedWord = engineManager.processInputsFromDictionary(wordToProcess);
+        try  {
+            synchronized (this){
+                String wordToProcess = request.getParameter("wordToProcess");
+                EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext())
+                        .getUBoat(SessionUtils.getUsername(request)).getEngineManager();
+                String processedWord = engineManager.processInputsFromDictionary(wordToProcess);
+                engineManager.displaySpecifications().addMessageToCounter();
 
-            //String processedWordWithSpecialChars = getProcessedWordWithSpecialChars(processedWord);
-            String json = GSON_INSTANCE.toJson(processedWord);
-            out.println(json);
-            out.flush();
-
+                //String processedWordWithSpecialChars = getProcessedWordWithSpecialChars(processedWord);
+                String json = GSON_INSTANCE.toJson(processedWord);
+                response.getWriter().println(json);
+                response.getWriter().flush();
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println(e.getMessage());
+            response.getWriter().flush();
         }
     }
 

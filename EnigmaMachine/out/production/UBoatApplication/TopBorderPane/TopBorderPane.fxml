@@ -25,10 +25,13 @@
          <children>
             <AnchorPane prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" layoutX="49.0" layoutY="30.0" text="U Boat App" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                  <Label fx:id="appHeaderLabel" alignment="CENTER" layoutX="49.0" layoutY="30.0" text="U Boat App" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                      <font>
                         <Font size="29.0" />
                      </font>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
                   </Label>
                </children>
             </AnchorPane>

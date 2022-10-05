@@ -184,6 +184,7 @@ public class CodeCalibrationController {
                            Gson gson = new Gson();
                            String machineDetails = gson.fromJson(response.body().string(), String.class);
                            uBoatMachinePaneController.setNewConfiguration(machineDetails);
+                           uBoatMachinePaneController.machineDetailsChanged();
                            //new ErrorDialog(new Exception(response.body().string()), "Machine configuration setted successfully");
                        } catch (IOException e) {
                            throw new RuntimeException(e);

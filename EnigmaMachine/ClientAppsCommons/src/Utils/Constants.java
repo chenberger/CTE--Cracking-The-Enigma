@@ -12,4 +12,5 @@ public class Constants {
     public static final long REFRESH_RATE = 2000;
     public static final String ACTION = "action";
     public static final String DISPLAY_SPECIFICATIONS = "displaySpecifications";
+    public static final String GET_USER_NAME_SERVLET = FULL_SERVER_PATH + "/users/getUserName";
 }
