@@ -1,6 +1,6 @@
 package MainScene.UBoatMachinePane.MachineDetailsPane;
 
-import DTO.MachineDetails;
+import DTO.MachineConfigurationToShow;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -23,8 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
-import static Utils.Constants.ACTION;
-import static Utils.Constants.DISPLAY_SPECIFICATIONS;
+import static Utils.Constants.*;
 
 public class MachineDetailsController {
 
@@ -55,13 +54,79 @@ public class MachineDetailsController {
         this.machineGridController = machineGridController;
     }
 
-    public void setNewMachineDetails( MachineDetails machineDetails) {
-        totalAmountRotorsLabel.setText("The total amount of rotors that can be use in the machine is: " + machineDetails.getAmountOfTotalRotors());
-        currentAmountRotorsLabel.setText("The current amount of rotors in use in the machine is: " + machineDetails.getAmountCurrentRotorsInUse());
-        totalAmountReflectorsLabel.setText("The total amount of reflectors that can be use in the machine is: " + machineDetails.getAmountOfTotalReflectors());
-        messagesAmountLabel.setText("The total amount of messages have been processed by the machine so far is: " + machineDetails.getMessagesCounter());
-        originalCodeLabel.setText(String.valueOf(machineDetails.getOriginalMachineSettings()));
-        currentCodeLabel.setText(String.valueOf(machineDetails.getCurrentMachineSettings()));
+    public void setNewMachineDetails(MachineConfigurationToShow machineDetailsToShow) {
+        Platform.runLater(() -> {
+            totalAmountRotorsLabel.setText("The total amount of rotors that can be use in the machine is: " + machineDetailsToShow.getNumOfPossibleRotors());
+            currentAmountRotorsLabel.setText("The current amount of rotors in use in the machine is: " + machineDetailsToShow.getNumOfRotorsInUse());
+            totalAmountReflectorsLabel.setText("The total amount of reflectors that can be use in the machine is: " + machineDetailsToShow.getNumberOfReflectors());
+            messagesAmountLabel.setText("The total amount of messages have been processed by the machine so far is: " + machineDetailsToShow.getNumOfProcessedMessages());
+            currentCodeLabel.setText(machineDetailsToShow.getCurrentCodeConfiguration());
+            originalCodeLabel.setText(machineDetailsToShow.getOriginalCodeConfiguration());
+        });
+
+        //originalCodeLabel.setText(String.valueOf(machineDetails.getOriginalMachineSettings()));
+        //currentCodeLabel.setText(String.valueOf(machineDetails.getCurrentMachineSettings()));
+    }
+
+    private void setOriginalAndCurrentCodeLabels() {
+        setOriginalCodeLabel();
+        setCurrentCodeLabel();
+    }
+
+    private void setCurrentCodeLabel() {
+        String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getCurrentMachineConfig")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(new Exception("Failed to get current machine config"), "Failed to get current machine config");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() -> {
+
+                    try {
+                        String currentMachineConfig = GSON_INSTANCE.fromJson(response.body().string(), String.class);
+                        currentCodeLabel.setText(currentMachineConfig);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+            }
+        });
+    }
+
+    private void setOriginalCodeLabel() {
+        String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getOriginalMachineConfig")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(new Exception("Failed to get original machine config"), "Failed to get original machine config");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() -> {
+                    try {
+                        String originalMachineConfig = GSON_INSTANCE.fromJson(response.body().string(), String.class);
+                        originalCodeLabel.setText(originalMachineConfig);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+
+            }
+        });
     }
 
     public void currentCodeChanged(Object source, String currentCode) {
@@ -85,24 +150,22 @@ public class MachineDetailsController {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() ->
-                        new ErrorDialog(e, "Unable to get specifications")
-                );
+                new ErrorDialog(e, "Unable to get specifications");
+
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            new ErrorDialog(new Exception("Unable to get specifications"), responseBody)
-                    );
+                    new ErrorDialog(new Exception("Unable to get specifications"), responseBody);
+
                 } else {
                     Platform.runLater(() -> {
                         try {
                             Gson gson = new Gson();
-                            MachineDetails machineDetails = gson.fromJson(response.body().string(), MachineDetails.class);
-                            setNewMachineDetails(machineDetails);
+                            MachineConfigurationToShow machineConfigurationToShow = gson.fromJson(response.body().string(), MachineConfigurationToShow.class);
+                            setNewMachineDetails(machineConfigurationToShow);
                         } catch (IOException e) {
                             new ErrorDialog(e, "Unable to get specifications");
                         }

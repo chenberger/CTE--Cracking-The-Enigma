@@ -25,11 +25,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnSpan="2" GridPane.rowSpan="2">
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="1200.0" GridPane.columnSpan="2" GridPane.rowSpan="2">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <SplitPane dividerPositions="0.337228714524207" minHeight="350.0" minWidth="400.0" prefHeight="400.0" prefWidth="1200.0">
+                        <SplitPane dividerPositions="0.337228714524207" minHeight="350.0" minWidth="400.0" prefHeight="400.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                             <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="398.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0">
                                  <children>

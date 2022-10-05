@@ -37,32 +37,32 @@ public class FileUploadedServlet extends HttpServlet {
      PrintWriter out = response.getWriter();
 
      String name = SessionUtils.getUsername(request) != null ? SessionUtils.getUsername(request) : "Guest";
-     Collection<Part> parts = request.getParts();
+     synchronized (this){Collection<Part> parts = request.getParts();
      for(Part part : parts) {
          InputStream inputStream = part.getInputStream();
          JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
          try {
              CTEEnigma cteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-             if(ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())){
+             if (ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())) {
                  response.setStatus(HttpServletResponse.SC_CONFLICT);
-                 out.print("File is already uploaded" + " by: "+ ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
+                 out.print("File is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
                  out.flush();
 
-             }
-             else {
+             } else {
                  ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
 
                  ServletUtils.getUBoatManager(request.getServletContext()).addUBoat(name, ServletUtils.getEngineManager(request.getServletContext()).getCurrentEnigmaMachine()
-                 , cteEnigma.getCTEBattlefield(), ServletUtils.getEngineManager(request.getServletContext()).getDictionaryObject());
+                         , cteEnigma.getCTEBattlefield(), ServletUtils.getEngineManager(request.getServletContext()).getDictionaryObject());
                  response.setStatus(HttpServletResponse.SC_OK);
 
                  out.println("File uploaded successfully by" + " " + name);
              }
-         }
-          catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |
-                 MachineNotExistsException | CloneNotSupportedException | BruteForceInProgressException e) {
+         } catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |
+                  MachineNotExistsException | CloneNotSupportedException | BruteForceInProgressException e) {
+             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
              out.println(e.getMessage());
          }
+     }
      }
     }
 }

@@ -114,4 +114,7 @@ public class MachineDetails {
     public Set<Character> getKeyboardCharacters() {
         return keyboard;
     }
+    public void addMessageToCounter() {
+        messagesCounter++;
+    }
 }

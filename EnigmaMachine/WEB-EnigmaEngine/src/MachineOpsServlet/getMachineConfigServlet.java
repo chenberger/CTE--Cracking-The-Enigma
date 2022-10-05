@@ -1,5 +1,6 @@
 package MachineOpsServlet;
 
+import DTO.MachineConfigurationToShow;
 import DTO.MachineDetails;
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
@@ -29,8 +30,11 @@ public class getMachineConfigServlet extends HttpServlet {
             else if(request.getParameter("action").toString().equals("displayRawMachineDetails")) {
                 getRawMachineDetails(request, response);
             }
-            else {
+            else if(request.getParameter("action").toString().equals("getCurrentMachineConfig")) {
                 getCurrentMachineConfig(request, response);
+            }
+            else{
+                getOriginalMachineConfig(request, response);
             }
 
         } catch (MachineNotExistsException e) {
@@ -40,11 +44,13 @@ public class getMachineConfigServlet extends HttpServlet {
         }
     }
 
+
+
     private void getRawMachineDetails(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
-        machineDetails = new MachineDetails(engine.getEnigmaMachine(), 0, machineDetails.getOriginalSettingsFormat(),machineDetails.getOriginalSettingsFormat());
+        //machineDetails = new MachineDetails(engine.getEnigmaMachine(), 0, machineDetails.getOriginalSettingsFormat(),machineDetails.getOriginalSettingsFormat());
         response.setStatus(HttpServletResponse.SC_OK);
         Gson gson = new Gson();
         String jsonResponse = gson.toJson(machineDetails);
@@ -61,12 +67,13 @@ public class getMachineConfigServlet extends HttpServlet {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
+        MachineConfigurationToShow machineConfigurationToShow = new MachineConfigurationToShow(machineDetails.getAmountOfTotalRotors(), machineDetails.getAmountOfTotalReflectors(), machineDetails.getAmountCurrentRotorsInUse(), machineDetails.getMessagesCounter(), machineDetails.getCurrentMachineSettings(), machineDetails.getOriginalMachineSettings());
         response.setStatus(HttpServletResponse.SC_OK);
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(machineDetails);
-        try (PrintWriter out = response.getWriter()) {
-            out.print(jsonResponse);
-            out.flush();
+        String jsonResponse = gson.toJson(machineConfigurationToShow);
+        try {
+            response.getWriter().print(jsonResponse);
+            response.getWriter().flush();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -82,6 +89,22 @@ public class getMachineConfigServlet extends HttpServlet {
         Gson gson = new Gson();
         //TODO: return it to get machine config
         String jsonResponse = gson.toJson(machineDetails.getCurrentMachineSettings());
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void getOriginalMachineConfig(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
+        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
+        EngineManager engine = uBoat.getEngineManager();
+        MachineDetails machineDetails = engine.displaySpecifications();
+        response.setStatus(HttpServletResponse.SC_OK);
+        Gson gson = new Gson();
+        String originalMachineConfig = machineDetails.getOriginalMachineSettings();
+        String jsonResponse = gson.toJson(originalMachineConfig);
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
             out.flush();

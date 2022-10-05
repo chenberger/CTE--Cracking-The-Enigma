@@ -23,13 +23,13 @@ import static Utils.Constants.REFRESH_RATE;
 
 public class TeamAgentsDataPaneController implements Closeable {
     private DashboardTabPaneController dashboardTabPaneController;
-    private TableView<AgentsTable> agentsTableView;
+    @FXML private TableView<AgentsTable> agentsTableView;
 
     @FXML private TableColumn<AgentsTable, String> agentNameCol;
     @FXML private TableColumn<AgentsTable, Long> numOfThreadsCol;
     @FXML private TableColumn<AgentsTable, Long> tasksPullingInEachTimeCol;
     private final IntegerProperty totalAgents = new SimpleIntegerProperty();
-    private TimerTask teamAgentsListRefresher;
+    private TeamAgentsListRefresher teamAgentsListRefresher;
     private SimpleBooleanProperty autoUpdate = new SimpleBooleanProperty();
     private Timer timer;
     @FXML public void initialize(){

@@ -67,7 +67,7 @@ public class MainUBoatScenePaneController {
         if(uBoatMachinePaneController != null) {
             uBoatMachinePaneController.setMainUBoatScenePaneController(this);
         }
-
+        topBorderPaneController.setUBoatName();
         UBoatCompetitionPane.disableProperty().bind(isMachineExsists.not().or(isCodeConfigurationSet.not()));
     }
     public void machineDetailsChanged(){
@@ -108,12 +108,19 @@ public class MainUBoatScenePaneController {
 
         Response response = client.newCall(request).execute();
         if(response.code() == 200) {
-            isMachineExsists.set(true);
-            topBorderPaneController.disableLoadMachineButton();
-            //new ErrorDialog(new Exception(response.body().string()),"Machine loaded successfully");
-            topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
-            UBoatCompetitionPaneController.setDictionary();
-            machineGridController.newFileLoaded();
+            Platform.runLater(() -> {
+                try {
+                    isMachineExsists.set(true);
+
+                    //new ErrorDialog(new Exception(response.body().string()),"Machine loaded successfully");
+                    topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
+                    UBoatCompetitionPaneController.setDictionary();
+                    machineGridController.newFileLoaded();
+                    topBorderPaneController.disableLoadMachineButton();
+                } catch (Exception e) {
+                    new ErrorDialog(e, "Error while loading machine");
+                }
+            });
 
         }
         else {

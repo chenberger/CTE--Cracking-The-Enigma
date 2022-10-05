@@ -75,7 +75,7 @@ public class UBoatCompetitionPaneController implements Closeable {
             uBoatCandidatesPaneController.setUBoatCompetitionPaneController(this);
         }
 
-        readyButton.disableProperty().bind(areTeamsInBattle.not().or(isProcessedWordExist.not()));
+        readyButton.disableProperty().bind(isProcessedWordExist);
         initializeCompetitionTable();
     }
 

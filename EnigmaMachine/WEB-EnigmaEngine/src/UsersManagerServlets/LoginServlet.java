@@ -40,15 +40,19 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void getSessionId(HttpServletRequest request, HttpServletResponse response) {
+     private void getSessionId(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        try (PrintWriter out = response.getWriter()) {
-            String sessionId = request.getSession().getId();
-            out.print(sessionId);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        synchronized (this){
+            try (PrintWriter out = response.getWriter()) {
+                String sessionId = request.getSession().getId();
+                out.print(sessionId);
+                out.flush();
+
+            } catch (IOException e) {
+                //TODO handle it properly
+                e.printStackTrace();
+            }
         }
     }
     // urls that starts with forward slash '/' are considered absolute
@@ -71,7 +75,7 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String user = request.getParameter(USER_NAME);
+        //String user = request.getParameter(USER_NAME);
         String usernameFromSession = SessionUtils.getUsername(request);
         UsersManager userManager = ServletUtils.getUserManager(getServletContext());
         if (usernameFromSession == null) {

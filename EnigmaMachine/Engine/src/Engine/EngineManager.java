@@ -195,9 +195,7 @@ public class EngineManager implements MachineOperations, Serializable {
             }
             decryptionManager = new DecryptionManager();
         }
-        catch (MachineNotExistsException | CloneNotSupportedException e){
-            throw e;
-        } catch (IllegalAgentsAmountException e) {
+        catch (Exception  e){
             throw e;
         }
     }

@@ -43,6 +43,7 @@ public class AlliesInBattleRefresher extends TimerTask {
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
         System.out.println("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+
         HttpClientUtil.runAsync(U_BOATS_LIST_SERVLET, new Callback() {
 
             @Override

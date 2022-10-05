@@ -23,7 +23,7 @@ public class AllieApp extends Application {
             allieLoginPaneController = fxmlLoader.getController();
 
 
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root,1200,800);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
