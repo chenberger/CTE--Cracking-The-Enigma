@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="UserInterface">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/UserInterface_jar/UserInterface.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

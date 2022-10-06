@@ -2,6 +2,7 @@ package UsersManagerServlets;
 
 import Constants.ServletConstants;
 import Engine.AlliesManager.AlliesManager;
+import UserManager.UsersManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,6 +28,7 @@ public class AllieLoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String allieNameFromSession = SessionUtils.getAllieName(request);
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        UsersManager usersManager = ServletUtils.getUserManager(getServletContext());
         if (allieNameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(ALLIE_NAME);
@@ -38,17 +40,20 @@ public class AllieLoginServlet extends HttpServlet {
                 usernameFromParameter = usernameFromParameter.trim();
 
                 synchronized (this) {
-                    if (alliesManager.isAllieExists(usernameFromParameter)) {
+                    if (alliesManager.isAllieExists(usernameFromParameter) || usersManager.isUserExists(usernameFromParameter)) {
                         String errorMessage = "Allie Name " + usernameFromParameter + " already exists. Please enter a different username.";
 
                         request.setAttribute(ServletConstants.ALLIE_NAME_ERROR, errorMessage);
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println(errorMessage);
+
 
                         //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                     }
                     else {
 
                         alliesManager.addAllie(usernameFromParameter);
+                        usersManager.addUser(usernameFromParameter);
                         request.getSession(true).setAttribute(ALLIE_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());

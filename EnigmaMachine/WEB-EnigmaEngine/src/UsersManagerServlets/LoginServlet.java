@@ -76,21 +76,22 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //String user = request.getParameter(USER_NAME);
-        String usernameFromSession = SessionUtils.getUsername(request);
-        UsersManager userManager = ServletUtils.getUserManager(getServletContext());
-        if (usernameFromSession == null) {
-            //user is not logged in yet
-            String usernameFromParameter = request.getParameter(USER_NAME);
-            if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                //no username in session and no username in parameter -
-                //redirect back to the index page
-                //this return an HTTP code back to the browser telling it to load
-                response.setStatus(HttpServletResponse.SC_CONFLICT);
-            } else {
-                //normalize the username value
-                usernameFromParameter = usernameFromParameter.trim();
+        synchronized (this) {
+            String usernameFromSession = SessionUtils.getUsername(request);
+            UsersManager userManager = ServletUtils.getUserManager(getServletContext());
+            if (usernameFromSession == null) {
+                //user is not logged in yet
+                String usernameFromParameter = request.getParameter(USER_NAME);
+                if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
+                    //no username in session and no username in parameter -
+                    //redirect back to the index page
+                    //this return an HTTP code back to the browser telling it to load
+                    response.setStatus(HttpServletResponse.SC_CONFLICT);
+                } else {
+                    //normalize the username value
+                    usernameFromParameter = usernameFromParameter.trim();
 
-                synchronized (this) {
+
                     if (userManager.isUserExists(usernameFromParameter)) {
                         String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
 
@@ -98,24 +99,23 @@ public class LoginServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_CONFLICT);
                         response.getWriter().println(errorMessage);
 
-                    }
-                    else {
+                    } else {
 
                         userManager.addUser(usernameFromParameter);
                         request.getSession(true).setAttribute(ServletConstants.USER_NAME, usernameFromParameter);
                         String name = SessionUtils.getUsername(request);
-                        response.getWriter().println("User created successfully" + System.lineSeparator() + "Users in list: " + ServletUtils.getUserManager(getServletContext()).getUsers());
+                        response.getWriter().println(name);
 
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
                 }
+            } else {
+                //user is already logged in
+                response.getWriter().println("User already exist");
+                response.setStatus(HttpServletResponse.SC_OK);
             }
-        } else {
-            //user is already logged in
-            response.getWriter().println("User already exist");
-            response.setStatus(HttpServletResponse.SC_OK);
         }
     }
 

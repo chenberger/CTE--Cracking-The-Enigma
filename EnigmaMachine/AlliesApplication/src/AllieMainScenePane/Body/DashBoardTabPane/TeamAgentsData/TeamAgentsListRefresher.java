@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LIST_SERVLET;
 import static Utils.Constants.ACTION;
@@ -46,8 +47,13 @@ public class TeamAgentsListRefresher extends TimerTask {
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
         System.out.println("About to invoke: " + ALLIES_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+        String finalUrl = HttpUrl.parse(ALLIES_LIST_SERVLET)
+                .newBuilder()
+                .addQueryParameter("ally", "ally")
+                .build()
+                .toString();
 
-        HttpClientUtil.runAsync(ALLIES_LIST_SERVLET, new Callback() {
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -76,8 +82,9 @@ public class TeamAgentsListRefresher extends TimerTask {
     private AgentsToTable extractAgentsToTableFromJson(String jsonAgentsToTable) {
         JsonObject jsonObject = JsonParser.parseString(jsonAgentsToTable).getAsJsonObject();
         List<String> agentsNames = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("agents"), String[].class));
-        List<Long> numberOfThreadsForEachAgent = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("numberOfThreadsForEachAgent"), Long[].class));
-        List<Long> tasksSizesForEachAgent = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("numberOfTasksForEachAgent"), Long[].class));
+        List<Long> numberOfThreadsForEachAgent = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("threadsForEachAgent"), Long[].class));
+        List<Long> tasksSizesForEachAgent = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("tasksTakenOnceForEachAgent"), Long[].class));
+
         return new AgentsToTable(agentsNames, numberOfThreadsForEachAgent, tasksSizesForEachAgent);
     }
 }

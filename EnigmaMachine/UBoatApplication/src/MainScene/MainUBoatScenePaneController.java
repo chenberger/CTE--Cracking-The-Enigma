@@ -25,8 +25,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Constants.ServletConstants.USERNAME;
+import static Utils.Constants.ACTION;
+import static Utils.Constants.GSON_INSTANCE;
+
 public class MainUBoatScenePaneController {
     private String currentSessionId;
+    private String currentBoatName;
     private UBoatMachinePaneController uBoatMachinePaneController;
     @FXML private GridPane UBoatLoginPane;
     @FXML private UBoatLoginPaneController UBoatLoginPaneController;
@@ -46,6 +51,7 @@ public class MainUBoatScenePaneController {
     }
     public MainUBoatScenePaneController() {
         currentSessionId = null;
+        currentBoatName = null;
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
         this.isMachineExsists = new SimpleBooleanProperty(false);
         this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
@@ -94,6 +100,7 @@ public class MainUBoatScenePaneController {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         getCurrentSessionId();
+        getCurrentBoatName();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("file",selectedFile.getAbsolutePath(),
@@ -103,7 +110,8 @@ public class MainUBoatScenePaneController {
         Request request = new Request.Builder()
                 .url(UBoatsServletsPaths.FILE_UPLOADED_SERVLET)
                 .method("POST", body)
-                .addHeader("Cookie", "JSESSIONID="+currentSessionId)
+                .addHeader("Cookie", "JSESSIONID="+ currentSessionId)
+                .addHeader(USERNAME, currentBoatName)
                 .build();
 
         Response response = client.newCall(request).execute();
@@ -128,6 +136,37 @@ public class MainUBoatScenePaneController {
         }
 
     }
+
+    private void getCurrentBoatName() {
+        String finalUrl = HttpUrl.parse(UBoatsServletsPaths.GET_USER_NAME_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getBoatName")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> new ErrorDialog(e, "Error while getting boat Name"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    currentBoatName = response.body().string().trim();
+                }
+                else{
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()
@@ -144,7 +183,7 @@ public class MainUBoatScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    currentSessionId= response.body().string();
+                    currentSessionId = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                 }
                 else{
                     Platform.runLater(() -> {

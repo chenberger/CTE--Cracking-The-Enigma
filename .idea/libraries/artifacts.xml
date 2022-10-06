@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="artifacts">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/DTO.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/Engine.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/UserInterface.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

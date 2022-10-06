@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson-2.8.8-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson-2.8.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/kotlin-stdlib-common-1.4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson-2.8.8-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okhttp-4.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/kotlin-stdlib-1.4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okio-2.8.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

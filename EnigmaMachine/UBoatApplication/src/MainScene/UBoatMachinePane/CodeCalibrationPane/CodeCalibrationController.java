@@ -1,5 +1,7 @@
 package MainScene.UBoatMachinePane.CodeCalibrationPane;
 
+import DTO.DetailsToManualCodeInitializer;
+import DTO.MachineConfigurationToShow;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeInitializerScene;
@@ -97,8 +99,8 @@ public class CodeCalibrationController {
                     Platform.runLater(() -> {
                         try {
                             Gson gson = new Gson();
-                            MachineDetails machineDetails = gson.fromJson(response.body().string(), MachineDetails.class);
-                            manuallyCodeInitializerScene.show(machineDetails, CodeCalibrationController.this, currentSkinType);
+                            DetailsToManualCodeInitializer detailsToManualCodeInitializer = gson.fromJson(response.body().string(), DetailsToManualCodeInitializer.class);
+                            manuallyCodeInitializerScene.show(detailsToManualCodeInitializer, CodeCalibrationController.this, currentSkinType);
                         } catch (IOException e) {
                             new ErrorDialog(e, "Unable to get specifications");
                         }
@@ -155,9 +157,9 @@ public class CodeCalibrationController {
                 }
                 else {
                     Gson gson = new Gson();
-                    MachineDetails machineDetails = gson.fromJson(response.body().string(), MachineDetails.class);
+                    String currentCodeConfiguration = gson.fromJson(response.body().string(), String.class);
                     Platform.runLater(() -> {
-                        uBoatMachinePaneController.setNewConfiguration(machineDetails.getCurrentMachineSettings());
+                        uBoatMachinePaneController.setNewConfiguration(currentCodeConfiguration);
                         uBoatMachinePaneController.machineDetailsChanged();
                     });
                 }
