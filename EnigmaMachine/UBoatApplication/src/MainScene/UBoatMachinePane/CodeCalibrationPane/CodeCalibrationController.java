@@ -6,7 +6,7 @@ import DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeInitializerS
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachine.Settings.*;
-import MachineOpsServlet.SectorsCodeAsJson;
+import DTO.SectorsCodeAsJson;
 import MainScene.MainUBoatScenePaneController;
 import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;

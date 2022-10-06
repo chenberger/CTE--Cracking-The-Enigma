@@ -1,5 +1,6 @@
 package MachineOpsServlet;
 
+import DTO.SectorsCodeAsJson;
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
 import EnigmaMachine.Settings.Sector;
