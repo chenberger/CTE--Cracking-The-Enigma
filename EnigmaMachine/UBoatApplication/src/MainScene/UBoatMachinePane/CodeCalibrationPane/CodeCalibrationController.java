@@ -5,7 +5,8 @@ import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeInitializerScene;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import EnigmaMachine.Settings.Sector;
+import EnigmaMachine.Settings.*;
+import MachineOpsServlet.SectorsCodeAsJson;
 import MainScene.MainUBoatScenePaneController;
 import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import static Utils.Constants.ACTION;
-import static Utils.Constants.DISPLAY_SPECIFICATIONS;
 
 public class CodeCalibrationController {
 
@@ -120,8 +120,14 @@ public class CodeCalibrationController {
 
 
     private void initializeEngineSettings(List<Sector> codeConfigurationSectors) {
+        SectorsCodeAsJson sectorsAsJson = new SectorsCodeAsJson(
+                (RotorIDSector) codeConfigurationSectors.get(0),
+                (StartingRotorPositionSector) codeConfigurationSectors.get(1),
+                (ReflectorIdSector) codeConfigurationSectors.get(2),
+                (PluginBoardSector) codeConfigurationSectors.get(3));
         Gson gson = new Gson();
-        String json = gson.toJson(codeConfigurationSectors);
+        String json = gson.toJson(sectorsAsJson);
+        System.out.println("JSON code: " + json);
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.SET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
