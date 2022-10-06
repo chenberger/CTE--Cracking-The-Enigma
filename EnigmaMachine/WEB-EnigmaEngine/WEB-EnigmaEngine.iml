@@ -17,13 +17,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Engine" exported="" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 10.0.23" level="application_server_libraries" />
-    <orderEntry type="module" module-name="DTO" exported="" />
-    <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
-    <orderEntry type="library" exported="" name="okHttp" level="project" />
     <orderEntry type="library" exported="" name="gson" level="project" />
+    <orderEntry type="module" module-name="ClientAppsCommons" exported="" />
+    <orderEntry type="module" module-name="Engine" exported="" />
+    <orderEntry type="module" module-name="DTO" exported="" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 10.0.23" level="application_server_libraries" />
   </component>
 </module>

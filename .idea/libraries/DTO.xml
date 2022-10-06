@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="DTO">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EnigmaMachine/out/artifacts/DTO_jar/DTO.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

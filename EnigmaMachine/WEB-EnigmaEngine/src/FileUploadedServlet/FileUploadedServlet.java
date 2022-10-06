@@ -35,18 +35,27 @@ public class FileUploadedServlet extends HttpServlet {
      response.setContentType("text/plain");
      response.setCharacterEncoding("UTF-8");
      PrintWriter out = response.getWriter();
+     synchronized (this){
+        String name = SessionUtils.getUsername(request);
+        name = name != null ? name : "Guest";
 
-     String name = SessionUtils.getUsername(request) != null ? SessionUtils.getUsername(request) : "Guest";
-     synchronized (this){Collection<Part> parts = request.getParts();
-     for(Part part : parts) {
+
+         Collection<Part> parts = request.getParts();
+         for(Part part : parts) {
          InputStream inputStream = part.getInputStream();
          JaxbToMachineTransformer jaxbToMachineTransformer = new JaxbToMachineTransformer();
          try {
              CTEEnigma cteEnigma = jaxbToMachineTransformer.deserializeFrom(inputStream);
-             if (ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())) {
+             if (ServletUtils.getUBoatManager(request.getServletContext()).isFileExists(cteEnigma.getCTEBattlefield().getBattleName())|| name.equals("Guest")) {
                  response.setStatus(HttpServletResponse.SC_CONFLICT);
-                 out.print("File is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
-                 out.flush();
+                 if(name.equals("Guest")) {
+                     System.out.println("didnt got the session");
+                     //out.print("File is already uploaded" + " by: " + "Guest");
+                 }
+                 else {
+                     out.print("File is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
+                     out.flush();
+                 }
 
              } else {
                  ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);

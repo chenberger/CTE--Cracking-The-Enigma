@@ -7,11 +7,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="UserInterface" />
     <orderEntry type="library" exported="" name="okHttp" level="project" />
+    <orderEntry type="library" exported="" name="gson" level="project" />
     <orderEntry type="module" module-name="ClientAppsCommons" exported="" />
-    <orderEntry type="library" name="gson" level="project" />
-    <orderEntry type="module" module-name="DTO" />
-    <orderEntry type="module" module-name="WEB-EnigmaEngine" />
+    <orderEntry type="module" module-name="UserInterface" exported="" />
+    <orderEntry type="module" module-name="WEB-EnigmaEngine" exported="" />
+    <orderEntry type="module" module-name="Engine" exported="" />
+    <orderEntry type="module" module-name="DTO" exported="" />
   </component>
 </module>

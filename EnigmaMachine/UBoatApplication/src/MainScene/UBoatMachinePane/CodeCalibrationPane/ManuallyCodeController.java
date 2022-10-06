@@ -1,5 +1,6 @@
 package MainScene.UBoatMachinePane.CodeCalibrationPane;
 
+import DTO.DetailsToManualCodeInitializer;
 import DesktopUserInterface.MainScene.BodyScene.Machine.PluggedPair;
 import MainScene.UBoatMachinePane.CodeCalibrationPane.CodeCalibrationController;
 import DTO.MachineDetails;
@@ -29,7 +30,7 @@ public class ManuallyCodeController {
     @FXML private FlowPane StartingPositions;
     @FXML private ChoiceBox<RomanNumber> reflectorChoiceBox;
     private CodeCalibrationController codeCalibrationController;
-    private MachineDetails machineDetails;
+    private DetailsToManualCodeInitializer machineDetails;
     @FXML private ScrollPane pluginBoardArea;
     @FXML private ScrollPane rotorsIdArea;
     @FXML private ScrollPane startingPositionsArea;
@@ -214,12 +215,12 @@ public class ManuallyCodeController {
         ChoiceBox<Integer> idChoiceBox;
         ChoiceBox<Character> characterChoiceBox;
 
-        for (int i = 0; i < machineDetails.getAmountCurrentRotorsInUse(); i++) {
+        for (int i = 0; i < machineDetails.getNumOfRotorsInUse(); i++) {
             rotorIdVBox = new VBox();
-            label = new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString());
+            label = new Label("Rotor id: " + machineDetails.getAllRotorsIds().get(i).toString());
             label.setWrapText(true);
             rotorIdVBox.getChildren().add(label);
-            idChoiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsId()));
+            idChoiceBox = new ChoiceBox<Integer>(FXCollections.observableArrayList(machineDetails.getAllRotorsIds()));
             idChoiceBox.setPrefWidth(label.getWidth());
             rotorIdVBox.getChildren().add(idChoiceBox);
             VBox.setMargin(label, new Insets(10, 10, 10, 10));
@@ -227,8 +228,8 @@ public class ManuallyCodeController {
             RotorsId.getChildren().add(rotorIdVBox);
 
             rotorStartingPositionVBox = new VBox();
-            label = new Label("Rotor id: " + machineDetails.getAllRotorsId().get(i).toString());
-            characterChoiceBox = new ChoiceBox<Character>(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters()));
+            label = new Label("Rotor id: " + machineDetails.getAllRotorsIds().get(i).toString());
+            characterChoiceBox = new ChoiceBox<Character>(FXCollections.observableArrayList(machineDetails.getKeyBoardCharacters()));
             characterChoiceBox.setPrefWidth(label.getWidth());
             rotorStartingPositionVBox.getChildren().add(label);
             rotorStartingPositionVBox.getChildren().add(characterChoiceBox);
@@ -237,16 +238,16 @@ public class ManuallyCodeController {
             StartingPositions.getChildren().add(rotorStartingPositionVBox);
         }
 
-        reflectorChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getAllReflectorsId()));
-        leftPluggedPairChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters()));
-        rightPluggedPairChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getKeyboardCharacters()));
+        reflectorChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getAllReflectorsIds()));
+        leftPluggedPairChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getKeyBoardCharacters()));
+        rightPluggedPairChoiceBox.setItems(FXCollections.observableArrayList(machineDetails.getKeyBoardCharacters()));
     }
 
     public void setCodeCalibrationController(CodeCalibrationController codeCalibrationController) {
         this.codeCalibrationController = codeCalibrationController;
     }
 
-    public void setMachineDetails(MachineDetails machineDetails) {
+    public void setMachineDetails(DetailsToManualCodeInitializer machineDetails) {
         this.machineDetails = machineDetails;
     }
 

@@ -2,6 +2,7 @@ package UsersManagerServlets;
 
 import Constants.ServletConstants;
 import Engine.AgentsManager.AgentsManager;
+import UserManager.UsersManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,6 +27,7 @@ public class AgentLoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String agentNameFromSession = SessionUtils.getAgentName(request);
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        UsersManager usersManager = ServletUtils.getUserManager(getServletContext());
         if (agentNameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(AGENT_NAME);
@@ -41,10 +43,11 @@ public class AgentLoginServlet extends HttpServlet {
                 usernameFromParameter = usernameFromParameter.trim();
 
                 synchronized (this) {
-                    if (agentsManager.isAgentExists(usernameFromParameter)) {
+                    if (agentsManager.isAgentExists(usernameFromParameter) || usersManager.isUserExists(usernameFromParameter)) {
                         String errorMessage = "Agent Name " + usernameFromParameter + " already exists. Please enter a different username.";
 
                         request.setAttribute(ServletConstants.AGENT_NAME_ERROR, errorMessage);
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println(errorMessage);
 
                         //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
@@ -53,6 +56,7 @@ public class AgentLoginServlet extends HttpServlet {
 
                         //alliesManager.addAllie(usernameFromParameter);
                         agentsManager.addAgent(usernameFromParameter);
+                        usersManager.addUser(usernameFromParameter);
                         request.getSession(true).setAttribute(AGENT_NAME, usernameFromParameter);
 
                         //System.out.println("On login, request URI is: " + request.getRequestURI());

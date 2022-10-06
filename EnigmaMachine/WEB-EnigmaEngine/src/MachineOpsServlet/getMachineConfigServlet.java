@@ -1,5 +1,6 @@
 package MachineOpsServlet;
 
+import DTO.DetailsToManualCodeInitializer;
 import DTO.MachineConfigurationToShow;
 import DTO.MachineDetails;
 import Engine.EngineManager;
@@ -50,10 +51,11 @@ public class getMachineConfigServlet extends HttpServlet {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
-        //machineDetails = new MachineDetails(engine.getEnigmaMachine(), 0, machineDetails.getOriginalSettingsFormat(),machineDetails.getOriginalSettingsFormat());
+        DetailsToManualCodeInitializer detailsToManualCodeInitializer = new DetailsToManualCodeInitializer(machineDetails.getAllRotorsId(),machineDetails.getAllReflectorsId(),machineDetails.getKeyboardCharacters(),machineDetails.getAmountCurrentRotorsInUse());
+
         response.setStatus(HttpServletResponse.SC_OK);
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(machineDetails);
+        String jsonResponse = gson.toJson(detailsToManualCodeInitializer);
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
             out.flush();

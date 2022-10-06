@@ -1,5 +1,6 @@
 package DesktopUserInterface.MainScene.BodyScene.Machine;
 
+import DTO.DetailsToManualCodeInitializer;
 import MainScene.UBoatMachinePane.CodeCalibrationPane.CodeCalibrationController;
 import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.Common.SkinType;
@@ -16,7 +17,7 @@ public class ManuallyCodeInitializerScene {
     private ManuallyCodeController manuallyCodeController;
     private Stage manuallyCodeStage;
     private CodeCalibrationController codeCalibrationController;
-    public void show(MachineDetails machineDetails, CodeCalibrationController codeCalibrationController, SkinType currentSkinType) throws IOException {
+    public void show(DetailsToManualCodeInitializer machineDetails, CodeCalibrationController codeCalibrationController, SkinType currentSkinType) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManuallyCodeInitializer.fxml"));
         Parent load = fxmlLoader.load();
 

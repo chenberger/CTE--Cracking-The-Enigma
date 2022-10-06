@@ -32,7 +32,7 @@ public class AlliesListServlet extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 }
                 else{
-                    Allie currentAllie = ServletUtils.getAlliesManager(getServletContext()).getAllie(SessionUtils.getUsername(request));
+                    Allie currentAllie = ServletUtils.getAlliesManager(getServletContext()).getAllie(SessionUtils.getAllieName(request));
                     AgentsToTable agentsToTable = setAgentsToTable(currentAllie);
                     String json = gson.toJson(agentsToTable);
                     response.getWriter().println(json);

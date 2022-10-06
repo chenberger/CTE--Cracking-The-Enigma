@@ -15,8 +15,8 @@ import java.io.PrintWriter;
 @WebServlet(name = "getUserNameServlet", urlPatterns = {"/users/getUserName"})
 public class getUserNameServlet extends HttpServlet {
 
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         if(request.getParameter("action").equals("getBoatName")) {
             getUBoatName(request, response);
         }

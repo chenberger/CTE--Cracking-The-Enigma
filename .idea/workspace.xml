@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fc430749-6e40-4162-a29e-2df340457f40" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/TopBorderPane/TopBorderPane.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/TopBorderPane/TopBorderPaneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/AgentApplication/AgentApplication.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/AgentApplication/AgentApplication.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/AlliesApplication.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/AlliesApplication.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/AllieMainScenePane.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/AllieMainScenePane.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/AlliesApplication/src/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/ClientAppsCommons/ClientAppsCommons.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/ClientAppsCommons/ClientAppsCommons.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/DTO/DTO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/DTO/DTO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/Engine/Engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/Engine/Engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/UBoatApplication.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/UBoatApplication.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/src/MainScene/MainUBoatScenePaneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/src/MainScene/MainUBoatScenePaneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/src/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/UBoatApplication/src/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/UserInterface/UserInterface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/UserInterface/UserInterface.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/WEB-EnigmaEngine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/WEB-EnigmaEngine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/FileUploadedServlet/FileUploadedServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/FileUploadedServlet/FileUploadedServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/ListsServlets/AlliesListServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/ListsServlets/AlliesListServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/UsersManagerServlets/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/UsersManagerServlets/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/servletUtils/SessionUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/WEB-EnigmaEngine/src/servletUtils/SessionUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/FileUploadedServlet/FileUploadedServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/FileUploadedServlet/FileUploadedServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/ListsServlets/AlliesListServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/ListsServlets/AlliesListServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MachineOpsServlet/getMachineConfigServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MachineOpsServlet/getMachineConfigServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/UsersManagerServlets/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/UsersManagerServlets/LoginServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/servletUtils/SessionUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/classes/servletUtils/SessionUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/AllieMainScenePane.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/AllieMainScenePane.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/AlliesApplication/AllieMainScenePane/Body/DashBoardTabPane/TeamAgentsData/TeamAgentsListRefresher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/UBoatApplication/MainScene/UBoatMachinePane/CodeCalibrationPane/CodeCalibrationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/FileUploadedServlet/FileUploadedServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/FileUploadedServlet/FileUploadedServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/ListsServlets/AlliesListServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/ListsServlets/AlliesListServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/MachineOpsServlet/getMachineConfigServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/MachineOpsServlet/getMachineConfigServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/UsersManagerServlets/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/UsersManagerServlets/LoginServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/servletUtils/SessionUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/EnigmaMachine/out/production/WEB-EnigmaEngine/servletUtils/SessionUtils.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2FlSyocfyPtZqe1qnp5zK5uLs8t" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Chen Berger/Java exercises/Ex1/Enigma-Machine",
+    "project.structure.last.edited": "Facets",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fc430749-6e40-4162-a29e-2df340457f40" name="Changes" comment="" />
+      <created>1665065435085</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1665065435085</updated>
+      <workItem from="1665065436352" duration="6000" />
+      <workItem from="1665065558851" duration="15000" />
+      <workItem from="1665065704027" duration="41000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
