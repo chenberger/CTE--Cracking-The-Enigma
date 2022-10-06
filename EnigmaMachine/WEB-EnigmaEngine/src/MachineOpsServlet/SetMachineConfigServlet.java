@@ -2,11 +2,9 @@ package MachineOpsServlet;
 
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
-import EnigmaMachine.Rotor;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachineException.*;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,9 +16,6 @@ import servletUtils.SessionUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 
 @WebServlet(name = "SetMachineConfigServlet",urlPatterns = {"/machine/SetMachineConfig"})
 public class SetMachineConfigServlet extends HttpServlet {
@@ -83,9 +78,14 @@ public class SetMachineConfigServlet extends HttpServlet {
 
     private void setMachineConfigManually(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try {
+            //Type type = new TypeToken<List<Sector>>() {}.getType();
+            //System.out.println("TYpe: " + type);
             Gson gson = new Gson();
             EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
-            List<Sector> sectors =  gson.fromJson(request.getParameter("sectors"), ArrayList.class);
+            SectorsCodeAsJson sectorsAsJson =  gson.fromJson(request.getParameter("sectors"), SectorsCodeAsJson.class);
+            System.out.println("sectors: " + sectorsAsJson);
+
+            List<Sector> sectors = sectorsAsJson.getSectors();
             EngineManager engineManager = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
             engineManager.initializeSettings(sectors);
             response.setStatus(HttpServletResponse.SC_OK);
