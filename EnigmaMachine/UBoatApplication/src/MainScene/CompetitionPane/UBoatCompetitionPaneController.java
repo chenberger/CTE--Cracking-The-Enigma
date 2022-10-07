@@ -1,12 +1,12 @@
 package MainScene.CompetitionPane;
 
 import Api.UpdateHttpLine;
-import MainScene.CompetitionPane.CandidatesPane.UBoatCandidatesPaneController;
-import MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import DTO.AlliesToTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
+import MainScene.CompetitionPane.CandidatesPane.UBoatCandidatesPaneController;
+import MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import MainScene.MainUBoatScenePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
@@ -39,7 +39,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
-import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
 
 public class UBoatCompetitionPaneController implements Closeable {
@@ -51,7 +50,6 @@ public class UBoatCompetitionPaneController implements Closeable {
     private final IntegerProperty totalUsers;
     private UpdateHttpLine.HttpStatusUpdate httpStatusUpdate;
     private MainUBoatScenePaneController mainUBoatScenePaneController;
-    @FXML private Button logOutButton;
     @FXML private Button readyButton;
     @FXML private AnchorPane uBoatCandidatesPane;
     @FXML private UBoatCandidatesPaneController uBoatCandidatesPaneController;
@@ -266,37 +264,6 @@ public class UBoatCompetitionPaneController implements Closeable {
 
 
     @FXML public void onReadyButtonClicked(ActionEvent actionEvent) {
-    }
-
-    @FXML public void onLogOutButtonClicked(ActionEvent actionEvent) {
-        String finalUrl = HttpUrl.parse(U_BOAT_LOGOUT_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "logout")
-                .build().toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseStr = response.body().string();
-                if (response.isSuccessful()) {
-                    Platform.runLater(() -> {
-                        try {
-                            new ErrorDialog(new Exception("You have been logged out"), "Logged out");
-
-                            close();
-                        } catch (Exception e) {
-                            new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
-                        }
-                    });
-                } else {
-                    new ErrorDialog(new Exception(responseStr), "Failed to logout");
-                }
-            }
-        });
     }
 
     public void setNewConfiguration(String currentMachineConfiguration) {
