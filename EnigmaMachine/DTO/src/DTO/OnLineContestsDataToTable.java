@@ -25,7 +25,7 @@ public class OnLineContestsDataToTable {
     public List<String> getBattleNames() {
         return battleNames;
     }
-    public List<String> getuBoatNames() {
+    public List<String> getUBoatNames() {
         return uBoatNames;
     }
     public List<DifficultyLevel> getDifficultyLevels() {

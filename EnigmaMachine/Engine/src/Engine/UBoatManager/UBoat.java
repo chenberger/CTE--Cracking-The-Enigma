@@ -10,10 +10,13 @@ import java.util.List;
 
 public class UBoat {
     private String name;
+    private final String CONTEST_NOT_STARTED = "Contest not started";
+    private final String CONTEST_STARTED = "Contest started";
     private BattleField battleField;
     //private final EnigmaMachine enigmaMachine;
     //private final StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private final EngineManager engineManager;
+    private String ContestStatus;
     private boolean isReady;
 
     public UBoat(String name, CTEBattlefield battleField, EnigmaMachine enigmaMachine, Dictionary dictionary) {
@@ -23,6 +26,7 @@ public class UBoat {
         this.isReady = false;
         //this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.engineManager = new EngineManager(enigmaMachine);
+        this.ContestStatus = CONTEST_NOT_STARTED;
         setEngineDictionary(dictionary);
     }
     //region getters and setters
@@ -42,6 +46,12 @@ public class UBoat {
     public void setBattleField(BattleField battleField) {
         this.battleField = battleField;
     }
+    public void setContestStatusStarted(){
+        this.ContestStatus = CONTEST_STARTED;
+    }
+    public void setContestStatusNotStarted(){
+        this.ContestStatus = CONTEST_NOT_STARTED;
+    }
     //public EnigmaMachine getEnigmaMachine() {
     //    return enigmaMachine;
     //}
@@ -56,5 +66,9 @@ public class UBoat {
 
     public void removeAlliesFromBattle() {
         battleField.removeAlliesFromBattle();
+    }
+
+    public String getContestStatus() {
+        return ContestStatus;
     }
 }

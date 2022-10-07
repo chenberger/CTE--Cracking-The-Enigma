@@ -55,6 +55,7 @@ public class DashboardTabPaneController {
 
     public void setActive() {
         teamAgentsDataPaneController.startListRefresher();
+        contestsDataPaneController.startListRefresher();
     }
 
     public void onSetTaskSizeButton(ActionEvent actionEvent) {
