@@ -49,16 +49,17 @@ public class MainUBoatScenePaneController {
     private SimpleBooleanProperty isCodeConfigurationSet;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
     @FXML private Button logoutButton;
+    private OkHttpClient httpClient;
 
-    public static void setEnigmaEngine(EngineManager engineManager) {
+    //TODO: make sure that log out is possible only between competitions//
 
-    }
     public MainUBoatScenePaneController() {
         currentSessionId = null;
         currentBoatName = null;
         this.currentCodeConfigurationGridControllers = new ArrayList<>();
         this.isMachineExsists = new SimpleBooleanProperty(false);
         this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
+        this.httpClient = new OkHttpClient().newBuilder().build();
     }
     public void initialize() {
         if (UBoatLoginPane != null) {
@@ -102,8 +103,7 @@ public class MainUBoatScenePaneController {
                     Platform.runLater(() -> {
                         try {
                             new ErrorDialog(new Exception("You have been logged out"), "Logged out");
-
-                            close();
+                            closeUBoatSession();
                         } catch (Exception e) {
                             new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
                         }
@@ -131,25 +131,24 @@ public class MainUBoatScenePaneController {
         );
         File selectedFile = fileChooser.showOpenDialog(getStageWindow());
 
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
         getCurrentSessionId();
-        getCurrentBoatName();
+            //getCurrentBoatName();
+
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file",selectedFile.getAbsolutePath(),
+                .addFormDataPart("file", selectedFile.getAbsolutePath(),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File(selectedFile.getAbsolutePath())))
                 .build();
         Request request = new Request.Builder()
                 .url(UBoatsServletsPaths.FILE_UPLOADED_SERVLET)
                 .method("POST", body)
-                .addHeader("Cookie", "JSESSIONID="+ currentSessionId)
-                .addHeader(USERNAME, currentBoatName)
+                .addHeader("Cookie", "JSESSIONID=" + currentSessionId)
                 .build();
 
-        Response response = client.newCall(request).execute();
-        if(response.code() == 200) {
+
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() == 200) {
             Platform.runLater(() -> {
                 try {
                     isMachineExsists.set(true);
@@ -164,8 +163,7 @@ public class MainUBoatScenePaneController {
                 }
             });
 
-        }
-        else {
+        } else {
             new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
         }
 
@@ -201,7 +199,7 @@ public class MainUBoatScenePaneController {
         });
     }
 
-    private void getCurrentSessionId() {
+    synchronized private void getCurrentSessionId() {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()
                 .addQueryParameter("username", "get_session_id")
@@ -217,7 +215,7 @@ public class MainUBoatScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    currentSessionId = GSON_INSTANCE.fromJson(response.body().string(), String.class);
+                    currentSessionId = response.body().string().trim();
                 }
                 else{
                     Platform.runLater(() -> {
@@ -283,5 +281,8 @@ public class MainUBoatScenePaneController {
 
     public void close() {
         Platform.exit();
+    }
+    private void closeUBoatSession(){
+        UBoatCompetitionPaneController.close();
     }
 }

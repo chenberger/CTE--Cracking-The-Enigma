@@ -66,14 +66,14 @@
          <center>
             <AnchorPane>
                <children>
-                  <ScrollPane layoutX="440.0" layoutY="202.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="440.0" layoutY="202.0" minHeight="668.0" minWidth="200.0" prefHeight="668.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <fx:include fx:id="contestsTabPane" source="Body/ContestTabPane/ContestTabPane.fxml" />
+                        <fx:include fx:id="contestsTabPane" minHeight="668.0" source="Body/ContestTabPane/ContestTabPane.fxml" />
                      </content>
                   </ScrollPane>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="660.0" minWidth="200.0" prefHeight="200.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <fx:include fx:id="dashboardTabPane" source="Body/DashBoardTabPane/DashboardTabPane.fxml" />
+                        <fx:include fx:id="dashboardTabPane" minHeight="660.0" prefHeight="668.0" source="Body/DashBoardTabPane/DashboardTabPane.fxml" />
                      </content>
                   </ScrollPane>
                </children>

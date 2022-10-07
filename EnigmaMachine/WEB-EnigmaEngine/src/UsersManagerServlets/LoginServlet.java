@@ -18,6 +18,8 @@ import static Constants.ServletConstants.USER_NAME;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/users/Login")
 public class LoginServlet extends HttpServlet {
+    private final Object getUserLock = new Object();
+    private final Object getSessionIdLock = new Object();
     //private final UsersManager usersManager = new UsersManager();
 
     //@Override
@@ -41,9 +43,9 @@ public class LoginServlet extends HttpServlet {
     }
 
      private void getSessionId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        synchronized (this){
+        synchronized (getSessionIdLock){
             try (PrintWriter out = response.getWriter()) {
                 String sessionId = request.getSession().getId();
                 out.print(sessionId);
@@ -76,7 +78,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //String user = request.getParameter(USER_NAME);
-        synchronized (this) {
+        synchronized (getUserLock) {
             String usernameFromSession = SessionUtils.getUsername(request);
             UsersManager userManager = ServletUtils.getUserManager(getServletContext());
             if (usernameFromSession == null) {
