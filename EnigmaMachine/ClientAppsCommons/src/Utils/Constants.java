@@ -13,4 +13,6 @@ public class Constants {
     public static final String ACTION = "action";
     public static final String DISPLAY_SPECIFICATIONS = "displaySpecifications";
     public static final String GET_USER_NAME_SERVLET = FULL_SERVER_PATH + "/users/getUserName";
+    public static final String TASK_SIZE = "taskSize";
+    public static final String SET_TASK_SIZE = "setTaskSize";
 }
