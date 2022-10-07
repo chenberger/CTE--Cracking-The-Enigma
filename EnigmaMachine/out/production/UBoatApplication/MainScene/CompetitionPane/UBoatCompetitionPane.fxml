@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -65,30 +64,11 @@
                                     </AnchorPane>
                                     <AnchorPane GridPane.rowIndex="1">
                                        <children>
-                                          <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="50.0" minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <content>
-                                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Button fx:id="logOutButton" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="33.0" prefWidth="120.0" text="Log Out" textFill="#d30000" HBox.hgrow="ALWAYS">
-                                                         <HBox.margin>
-                                                            <Insets left="50.0" top="10.0" />
-                                                         </HBox.margin>
-                                                         <font>
-                                                            <Font name="Arial" size="18.0" />
-                                                         </font>
-                                                      </Button>
-                                                      <Button fx:id="readyButton" alignment="CENTER" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onReadyButtonClicked" prefHeight="33.0" prefWidth="120.0" text="Ready" textFill="#2da10a" HBox.hgrow="ALWAYS">
-                                                         <HBox.margin>
-                                                            <Insets left="25.0" top="10.0" />
-                                                         </HBox.margin>
-                                                         <font>
-                                                            <Font name="Arial" size="18.0" />
-                                                         </font>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                             </content>
-                                          </ScrollPane>
+                                          <Button fx:id="readyButton" alignment="CENTER" layoutX="302.0" layoutY="23.0" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onReadyButtonClicked" prefHeight="48.0" prefWidth="185.0" text="Ready" textFill="#2da10a">
+                                             <font>
+                                                <Font name="Arial" size="18.0" />
+                                             </font>
+                                          </Button>
                                        </children>
                                     </AnchorPane>
                                  </children>
