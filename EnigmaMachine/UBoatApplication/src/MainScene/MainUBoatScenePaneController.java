@@ -12,7 +12,9 @@ import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Constants.ServletConstants.USERNAME;
+import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.ACTION;
 import static Utils.Constants.GSON_INSTANCE;
 
@@ -45,6 +48,7 @@ public class MainUBoatScenePaneController {
     private SimpleBooleanProperty isMachineExsists;
     private SimpleBooleanProperty isCodeConfigurationSet;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
+    @FXML private Button logoutButton;
 
     public static void setEnigmaEngine(EngineManager engineManager) {
 
@@ -80,6 +84,36 @@ public class MainUBoatScenePaneController {
         machineGridController.machineDetailsChanged();
     }
 
+    @FXML public void onLogoutButtonClicked(ActionEvent actionEvent) {
+        String finalUrl = HttpUrl.parse(U_BOAT_LOGOUT_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "logout")
+                .build().toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseStr = response.body().string();
+                if (response.isSuccessful()) {
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception("You have been logged out"), "Logged out");
+
+                            close();
+                        } catch (Exception e) {
+                            new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+                        }
+                    });
+                } else {
+                    new ErrorDialog(new Exception(responseStr), "Failed to logout");
+                }
+            }
+        });
+    }
     public void switchToCompetitionRoom() {
         UBoatLoginPane.setVisible(false);
         UBoatCompetitionPane.setVisible(true);
