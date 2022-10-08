@@ -232,36 +232,6 @@ public class MainUBoatScenePaneController {
     }
 
 
-    //updateHttpStatusLine("New request is launched for: " + finalUrl);
-
-        //HttpClientUtil.runAsync(finalUrl, new Callback() {
-//
-        //    @Override
-        //    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-        //        Platform.runLater(() ->
-        //                new ErrorDialog(e,"Unable to Upload File"));
-        //    }
-//
-        //    @Override
-        //    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-        //        if (response.code() != 200) {
-        //            String responseBody = response.body().string();
-        //            Platform.runLater(() ->
-        //                    new ErrorDialog(new Exception("Something went wrong. "), responseBody)
-        //            );
-        //        } else {
-        //            Platform.runLater(() -> {
-        //                isMachineExsists.set(true);
-        //                topBorderPaneController.setMachineExists(true);
-        //                topBorderPaneController.setFileUploadedName(selectedFile.getName());
-        //            });
-//
-        //        }
-        //    }
-        //});
-
-
-
     public void setActive() {
         UBoatCompetitionPaneController.setActive();
     }
@@ -280,6 +250,7 @@ public class MainUBoatScenePaneController {
     }
 
     public void close() {
+        HttpClientUtil.shutdown();
         Platform.exit();
     }
     private void closeUBoatSession(){

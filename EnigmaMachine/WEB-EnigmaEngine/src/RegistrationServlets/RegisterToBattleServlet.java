@@ -1,5 +1,6 @@
 package RegistrationServlets;
 
+import DTO.OnLineContestsTable;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
 import Engine.BattleField;
@@ -52,8 +53,11 @@ public class RegisterToBattleServlet extends HttpServlet {
                 //create the response json string
                 allie.setBattleName(battleField.getBattleFieldName());
                 Gson gson = new Gson();
-                List<String> allieFields = allie.getAllieFields();
-                String jsonResponse = gson.toJson(allieFields);
+                String teamsRegisteredAndNeeded = battleField.getNumberOfTeamsInBattleField() + "/" + battleField.getNumberOfAlliesToStartBattle();
+                OnLineContestsTable onLineContestsTable = new OnLineContestsTable(battleField.getBattleFieldName(), currentBoat.getName(), currentBoat.getContestStatus(),
+                        battleField.getLevel().name(),teamsRegisteredAndNeeded);
+                //List<String> allieFields = allie.getAllieFields();
+                String jsonResponse = gson.toJson(onLineContestsTable);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(jsonResponse);
                 response.getWriter().flush();

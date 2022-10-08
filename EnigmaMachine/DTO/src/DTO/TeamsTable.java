@@ -1,4 +1,4 @@
-package MainScene.CompetitionPane;
+package DTO;
 
 public class TeamsTable {
 

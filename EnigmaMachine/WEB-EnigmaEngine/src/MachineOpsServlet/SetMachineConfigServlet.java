@@ -58,6 +58,8 @@ public class SetMachineConfigServlet extends HttpServlet {
 
     private void resetMachineConfig(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, CloneNotSupportedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, ServletException, IOException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
+        uBoat.setCurrentProcessedMessage("");
+        uBoat.getBattleField().setProcessedMessage("");
         EngineManager engine = uBoat.getEngineManager();
         engine.resetSettings();
         response.setStatus(HttpServletResponse.SC_OK);

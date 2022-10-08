@@ -1,9 +1,10 @@
 package AllieMainScenePane.Body.DashBoardTabPane.ContestData;
 
 import AllieMainScenePane.AllieMainScenePaneController;
+import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
-import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.AgentsTable;
 import DTO.OnLineContestsDataToTable;
+import DTO.OnLineContestsTable;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
@@ -14,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -25,14 +25,15 @@ import static Utils.Constants.REFRESH_RATE;
 public class ContestDataPaneController implements Closeable {
     private AllieMainScenePaneController allieMainScenePaneController;
     private DashboardTabPaneController dashboardTabPaneController;
+    private ContestTabPaneController contestTabPaneController;
     private SimpleBooleanProperty autoUpdate = new SimpleBooleanProperty();
     private ContestsDataRefresher contestsDataRefresher;
-    @FXML private TableView<OnLineContestsTable> contestsTable;
-    @FXML private TableColumn<OnLineContestsTable, String> battleNameCol;
-    @FXML private TableColumn<OnLineContestsTable, String> boatNameCol;
-    @FXML private TableColumn<OnLineContestsTable, String> contestStatusCol;
-    @FXML private TableColumn<OnLineContestsTable, String> difficultyCol;
-    @FXML private TableColumn<OnLineContestsTable, String> teamsRegisteredAndNeededCol;
+   @FXML private TableView<OnLineContestsTable> contestsTable;
+   @FXML private TableColumn<OnLineContestsTable, String> battleNameCol;
+   @FXML private TableColumn<OnLineContestsTable, String> boatNameCol;
+   @FXML private TableColumn<OnLineContestsTable, String> contestStatusCol;
+   @FXML private TableColumn<OnLineContestsTable, String> difficultyCol;
+   @FXML private TableColumn<OnLineContestsTable, String> teamsRegisteredAndNeededCol;
     private Timer timer;
 
 
@@ -41,16 +42,20 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private void initializeContestsTable() {
-        battleNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Battle Name"));
-        boatNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("U-Boat Name"));
-        contestStatusCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Status"));
-        difficultyCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Difficulty"));
-        teamsRegisteredAndNeededCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Teams Registered/Needed"));
+       battleNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Battle Name"));
+       boatNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("U-Boat Name"));
+       contestStatusCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Status"));
+       difficultyCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Difficulty"));
+       teamsRegisteredAndNeededCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Teams Registered/Needed"));
     }
 
     public void setDashboardTabPaneController(DashboardTabPaneController dashboardTabPaneController) {
         this.dashboardTabPaneController = dashboardTabPaneController;
     }
+    public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
+        this.contestTabPaneController = contestTabPaneController;
+    }
+
 
     public void onRowOfTableMouseClicked(MouseEvent mouseEvent) {
         if(mouseEvent.getClickCount() > 0) {
@@ -93,9 +98,12 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private List<String> setTeamsRegisteredAndNeeded(Map<String, Integer> teamsRegisteredToEachBattle, List<Integer> numberOfTeamsNeededToEachContest, List<String> battleNames) {
-        return teamsRegisteredToEachBattle.entrySet().stream()
-                .map(entry -> entry.getValue() + "/" + numberOfTeamsNeededToEachContest.get(battleNames.indexOf(entry.getKey())))
-                .collect(Collectors.toList());
+        List<String> teamsRegisteredAndNeeded = battleNames.stream().map(battleName -> {
+            int teamsRegistered = teamsRegisteredToEachBattle.get(battleName) == null ? 0 : teamsRegisteredToEachBattle.get(battleName).intValue();
+            int teamsNeeded = numberOfTeamsNeededToEachContest.get(battleNames.indexOf(battleName));
+            return teamsRegistered + "/" + teamsNeeded;
+        }).collect(Collectors.toList());
+        return teamsRegisteredAndNeeded;
     }
 
     private void clearContestsTable() {
@@ -104,7 +112,7 @@ public class ContestDataPaneController implements Closeable {
 
     @Override
     public void close() {
-        contestsTable.getItems().clear();
+        //contestsTable.getItems().clear();
         if (contestsDataRefresher != null && timer != null) {
             contestsDataRefresher.cancel();
             timer.cancel();

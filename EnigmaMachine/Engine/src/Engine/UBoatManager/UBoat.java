@@ -16,6 +16,7 @@ public class UBoat {
     //private final EnigmaMachine enigmaMachine;
     //private final StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private final EngineManager engineManager;
+    private String currentProcessedMessage;
     private String ContestStatus;
     private boolean isReady;
 
@@ -27,6 +28,7 @@ public class UBoat {
         //this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.engineManager = new EngineManager(enigmaMachine);
         this.ContestStatus = CONTEST_NOT_STARTED;
+        this.currentProcessedMessage = "";
         setEngineDictionary(dictionary);
     }
     //region getters and setters
@@ -51,6 +53,12 @@ public class UBoat {
     }
     public void setContestStatusNotStarted(){
         this.ContestStatus = CONTEST_NOT_STARTED;
+    }
+    public void setCurrentProcessedMessage(String message){
+        this.currentProcessedMessage = message;
+    }
+    public String getCurrentProcessedMessage(){
+        return this.currentProcessedMessage;
     }
     //public EnigmaMachine getEnigmaMachine() {
     //    return enigmaMachine;

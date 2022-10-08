@@ -2,6 +2,7 @@ package MainScene.CompetitionPane;
 
 import Api.UpdateHttpLine;
 import DTO.AlliesToTable;
+import DTO.TeamsTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
