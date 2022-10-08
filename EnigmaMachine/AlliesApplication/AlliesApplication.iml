@@ -11,7 +11,7 @@
     <orderEntry type="library" exported="" name="gson" level="project" />
     <orderEntry type="module" module-name="ClientAppsCommons" exported="" />
     <orderEntry type="module" module-name="UserInterface" exported="" />
-    <orderEntry type="module" module-name="UBoatApplication" exported="" />
     <orderEntry type="module" module-name="DTO" exported="" />
+    <orderEntry type="module" module-name="UBoatApplication" exported="" />
   </component>
 </module>

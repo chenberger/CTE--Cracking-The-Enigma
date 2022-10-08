@@ -15,4 +15,5 @@ public class Constants {
     public static final String GET_USER_NAME_SERVLET = FULL_SERVER_PATH + "/users/getUserName";
     public static final String TASK_SIZE = "taskSize";
     public static final String SET_TASK_SIZE = "setTaskSize";
+    public static final String PROCESS_WORD_SERVLET = FULL_SERVER_PATH + "/machine/ProcessWord";
 }

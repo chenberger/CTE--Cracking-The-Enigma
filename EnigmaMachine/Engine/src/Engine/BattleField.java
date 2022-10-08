@@ -10,6 +10,7 @@ import java.util.List;
 public class BattleField {
     /* this class is the battle field class, it contains the battle field name, the level of the battle field and the number of allies in the battle field */
     private String battleFieldName;
+    private String processedMessage;
     private int numberOfTeamsInBattleField;
     private DifficultyLevel level;
     private int numberOfAlliesToStartBattle;
@@ -22,6 +23,7 @@ public class BattleField {
         this.numberOfAlliesToStartBattle = allies;
         this.numberOfTeamsInBattleField = 0;
         this.alliesInBattleField = new ArrayList<>();
+        this.processedMessage = "";
     }
     public BattleField(){
         this.battleFieldName = "";
@@ -54,6 +56,12 @@ public class BattleField {
     }
 
     // getters and setters region
+    public String getProcessedMessage() {
+        return processedMessage;
+    }
+    public void setProcessedMessage(String processedMessage) {
+        this.processedMessage = processedMessage;
+    }
     public String getBattleFieldName() {
         return battleFieldName;
     }

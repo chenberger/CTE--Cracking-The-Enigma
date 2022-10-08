@@ -2,8 +2,6 @@ package AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData;
 
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
 import DTO.AgentsToTable;
-import DTO.AlliesToTable;
-import MainScene.CompetitionPane.TeamsTable;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.Closeable;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static Utils.Constants.REFRESH_RATE;
 

@@ -2,12 +2,12 @@ package AllieMainScenePane.Body.DashBoardTabPane;
 
 import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
+import DTO.OnLineContestsTable;
 import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsDataPaneController;
-import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsListRefresher;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import MainScene.CompetitionPane.AlliesInBattleRefresher;
 import Utils.HttpClientUtil;
-import javafx.beans.property.BooleanProperty;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,12 +19,11 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.io.Closeable;
 import java.io.IOException;
-import java.util.Timer;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
+import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
+import static Constants.ServletConstants.USER_NAME;
 import static Utils.Constants.*;
 
 public class DashboardTabPaneController {
@@ -38,7 +37,7 @@ public class DashboardTabPaneController {
     @FXML private Button registerToBattleButton;
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
-
+    //TODO: Erez: get the name of the boat from the line the user marked(when he clicked the register button).
     public void initialize() {
         if(teamAgentsDataPaneController != null) {
             teamAgentsDataPaneController.setDashboardTabPaneController(this);
@@ -77,7 +76,7 @@ public class DashboardTabPaneController {
     }
 
     private void setAllyTaskSize(long taskSize) {
-        String finalUrl = HttpUrl.parse(ALLIES_OPS_SERVLET)
+        String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, SET_TASK_SIZE)
                 .addQueryParameter(TASK_SIZE, String.valueOf(taskSize))
@@ -103,7 +102,42 @@ public class DashboardTabPaneController {
         });
     }
 
-    public void onRegisterToBattleButton(ActionEvent actionEvent) {
+    public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
+        String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
+                .newBuilder()
+                .addQueryParameter(USER_NAME, "chen")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(e, "Error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    registerToBattleButton.setDisable(true);
+                    setTaskSizeButton.setDisable(false);
+                    String body = response.body().string();
+                    OnLineContestsTable chosenContest = onLineContestFromJson(body);
+                    allieMainScenePaneController.setChosenContest(chosenContest);
+                }
+                else{
+                    new ErrorDialog(new Exception("Error registering to battle"), "Error");
+                }
+            }
+        });
+    }
+
+    private OnLineContestsTable onLineContestFromJson(String jsonChosenContest) {
+        JsonObject jsonObject = JsonParser.parseString(jsonChosenContest).getAsJsonObject();
+        String battleName = jsonObject.get("battleName").getAsString();
+        String boatName = jsonObject.get("boatName").getAsString();
+        String contestStatus = jsonObject.get("contestStatus").getAsString();
+        String difficulty = jsonObject.get("difficulty").getAsString();
+        String teamsRegisteredAndNeeded = jsonObject.get("teamsRegisteredAndNeeded").getAsString();
+        return  new OnLineContestsTable(battleName, boatName, contestStatus, difficulty, teamsRegisteredAndNeeded);
 
     }
 }

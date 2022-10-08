@@ -1,4 +1,4 @@
-package AllieMainScenePane.Body.DashBoardTabPane.ContestData;
+package DTO;
 
 public class OnLineContestsTable {
     private String battleName;
