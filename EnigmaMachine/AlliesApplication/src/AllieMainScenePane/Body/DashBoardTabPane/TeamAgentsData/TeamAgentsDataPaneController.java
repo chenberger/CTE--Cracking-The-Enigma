@@ -2,8 +2,6 @@ package AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData;
 
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
 import DTO.AgentsToTable;
-import DTO.AlliesToTable;
-import MainScene.CompetitionPane.TeamsTable;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.Closeable;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static Utils.Constants.REFRESH_RATE;
 
@@ -44,9 +41,9 @@ public class TeamAgentsDataPaneController implements Closeable {
         timer.schedule(teamAgentsListRefresher, REFRESH_RATE, REFRESH_RATE);
     }
     private void initializeAgentsInTeamTable() {
-        agentNameCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, String>("Agent Name"));
-        numOfThreadsCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("Number Of Threads"));
-        tasksPullingInEachTimeCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("Task Size"));
+        agentNameCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, String>("agentName"));
+        numOfThreadsCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("numOfThreads"));
+        tasksPullingInEachTimeCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("tasksTakenOnce"));
     }
     private void updateAgentsTable(AgentsToTable agentsToTable) {
         Platform.runLater(() -> {
