@@ -22,7 +22,7 @@
          <children>
             <AnchorPane GridPane.rowIndex="1">
                <children>
-                  <TableView fx:id="contestsTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" onMouseClicked="#onRowOfTableMouseClicked" prefHeight="670.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="contestsTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" prefHeight="670.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="battleNameCol" prefWidth="141.0" text="Battlefield Name" />
                       <TableColumn fx:id="boatNameCol" prefWidth="113.0" text="U Boat Name" />

@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import java.io.Closeable;
 import java.util.List;
@@ -42,11 +41,11 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private void initializeContestsTable() {
-       battleNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Battle Name"));
-       boatNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("U-Boat Name"));
-       contestStatusCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Status"));
-       difficultyCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Difficulty"));
-       teamsRegisteredAndNeededCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("Teams Registered/Needed"));
+       battleNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("battleName"));
+       boatNameCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("boatName"));
+       contestStatusCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("contestStatus"));
+       difficultyCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("difficulty"));
+       teamsRegisteredAndNeededCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("teamsRegisteredAndNeeded"));
     }
 
     public void setDashboardTabPaneController(DashboardTabPaneController dashboardTabPaneController) {
@@ -54,13 +53,6 @@ public class ContestDataPaneController implements Closeable {
     }
     public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
         this.contestTabPaneController = contestTabPaneController;
-    }
-
-
-    public void onRowOfTableMouseClicked(MouseEvent mouseEvent) {
-        if(mouseEvent.getClickCount() > 0) {
-            //TODO: get the name of the u boat from the chose row of the table
-        }
     }
 
     public void startListRefresher() {
@@ -116,6 +108,16 @@ public class ContestDataPaneController implements Closeable {
         if (contestsDataRefresher != null && timer != null) {
             contestsDataRefresher.cancel();
             timer.cancel();
+        }
+    }
+
+    public OnLineContestsTable getSelectedContest() throws IllegibleContestAmountChosenException {
+        ObservableList<OnLineContestsTable> selectedContests = contestsTable.getSelectionModel().getSelectedItems();
+        if(selectedContests.size() != 1) {
+            throw new IllegibleContestAmountChosenException(selectedContests.size());
+        }
+        else {
+            return selectedContests.get(0);
         }
     }
 }
