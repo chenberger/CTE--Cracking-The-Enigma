@@ -12,8 +12,8 @@ public class ErrorDialog {
         this.textArea = new TextArea(ex.getMessage());
         this.textArea.setEditable(false);
         this.alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error : " + title);
+        alert.setTitle("Alert");
+        alert.setHeaderText("Alert: " + title);
         alert.getDialogPane().setContent(textArea);
         alert.setResizable(true);
         alert.showAndWait();

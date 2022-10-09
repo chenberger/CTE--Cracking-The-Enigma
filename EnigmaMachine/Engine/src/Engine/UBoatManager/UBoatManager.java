@@ -38,7 +38,12 @@ public class UBoatManager {
         return  uBoats.get(username);
     }
     public String getUBoatByBattleName(String battleName) {
-        return uBoats.values().stream().filter(uBoat -> uBoat.getBattleField().getBattleName().equals(battleName)).findFirst().get().getName();
+       for(UBoat uBoat : uBoats.values()){
+           if(uBoat.getBattleField().getBattleName().equals(battleName)){
+               return uBoat.getName();
+           }
+       }
+       return null;
     }
     public Map<String, UBoat> getUBoats() {
         return uBoats;

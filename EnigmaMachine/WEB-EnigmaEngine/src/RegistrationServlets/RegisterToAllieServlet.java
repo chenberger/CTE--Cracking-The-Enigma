@@ -29,13 +29,16 @@ public class RegisterToAllieServlet extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //int numberOfThreads = request.getParameter(NUMBER_OF_THREADS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_THREADS)) : 0;
         //long numberOfPulledTasks = request.getParameter(NUMBER_OF_PULLED_TASKS) != null ? Long.parseLong(request.getParameter(NUMBER_OF_PULLED_TASKS)) : 0;
-        String agentNameFromSession = SessionUtils.getAgentName(request);
+        String agentName = request.getParameter(AGENT_NAME);
 
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
-        Agent agent = agentsManager.getAgent(agentNameFromSession);
-        Allie currentAllie = ServletUtils.getAlliesManager(getServletContext()).getAllie(request.getParameter(ALLIE_NAME));
+        Agent agent = new Agent(agentName);
+        agent.setNumberOfWorkingThreads(request.getParameter(NUMBER_OF_THREADS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_THREADS)) : 0);
+        agent.setTasksPullingInterval(request.getParameter("tasksPulledEachTime") != null ? Long.parseLong(request.getParameter("tasksPulledEachTime")) : 0);
+        agent.setAllieName(request.getParameter(ALLIE_NAME));
+        Allie currentAllie = ServletUtils.getAlliesManager(getServletContext()).getAllie(request.getParameter("chosenTeam"));
 
-        if(agentNameFromSession == null || agentNameFromSession.isEmpty()){
+        if(agentName == null || agentName.isEmpty()){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         else {

@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ClientAppsCommons" />
+    <orderEntry type="module" module-name="Engine" />
+    <orderEntry type="module" module-name="UserInterface" />
   </component>
 </module>

@@ -34,13 +34,33 @@ public class UBoatListServlet extends HttpServlet {
             }
             else if(request.getParameter("action")!= null && request.getParameter("action").equals("getUBoatName") ){
                 response.getWriter().println(gson.toJson(SessionUtils.getUsername(request)));
-            }else {
+            }else if(request.getParameter("action")!= null && request.getParameter("action").equals("getTeamsInBattle") ){
+                getAllAlliesInBattle(request, response);
+            }
+            else {
                 getCurrentRegisteredAllies(request, response);
             }
 
         }
         catch (Exception e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    private void getAllAlliesInBattle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllies().get(SessionUtils.getAllieName(request));
+        String currentUBoatName = ServletUtils.getUBoatsManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
+        UBoat uBoat = ServletUtils.getUBoatsManager(getServletContext()).getUBoats().get(currentUBoatName);
+        if(uBoat != null){
+            AlliesToTable alliesToTable = setAlliesToTable(uBoat);
+            try {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(alliesToTable));
+                response.getWriter().flush();
+            } catch (IOException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("Error: " + e.getMessage());
+            }
         }
     }
 

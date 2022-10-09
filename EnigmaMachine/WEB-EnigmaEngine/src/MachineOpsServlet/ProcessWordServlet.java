@@ -58,7 +58,7 @@ public class ProcessWordServlet extends HttpServlet {
             synchronized (this){
                 UBoat currentBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(request.getParameter("uBoatName"));
                 String processedWord = currentBoat.getBattleField().getProcessedMessage();
-                if(processedWord == null){
+                if(processedWord == null || processedWord.equals("")){
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 }
                 else{

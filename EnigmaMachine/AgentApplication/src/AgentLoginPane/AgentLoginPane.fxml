@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentLoginPane.AgentLoginPaneController">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <GridPane minHeight="650.0" minWidth="1100.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="182.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
+                     <children>
+                        <Label alignment="CENTER" layoutX="546.0" layoutY="10.0" text="Agent- Login" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="Arial" size="21.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <HBox minHeight="100.0" minWidth="400.0" prefHeight="100.0" prefWidth="400.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Agent Name:">
+                           <HBox.margin>
+                              <Insets left="30.0" top="50.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Arial" size="21.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="setAgentNameTextField" prefHeight="31.0" prefWidth="295.0" promptText="Enter Agent Name">
+                           <HBox.margin>
+                              <Insets left="30.0" top="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="setAgentNameButton" mnemonicParsing="false" onAction="#onSetAgentNameButtonClicked" prefHeight="30.0" prefWidth="144.0" text="Set Name">
+                           <font>
+                              <Font name="Arial" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" top="50.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     <children>
+                        <TableView fx:id="teamNameTable" layoutX="168.0" layoutY="-24.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="TeamsToChooseTable" prefWidth="75.0" text="Team Name" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Button fx:id="registerToTeamButton" mnemonicParsing="false" onAction="#onRegisterToTeamButtonClicked" text="Register">
+                           <HBox.margin>
+                              <Insets left="20.0" top="50.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Arial" size="15.0" />
+                           </font>
+                        </Button>
+                        <Label alignment="CENTER" text="chosen Team:">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" top="50.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="chosenTeamLabel" text="N/A">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" top="50.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                     <children>
+                        <HBox layoutX="173.0" layoutY="23.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Worker Threads:">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" top="50.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Slider fx:id="numberOfThreadsBar" blockIncrement="4.0" majorTickUnit="1.0" max="4.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="50.0" />
+                                 </HBox.margin>
+                              </Slider>
+                              <Button fx:id="numberOfThreadsButton" mnemonicParsing="false" onAction="#onNumberOfThreadsButtonClicked" text="Set Number Of Threads">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <children>
+                        <HBox layoutX="155.0" layoutY="14.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Tasks Pulled Each Time:">
+                                 <HBox.margin>
+                                    <Insets left="30.0" top="50.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="tasksPulledTextField" prefHeight="31.0" prefWidth="216.0" promptText="Enter Tasks Pulled Each Time">
+                                 <HBox.margin>
+                                    <Insets left="30.0" top="50.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="tasksPulledButton" mnemonicParsing="false" onAction="#onTasksPulledButtonClicked" prefHeight="31.0" prefWidth="222.0" text="Set Tasks Pulled Each Time">
+                                 <HBox.margin>
+                                    <Insets left="30.0" top="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                     <children>
+                        <Button fx:id="loginButton" layoutX="271.0" layoutY="57.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <Button fx:id="quitButton" layoutX="251.0" layoutY="54.0" mnemonicParsing="false" onAction="#onQuitButtonClicked" text="Quit">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

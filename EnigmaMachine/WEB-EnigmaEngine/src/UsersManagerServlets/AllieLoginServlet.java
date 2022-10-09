@@ -41,7 +41,7 @@ public class AllieLoginServlet extends HttpServlet {
 
                 synchronized (this) {
                     if (alliesManager.isAllieExists(usernameFromParameter) || usersManager.isUserExists(usernameFromParameter)) {
-                        String errorMessage = "Allie Name " + usernameFromParameter + " already exists. Please enter a different username.";
+                        String errorMessage = "Username Name " + usernameFromParameter + " already exists. Please enter a different username.";
 
                         request.setAttribute(ServletConstants.ALLIE_NAME_ERROR, errorMessage);
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

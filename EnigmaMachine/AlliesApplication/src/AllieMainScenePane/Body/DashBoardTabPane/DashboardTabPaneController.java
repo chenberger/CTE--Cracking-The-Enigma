@@ -34,9 +34,7 @@ public class DashboardTabPaneController {
 
     @FXML private AnchorPane contestsDataPane;
     @FXML private ContestDataPaneController contestsDataPaneController;
-    @FXML private Button registerToBattleButton;
-    @FXML private Button setTaskSizeButton;
-    @FXML private TextField taskSizeTextField;
+
     //TODO: Erez: get the name of the boat from the line the user marked(when he clicked the register button).
     public void initialize() {
         if(teamAgentsDataPaneController != null) {
@@ -55,94 +53,11 @@ public class DashboardTabPaneController {
     public void setActive() {
         teamAgentsDataPaneController.startListRefresher();
         contestsDataPaneController.startListRefresher();
+
     }
 
-    public void onSetTaskSizeButton(ActionEvent actionEvent) {
-        if(taskSizeTextField.getText().isEmpty()) {
-            return;
-        }
-        try {
-            long taskSize = Long.parseLong(taskSizeTextField.getText());
-            if(taskSize < 1) {
-                new ErrorDialog(new Exception("Task size must be positive number"),"Error");
-            }
-            else{
-                setAllyTaskSize(taskSize);
-            }
-        } catch (NumberFormatException e) {
-            new ErrorDialog(new Exception("Task size must be a number"), "Error");
-            taskSizeTextField.setText("");
-        }
-    }
 
-    private void setAllyTaskSize(long taskSize) {
-        String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, SET_TASK_SIZE)
-                .addQueryParameter(TASK_SIZE, String.valueOf(taskSize))
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Error");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code() == 200) {
-                    taskSizeTextField.setText("");
-                    setTaskSizeButton.setDisable(true);
-                }
-                else{
-                    new ErrorDialog(new Exception("Error setting task size"), "Error");
-                    taskSizeTextField.setText("");
-                }
-            }
-        });
-    }
-
-    public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
-        try {
-            contestsDataPaneController.getSelectedContest();
-            String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
-                    .newBuilder()
-                    .addQueryParameter(USER_NAME, "chen")
-                    .build()
-                    .toString();
-            HttpClientUtil.runAsync(finalUrl, new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    new ErrorDialog(e, "Error");
-                }
-
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    if (response.code() == 200) {
-                        registerToBattleButton.setDisable(true);
-                        setTaskSizeButton.setDisable(false);
-                        String body = response.body().string();
-                        OnLineContestsTable chosenContest = onLineContestFromJson(body);
-                        allieMainScenePaneController.setChosenContest(chosenContest);
-                    } else {
-                        new ErrorDialog(new Exception("Error registering to battle"), "Error");
-                    }
-                }
-            });
-        }
-        catch(IllegibleContestAmountChosenException ex) {
-            new ErrorDialog(ex, "Error: Failed to register to contest");
-        }
-    }
-
-    private OnLineContestsTable onLineContestFromJson(String jsonChosenContest) {
-        JsonObject jsonObject = JsonParser.parseString(jsonChosenContest).getAsJsonObject();
-        String battleName = jsonObject.get("battleName").getAsString();
-        String boatName = jsonObject.get("boatName").getAsString();
-        String contestStatus = jsonObject.get("contestStatus").getAsString();
-        String difficulty = jsonObject.get("difficulty").getAsString();
-        String teamsRegisteredAndNeeded = jsonObject.get("teamsRegisteredAndNeeded").getAsString();
-        return  new OnLineContestsTable(battleName, boatName, contestStatus, difficulty, teamsRegisteredAndNeeded);
-
+    public String getSelectedContest() throws IllegibleContestAmountChosenException {
+        return contestsDataPaneController.getSelectedContest().getBoatName();
     }
 }
