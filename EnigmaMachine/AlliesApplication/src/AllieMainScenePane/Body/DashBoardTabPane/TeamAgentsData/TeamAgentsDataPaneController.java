@@ -41,9 +41,9 @@ public class TeamAgentsDataPaneController implements Closeable {
         timer.schedule(teamAgentsListRefresher, REFRESH_RATE, REFRESH_RATE);
     }
     private void initializeAgentsInTeamTable() {
-        agentNameCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, String>("Agent Name"));
-        numOfThreadsCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("Number Of Threads"));
-        tasksPullingInEachTimeCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("Task Size"));
+        agentNameCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, String>("agentName"));
+        numOfThreadsCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("numOfThreads"));
+        tasksPullingInEachTimeCol.setCellValueFactory(new PropertyValueFactory<AgentsTable, Long>("tasksTakenOnce"));
     }
     private void updateAgentsTable(AgentsToTable agentsToTable) {
         Platform.runLater(() -> {

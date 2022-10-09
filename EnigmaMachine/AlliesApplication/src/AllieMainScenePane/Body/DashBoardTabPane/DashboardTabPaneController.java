@@ -2,8 +2,9 @@ package AllieMainScenePane.Body.DashBoardTabPane;
 
 import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
-import DTO.OnLineContestsTable;
+import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsDataPaneController;
+import DTO.OnLineContestsTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
 import com.google.gson.JsonObject;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
 import static Constants.ServletConstants.USER_NAME;
 import static Utils.Constants.*;
@@ -103,31 +103,36 @@ public class DashboardTabPaneController {
     }
 
     public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
-        String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
-                .newBuilder()
-                .addQueryParameter(USER_NAME, "chen")
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Error");
-            }
+        try {
+            contestsDataPaneController.getSelectedContest();
+            String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
+                    .newBuilder()
+                    .addQueryParameter(USER_NAME, "chen")
+                    .build()
+                    .toString();
+            HttpClientUtil.runAsync(finalUrl, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    new ErrorDialog(e, "Error");
+                }
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code() == 200) {
-                    registerToBattleButton.setDisable(true);
-                    setTaskSizeButton.setDisable(false);
-                    String body = response.body().string();
-                    OnLineContestsTable chosenContest = onLineContestFromJson(body);
-                    allieMainScenePaneController.setChosenContest(chosenContest);
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code() == 200) {
+                        registerToBattleButton.setDisable(true);
+                        setTaskSizeButton.setDisable(false);
+                        String body = response.body().string();
+                        OnLineContestsTable chosenContest = onLineContestFromJson(body);
+                        allieMainScenePaneController.setChosenContest(chosenContest);
+                    } else {
+                        new ErrorDialog(new Exception("Error registering to battle"), "Error");
+                    }
                 }
-                else{
-                    new ErrorDialog(new Exception("Error registering to battle"), "Error");
-                }
-            }
-        });
+            });
+        }
+        catch(IllegibleContestAmountChosenException ex) {
+            new ErrorDialog(ex, "Error: Failed to register to contest");
+        }
     }
 
     private OnLineContestsTable onLineContestFromJson(String jsonChosenContest) {
