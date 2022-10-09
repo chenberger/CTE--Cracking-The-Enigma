@@ -6,6 +6,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import okhttp3.Call;
@@ -14,13 +15,17 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.Timer;
 
-import static Utils.Constants.ACTION;
-import static Utils.Constants.PROCESS_WORD_SERVLET;
+import static Utils.Constants.*;
+import static Utils.Constants.REFRESH_RATE;
 
 
-public class CurrentContestDataPaneController {
+public class CurrentContestDataPaneController implements Closeable {
+    private CurrentContestDataRefresher currentContestDataRefresher;
+    private Timer timer;
     @FXML private ContestTabPaneController contestTabPaneController;
     //@FXML private AnchorPane currentContestDataPane;
     @FXML private Label battlefieldNameLabel;
@@ -30,6 +35,10 @@ public class CurrentContestDataPaneController {
     @FXML private Label teamsRegisteredAndNeededLabel;
 
     @FXML private Label processedWordLabel;
+    private SimpleBooleanProperty shouldRefresh = new SimpleBooleanProperty();
+    public CurrentContestDataPaneController(){
+        this.shouldRefresh.set(false);
+    }
     public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
         this.contestTabPaneController = contestTabPaneController;
     }
@@ -54,22 +63,44 @@ public class CurrentContestDataPaneController {
     }
 
     public void setChosenContest(OnLineContestsTable chosenContest, String uBoatName) {
-        Platform.runLater(() -> {
-            setBattlefieldNameLabel(chosenContest.getBattleName());
-            setUBoatNameLabel(chosenContest.getBoatName());
-            setDifficultyLabel(chosenContest.getDifficulty());
-            setContestStatusLabel(chosenContest.getContestStatus());
-            setTeamsRegisteredAndNeededLabel(chosenContest.getTeamsRegisteredAndNeeded());
-            handleProcessedWordFromBattle(chosenContest.getBoatName());
-        });
-
+        shouldRefresh.set(true);
+        //setActive();
     }
+    public void setActive(){
+        startListRefresher();
+    }
+
+    public void startListRefresher() {
+        currentContestDataRefresher = new CurrentContestDataRefresher(shouldRefresh, this::updateCurrentContestData);
+        timer = new Timer();
+        timer.schedule(currentContestDataRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+    @Override
+    public void close(){
+
+        if (currentContestDataRefresher != null && timer != null) {
+            currentContestDataRefresher.cancel();
+            timer.cancel();
+        }
+    }
+
+    private void updateCurrentContestData(OnLineContestsTable onLineContestsTable) {
+        Platform.runLater(() -> {
+            setBattlefieldNameLabel(onLineContestsTable.getBattleName());
+            setUBoatNameLabel(onLineContestsTable.getBoatName());
+            setDifficultyLabel(onLineContestsTable.getDifficulty());
+            setContestStatusLabel(onLineContestsTable.getContestStatus());
+            setTeamsRegisteredAndNeededLabel(onLineContestsTable.getTeamsRegisteredAndNeeded());
+            handleProcessedWordFromBattle(onLineContestsTable.getBoatName());
+        });
+    }
+
 
     private void handleProcessedWordFromBattle(String uBoatName) {
         String finalUrl = HttpUrl.parse(PROCESS_WORD_SERVLET).
                 newBuilder().
                 addQueryParameter(ACTION, "getProcessedWord").
-                addQueryParameter("uBoatName", "chen").
+                addQueryParameter("uBoatName", uBoatName).
                 build().
                 toString();
 

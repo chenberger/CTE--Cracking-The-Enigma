@@ -27,6 +27,7 @@ import static Utils.Constants.GSON_INSTANCE;
 
 public class ContestsDataRefresher extends TimerTask {
     private final Consumer<OnLineContestsDataToTable> ContestsConsumer;
+
     private int requestNumber;
     private final BooleanProperty shouldUpdate;
 

@@ -37,7 +37,7 @@ public class ContestTeamsController implements Closeable {
     private TableColumn<TeamsTable, Long> taskSizeCol;
     public ContestTeamsController() {
         totalUsers = new SimpleIntegerProperty();
-        autoUpdate = new SimpleBooleanProperty();
+        autoUpdate = new SimpleBooleanProperty(false);
     }
     public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
         this.contestTabPaneController = contestTabPaneController;
@@ -92,5 +92,9 @@ public class ContestTeamsController implements Closeable {
             timer.cancel();
         }
         contestTabPaneController.close();
+    }
+
+    public void setShouldUpdateToTrue() {
+        autoUpdate.set(true);
     }
 }

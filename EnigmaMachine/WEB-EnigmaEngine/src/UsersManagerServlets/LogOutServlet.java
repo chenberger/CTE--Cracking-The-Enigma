@@ -31,6 +31,11 @@ public class LogOutServlet extends HttpServlet {
     }
 
     private void removeBoatFromBoatsManager(HttpServletRequest request, String usernameFromSession) {
-        ServletUtils.getUBoatManager(request.getServletContext()).removeUBoat(usernameFromSession);
+        try {
+            ServletUtils.getUBoatManager(request.getServletContext()).removeUBoat(usernameFromSession);
+        }
+        catch (Exception e) {
+            //System.out.println("No boat to remove");
+        }
     }
 }

@@ -44,7 +44,7 @@ public class AgentLoginServlet extends HttpServlet {
 
                 synchronized (this) {
                     if (agentsManager.isAgentExists(usernameFromParameter) || usersManager.isUserExists(usernameFromParameter)) {
-                        String errorMessage = "Agent Name " + usernameFromParameter + " already exists. Please enter a different username.";
+                        String errorMessage = "Username Name " + usernameFromParameter + " already exists. Please enter a different username.";
 
                         request.setAttribute(ServletConstants.AGENT_NAME_ERROR, errorMessage);
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

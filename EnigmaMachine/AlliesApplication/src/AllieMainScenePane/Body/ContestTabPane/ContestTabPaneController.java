@@ -55,6 +55,7 @@ public class ContestTabPaneController {
 
     public void setActive() {
         contestTeamsPaneController.startListRefresher();
+        currentContestDataPaneController.startListRefresher();
     }
 
     public void setChosenContest(OnLineContestsTable chosenContest) {
@@ -77,6 +78,7 @@ public class ContestTabPaneController {
                 else {
                     String uBoatName = response.body().string();
                     currentContestDataPaneController.setChosenContest(chosenContest, uBoatName);
+                    contestTeamsPaneController.setShouldUpdateToTrue();
                     //candidatesInformationPaneController.setChosenContest(chosenContest, uBoatName);
 
                 }

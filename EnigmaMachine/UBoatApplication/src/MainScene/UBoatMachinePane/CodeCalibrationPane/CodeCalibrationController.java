@@ -152,7 +152,7 @@ public class CodeCalibrationController {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
-                            new ErrorDialog(new Exception("Unable to initialize engine settings"), responseBody)
+                            new ErrorDialog(new Exception(responseBody), "Unable to initialize engine settings")
                     );
                 }
                 else {

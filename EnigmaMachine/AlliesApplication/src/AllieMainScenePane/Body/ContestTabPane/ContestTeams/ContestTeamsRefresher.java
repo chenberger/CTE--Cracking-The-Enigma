@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +18,7 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
+import static Utils.Constants.ACTION;
 import static Utils.Constants.GSON_INSTANCE;
 
 public class ContestTeamsRefresher extends TimerTask {
@@ -34,15 +36,19 @@ public class ContestTeamsRefresher extends TimerTask {
     @Override
     public void run() {
 
-        //if (!shouldUpdate.get()) {
-        //    return;
-        //}
+        if (!shouldUpdate.get()) {
+            return;
+        }
 
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
         System.out.println("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
-
-        HttpClientUtil.runAsync(U_BOATS_LIST_SERVLET, new Callback() {
+        String finalUrl = HttpUrl.parse(U_BOATS_LIST_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "getTeamsInBattle")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -56,7 +62,7 @@ public class ContestTeamsRefresher extends TimerTask {
                     String jsonAlliesToTable = response.body().string();
                     System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonAlliesToTable);
                     if(jsonAlliesToTable.trim().equals("[]") || jsonAlliesToTable.trim().equals("") || response.code() != 200){
-                        System.out.println("No Allies in the battle");
+                        System.out.println("No battles are currently in progress");
                     }
                     else {
                         AlliesToTable alliesToTable = extractAlliesToTableFromJson(jsonAlliesToTable);

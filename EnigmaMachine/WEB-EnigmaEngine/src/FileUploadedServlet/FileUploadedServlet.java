@@ -28,8 +28,6 @@ import java.util.Collection;
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class FileUploadedServlet extends HttpServlet {
 
-
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
      response.setContentType("text/plain");
