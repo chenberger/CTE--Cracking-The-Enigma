@@ -14,5 +14,6 @@
     <orderEntry type="module" module-name="WEB-EnigmaEngine" exported="" />
     <orderEntry type="module" module-name="Engine" exported="" />
     <orderEntry type="module" module-name="DTO" exported="" />
+    <orderEntry type="module" module-name="AlliesApplication" exported="" />
   </component>
 </module>

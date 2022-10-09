@@ -1,13 +1,13 @@
 package AllieMainScenePane;
 
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
-import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
+import DTO.OnLineContestsTable;
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import okhttp3.Call;
@@ -35,8 +35,6 @@ public class AllieMainScenePaneController {
             contestsTabPaneController.setAllieMainScenePaneController(this);
         }
         setAllyName();
-        dashboardTabPane.setVisible(true);
-        contestsTabPane.setVisible(false);
     }
 
     private void setAllyName() {
@@ -60,15 +58,27 @@ public class AllieMainScenePaneController {
     }
 
     public void setActive() {
+        dashboardTabPaneController.setActive();
+        contestsTabPaneController.setActive();
+
     }
 
     @FXML public void onDashboardButtonClicked(ActionEvent actionEvent) {
         dashboardTabPane.setVisible(true);
         contestsTabPane.setVisible(false);
+
     }
 
     @FXML public void onContestButtonClicked(ActionEvent actionEvent) {
         dashboardTabPane.setVisible(false);
         contestsTabPane.setVisible(true);
+    }
+
+    public void close() {
+        Platform.exit();
+    }
+
+    public void setChosenContest(OnLineContestsTable chosenContest) {
+        contestsTabPaneController.setChosenContest(chosenContest);
     }
 }
