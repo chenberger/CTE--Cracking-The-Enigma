@@ -58,5 +58,9 @@ public class Agent {
         agentFields.add(tasksPullingInterval.toString());
         return agentFields;
     }
+
+    public void removeAgentFromAllie() {
+        allieName = "";
+    }
 }
 

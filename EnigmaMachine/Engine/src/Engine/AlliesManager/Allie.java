@@ -15,6 +15,8 @@ public class Allie {
     private long taskSize;
 
     private String battleName;
+    private boolean isReady;
+    private boolean contestOnline;
 
     private DifficultyLevel level;
     public Allie(String name){
@@ -23,6 +25,8 @@ public class Allie {
         this.decryptionManager = new DecryptionManager();
         this.taskSize = 1000;
         this.battleName = "";
+        this.isReady = false;
+        this.contestOnline = false;
     }
     public void setLevel(String level) {
         this.level = DifficultyLevel.valueOf(level.toUpperCase());
@@ -68,5 +72,16 @@ public class Allie {
 
     public void removeTeamFromBattle() {
         battleName = "";
+    }
+
+    public void removeAgentsFromAllie() {
+        for(Agent agent : agents){
+            agent.removeAgentFromAllie();
+        }
+        agents.clear();
+    }
+
+    public void startContest() {
+        //TODO: start contest
     }
 }

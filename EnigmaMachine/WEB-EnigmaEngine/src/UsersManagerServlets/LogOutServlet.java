@@ -1,5 +1,6 @@
 package UsersManagerServlets;
 
+import Engine.AlliesManager.AlliesManager;
 import UserManager.UsersManager;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +17,28 @@ public class LogOutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(request.getParameter("action").equals("uBoatLogout")) {
+            uBoatLogout(request, response);
+        }
+        else if(request.getParameter("action").equals("alliesLogout")) {
+            alliesLogout(request, response);
+        }
+
+
+    }
+
+    private void alliesLogout(HttpServletRequest request, HttpServletResponse response) {
+        String allyNameFromSession = SessionUtils.getAllieName(request);
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        UsersManager usersManager = ServletUtils.getUserManager(getServletContext());
+        if(allyNameFromSession != null) {
+            alliesManager.removeAlly(allyNameFromSession);
+            usersManager.removeUser(allyNameFromSession);
+            SessionUtils.clearSession(request);
+        }
+    }
+
+    private void uBoatLogout(HttpServletRequest request, HttpServletResponse response) {
         String usernameFromSession = SessionUtils.getUsername(request);
         UsersManager userManager = ServletUtils.getUserManager(request.getServletContext());
 
@@ -25,7 +48,6 @@ public class LogOutServlet extends HttpServlet {
             userManager.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);
             System.out.println("Users Registered:" + userManager.getUsers());
-
 
         }
     }

@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class AgentApp extends Application {
     private static final String APP_NAME = "Agent";
-    private static final String MAIN_PAGE_FXML_RESOURCE_LOCATION = "AgentMainScenePane/AgentMainScenePane.fxml";
+    public static final String AGENT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "AgentMainScenePane/Body/AgentMainScenePane.fxml";
     private static final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "AgentLoginPane/AgentLoginPane.fxml";
     private AgentLoginPaneController AgentLoginPaneController;
 

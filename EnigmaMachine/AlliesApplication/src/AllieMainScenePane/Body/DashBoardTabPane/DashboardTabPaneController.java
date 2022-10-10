@@ -60,4 +60,9 @@ public class DashboardTabPaneController {
     public String getSelectedContest() throws IllegibleContestAmountChosenException {
         return contestsDataPaneController.getSelectedContest().getBoatName();
     }
+
+    public void close() {
+        teamAgentsDataPaneController.close();
+        contestsDataPaneController.close();
+    }
 }
