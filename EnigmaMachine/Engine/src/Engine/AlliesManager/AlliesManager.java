@@ -2,6 +2,7 @@ package Engine.AlliesManager;
 
 import BruteForce.DecryptionManager;
 import Engine.BattleField;
+import Engine.UBoatManager.UBoat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,12 @@ public class AlliesManager {
         allies.get(allieName).setBattleName(null);
         allies.get(allieName).setTaskSize(0);
 
+    }
+
+    public void removeAlly(String allyNameFromSession) {
+        Allie allieToRemove = allies.get(allyNameFromSession);
+        allieToRemove.removeAgentsFromAllie();
+        allies.remove(allyNameFromSession);
     }
     //endregion
 

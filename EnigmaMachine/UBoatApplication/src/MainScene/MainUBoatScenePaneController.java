@@ -88,7 +88,7 @@ public class MainUBoatScenePaneController {
     @FXML public void onLogoutButtonClicked(ActionEvent actionEvent) {
         String finalUrl = HttpUrl.parse(U_BOAT_LOGOUT_SERVLET)
                 .newBuilder()
-                .addQueryParameter(ACTION, "logout")
+                .addQueryParameter(ACTION, "uBoatLogout")
                 .build().toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override

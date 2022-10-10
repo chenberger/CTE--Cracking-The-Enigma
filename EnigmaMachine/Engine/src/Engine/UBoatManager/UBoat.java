@@ -19,6 +19,7 @@ public class UBoat {
     private String currentProcessedMessage;
     private String ContestStatus;
     private boolean isReady;
+    private boolean contestOnline;
 
     public UBoat(String name, CTEBattlefield battleField, EnigmaMachine enigmaMachine, Dictionary dictionary) {
         this.name = name;
@@ -29,6 +30,7 @@ public class UBoat {
         this.engineManager = new EngineManager(enigmaMachine);
         this.ContestStatus = CONTEST_NOT_STARTED;
         this.currentProcessedMessage = "";
+        this.contestOnline = false;
         setEngineDictionary(dictionary);
     }
     //region getters and setters
@@ -78,5 +80,19 @@ public class UBoat {
 
     public String getContestStatus() {
         return ContestStatus;
+    }
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
+    public void startContestIfNecessary(){
+        if(isReady && battleField.getNumberOfAlliesThatAreReady() == battleField.getNumberOfAlliesToStartBattle()){
+            contestOnline = true;
+            setContestStatusStarted();
+            startContest();
+        }
+    }
+    public void startContest(){
+        this.contestOnline = true;
+        battleField.startContest();
     }
 }

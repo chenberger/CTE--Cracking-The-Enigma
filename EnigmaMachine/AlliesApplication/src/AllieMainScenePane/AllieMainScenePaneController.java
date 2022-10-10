@@ -24,8 +24,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 
+import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LOGOUT_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
 import static Constants.ServletConstants.USER_NAME;
+import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
 import static Utils.Constants.TASK_SIZE;
 
@@ -192,6 +194,28 @@ public class AllieMainScenePaneController {
     }
 
     public void onLogOutButtonClicked(ActionEvent actionEvent) {
-        //TODO: send log out
+        String finalUrl = HttpUrl.parse(U_BOAT_LOGOUT_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "alliesLogout")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(e, "Error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    new ErrorDialog(new Exception("Logged out successfully"), "Logged out");
+                    dashboardTabPaneController.close();
+                    contestsTabPaneController.close();
+                }
+                else{
+                    new ErrorDialog(new Exception("Error logging out"), "Error");
+                }
+            }
+        });
     }
 }

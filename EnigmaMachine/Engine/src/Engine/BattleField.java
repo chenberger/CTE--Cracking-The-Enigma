@@ -14,6 +14,7 @@ public class BattleField {
     private int numberOfTeamsInBattleField;
     private DifficultyLevel level;
     private int numberOfAlliesToStartBattle;
+    private int numberOfAlliesThatAreReady;
 
     private List<Allie> alliesInBattleField;
 
@@ -24,6 +25,7 @@ public class BattleField {
         this.numberOfTeamsInBattleField = 0;
         this.alliesInBattleField = new ArrayList<>();
         this.processedMessage = "";
+        this.numberOfAlliesThatAreReady = 0;
     }
     public BattleField(){
         this.battleFieldName = "";
@@ -80,7 +82,12 @@ public class BattleField {
     public void setNumberOfAlliesToStartBattle(int numberOfAlliesToStartBattle) {
         this.numberOfAlliesToStartBattle = numberOfAlliesToStartBattle;
     }
-
+    private void setNumberOfTeamsReadyToZero(){
+        this.numberOfAlliesThatAreReady = 0;
+    }
+    public void addTeamToReady(){
+        this.numberOfAlliesThatAreReady++;
+    }
     public void setBattleField(CTEBattlefield cteBattlefield) {
         this.battleFieldName = cteBattlefield.getBattleName();
         this.level = stringToDifficultyLevel(cteBattlefield.getLevel());
@@ -115,5 +122,14 @@ public class BattleField {
         this.alliesInBattleField.clear();
         this.numberOfTeamsInBattleField = 0;
     }
+    public int getNumberOfAlliesThatAreReady() {
+        return numberOfAlliesThatAreReady;
+    }
     // end of getters and setters region
+    public void startContest() {
+        for(Allie allie : alliesInBattleField){
+            allie.startContest();
+        }
+    }
+
 }

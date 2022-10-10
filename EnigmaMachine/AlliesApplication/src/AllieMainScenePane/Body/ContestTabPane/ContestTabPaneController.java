@@ -50,6 +50,10 @@ public class ContestTabPaneController {
     }
 
     public void close() {
+        if(currentContestDataPaneController != null) {
+            currentContestDataPaneController.close();
+        }
+
         allieMainScenePaneController.close();
     }
 
