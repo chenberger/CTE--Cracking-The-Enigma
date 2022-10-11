@@ -265,6 +265,33 @@ public class UBoatCompetitionPaneController implements Closeable {
 
 
     @FXML public void onReadyButtonClicked(ActionEvent actionEvent) {
+        readyButton.setDisable(true);
+        String finalUrl = HttpUrl.parse(READY_MANAGER_SERVLET)
+                .newBuilder()
+                .addQueryParameter(TYPE, "uBoat")
+                .addQueryParameter(ACTION, "ready")
+                .build().toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(e, "Failed to set ready");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseStr = response.body().string();
+                if (response.isSuccessful()) {
+                    Platform.runLater(() -> {
+                        readyButton.setDisable(false);
+                        readyButton.setText("Ready");
+                        readyButton.setStyle("-fx-background-color: #00ff00");
+                    });
+                } else {
+                    new ErrorDialog(new Exception(responseStr), "Failed to set ready");
+                }
+
+            }
+        });
     }
 
     public void setNewConfiguration(String currentMachineConfiguration) {

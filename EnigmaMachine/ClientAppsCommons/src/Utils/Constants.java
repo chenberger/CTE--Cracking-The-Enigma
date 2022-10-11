@@ -17,4 +17,6 @@ public class Constants {
     public static final String SET_TASK_SIZE = "setTaskSize";
     public static final String PROCESS_WORD_SERVLET = FULL_SERVER_PATH + "/machine/ProcessWord";
     public static final String GET_CURRENT_CONTEST_DATA = "getCurrentContestData";
+    public static final String READY_MANAGER_SERVLET = FULL_SERVER_PATH + "/CompetitionServlet/ReadyManager";
+    public static final String TYPE = "type";
 }

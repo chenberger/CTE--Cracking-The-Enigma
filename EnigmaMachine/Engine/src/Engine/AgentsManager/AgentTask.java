@@ -16,20 +16,22 @@ public class AgentTask {
     private final EnigmaMachine enigmaMachine;
     private final String encryptedString;
     private final Dictionary dictionary;
-    private final ExecutorService candidatesThreadPoolExecutor;
-    private final BruteForceUIAdapter bruteForceUIAdapter;
-    private final DecipherStatistics decipherStatistics;
+    private final String agentName;
+    //private final ExecutorService candidatesThreadPoolExecutor;
+    //private final BruteForceUIAdapter bruteForceUIAdapter;
+    //private final DecipherStatistics decipherStatistics;
     private StartingRotorPositionSector startingRotorPositions;
 
-    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, ExecutorService candidatesThreadPoolExecutor, BruteForceUIAdapter bruteForceUIAdapter, DecipherStatistics decipherStatistics){
+    public AgentTask(Integer taskSize, StartingRotorPositionSector startingRotorPositionSector, EnigmaMachine enigmaMachine, String encryptedString, Dictionary dictionary, String agentName){
 
         this.taskSize = taskSize;
         this.enigmaMachine = enigmaMachine;
         this.encryptedString = encryptedString;
         this.dictionary = dictionary;
-        this.candidatesThreadPoolExecutor = candidatesThreadPoolExecutor;
-        this.bruteForceUIAdapter = bruteForceUIAdapter;
-        this.decipherStatistics = decipherStatistics;
+        this.agentName = agentName;
+        //this.candidatesThreadPoolExecutor = candidatesThreadPoolExecutor;
+        //this.bruteForceUIAdapter = bruteForceUIAdapter;
+        //this.decipherStatistics = decipherStatistics;
         this.startingRotorPositions = startingRotorPositionSector;
     }
 
@@ -50,18 +52,21 @@ public class AgentTask {
         return dictionary;
     }
 
-    public ExecutorService getCandidatesThreadPoolExecutor() {
-        return candidatesThreadPoolExecutor;
-    }
+    //public ExecutorService getCandidatesThreadPoolExecutor() {
+     //   return candidatesThreadPoolExecutor;
+    //}
 
-    public BruteForceUIAdapter getBruteForceUIAdapter() {
-        return bruteForceUIAdapter;
-    }
+    //public BruteForceUIAdapter getBruteForceUIAdapter() {
+    //    return bruteForceUIAdapter;
+    //}
 
-    public DecipherStatistics getDecipherStatistics() {
-        return decipherStatistics;
-    }
+    //public DecipherStatistics getDecipherStatistics() {
+    //    return decipherStatistics;
+    //}
 
+    public String getAgentName() {
+        return agentName;
+    }
     public StartingRotorPositionSector getStartingRotorPositions() {
         return startingRotorPositions;
     }
@@ -78,7 +83,7 @@ public class AgentTask {
         dictionary.validateWords(wordsToCheck);
     }
 
-    public void addDecryptionCandidateTaskToThreadPool(Runnable decryptionCandidateTask) {
-        candidatesThreadPoolExecutor.execute(decryptionCandidateTask);
-    }
+    //public void addDecryptionCandidateTaskToThreadPool(Runnable decryptionCandidateTask) {
+    //    candidatesThreadPoolExecutor.execute(decryptionCandidateTask);
+    //}
 }

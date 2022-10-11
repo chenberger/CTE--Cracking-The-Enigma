@@ -1,6 +1,8 @@
 package AllyServlet;
 
 import DTO.OnLineContestsTable;
+import Engine.AgentsManager.Agent;
+import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
 import Engine.BattleField;
@@ -28,6 +30,31 @@ public class AllyOpsServlet extends HttpServlet {
         else if(request.getParameter("action").equals("getCurrentContestData")){
             getCurrentContestData(request, response);
         }
+        else{
+            checkIfAgentParticipateInContest(request, response);
+        }
+    }
+
+    private void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Agent agent = agentsManager.getAgent(SessionUtils.getUsername(request));
+        Allie allie = alliesManager.getAllie(agent.getAllieName());
+        if(allie.getAgentsParticipatingInDecryption().contains(agent)){
+            try {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(true));
+            } catch (IOException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+        else{
+            try {
+                response.getWriter().println(GSON_INSTANCE.toJson(false));
+            } catch (IOException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
     }
 
     private void getCurrentContestData(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -53,7 +80,7 @@ public class AllyOpsServlet extends HttpServlet {
     }
 
     synchronized private void setAllyTaskSize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        long taskSize = Long.parseLong(request.getParameter("taskSize"));
+        Long taskSize = Long.parseLong(request.getParameter("taskSize"));
         AlliesManager  alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
         response.setStatus(HttpServletResponse.SC_OK);

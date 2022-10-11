@@ -3,6 +3,7 @@ package Engine.AlliesManager;
 import Engine.AgentsManager.Agent;
 import BruteForce.DecryptionManager;
 import BruteForce.DifficultyLevel;
+import Engine.EngineManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 public class Allie {
     private String Name;
     private final List<Agent> agents;
+    private final List<Agent> agentsParticipatingInDecryption;
     private DecryptionManager decryptionManager;
     private long taskSize;
 
@@ -22,8 +24,9 @@ public class Allie {
     public Allie(String name){
         this.Name = name;
         this.agents = new ArrayList<>();
+        this.agentsParticipatingInDecryption = new ArrayList<>();
         this.decryptionManager = new DecryptionManager();
-        this.taskSize = 1000;
+        this.taskSize = 0;
         this.battleName = "";
         this.isReady = false;
         this.contestOnline = false;
@@ -33,6 +36,16 @@ public class Allie {
     }
     public void setTaskSize(long taskSize) {
         this.taskSize = taskSize;
+    }
+    public void setAgentsParticipatingInDecryption(){
+        for(Agent agent : agents){
+            if(!agentsParticipatingInDecryption.contains(agent)){
+                agentsParticipatingInDecryption.add(agent);
+            }
+        }
+    }
+    public List<Agent> getAgentsParticipatingInDecryption() {
+        return agentsParticipatingInDecryption;
     }
     public void setBattleName(String battleName) {
         this.battleName = battleName;
@@ -81,7 +94,13 @@ public class Allie {
         agents.clear();
     }
 
-    public void startContest() {
-        //TODO: start contest
+
+    public void startContest(String processedMessage, EngineManager engineManager) {
+        setAgentsParticipatingInDecryption();
+        decryptionManager.startDeciphering(processedMessage, taskSize, level, engineManager);
+    }
+
+    public DecryptionManager getDecryptionManager() {
+        return decryptionManager;
     }
 }

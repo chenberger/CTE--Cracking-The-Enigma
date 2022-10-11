@@ -12,6 +12,8 @@ import java.util.Timer;
 import static Utils.Constants.REFRESH_RATE;
 
 public class ContestAndTeamDataPaneController implements Closeable {
+    private final String CONTEST_STARTED = "Contest Started";
+    private boolean isContestStarted = false;
     private final String baseCurrentTeamLabelText = "Team: ";
     private final String baseCurrentBattleLabelText = "Battle: ";
     private final String baseContestStatusLabelText = "Contest Status: ";
@@ -28,6 +30,10 @@ public class ContestAndTeamDataPaneController implements Closeable {
     private Label teamLabel;
     private AgentMainScenePaneController agentMainSceneController;
 
+    public  boolean isContestActive() {
+        return isContestStarted;
+    }
+
     public void setAgentMainSceneController(AgentMainScenePaneController agentMainScenePaneController) {
         this.agentMainSceneController = agentMainScenePaneController;
     }
@@ -36,6 +42,13 @@ public class ContestAndTeamDataPaneController implements Closeable {
             currentBattleLabel.setText(baseContestStatusLabelText + " " + agentContestAndTeamData.getContestStatus());
             contestStatusLabel.setText(baseCurrentBattleLabelText + " " +  agentContestAndTeamData.getBattleName());
             teamLabel.setText(baseCurrentTeamLabelText + " " + agentContestAndTeamData.getTeamName());
+            if(!isContestStarted && agentContestAndTeamData.getContestStatus().equals(CONTEST_STARTED)) {
+                isContestStarted = true;
+                agentMainSceneController.startBruteForce();
+            }
+            else if(isContestStarted && !agentContestAndTeamData.getContestStatus().equals(CONTEST_STARTED)) {
+                isContestStarted = false;
+            }
         });
     }
 

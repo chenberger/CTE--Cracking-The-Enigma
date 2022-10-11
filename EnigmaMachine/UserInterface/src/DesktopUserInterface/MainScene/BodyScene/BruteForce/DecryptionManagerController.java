@@ -104,7 +104,7 @@ public class DecryptionManagerController {
                 decryptionManagerSettingsException.addIllegalAgentsAmount(agentsAmount, 1, agentsAmountSlider.getMax());
             }
             else {
-                bruteForceTask.setAmountOfAgents(agentsAmount);
+                //bruteForceTask.setAmountOfAgents(agentsAmount);
             }
     }
 

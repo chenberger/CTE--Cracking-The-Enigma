@@ -126,9 +126,9 @@ public class BattleField {
         return numberOfAlliesThatAreReady;
     }
     // end of getters and setters region
-    public void startContest() {
+    public void startContest(EngineManager engineManager){
         for(Allie allie : alliesInBattleField){
-            allie.startContest();
+            allie.startContest(processedMessage, engineManager);
         }
     }
 

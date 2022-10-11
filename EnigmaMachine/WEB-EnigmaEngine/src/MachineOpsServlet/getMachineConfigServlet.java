@@ -1,10 +1,13 @@
 package MachineOpsServlet;
 
-import DTO.DetailsToManualCodeInitializer;
-import DTO.MachineConfigurationToShow;
-import DTO.MachineDetails;
+import DTO.*;
+import Engine.AgentsManager.Agent;
+import Engine.AlliesManager.Allie;
+import Engine.AlliesManager.AlliesManager;
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoat;
+import Engine.UBoatManager.UBoatManager;
+import EnigmaMachine.EnigmaMachine;
 import EnigmaMachineException.MachineNotExistsException;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -25,7 +28,10 @@ public class getMachineConfigServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         try {
-            if(request.getParameter("action").toString().equals("displaySpecifications")) {
+            if(request.getParameter("action")!= null && request.getParameter("action").equals("getMachineDataForInitialize") ) {
+                getMachineDataForInit(request, response);
+            }
+            else if(request.getParameter("action").toString().equals("displaySpecifications")) {
                 getMachineSpecifications(request, response);
             }
             else if(request.getParameter("action").toString().equals("displayRawMachineDetails")) {
@@ -45,6 +51,33 @@ public class getMachineConfigServlet extends HttpServlet {
         }
     }
 
+    private void getMachineDataForInit(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException, IOException {
+        Gson gson = new Gson();
+        UBoatManager uBoatManager = ServletUtils.getUBoatsManager(getServletContext());
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getUsername(request));
+        String allieName = agent.getAllieName();
+        Allie allie = alliesManager.getAllie(allieName);
+
+        String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+        UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+        try {
+
+            EngineManager engineManager = uBoat.getEngineManager();
+            MachineDetails machineDetails = engineManager.displaySpecifications();
+            EnigmaMachine enigmaMachine = engineManager.getCurrentEnigmaMachine();
+            DataToInitializeMachine dataToInitializeMachine = new DataToInitializeMachine(enigmaMachine.cloneRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.cloneReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.cloneKeyboard());
+            String json = gson.toJson(dataToInitializeMachine);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(json);
+            response.getWriter().flush();
+
+        }catch (IOException|RuntimeException| MachineNotExistsException | CloneNotSupportedException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e.getMessage());
+        }
+
+    }
 
 
     private void getRawMachineDetails(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {

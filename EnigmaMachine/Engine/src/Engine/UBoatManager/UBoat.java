@@ -84,6 +84,9 @@ public class UBoat {
     public void setReady(boolean ready) {
         isReady = ready;
     }
+    public boolean isReady() {
+        return isReady;
+    }
     public void startContestIfNecessary(){
         if(isReady && battleField.getNumberOfAlliesThatAreReady() == battleField.getNumberOfAlliesToStartBattle()){
             contestOnline = true;
@@ -93,6 +96,6 @@ public class UBoat {
     }
     public void startContest(){
         this.contestOnline = true;
-        battleField.startContest();
+        battleField.startContest(engineManager);
     }
 }

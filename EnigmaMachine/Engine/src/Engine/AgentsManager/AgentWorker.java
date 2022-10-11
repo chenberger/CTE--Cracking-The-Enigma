@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 public class AgentWorker implements Runnable{
     private final String agentId;
+    private final String agentName;
     private Keyboard keyboard;
 
     private long encryptionTimeDurationInNanoSeconds;
@@ -23,19 +24,19 @@ public class AgentWorker implements Runnable{
     private EnigmaMachine enigmaMachine;
     private StartingRotorPositionSector startingRotorPosition;
     private static int staticTaskId;
-    private TasksManager tasksManager;
+
     private int taskId;
 
     private String AllieName;
 
-    public AgentWorker(AgentTask agentTask, TasksManager tasksManager) {
+    public AgentWorker(AgentTask agentTask) {
         synchronized (this) {
             this.agentTask = agentTask;
             this.agentId = Thread.currentThread().getName();
             this.keyboard = agentTask.getKeyboard();
             this.enigmaMachine = agentTask.getEnigmaMachine();
             this.startingRotorPosition = agentTask.getStartingRotorPositions();
-            this.tasksManager = tasksManager;
+            this.agentName = agentTask.getAgentName();
             this.taskId = staticTaskId++;
         }
     }
@@ -72,10 +73,10 @@ public class AgentWorker implements Runnable{
 
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
                     //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
-                    encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
-                    agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
-                            new AgentTaskData(taskId, Thread.currentThread().getName(),
-                                    new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
+                    //encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
+                    //agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
+                          //  new AgentTaskData(taskId, Thread.currentThread().getName(),
+                                 //   new DecryptionCandidateFormat(candidateMessage, encryptionTimeDurationInNanoSeconds, currentCodeConfigurationFormat))));
                 }
                 catch (WordNotValidInDictionaryException ignored) {}
 
@@ -88,10 +89,9 @@ public class AgentWorker implements Runnable{
             }
             catch (CloneNotSupportedException | StartingPositionsOfTheRotorException ignored) { }
         }
-
+        //TODO: add all the candidate information into list and send it to the Server in the end of the task.
         long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
-        agentTask.getBruteForceUIAdapter().updateExistingAgentTaskTime(new AgentTaskData(taskId, totalTaskTime));
-        tasksManager.agentTaskFinished(totalTaskTime);
+
 
     }
 

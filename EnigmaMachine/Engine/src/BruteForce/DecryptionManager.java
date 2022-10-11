@@ -1,19 +1,24 @@
 package BruteForce;
 
 import DTO.BruteForceTask;
+import DTO.TaskToAgent;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
 import Engine.Dictionary;
+import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.SettingsFormat;
 import EnigmaMachineException.BruteForceException;
 import EnigmaMachineException.IllegalAgentsAmountException;
 
 import java.util.Optional;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DecryptionManager {
+    private TasksProducer tasksProducer;
     private int maxCurrentAmountOfAgents;
     private Dictionary dictionary;
     private EnigmaMachine enigmaMachine;
@@ -31,8 +36,8 @@ public class DecryptionManager {
     private Boolean isMissionOnProgress;
 
     public DecryptionManager() {
-        this.bruteForceUIAdapter = null;
-        this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
+        //this.bruteForceUIAdapter = null;
+        //this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
         this.decryptedMessage = null;
         this.isMissionOnProgress = false;
     }
@@ -69,7 +74,7 @@ public class DecryptionManager {
             tasksManager = new TasksManager(enigmaMachine, decryptedMessage, bruteForceTask, bruteForceUIAdapter,
                                             dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
                                             (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
-            mainController.bindTaskToUIComponents(tasksManager, onFinish);
+            //mainController.bindTaskToUIComponents(tasksManager, onFinish);
             tasksManager.valueProperty().addListener((observable, oldValue, newValue) -> {isMissionOnProgress = false; });
             isMissionOnProgress = true;
             
@@ -79,6 +84,7 @@ public class DecryptionManager {
             throw new BruteForceException("You must enter a string to process before start deciphering");
         }
     }
+
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
@@ -145,5 +151,36 @@ public class DecryptionManager {
 
     public boolean onProgress() {
         return isMissionOnProgress;
+    }
+
+    public void startDeciphering(String processedMessage, Long taskSize, DifficultyLevel level, EngineManager engineManager)  {
+        try {
+            setRelevantDecipheringData(processedMessage, taskSize, level, engineManager);
+            if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
+                //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
+                throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
+            }
+
+            tasksProducer = new TasksProducer(bruteForceTask,decryptedMessage, dictionary,  enigmaMachine, decryptedSettingsFormat);
+            isMissionOnProgress = true;
+
+            tasksManagerThread = new Thread(tasksManager);
+            tasksManagerThread.start();
+
+        }catch (CloneNotSupportedException | IllegalArgumentException e) {
+            new Exception("Error: Failed to clone enigma machine");
+        }
+
+    }
+
+    private void setRelevantDecipheringData(String processedMessage, Long taskSize, DifficultyLevel level, EngineManager engineManager) throws CloneNotSupportedException {
+        this.decryptedMessage = processedMessage;
+        this.bruteForceTask = new BruteForceTask(level,taskSize.intValue());
+        this.dictionary = engineManager.getDictionaryObject();
+        this.enigmaMachine = engineManager.getEnigmaMachine();
+        setCodeConfigurationBeforeProcess(this.enigmaMachine.getCurrentSettingsFormat());
+    }
+    public TasksProducer getTasksProducer() {
+        return tasksProducer;
     }
 }
