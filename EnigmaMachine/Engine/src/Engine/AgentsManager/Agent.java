@@ -21,7 +21,7 @@ public class Agent {
     private final String agentName;
     private String allieName;
     private Long numberOfWorkingThreads = 4L;
-    private TasksManager tasksManager;
+    //private TasksManager tasksManager;
     private Long tasksPullingInterval = 50L;
 
     public Agent(String agentName) {

@@ -1,7 +1,5 @@
 package DTO;
 
-import java.util.List;
-
 public class TeamNameColumn {
     private String teamName;
 
@@ -9,10 +7,10 @@ public class TeamNameColumn {
         this.teamName = teamName;
     }
     //region Getters and Setters
-    public String getTeamNames() {
+    public String getTeamName() {
         return teamName;
     }
-    public void setTeamNames(String teamNames) {
-        this.teamName = teamNames;
+    public void setTeamNames(String teamName) {
+        this.teamName = teamName;
     }
 }

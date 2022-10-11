@@ -81,7 +81,7 @@ public class AgentLoginPaneController implements Closeable {
     private Button quitButton;
     public AgentLoginPaneController() {
         this.agentName = "";
-        this.chosenTeam = "ben";
+        this.chosenTeam = "";
         this.numberOfThreads = 0;
         this.tasksPulledEachTime = 0L;
     }
@@ -114,7 +114,7 @@ public class AgentLoginPaneController implements Closeable {
                 toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
-            public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> new ErrorDialog(e, "Error"));
             }
 
@@ -150,12 +150,12 @@ public class AgentLoginPaneController implements Closeable {
     }
     private void updateOptionalTeamsTable(List<TeamNameColumn> optionalTeams) {
         Platform.runLater(() -> {
-            teamNameTable.getItems().clear();
+            clearTable();
 
             if(optionalTeams != null && optionalTeams.size() > 0) {
                 ObservableList<TeamNameColumn> teamsNames = teamNameTable.getItems();
-                for(TeamNameColumn teamNameColumn : optionalTeams) {
-                    teamsNames.add(new TeamNameColumn(teamNameColumn.getTeamNames()));
+                for(TeamNameColumn teamColumn : optionalTeams) {
+                    teamsNames.add(new TeamNameColumn(teamColumn.getTeamName()));
                     teamNameTable.setItems(teamsNames);
                 }
 
@@ -164,10 +164,14 @@ public class AgentLoginPaneController implements Closeable {
         });
     }
 
+    private void clearTable() {
+        teamNameTable.getItems().clear();
+    }
+
     private List<String> getTeamsNames(List<TeamNameColumn> optionalTeams) {
         List<String> teams = new ArrayList<>();
         for(TeamNameColumn team : optionalTeams) {
-            teams.add(team.getTeamNames());
+            teams.add(team.getTeamName());
         }
         return teams;
     }
@@ -197,6 +201,7 @@ public class AgentLoginPaneController implements Closeable {
     void onRegisterToTeamButtonClicked(ActionEvent event) {
         try {
             chosenTeam = getChosenTeam();
+            chosenTeamLabel.setText(chosenTeam);
         }
         catch (Exception e){
             new ErrorDialog(e, "Failed to get chosen team");
@@ -209,7 +214,7 @@ public class AgentLoginPaneController implements Closeable {
             throw new Exception("You must choose only one team!!");
         }
         else {
-            return chosenTeam.get(0).getTeamNames();
+            return chosenTeam.get(0).getTeamName();
         }
     }
 
