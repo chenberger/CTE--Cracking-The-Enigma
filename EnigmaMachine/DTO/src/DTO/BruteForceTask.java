@@ -7,15 +7,18 @@ public class BruteForceTask {
     private DifficultyLevel difficultTaskLevel;
     private int taskSize;
 
-    public BruteForceTask(int amountOfAgents, DifficultyLevel difficultTaskLevel, int taskSize) {
+    public BruteForceTask(DifficultyLevel difficultTaskLevel, int taskSize, int amountOfAgents) {
         this.amountOfAgents = amountOfAgents;
         this.difficultTaskLevel = difficultTaskLevel;
         this.taskSize = taskSize;
     }
 
-    public BruteForceTask() {
+    public BruteForceTask(DifficultyLevel difficultTaskLevel, int taskSize) {
+        this.difficultTaskLevel = difficultTaskLevel;
+        this.taskSize = taskSize;
 
     }
+    public BruteForceTask(){}
 
     public int getAmountOfAgents() {
         return amountOfAgents;
@@ -29,9 +32,9 @@ public class BruteForceTask {
         return taskSize;
     }
 
-    public void setAmountOfAgents(int amountOfAgents) {
-        this.amountOfAgents = amountOfAgents;
-    }
+    //public void setAmountOfAgents(int amountOfAgents) {
+    //    this.amountOfAgents = amountOfAgents;
+    //}
 
     public void setDifficultTaskLevel(DifficultyLevel difficultTaskLevel) {
         this.difficultTaskLevel = difficultTaskLevel;

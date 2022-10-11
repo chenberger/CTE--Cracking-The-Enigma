@@ -74,6 +74,9 @@ public class EngineManager implements MachineOperations, Serializable {
         this.decryptionCandidateEventHandler = new EventHandler<>();
         this.maxAgentsAmountChangedHandler = new EventHandler<>();
     }
+    public void setEnigmaMachine(EnigmaMachine enigmaMachine) {
+        this.enigmaMachine = enigmaMachine;
+    }
 
     private void onMaxAgentsAmountChanged(){
         maxAgentsAmountChangedHandler.invoke(this, decryptionManager.getMaxCurrentAmountOfAgents());

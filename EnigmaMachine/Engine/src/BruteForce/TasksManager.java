@@ -251,21 +251,21 @@ public class TasksManager extends Task<Boolean> {
             }
 
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
-            AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
-            AgentWorker agent = new AgentWorker(agentTask,this);
+            //AgentTask agentTask = new AgentTask(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool, bruteForceUIAdapter, decipherStatistics);
+            //AgentWorker agent = new AgentWorker(agentTask);
 
             boolean isMissionInsertedToQueue = false;
 
-            while(!isMissionInsertedToQueue) {
-                try {
-                    blockingQueue.put(agent);
-                    isMissionInsertedToQueue = true;
-                }
-                catch (InterruptedException ex) {
-                    System.out.println("==== interrupt2 !!!!");
-                    pauseMission();
-                }
-            }
+           //while(!isMissionInsertedToQueue) {
+           //    try {
+           //        //blockingQueue.put(agent);
+           //        isMissionInsertedToQueue = true;
+           //    }
+           //    //catch (InterruptedException ex) {
+           //        System.out.println("==== interrupt2 !!!!");
+           //        pauseMission();
+           //    }
+           //}
             numOfPossibleRotorsPositions -= taskSize;
             try {
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), taskSize));
@@ -299,7 +299,7 @@ public class TasksManager extends Task<Boolean> {
     protected Boolean call() throws Exception {
         try {
             tasksPool.prestartAllCoreThreads();
-            difficultyLevel.setTask(this);
+            //difficultyLevel.setTask(this);
 
             while(blockingQueue.size() > 0) {}
             candidatesPool.awaitTermination(8, TimeUnit.SECONDS);

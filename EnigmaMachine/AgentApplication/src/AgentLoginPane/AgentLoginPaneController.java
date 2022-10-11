@@ -138,6 +138,8 @@ public class AgentLoginPaneController implements Closeable {
             agentMainScenePaneController = fxmlLoader.getController();
             scene.setRoot(root);
             agentMainScenePaneController.setActive();
+            agentMainScenePaneController.setAgentName(agentName);
+            agentMainScenePaneController.setNumberOfThreads(numberOfThreads);
         } catch (IOException e) {
             new ErrorDialog(e, "Unable to load main ally scene");
         }
@@ -153,10 +155,11 @@ public class AgentLoginPaneController implements Closeable {
             clearTable();
 
             if(optionalTeams != null && optionalTeams.size() > 0) {
-                ObservableList<TeamNameColumn> teamsNames = teamNameTable.getItems();
-                for(TeamNameColumn teamColumn : optionalTeams) {
-                    teamsNames.add(new TeamNameColumn(teamColumn.getTeamName()));
-                    teamNameTable.setItems(teamsNames);
+
+                ObservableList<TeamNameColumn> allTeams = teamNameTable.getItems();
+                for(TeamNameColumn team : optionalTeams) {
+                    allTeams.add(new TeamNameColumn(team.getTeamName()));
+                    teamNameTable.setItems(allTeams);
                 }
 
             }
@@ -189,6 +192,7 @@ public class AgentLoginPaneController implements Closeable {
     @FXML
     void onNumberOfThreadsButtonClicked(ActionEvent event) {
         numberOfThreads = (int) numberOfThreadsBar.getValue();
+
         numberOfThreadsBar.setDisable(true);
     }
 
@@ -241,6 +245,7 @@ public class AgentLoginPaneController implements Closeable {
                     agentName = setAgentNameTextField.getText();
                     setAgentNameTextField.setDisable(true);
                     setAgentNameButton.setDisable(true);
+                    agentMainScenePaneController.setAgentName(agentName);
                 } else {
                     Platform.runLater(() -> {
                         try {
