@@ -10,14 +10,14 @@ import java.util.List;
 
 public class UBoat {
     private String name;
-    private final String CONTEST_NOT_STARTED = "Contest not started";
-    private final String CONTEST_STARTED = "Contest started";
+    private final String CONTEST_NOT_STARTED = "Contest not Started";
+    private final String CONTEST_STARTED = "Contest Started";
     private BattleField battleField;
     //private final EnigmaMachine enigmaMachine;
     //private final StatisticsAndHistoryAnalyzer statisticsAndHistoryAnalyzer;
     private final EngineManager engineManager;
     private String currentProcessedMessage;
-    private String ContestStatus;
+    private String contestStatus;
     private boolean isReady;
     private boolean contestOnline;
 
@@ -28,7 +28,7 @@ public class UBoat {
         this.isReady = false;
         //this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();
         this.engineManager = new EngineManager(enigmaMachine);
-        this.ContestStatus = CONTEST_NOT_STARTED;
+        this.contestStatus = CONTEST_NOT_STARTED;
         this.currentProcessedMessage = "";
         this.contestOnline = false;
         setEngineDictionary(dictionary);
@@ -51,10 +51,10 @@ public class UBoat {
         this.battleField = battleField;
     }
     public void setContestStatusStarted(){
-        this.ContestStatus = CONTEST_STARTED;
+        this.contestStatus = CONTEST_STARTED;
     }
     public void setContestStatusNotStarted(){
-        this.ContestStatus = CONTEST_NOT_STARTED;
+        this.contestStatus = CONTEST_NOT_STARTED;
     }
     public void setCurrentProcessedMessage(String message){
         this.currentProcessedMessage = message;
@@ -79,7 +79,7 @@ public class UBoat {
     }
 
     public String getContestStatus() {
-        return ContestStatus;
+        return contestStatus;
     }
     public void setReady(boolean ready) {
         isReady = ready;
@@ -96,6 +96,7 @@ public class UBoat {
     }
     public void startContest(){
         this.contestOnline = true;
+        this.contestStatus = CONTEST_STARTED;
         battleField.startContest(engineManager);
     }
 }

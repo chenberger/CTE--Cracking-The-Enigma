@@ -233,7 +233,7 @@ public class EngineManager implements MachineOperations, Serializable {
     @Override
     public void startBruteForceDeciphering(BruteForceTask bruteForceTask, BruteForceUIAdapter bruteForceUiAdapter, Runnable onFinish) throws Exception {
         decryptionManager.initialize(bruteForceTask, bruteForceUiAdapter, onFinish, enigmaMachine.cloneMachine(), dictionary, mainController);
-        decryptionManager.startDeciphering();
+        //decryptionManager.startDeciphering();
     }
 
     private void setSettingsFormat(List<Sector> settingsSector) {
@@ -478,11 +478,11 @@ public class EngineManager implements MachineOperations, Serializable {
         decryptionManager.stopBruteForceMission();
     }
 
-    public void pauseMission() {
-        decryptionManager.pauseMission();
-    }
+   //public void pauseMission() {
+   //    decryptionManager.pauseMission();
+   //}
 
-    public void resumeMission() {
-        decryptionManager.resumeMission();
-    }
+   //public void resumeMission() {
+   //    decryptionManager.resumeMission();
+   //}
 }

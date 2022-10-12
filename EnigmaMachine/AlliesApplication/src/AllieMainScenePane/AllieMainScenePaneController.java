@@ -24,8 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LOGOUT_SERVLET;
-import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
+import static AlliesServletsPaths.AlliesServletsPaths.*;
 import static Constants.ServletConstants.USER_NAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
@@ -107,11 +106,13 @@ public class AllieMainScenePaneController {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.code() == 200) {
-                        registerToBattleButton.setDisable(true);
-                        setTaskSizeButton.setDisable(false);
                         String body = response.body().string();
                         OnLineContestsTable chosenContest = onLineContestFromJson(body);
                         setChosenContest(chosenContest);
+                        Platform.runLater(() -> {
+                            registerToBattleButton.setDisable(true);
+                            setTaskSizeButton.setDisable(false);
+                        });
                     } else {
                         new ErrorDialog(new Exception("Error registering to battle"), "Error");
                     }
@@ -155,7 +156,7 @@ public class AllieMainScenePaneController {
     }
 
     private void setAllyTaskSize(long taskSize) {
-        String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
+        String finalUrl = HttpUrl.parse(ALLIES_OPS_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, SET_TASK_SIZE)
                 .addQueryParameter(TASK_SIZE, String.valueOf(taskSize))
@@ -170,8 +171,11 @@ public class AllieMainScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    taskSizeTextField.setText("");
-                    setTaskSizeButton.setDisable(true);
+                    Platform.runLater(() -> {
+                        setTaskSizeButton.setDisable(true);
+                        //readyToContestButton.setDisable(true);
+                    });
+
                 }
                 else{
                     new ErrorDialog(new Exception("Error setting task size"), "Error");
@@ -190,7 +194,32 @@ public class AllieMainScenePaneController {
     }
 
     public void onReadyToContestButtonClicked(ActionEvent actionEvent) {
-        //TODO: send ready to contest
+        String finalUrl = HttpUrl.parse(READY_MANAGER_SERVLET)
+                .newBuilder()
+                .addQueryParameter(TYPE, "Allies")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(e, "Error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    Platform.runLater(() -> {
+                        readyToContestButton.setDisable(true);
+                    });
+                    //String body = response.body().string();
+                }
+                else{
+                    new ErrorDialog(new Exception("Error setting Ready"), "Error");
+                }
+                response.close();
+            }
+        });
+
     }
 
     public void onLogOutButtonClicked(ActionEvent actionEvent) {

@@ -95,6 +95,7 @@ public class TasksProducer implements Runnable {
             setSectorInMachine(rotorIDSector);
             setHardTasks();
         }
+        noMoreTasks = true;
     }
 
     private List<List<Integer>> getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist() {
@@ -132,6 +133,9 @@ public class TasksProducer implements Runnable {
             RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
             setSectorInMachine(rotorIDSector);
             setMediumTasks();
+        }
+        if (difficultyLevel.equals(DifficultyLevel.HARD)) {
+            noMoreTasks = true;
         }
     }
 
@@ -203,6 +207,9 @@ public class TasksProducer implements Runnable {
             setSectorInMachine(reflectorIdSector);
             setEasyTasks();
         }
+        if(difficultyLevel.equals(DifficultyLevel.MEDIUM)) {
+            noMoreTasks = true;
+        }
     }
 
     private void setSectorInMachine(Sector<?> sectorToSet) throws ReflectorSettingsException, RotorsInUseSettingsException, PluginBoardSettingsException, StartingPositionsOfTheRotorException, CloneNotSupportedException {
@@ -229,6 +236,9 @@ public class TasksProducer implements Runnable {
 
 
             numOfPossibleRotorsPositions -= taskSize;
+            if (numOfPossibleRotorsPositions <= 0 && difficultyLevel.equals(DifficultyLevel.EASY)) {
+                noMoreTasks = true;
+            }
             try {
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), (int) taskSize));
             }

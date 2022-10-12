@@ -20,11 +20,9 @@ import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,18 +31,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static AgentsServletsPaths.AgentServletsPaths.TASKS_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.ACTION;
 
 public class AgentMainScenePaneController {
+    private CompetitionHandler competitionHandler;
+    private OkHttpClient client;
+    private boolean isMachineExists;
+    private boolean isDictionaryExists;
+
     String agentName;
     private boolean participateInContest = false;
     private BlockingQueue<TaskToAgent> contestTasksQueue;
     private EngineManager engineManager;
     private ThreadPoolExecutor tasksPool;
-    BlockingQueue<Runnable> tasksQueue;
+    private BlockingQueue<Runnable> tasksQueue;
     private int numberOfThreads;
     private Long tasksPullingInterval;
 
@@ -65,6 +69,9 @@ public class AgentMainScenePaneController {
             contestAndTeamDataPaneController.setAgentMainSceneController(this);
         }
         engineManager = new EngineManager();
+        isDictionaryExists = false;
+        isMachineExists = false;
+        client = new OkHttpClient();
     }
     public void setActive() {
         agentCandidatesPaneController.startRefreshing();
@@ -87,158 +94,176 @@ public class AgentMainScenePaneController {
     public void startContest() {
     }
 
-    public void startBruteForce() {
-        getBattlesEnigmaMachine();
-        getBattlesDictionary();
-        startWorking();
+    public void startBruteForce()  {
+        try {
+            checkIfParticipateInBattle();
+            if (participateInContest) {
+                contestTasksQueue = new LinkedBlockingQueue<>();
+                tasksQueue = new LinkedBlockingQueue<>();
+                tasksPool = new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, tasksQueue, new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy());
+                getBattlesEnigmaMachine();
+                getBattlesDictionary();
+                startWorking();
+        }
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 
 
-    private void getBattlesEnigmaMachine() {
+    private void getBattlesEnigmaMachine() throws IOException {
         String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "getMachineDataForInitialize")
+                .addQueryParameter("agentName", agentName)
                 .build()
                 .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, java.io.IOException e) {
-                e.printStackTrace();
-            }
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
 
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if(response.code() == 200) {
-                    Gson gson = new Gson();
-                    String responseString = response.body().string();
-                    DataToInitializeMachine dataToInitializeMachine = gson.fromJson(responseString, DataToInitializeMachine.class);
-                    engineManager.setEnigmaMachine(new EnigmaMachine(dataToInitializeMachine.getRotors(), dataToInitializeMachine.getReflectors()
-                            ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
-                }
-                
-            }
-        });
+        Response response = client.newCall(request).execute();
+        if(response.code() == 200){
+               Gson gson = new Gson();
+               String responseString = response.body().string();
+               DataToInitializeMachine dataToInitializeMachine = gson.fromJson(responseString, DataToInitializeMachine.class);
+               engineManager.setEnigmaMachine(new EnigmaMachine(dataToInitializeMachine.getRotors(), dataToInitializeMachine.getReflectors()
+                       ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
+        }
+        response.close();
+        //HttpClientUtil.runAsync(finalUrl, new Callback() {
+        //    @Override
+        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
+        //        e.printStackTrace();
+        //    }
+////
+        //    @Override
+        //    public void onResponse(Call call, Response response) throws java.io.IOException {
+        //        if(response.code() == 200) {
+        //            Gson gson = new Gson();
+        //            String responseString = response.body().string();
+        //            DataToInitializeMachine dataToInitializeMachine = gson.fromJson(responseString, DataToInitializeMachine.class);
+        //            engineManager.setEnigmaMachine(new EnigmaMachine(dataToInitializeMachine.getRotors(), dataToInitializeMachine.getReflectors()
+        //                    ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
+        //            isMachineExists = true;
+        //        }
+        //        response.close();
+        //    }
+        //});
     }
 
-    private void  getBattlesDictionary(){
+    private void  getBattlesDictionary() throws IOException {
         String finalUrl = HttpUrl.parse(DICTIONARY_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "getDictionaryObject")
+                .addQueryParameter("agentName", agentName)
                 .build()
                 .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, java.io.IOException e) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if(response.code() == 200) {
-                    Gson gson = new Gson();
-                    String responseString = response.body().string();
-                    Engine.Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
-                    engineManager.setDictionary(dictionary);
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
 
-                }
-            }
-        });
+        Response response = client.newCall(request).execute();
+        if(response.code() == 200){
+            Gson gson = new Gson();
+            String responseString = response.body().string();
+            Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
+            engineManager.setDictionary(dictionary);
+        }
+        //HttpClientUtil.runAsync(finalUrl, new Callback() {
+        //    @Override
+        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
+        //        e.printStackTrace();
+        //    }
+////
+        //    @Override
+        //    public void onResponse(Call call, Response response) throws java.io.IOException {
+        //        if(response.code() == 200) {
+        //            Gson gson = new Gson();
+        //            String responseString = response.body().string();
+        //            Engine.Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
+        //            engineManager.setDictionary(dictionary);
+        //            isDictionaryExists = true;
+////
+        //        }
+        //    }
+        //});
     }
     private void startWorking() {
-        checkIfParticipateInBattle();
-        if(participateInContest) {
-            contestTasksQueue = new LinkedBlockingQueue<>();
-            tasksQueue = new LinkedBlockingQueue<>();
-            tasksPool = new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, tasksQueue, new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy());
-            while (contestAndTeamDataPaneController.isContestActive()) {
-                try {
-                    if (tasksQueue.size() == 0) {
-                        getTaskFromServer();
-                    } else {
-                        tasksPool.execute(tasksQueue.take());
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        }
+        competitionHandler = new CompetitionHandler(tasksPool, engineManager, contestTasksQueue, agentName, client,contestAndTeamDataPaneController,tasksQueue );
+        competitionHandler.start();
+
     }
 
-    private void checkIfParticipateInBattle() {
+    private void checkIfParticipateInBattle() throws IOException {
         String finalUrl = HttpUrl.parse(ALLIES_OPS_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "participateInBattle")
+                .addQueryParameter("agentName", agentName)
                 .build()
                 .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, java.io.IOException e) {
-                new ErrorDialog(e, "Error while trying to get participate value");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if (response.code() == 200) {
-                    Gson gson = new Gson();
-                    String responseString = response.body().string();
-                    participateInContest = gson.fromJson(responseString, Boolean.class);
-                } else {
-                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to get participate value");
-                }
-
-            }
-        });
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
+        Response response = client.newCall(request).execute();
+        if(response.code() == 200){
+            participateInContest = true;
+        }
+        response.close();
+        //HttpClientUtil.runAsync(finalUrl, new Callback() {
+        //    @Override
+        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
+        //        new ErrorDialog(e, "Error while trying to get participate value");
+        //    }
+//
+        //    @Override
+        //    public void onResponse(Call call, Response response) throws java.io.IOException {
+        //        if (response.code() == 200) {
+        //            Gson gson = new Gson();
+        //            String responseString = response.body().string();
+        //            //TODO: change to boolean from json
+        //            participateInContest = gson.fromJson(responseString, Boolean.class);
+        //        } else {
+        //            new ErrorDialog(new Exception(response.body().string()), "Error while trying to get participate value");
+        //        }
+//
+        //    }
+        //});
     }
 
-    private void getTaskFromServer() {
-        String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "getTasksInterval")
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, java.io.IOException e) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if(response.code() == 200) {
-                    Gson gson = new Gson();
-                    String responseString = response.body().string();
-                    List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
+       //HttpClientUtil.runAsync(finalUrl, new Callback() {
+       //    @Override
+       //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
+       //        e.printStackTrace();
+       //    }
 
-                    contestTasksQueue.addAll(tasksToAgent);
-                    try {
-                         for(int i = 0; i < tasksToAgent.size(); i++) {
-                             AgentTask agentTask = getAgentTaskFromTaskToAgent(tasksToAgent.get(i));
-                             AgentWorker agent = new AgentWorker(agentTask);
-                             tasksPool.execute(agent);
-                         }
+       //    @Override
+       //    public void onResponse(Call call, Response response) throws java.io.IOException {
+       //        if(response.code() == 200) {
+       //            Gson gson = new Gson();
+       //            String responseString = response.body().string();
+       //            List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
 
-                    } catch (CloneNotSupportedException e) {
-                        e.printStackTrace();
-                    }
-                }
+       //            contestTasksQueue.addAll(tasksToAgent);
+       //            try {
+       //                 for(int i = 0; i < tasksToAgent.size(); i++) {
+       //                     AgentTask agentTask = getAgentTaskFromTaskToAgent(tasksToAgent.get(i));
+       //                     AgentWorker agent = new AgentWorker(agentTask);
+       //                     tasksPool.execute(agent);
+       //                 }
 
-            }
-        });
-    }
+       //            } catch (CloneNotSupportedException e) {
+       //                e.printStackTrace();
+       //            }
+       //        }
 
-    private AgentTask getAgentTaskFromTaskToAgent(TaskToAgent taskToAgent) throws CloneNotSupportedException {
-        int taskSize = (int)taskToAgent.getTaskSize();
-        StartingRotorPositionSector startingRotorPositionSector = taskToAgent.getCurrentStartingRotorsPositions();
-        EnigmaMachine enigmaMachine = engineManager.getEnigmaMachine().cloneMachine();
-        List<Sector> sectors = taskToAgent.getSectorsCodeAsJson().getSectors();
-        sectors.get(0).setSectorInTheMachine(enigmaMachine);
-        sectors.get(2).setSectorInTheMachine(enigmaMachine);
-        sectors.get(3).setSectorInTheMachine(enigmaMachine);
-        String encryptedMessage = taskToAgent.getEncryptedMessage();
-        Dictionary dictionary = engineManager.getDictionaryObject();
-        return new AgentTask(taskSize, startingRotorPositionSector, enigmaMachine, encryptedMessage, dictionary,agentName);
+       //    }
+       //});
 
-    }
 }

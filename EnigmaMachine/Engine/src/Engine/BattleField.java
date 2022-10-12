@@ -1,6 +1,7 @@
 package Engine;
 
 import BruteForce.DifficultyLevel;
+import DTO.AgentCandidatesInformation;
 import Engine.AlliesManager.Allie;
 import Jaxb.Schema.Generated.CTEBattlefield;
 
@@ -10,6 +11,8 @@ import java.util.List;
 public class BattleField {
     /* this class is the battle field class, it contains the battle field name, the level of the battle field and the number of allies in the battle field */
     private String battleFieldName;
+
+    private List<AgentCandidatesInformation> agentsCandidatesInformation;
     private String processedMessage;
     private int numberOfTeamsInBattleField;
     private DifficultyLevel level;
@@ -26,6 +29,7 @@ public class BattleField {
         this.alliesInBattleField = new ArrayList<>();
         this.processedMessage = "";
         this.numberOfAlliesThatAreReady = 0;
+        this.agentsCandidatesInformation = new ArrayList<>();
     }
     public BattleField(){
         this.battleFieldName = "";
@@ -130,6 +134,9 @@ public class BattleField {
         for(Allie allie : alliesInBattleField){
             allie.startContest(processedMessage, engineManager);
         }
+    }
+    public void addAgentCandidateInformationToList(AgentCandidatesInformation agentCandidatesInformation){
+        this.agentsCandidatesInformation.add(agentCandidatesInformation);
     }
 
 }

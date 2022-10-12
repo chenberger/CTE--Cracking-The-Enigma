@@ -49,6 +49,7 @@ public class RegisterToBattleServlet extends HttpServlet {
                 response.getWriter().println("Battle is full");
             }
             else {
+                allie.setLevel(battleField.getLevel().toString());
                 battleField.addTeam(allie);
                 //create the response json string
                 allie.setBattleName(battleField.getBattleFieldName());

@@ -34,12 +34,12 @@ public class TasksServlet extends HttpServlet {
         boolean wait = true;
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
-        Agent agent = agentsManager.getAgent(SessionUtils.getUsername(request));
+        Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
         Allie allie = alliesManager.getAllie(agent.getAllieName());
         try {
             TasksProducer tasksProducer = allie.getDecryptionManager().getTasksProducer();
             while(wait){
-                if(tasksProducer.getTasksQueue().size() == agent.getTasksPullingInterval()){
+                if(tasksProducer.getTasksQueue().size() >= agent.getTasksPullingInterval()){
                     wait = false;
                 } else if (tasksProducer.isNoMoreTasks()) {
                     wait = false;

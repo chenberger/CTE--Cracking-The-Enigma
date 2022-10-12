@@ -8,7 +8,7 @@ import java.util.List;
 public class TaskToAgent {
     SectorsCodeAsJson sectorsCodeAsJson;
     private long TaskSize;
-    private StartingRotorPositionSector currentStartingRotorsPositions;
+    //private StartingRotorPositionSector currentStartingRotorsPositions;
     //private EnigmaMachine enigmaMachine;
 
     private String encryptedMessage;
@@ -17,7 +17,7 @@ public class TaskToAgent {
     public TaskToAgent(long taskSize, StartingRotorPositionSector currentStartingRotorsPositions, EnigmaMachine enigmaMachine, String encryptedMessage) throws CloneNotSupportedException {
         TaskSize = taskSize;
         this.agentName = "";
-        this.currentStartingRotorsPositions = currentStartingRotorsPositions;
+        //this.currentStartingRotorsPositions = currentStartingRotorsPositions;
         this.encryptedMessage = encryptedMessage;
         List<Sector> sectors = enigmaMachine.getCurrentSettingsFormat().getSettingsFormat();
         sectorsCodeAsJson = new SectorsCodeAsJson((RotorIDSector)sectors.get(0), currentStartingRotorsPositions, (ReflectorIdSector)sectors.get(2), (PluginBoardSector) sectors.get(3));
@@ -29,12 +29,12 @@ public class TaskToAgent {
     public void setTaskSize(int taskSize) {
         TaskSize = taskSize;
     }
-    public StartingRotorPositionSector getCurrentStartingRotorsPositions() {
-        return currentStartingRotorsPositions;
-    }
-    public void setCurrentStartingRotorsPositions(StartingRotorPositionSector currentStartingRotorsPositions) {
-        this.currentStartingRotorsPositions = currentStartingRotorsPositions;
-    }
+   //public StartingRotorPositionSector getCurrentStartingRotorsPositions() {
+   //    return currentStartingRotorsPositions;
+   //}
+   //public void setCurrentStartingRotorsPositions(StartingRotorPositionSector currentStartingRotorsPositions) {
+   //    this.currentStartingRotorsPositions = currentStartingRotorsPositions;
+   //}
    //public EnigmaMachine getEnigmaMachine() {
    //    return enigmaMachine;
    //}

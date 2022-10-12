@@ -113,16 +113,16 @@ public class DMStatisticsController {
         clearPane();
     }
 
-    @FXML void onPauseResumeButtonClicked(ActionEvent event) {
-        if(Objects.equals(pauseResumeButton.getText(), PAUSE_LABEL)) {
-            bruteForceGridController.pauseMission();
-            pauseResumeButton.setText(RESUME_LABEL);
-        }
-        else {
-            bruteForceGridController.resumeMission();
-            pauseResumeButton.setText(PAUSE_LABEL);
-        }
-    }
+    //@FXML void onPauseResumeButtonClicked(ActionEvent event) {
+    //    if(Objects.equals(pauseResumeButton.getText(), PAUSE_LABEL)) {
+    //        bruteForceGridController.pauseMission();
+    //        pauseResumeButton.setText(RESUME_LABEL);
+    //    }
+    //    else {
+    //        bruteForceGridController.resumeMission();
+    //        pauseResumeButton.setText(PAUSE_LABEL);
+    //    }
+    //}
 
     @FXML private void onStartStopButtonClicked(ActionEvent event) {
         if(Objects.equals(startStopButton.getText(), START_LABEL)) {

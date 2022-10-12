@@ -28,7 +28,7 @@ public class Allie {
         this.decryptionManager = new DecryptionManager();
         this.taskSize = 0;
         this.battleName = "";
-        this.isReady = false;
+        this.isReady = true;
         this.contestOnline = false;
     }
     public void setLevel(String level) {

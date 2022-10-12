@@ -38,7 +38,7 @@ public class AllyOpsServlet extends HttpServlet {
     private void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
-        Agent agent = agentsManager.getAgent(SessionUtils.getUsername(request));
+        Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
         Allie allie = alliesManager.getAllie(agent.getAllieName());
         if(allie.getAgentsParticipatingInDecryption().contains(agent)){
             try {

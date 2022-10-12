@@ -111,6 +111,7 @@ public class MainUBoatScenePaneController {
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to logout");
                 }
+                response.close();
             }
         });
     }
@@ -166,6 +167,7 @@ public class MainUBoatScenePaneController {
         } else {
             new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
         }
+        response.close();
 
     }
 
@@ -195,6 +197,7 @@ public class MainUBoatScenePaneController {
                         }
                     });
                 }
+                response.close();
             }
         });
     }
@@ -226,6 +229,7 @@ public class MainUBoatScenePaneController {
                         }
                     });
                 }
+                response.close();
             }
         });
         ;
