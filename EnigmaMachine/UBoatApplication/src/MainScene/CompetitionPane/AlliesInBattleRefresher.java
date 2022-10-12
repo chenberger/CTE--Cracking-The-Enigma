@@ -65,6 +65,7 @@ public class AlliesInBattleRefresher extends TimerTask {
                         System.out.println("UBoats in the battle: " + jsonAlliesToTable);
                         updateTeamsTable.accept(alliesToTable);
                     }
+                    response.close();
                 }
             }
         });

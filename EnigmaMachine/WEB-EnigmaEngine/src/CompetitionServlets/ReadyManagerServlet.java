@@ -35,7 +35,7 @@ public class ReadyManagerServlet extends HttpServlet {
             uBoat.getBattleField().addTeamToReady();
             if(uBoat.getBattleField().getNumberOfAlliesThatAreReady() == uBoat.getBattleField().getNumberOfAlliesToStartBattle() && uBoat.isReady()){
                 uBoat.setContestStatusStarted();
-                uBoat.getBattleField().startContest(uBoat.getEngineManager());
+                uBoat.startContest();
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println("Battle Started");
             }
@@ -52,7 +52,7 @@ public class ReadyManagerServlet extends HttpServlet {
             uBoat.setReady(true);
             if(uBoat.getBattleField().getNumberOfAlliesThatAreReady() == uBoat.getBattleField().getNumberOfAlliesToStartBattle()){
                 uBoat.setContestStatusStarted();
-                uBoat.getBattleField().startContest(uBoat.getEngineManager());
+                uBoat.startContest();
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println("Battle Started");
             }

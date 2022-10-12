@@ -1,9 +1,6 @@
 package Engine.AgentsManager;
 
-import BruteForce.DecryptionCandidateFormat;
-import BruteForce.DecryptionCandidateTaskHandler;
-import BruteForce.TasksManager;
-import DesktopUserInterface.MainScene.BodyScene.BruteForce.AgentTaskData;
+import DTO.AgentCandidatesInformation;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Keyboard;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
@@ -13,8 +10,11 @@ import EnigmaMachineException.WordNotValidInDictionaryException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 
 public class AgentWorker implements Runnable{
+    private List<AgentCandidatesInformation> agentCandidatesInformationList;
+    private long numberOfTasksPulled;
     private final String agentId;
     private final String agentName;
     private Keyboard keyboard;
@@ -29,7 +29,7 @@ public class AgentWorker implements Runnable{
 
     private String AllieName;
 
-    public AgentWorker(AgentTask agentTask) {
+    public AgentWorker(AgentTask agentTask, String AgentName, long numberOfTasksPulled, List<AgentCandidatesInformation> agentCandidatesInformationList) {
         synchronized (this) {
             this.agentTask = agentTask;
             this.agentId = Thread.currentThread().getName();
@@ -38,6 +38,8 @@ public class AgentWorker implements Runnable{
             this.startingRotorPosition = agentTask.getStartingRotorPositions();
             this.agentName = agentTask.getAgentName();
             this.taskId = staticTaskId++;
+            this.numberOfTasksPulled = numberOfTasksPulled;
+            this.agentCandidatesInformationList = agentCandidatesInformationList;
         }
     }
 
@@ -72,6 +74,8 @@ public class AgentWorker implements Runnable{
                 try {
 
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
+                    AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
+                    agentCandidatesInformationList.add(agentCandidatesInformation);
                     //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
                     //encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                     //agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),
@@ -93,6 +97,11 @@ public class AgentWorker implements Runnable{
         long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
 
 
+    }
+
+    private AgentCandidatesInformation getAgentCandidatesInformation(String currentCodeConfigurationFormat, String candidateString) {
+        return new AgentCandidatesInformation(candidateString, taskId,
+                currentCodeConfigurationFormat, agentName);
     }
 
     private void validateAndSetStartingRotorPositions(StartingRotorPositionSector currentRotorPositions) throws StartingPositionsOfTheRotorException, CloneNotSupportedException {

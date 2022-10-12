@@ -128,13 +128,13 @@ public class BruteForceGridController {
         enigmaMachineEngine.stopBruteForceMission();
     }
 
-    public void pauseMission() {
-        enigmaMachineEngine.pauseMission();
-    }
-
-    public void resumeMission() {
-        enigmaMachineEngine.resumeMission();
-    }
+    //public void pauseMission() {
+    //    enigmaMachineEngine.pauseMission();
+    //}
+//
+    //public void resumeMission() {
+    //    enigmaMachineEngine.resumeMission();
+    //}
 
     public void setSkin(SkinType skinType) {
         decryptionManagerController.setSkin(skinType);

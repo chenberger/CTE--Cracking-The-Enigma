@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "GetMachineConfigServlet",urlPatterns = {"/machine/GetMachineConfig"})
 public class getMachineConfigServlet extends HttpServlet {
+    private final Object lock = new Object();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,35 +53,37 @@ public class getMachineConfigServlet extends HttpServlet {
     }
 
     private void getMachineDataForInit(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException, IOException {
-        Gson gson = new Gson();
-        UBoatManager uBoatManager = ServletUtils.getUBoatsManager(getServletContext());
-        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
-        Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getUsername(request));
-        String allieName = agent.getAllieName();
-        Allie allie = alliesManager.getAllie(allieName);
+        synchronized (lock) {
+            Gson gson = new Gson();
+            UBoatManager uBoatManager = ServletUtils.getUBoatsManager(getServletContext());
+            AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+            Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(request.getParameter("agentName"));
+            String allieName = agent.getAllieName();
+            Allie allie = alliesManager.getAllie(allieName);
 
-        String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
-        UBoat uBoat = uBoatManager.getUBoat(uBoatName);
-        try {
+            String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+            UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+            try {
 
-            EngineManager engineManager = uBoat.getEngineManager();
-            MachineDetails machineDetails = engineManager.displaySpecifications();
-            EnigmaMachine enigmaMachine = engineManager.getCurrentEnigmaMachine();
-            DataToInitializeMachine dataToInitializeMachine = new DataToInitializeMachine(enigmaMachine.cloneRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.cloneReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.cloneKeyboard());
-            String json = gson.toJson(dataToInitializeMachine);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print(json);
-            response.getWriter().flush();
+                EngineManager engineManager = uBoat.getEngineManager();
+                //MachineDetails machineDetails = engineManager.displaySpecifications();
+                EnigmaMachine enigmaMachine = engineManager.getCurrentEnigmaMachine();
+                DataToInitializeMachine dataToInitializeMachine = new DataToInitializeMachine(enigmaMachine.cloneRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.cloneReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.cloneKeyboard());
+                String json = gson.toJson(dataToInitializeMachine);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(json);
+                response.getWriter().flush();
 
-        }catch (IOException|RuntimeException| MachineNotExistsException | CloneNotSupportedException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print(e.getMessage());
+            } catch (IOException | RuntimeException | MachineNotExistsException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print(e.getMessage());
+            }
         }
 
     }
 
 
-    private void getRawMachineDetails(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
+    synchronized private void getRawMachineDetails(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
@@ -98,7 +101,7 @@ public class getMachineConfigServlet extends HttpServlet {
         }
     }
 
-    private void getMachineSpecifications(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException, IOException {
+    synchronized private void getMachineSpecifications(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException, IOException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
@@ -116,7 +119,7 @@ public class getMachineConfigServlet extends HttpServlet {
 
     }
 
-    private void getCurrentMachineConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
+    synchronized private void getCurrentMachineConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
@@ -132,7 +135,7 @@ public class getMachineConfigServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-    private void getOriginalMachineConfig(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
+    synchronized private void getOriginalMachineConfig(HttpServletRequest request, HttpServletResponse response) throws MachineNotExistsException, CloneNotSupportedException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         EngineManager engine = uBoat.getEngineManager();
         MachineDetails machineDetails = engine.displaySpecifications();
