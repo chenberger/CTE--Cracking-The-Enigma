@@ -17,15 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Agent {
-
+    private Long tasksPulled;
+    private Integer totalCandidatesFound;
     private final String agentName;
     private String allieName;
-    private Long numberOfWorkingThreads = 4L;
-    //private TasksManager tasksManager;
-    private Long tasksPullingInterval = 50L;
+    private Long numberOfWorkingThreads;
+    private Long tasksPullingInterval;
 
     public Agent(String agentName) {
         this.agentName = agentName;
+        this.tasksPulled = 0L;
+        this.totalCandidatesFound = 0;
+        this.numberOfWorkingThreads = 1L;
+        this.tasksPullingInterval = 1L;
     }
     //region Getters and Setters
     public void setAllieName(String allieName) {
@@ -61,6 +65,18 @@ public class Agent {
 
     public void removeAgentFromAllie() {
         allieName = "";
+    }
+    public Long getNumberOfTasksPulled(){
+        return tasksPulled;
+    }
+    public Integer getTotalNumberOfCandidatesFound(){
+        return totalCandidatesFound;
+    }
+    public void addNumberOfTasksPulled(Long tasksPulled){
+        this.tasksPulled += tasksPulled;
+    }
+    public void setTotalNumberOfCandidatesFound(int totalCandidatesFound){
+        this.totalCandidatesFound = totalCandidatesFound;
     }
 }
 

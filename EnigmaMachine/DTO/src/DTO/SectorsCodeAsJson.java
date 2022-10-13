@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SectorsCodeAsJson {
+    private final List<Integer> notchPositions;
     private int[] rotorIdElements;
     private char[] startingRotorPositionElements;
     private RomanNumber reflectorIdElement;
@@ -23,7 +24,7 @@ public class SectorsCodeAsJson {
         for (int i = 0; i < startingRotorPositionElements.length; i++) {
             startingRotorPositionElements[i] = startingRotorPositionSector.getElements().get(i);
         }
-
+        notchPositions = startingRotorPositionSector.getNotchPositions();
         pluginBoardElements = new char[pluginBoardSector.getElements().size() * 2];
         int pairIndex = 0;
         for(int i = 0; i < pluginBoardElements.length; i++) {
@@ -33,7 +34,6 @@ public class SectorsCodeAsJson {
         }
 
         reflectorIdElement = reflectorIdSector.getElements().get(0);
-
     }
 
 
@@ -63,6 +63,9 @@ public class SectorsCodeAsJson {
 
     public char[] getPluginBoardElements() {
         return pluginBoardElements;
+    }
+    public List<Integer> getNotchPositions() {
+        return notchPositions;
     }
 
     public void setPluginBoardElements(char[] pluginBoardElements) {

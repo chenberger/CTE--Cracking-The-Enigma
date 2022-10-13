@@ -8,5 +8,6 @@ public class AlliesServletsPaths {
     public static final String ALLIES_LIST_SERVLET = FULL_SERVER_PATH + "/AlliesList";
     public static final String ALLIES_OPS_SERVLET = FULL_SERVER_PATH + "/AllyOps";
     public static final String REGISTER_TO_BATTLE_SERVLET = FULL_SERVER_PATH + "/allie/RegisterToBattle";
+    public static final String ALLIES_DATA_SERVLET = FULL_SERVER_PATH + "/allie/AlliesData";
 
 }

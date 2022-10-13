@@ -19,4 +19,5 @@ public class Constants {
     public static final String GET_CURRENT_CONTEST_DATA = "getCurrentContestData";
     public static final String READY_MANAGER_SERVLET = FULL_SERVER_PATH + "/CompetitionServlet/ReadyManager";
     public static final String TYPE = "type";
+    public static final String BATTLE_CANDIDATES_SERVLET = FULL_SERVER_PATH + "/BattleCandidates";
 }

@@ -64,4 +64,7 @@ public class StartingRotorPositionSector extends Sector<Character> implements Se
         setCurrentNotchPositions(enigmaMachine.getCurrentRotorsInUse().stream().map(rotor -> rotor.getStartingNotchPosition()).collect(Collectors.toList()));
         enigmaMachine.getOriginalSettingsFormat().addSector(this);
     }
+    public List<Integer> getNotchPositions() {
+        return notchPositions;
+    }
 }

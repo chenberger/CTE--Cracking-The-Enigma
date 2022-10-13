@@ -2,14 +2,12 @@ package BruteForce;
 
 import DTO.BruteForceTask;
 import DTO.TaskToAgent;
-import Engine.AgentsManager.AgentTask;
-import Engine.AgentsManager.AgentWorker;
+import Engine.AlliesManager.Allie;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.*;
 import EnigmaMachine.*;
 import EnigmaMachineException.*;
-import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class TasksProducer implements Runnable {
     private boolean noMoreTasks;
+    Allie allie;
 
     private BlockingQueue<TaskToAgent> tasksQueue;
     private static final int  MAX_QUEUE_SIZE = 1000;
@@ -36,7 +35,7 @@ public class TasksProducer implements Runnable {
 
     private SettingsFormat settingsFormat;
 
-    public TasksProducer(BruteForceTask bruteForceTask, String encryptedString, Dictionary dictionary, EnigmaMachine enigmaMachine, SettingsFormat settingsFormat) {
+    public TasksProducer(BruteForceTask bruteForceTask, String encryptedString, Dictionary dictionary, EnigmaMachine enigmaMachine, SettingsFormat settingsFormat, Allie allie) {
         this.tasksQueue = new ArrayBlockingQueue<>(MAX_QUEUE_SIZE);
         this.encryptedString = encryptedString;
         this.dictionary = dictionary;
@@ -46,6 +45,7 @@ public class TasksProducer implements Runnable {
         this.startingRotorsPositions = setAllRotorsToFirstLetterAtStart();
         this.noMoreTasks = false;
         this.taskSize= bruteForceTask.getTaskSize();
+        this.allie = allie;
         initializeMachineSettings();
         calcMissionSize();
     }
@@ -75,7 +75,6 @@ public class TasksProducer implements Runnable {
             enigmaMachine.getOriginalSettingsFormat().setIfPluginBoardSet(false);
         }
     }
-
 
     private List<Character> setAllRotorsToFirstLetterAtStart() {
         List<Character> startingRotorsPositions = new ArrayList<>();
@@ -199,6 +198,7 @@ public class TasksProducer implements Runnable {
         else {
             totalTasksSize = (long) (totalCombinations / taskSize);
         }
+        allie.setTaskSize(totalTasksSize);
     }
 
     public void setMediumTasks() throws Exception {
@@ -232,7 +232,7 @@ public class TasksProducer implements Runnable {
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             TaskToAgent agentTask = new TaskToAgent(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString);
             tasksQueue.put(agentTask);
-
+            allie.increaseTasksProduced(1);
 
 
             numOfPossibleRotorsPositions -= taskSize;

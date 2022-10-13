@@ -1,6 +1,7 @@
 package CompetitionServlets;
 
 import DTO.AgentCandidatesInformation;
+import DTO.AlliesTasksProgressToLabels;
 import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
@@ -28,10 +29,80 @@ public class BattleCandidatesServlet extends HttpServlet {
             if (request.getParameter("action").equals("sendCandidates")) {
                 sendCandidatesToBattle(request, response);
             }
+            else if(request.getParameter("action").equals("updateAlliesProgress")){
+                updateAlliesProgress(request, response);
+            }
+            else if(request.getParameter("action").equals("getAllieProgress")){
+                getAllyProgress(request, response);
+            }
+            else if(request.getParameter("action").equals("updateCandidatesFound")){
+                updateNumberOfCandidatesFoundByAgent(request, response);
+            }
+            else if(request.getParameter("action").equals("updateTasksPulled")){
+                updateNumberOfTasksPulledByAgent(request, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
+    }
+
+    private void updateNumberOfTasksPulledByAgent(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
+        Long tasksPulled = gson.fromJson(request.getParameter("tasksPulled"), Long.class);
+        agent.addNumberOfTasksPulled(tasksPulled);
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private void updateNumberOfCandidatesFoundByAgent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        try {
+
+            String agentName = request.getParameter("agentName");
+            int numberOfCandidatesFound = Integer.parseInt(request.getParameter("numberOfCandidatesFound"));
+            AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+            Agent agent = agentsManager.getAgent(agentName);
+            agent.setTotalNumberOfCandidatesFound(numberOfCandidatesFound);
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        catch (Exception e){
+            response.getWriter().println(gson.toJson("Unable to update number of candidates found by agent"));
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    private void getAllyProgress(HttpServletRequest request, HttpServletResponse response) {
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+        try {
+            Gson gson = new Gson();
+            AlliesTasksProgressToLabels alliesTasksProgressToLabels = new AlliesTasksProgressToLabels(
+                    allie.getTaskSize(), allie.getTasksCompleted(), allie.getTasksCompleted());
+            String jsonAllieProgress = gson.toJson(alliesTasksProgressToLabels);
+            response.getWriter().write(jsonAllieProgress);
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    private void updateAlliesProgress(HttpServletRequest request, HttpServletResponse response) {
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Agent agent = agentsManager.getAgent(SessionUtils.getUsername(request));
+        try {
+            Gson gson = new Gson();
+            Allie allie = alliesManager.getAllie(agent.getAllieName());
+            Long jsonTasksCompleted = gson.fromJson(request.getParameter("tasksCompleted"), Long.class);
+            allie.increaseTasksCompleted(jsonTasksCompleted);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println("Allie progress updated successfully");
+        }catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
     }
 
     synchronized private void sendCandidatesToBattle(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,14 +111,14 @@ public class BattleCandidatesServlet extends HttpServlet {
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Gson gson = new Gson();
         try {
-
-
-            List<AgentCandidatesInformation> candidates = Arrays.asList(gson.fromJson(request.getReader(), AgentCandidatesInformation[].class));
+            String agentCandidates = request.getParameter("candidatesList");
+            AgentCandidatesInformation[] candidates = gson.fromJson(agentCandidates, AgentCandidatesInformation[].class);
             for (AgentCandidatesInformation candidate : candidates) {
                 Agent agent = agentsManager.getAgent(candidate.getAgentName());
                 Allie allie = alliesManager.getAllie(agent.getAllieName());
                 String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
                 UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+                candidate.setTeamName(allie.getTeamName());
                 uBoat.getBattleField().addAgentCandidateInformationToList(candidate);
                 response.setStatus(HttpServletResponse.SC_OK);
             }

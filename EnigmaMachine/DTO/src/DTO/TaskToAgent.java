@@ -8,7 +8,7 @@ import java.util.List;
 public class TaskToAgent {
     SectorsCodeAsJson sectorsCodeAsJson;
     private long TaskSize;
-    //private StartingRotorPositionSector currentStartingRotorsPositions;
+    private StartingRotorPositionSector currentStartingRotorsPositions;
     //private EnigmaMachine enigmaMachine;
 
     private String encryptedMessage;
@@ -19,6 +19,8 @@ public class TaskToAgent {
         this.agentName = "";
         //this.currentStartingRotorsPositions = currentStartingRotorsPositions;
         this.encryptedMessage = encryptedMessage;
+        //StartingRotorPositionSector startingRotorPositionSector = (StartingRotorPositionSector)enigmaMachine.getCurrentSettingsFormat().getSettingsFormat().get(1);
+        //List<Integer> notches = startingRotorPositionSector.getNotchPositions();
         List<Sector> sectors = enigmaMachine.getCurrentSettingsFormat().getSettingsFormat();
         sectorsCodeAsJson = new SectorsCodeAsJson((RotorIDSector)sectors.get(0), currentStartingRotorsPositions, (ReflectorIdSector)sectors.get(2), (PluginBoardSector) sectors.get(3));
     }

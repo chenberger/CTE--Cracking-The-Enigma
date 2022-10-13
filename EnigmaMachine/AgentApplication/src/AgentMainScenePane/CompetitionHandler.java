@@ -11,6 +11,7 @@ import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Settings.Sector;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
+import EnigmaMachineException.MachineNotExistsException;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static AgentsServletsPaths.AgentServletsPaths.BATTLE_CANDIDATES_SERVLET;
@@ -28,13 +30,14 @@ import static AgentsServletsPaths.AgentServletsPaths.TASKS_SERVLET;
 import static Utils.Constants.ACTION;
 
 public class CompetitionHandler extends Thread {
+    private int numberOfCandidatesFound;
     List<AgentCandidatesInformation> agentCandidatesInformationList;
     private long tasksCompleted;
     long numberOfTasksPulled;
     private ThreadPoolExecutor tasksPool;
     private BlockingQueue<TaskToAgent> contestTasksQueue;
     private EngineManager engineManager;
-    private ContestAndTeamDataPaneController contestAndTeamDataPaneController;
+    private AgentMainScenePaneController agentMainScenePaneController;
     private OkHttpClient client;
     private String agentName;
     private BlockingQueue<Runnable> tasksQueue;
@@ -44,32 +47,41 @@ public class CompetitionHandler extends Thread {
 
     }
 
-    public CompetitionHandler(ThreadPoolExecutor tasksPool, EngineManager engineManager, BlockingQueue<TaskToAgent> contestTasksQueue, String agentName, OkHttpClient client, ContestAndTeamDataPaneController contestAndTeamDataPaneController, BlockingQueue<Runnable> tasksQueue) {
+    public CompetitionHandler(ThreadPoolExecutor tasksPool, EngineManager engineManager, BlockingQueue<TaskToAgent> contestTasksQueue, String agentName, OkHttpClient client,
+                              AgentMainScenePaneController agentMainScenePaneController,
+                              BlockingQueue<Runnable> tasksQueue) {
         this.tasksPool = tasksPool;
         this.engineManager = engineManager;
         this.contestTasksQueue = contestTasksQueue;
         this.agentName = agentName;
         this.client = client;
-        this.contestAndTeamDataPaneController = contestAndTeamDataPaneController;
+        this.agentMainScenePaneController = agentMainScenePaneController;
         this.tasksQueue = tasksQueue;
         this.numberOfTasksPulled = 0;
         this.tasksCompleted = 0;
         this.agentCandidatesInformationList = new ArrayList<>();
+        this.numberOfCandidatesFound = 0;
     }
 
 
     @Override
     public void start() {
-        while (contestAndTeamDataPaneController.isContestActive()) {
+        while (agentMainScenePaneController.isContestActive()) {
             try {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
-                } else {
-                    Thread.sleep(400);
+                    agentCandidatesInformationList.add(new AgentCandidatesInformation("SKY", 100,engineManager.getCurrentEnigmaMachine().getCurrentSettingsFormat().toString(), "jj"));
                     sendCandidateInformationToServer();
+                    numberOfCandidatesFound += agentCandidatesInformationList.size();
+                    agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+                    agentCandidatesInformationList.clear();
                 }
-            } catch (InterruptedException | IOException e) {
+            } catch ( IOException e) {
                 e.printStackTrace();
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            } catch (MachineNotExistsException e) {
+                throw new RuntimeException(e);
             }
 
         }
@@ -104,6 +116,7 @@ public class CompetitionHandler extends Thread {
     }
 
     private void getTaskFromServer() throws IOException {
+
         String finalUrl = HttpUrl.parse(TASKS_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "getTasksInterval")
@@ -123,32 +136,49 @@ public class CompetitionHandler extends Thread {
             List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
             numberOfTasksPulled += tasksToAgent.size();
 
-            //contestTasksQueue.addAll(tasksToAgent);
+            CountDownLatch countDownLatch = new CountDownLatch(tasksToAgent.size());
+            agentMainScenePaneController.updateTasksPulled(numberOfTasksPulled);
+
             try {
                 for (int i = 0; i < tasksToAgent.size(); i++) {
                     AgentTask agentTask = getAgentTaskFromTaskToAgent(tasksToAgent.get(i));
-                    AgentWorker agent = new AgentWorker(agentTask,agentName,numberOfTasksPulled,agentCandidatesInformationList);
+                    AgentWorker agent = new AgentWorker(agentTask,agentName,numberOfTasksPulled,agentCandidatesInformationList,countDownLatch);
                     tasksPool.execute(agent);
                 }
+                countDownLatch.await();
 
-            } catch (CloneNotSupportedException e) {
+                //System.out.println("All tasks completed " + countDownLatch.getCount() );
+
+            } catch (CloneNotSupportedException | MachineNotExistsException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
-    private AgentTask getAgentTaskFromTaskToAgent(TaskToAgent taskToAgent) throws CloneNotSupportedException {
+    private AgentTask getAgentTaskFromTaskToAgent(TaskToAgent taskToAgent) throws CloneNotSupportedException, MachineNotExistsException {
         int taskSize = (int)taskToAgent.getTaskSize();
-        EnigmaMachine enigmaMachine = new EnigmaMachine(engineManager.getEnigmaMachine().cloneRotors(), engineManager.getEnigmaMachine().cloneReflectors()
+        EnigmaMachine enigmaMachine = new EnigmaMachine(engineManager.getEnigmaMachine().cloneRotors(), engineManager.getCurrentEnigmaMachine().cloneReflectors()
                 , engineManager.getEnigmaMachine().cloneKeyboard(), engineManager.getEnigmaMachine().getNumOfActiveRotors());
+        List<Integer> notchPositions = taskToAgent.getSectorsCodeAsJson().getNotchPositions();
 
         List<Sector> sectors = taskToAgent.getSectorsCodeAsJson().getSectors();
+
+        char[]  startingRotorPositionSectorElements = taskToAgent.getSectorsCodeAsJson().getStartingRotorPositionElements();
+        //startingRotorPositionSector.setCurrentNotchPositions(notchPositions);
+        List<Character> startingRotorPosition = new ArrayList<>();
+        for (char startingRotorPositionSectorElement : startingRotorPositionSectorElements) {
+            startingRotorPosition.add(startingRotorPositionSectorElement);
+        }
+        StartingRotorPositionSector startingRotorPositionSector = new StartingRotorPositionSector(startingRotorPosition);
         sectors.get(0).setSectorInTheMachine(enigmaMachine);
+        startingRotorPositionSector.setSectorInTheMachine(enigmaMachine);
         sectors.get(2).setSectorInTheMachine(enigmaMachine);
         sectors.get(3).setSectorInTheMachine(enigmaMachine);
         String encryptedMessage = taskToAgent.getEncryptedMessage();
         Dictionary dictionary = engineManager.getDictionaryObject();
 
-        return new AgentTask(taskSize, (StartingRotorPositionSector) sectors.get(1), enigmaMachine, encryptedMessage, dictionary,agentName);
+        return new AgentTask(taskSize, startingRotorPositionSector, enigmaMachine, encryptedMessage, dictionary,agentName);
 
     }
 }

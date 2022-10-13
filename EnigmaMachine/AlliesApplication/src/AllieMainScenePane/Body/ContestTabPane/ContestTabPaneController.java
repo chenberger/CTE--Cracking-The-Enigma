@@ -4,6 +4,7 @@ import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.ContestTabPane.AgentsProgressData.AgentsProgressDataController;
 import AllieMainScenePane.Body.ContestTabPane.ContestTeams.ContestTeamsController;
 import AllieMainScenePane.Body.ContestTabPane.CurrentContest.CurrentContestDataPaneController;
+import AllieMainScenePane.Body.ContestTabPane.TeamCandidates.TeamCandidatesController;
 import DTO.OnLineContestsTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
 
 public class ContestTabPaneController {
+    @FXML private AnchorPane teamsCandidates;
+    @FXML private TeamCandidatesController teamCandidatesController;
 
     @FXML private AnchorPane currentContestDataPane;
     @FXML private CurrentContestDataPaneController currentContestDataPaneController;
