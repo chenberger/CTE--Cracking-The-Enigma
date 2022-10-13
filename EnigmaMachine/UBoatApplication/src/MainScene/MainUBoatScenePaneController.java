@@ -133,16 +133,17 @@ public class MainUBoatScenePaneController {
         File selectedFile = fileChooser.showOpenDialog(getStageWindow());
 
         getCurrentSessionId();
-            //getCurrentBoatName();
-
+        //getCurrentBoatName();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("file", selectedFile.getAbsolutePath(),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File(selectedFile.getAbsolutePath())))
                 .build();
+        String finalUrl = HttpUrl.parse(UBoatsServletsPaths.FILE_UPLOADED_SERVLET).newBuilder()
+                .build().toString();
         Request request = new Request.Builder()
-                .url(UBoatsServletsPaths.FILE_UPLOADED_SERVLET)
+                .url(finalUrl)
                 .method("POST", body)
                 .addHeader("Cookie", "JSESSIONID=" + currentSessionId)
                 .build();
@@ -172,49 +173,60 @@ public class MainUBoatScenePaneController {
     }
 
     private void getCurrentBoatName() {
-        String finalUrl = HttpUrl.parse(UBoatsServletsPaths.GET_USER_NAME_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "getBoatName")
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> new ErrorDialog(e, "Error while getting boat Name"));
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code() == 200) {
-                    currentBoatName = response.body().string().trim();
-                }
-                else{
-                    Platform.runLater(() -> {
-                        try {
-                            new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                }
-                response.close();
-            }
-        });
+        currentBoatName = topBorderPaneController.getAppHeaderLabelText();
+        //String finalUrl = HttpUrl.parse(UBoatsServletsPaths.GET_USER_NAME_SERVLET)
+        //        .newBuilder()
+        //        .addQueryParameter(ACTION, "getBoatName")
+        //        .build()
+        //        .toString();
+        //HttpClientUtil.runAsync(finalUrl, new Callback() {
+        //    @Override
+        //    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+        //        Platform.runLater(() -> new ErrorDialog(e, "Error while getting boat Name"));
+        //    }
+//
+        //    @Override
+        //    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+        //        if(response.code() == 200) {
+        //            currentBoatName = response.body().string().trim();
+        //        }
+        //        else{
+        //            Platform.runLater(() -> {
+        //                try {
+        //                    new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
+        //                } catch (IOException e) {
+        //                    throw new RuntimeException(e);
+        //                }
+        //            });
+        //        }
+        //        response.close();
+        //    }
+        //});
     }
 
-    synchronized private void getCurrentSessionId() {
+    synchronized private void getCurrentSessionId() throws IOException {
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()
-                .addQueryParameter("username", "get_session_id")
+                .addQueryParameter(ACTION, "get_session_id")
                 .build()
                 .toString();
 
+       // Request request = new Request.Builder()
+       //         .url(finalUrl)
+       //         .build();
+       // Response response = new OkHttpClient().newCall(request).execute();
+       //if(response.code() == 200) {
+       //      currentSessionId = response.body().string().trim();
+       //}
+       //else{
+       //     new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
+       //}
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> new ErrorDialog(e, "Error while getting session id"));
             }
-
+//
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
@@ -232,7 +244,7 @@ public class MainUBoatScenePaneController {
                 response.close();
             }
         });
-        ;
+
     }
 
 

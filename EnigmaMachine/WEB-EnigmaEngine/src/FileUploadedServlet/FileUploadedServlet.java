@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import static Constants.ServletConstants.USERNAME;
+
 @WebServlet(name = "FileUploadedServlet", urlPatterns = "/fileUploaded")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB

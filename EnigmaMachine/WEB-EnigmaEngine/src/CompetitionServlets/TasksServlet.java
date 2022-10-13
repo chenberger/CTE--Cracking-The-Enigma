@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(name = "TasksServlet",urlPatterns = {"/Tasks"})
 public class TasksServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    synchronized protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         if(request.getParameter("action").equals("getTasksInterval")) {
             getTasksFromTasksProducer(request, response);

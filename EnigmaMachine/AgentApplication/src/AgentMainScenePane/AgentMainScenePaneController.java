@@ -31,6 +31,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static AgentsServletsPaths.AgentServletsPaths.BATTLE_CANDIDATES_SERVLET;
 import static AgentsServletsPaths.AgentServletsPaths.TASKS_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
@@ -195,7 +196,7 @@ public class AgentMainScenePaneController {
     }
     private void startWorking() {
 
-        competitionHandler = new CompetitionHandler(tasksPool, engineManager, contestTasksQueue, agentName, client,contestAndTeamDataPaneController,tasksQueue );
+        competitionHandler = new CompetitionHandler(tasksPool, engineManager, contestTasksQueue, agentName, client,this, tasksQueue );
         competitionHandler.start();
 
     }
@@ -236,8 +237,70 @@ public class AgentMainScenePaneController {
         //});
     }
 
+    public boolean isContestActive() {
+        return contestAndTeamDataPaneController.isContestActive();
+    }
 
-       //HttpClientUtil.runAsync(finalUrl, new Callback() {
+    public void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {
+        updateCandidatesFoundInServer(numberOfCandidatesFound);
+        agentProgressAndDataPaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+    }
+
+    private void updateCandidatesFoundInServer(int numberOfCandidatesFound) {
+        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "updateCandidatesFound")
+                .addQueryParameter("agentName", agentName)
+                .addQueryParameter("numberOfCandidatesFound", String.valueOf(numberOfCandidatesFound))
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, java.io.IOException e) {
+                new ErrorDialog(e, "Error while trying to update candidates found");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws java.io.IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update candidates found");
+                }
+                response.close();
+            }
+        });
+    }
+
+    public void updateTasksPulled(long numberOfTasksPulled) {
+        updateTasksPulledInServer(numberOfTasksPulled);
+        agentProgressAndDataPaneController.updateTasksPulled(numberOfTasksPulled);
+    }
+
+    private void updateTasksPulledInServer(long numberOfTasksPulled) {
+        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "updateTasksPulled")
+                .addQueryParameter("agentName", agentName)
+                .addQueryParameter("numberOfTasksPulled", String.valueOf(numberOfTasksPulled))
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, java.io.IOException e) {
+                new ErrorDialog(e, "Error while trying to update tasks pulled");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws java.io.IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update tasks pulled");
+                }
+                response.close();
+            }
+        });
+
+    }
+
+    //HttpClientUtil.runAsync(finalUrl, new Callback() {
        //    @Override
        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
        //        e.printStackTrace();
@@ -265,5 +328,4 @@ public class AgentMainScenePaneController {
 
        //    }
        //});
-
 }

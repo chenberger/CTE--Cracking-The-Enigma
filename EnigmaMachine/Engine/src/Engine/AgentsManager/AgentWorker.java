@@ -7,13 +7,14 @@ import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import EnigmaMachineException.WordNotValidInDictionaryException;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class AgentWorker implements Runnable{
     private List<AgentCandidatesInformation> agentCandidatesInformationList;
+    CountDownLatch countDownLatch;
     private long numberOfTasksPulled;
     private final String agentId;
     private final String agentName;
@@ -29,7 +30,7 @@ public class AgentWorker implements Runnable{
 
     private String AllieName;
 
-    public AgentWorker(AgentTask agentTask, String AgentName, long numberOfTasksPulled, List<AgentCandidatesInformation> agentCandidatesInformationList) {
+    public AgentWorker(AgentTask agentTask, String AgentName, long numberOfTasksPulled, List<AgentCandidatesInformation> agentCandidatesInformationList, CountDownLatch countDownLatch) {
         synchronized (this) {
             this.agentTask = agentTask;
             this.agentId = Thread.currentThread().getName();
@@ -40,6 +41,8 @@ public class AgentWorker implements Runnable{
             this.taskId = staticTaskId++;
             this.numberOfTasksPulled = numberOfTasksPulled;
             this.agentCandidatesInformationList = agentCandidatesInformationList;
+            this.countDownLatch = countDownLatch;
+
         }
     }
 
@@ -57,23 +60,25 @@ public class AgentWorker implements Runnable{
     }
     @Override
     public void run() {
-        Instant startTaskTime = Instant.now();
+        //Instant startTaskTime = Instant.now();
         StartingRotorPositionSector currentRotorPositions = new StartingRotorPositionSector(startingRotorPosition.getElements());
 
         for (int i = 0; i < agentTask.getTaskSize(); i++) {
             try {
-                Instant startingTime = Instant.now();
+                //Instant startingTime = Instant.now();
 
                 validateAndSetStartingRotorPositions((StartingRotorPositionSector) currentRotorPositions.clone());
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
                 String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
-
+                System.out.println(currentRotorPositions.toString() + " " + candidateMessage);
                 //System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
 
                 try {
 
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
+                    System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
+
                     AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
                     agentCandidatesInformationList.add(agentCandidatesInformation);
                     //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
@@ -94,9 +99,8 @@ public class AgentWorker implements Runnable{
             catch (CloneNotSupportedException | StartingPositionsOfTheRotorException ignored) { }
         }
         //TODO: add all the candidate information into list and send it to the Server in the end of the task.
-        long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
-
-
+        //long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
+        countDownLatch.countDown();
     }
 
     private AgentCandidatesInformation getAgentCandidatesInformation(String currentCodeConfigurationFormat, String candidateString) {

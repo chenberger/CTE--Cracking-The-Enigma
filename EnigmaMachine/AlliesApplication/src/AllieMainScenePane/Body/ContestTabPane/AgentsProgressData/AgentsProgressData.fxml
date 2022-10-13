@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -23,11 +24,11 @@
             <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <TableView fx:id="agentProgressDataTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
-                <TableColumn prefWidth="75.0" text="Agent Name" />
-                <TableColumn prefWidth="75.0" text="Tasks Pulled" />
-                  <TableColumn prefWidth="75.0" text="Total candidates" />
+                <TableColumn fx:id="agentNameCol" prefWidth="75.0" text="Agent Name" />
+                <TableColumn fx:id="tasksPulledCol" prefWidth="75.0" text="Tasks Pulled" />
+                  <TableColumn fx:id="totalCandidatesCol" prefWidth="75.0" text="Total candidates" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -46,30 +47,57 @@
                <children>
                   <VBox layoutX="152.0" layoutY="-40.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label text="Total Tasks:">
+                        <HBox>
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
-                           <font>
-                              <Font name="Arial" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label text="Tasks Produced:">
+                           <children>
+                              <Label text="Total Tasks:">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalTasksOfAllyLabel">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox>
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
-                           <font>
-                              <Font name="Arial" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label text="Tasks Processed:">
+                           <children>
+                              <Label text="Tasks Produced:">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="tasksProducedLabel">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox>
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
-                           <font>
-                              <Font name="Arial" size="20.0" />
-                           </font>
-                        </Label>
+                           <children>
+                              <Label text="Tasks Processed:">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="TasksCompletedLabel">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

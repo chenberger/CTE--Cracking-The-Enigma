@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter(USER_NAME).equals("get_session_id")) {
+        if(request.getParameter("action") != null && request.getParameter("action").equals("get_session_id")) {
             getSessionId(request, response);
         }
         else {

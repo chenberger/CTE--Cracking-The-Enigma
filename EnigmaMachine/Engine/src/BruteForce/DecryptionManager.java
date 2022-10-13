@@ -4,6 +4,7 @@ import DTO.BruteForceTask;
 import DTO.TaskToAgent;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
 import DesktopUserInterface.MainScene.MainController;
+import Engine.AlliesManager.Allie;
 import Engine.Dictionary;
 import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DecryptionManager {
+    private Allie allie;
     private TasksProducer tasksProducer;
     private int maxCurrentAmountOfAgents;
     private Dictionary dictionary;
@@ -40,6 +42,9 @@ public class DecryptionManager {
         //this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
         this.decryptedMessage = null;
         this.isMissionOnProgress = false;
+    }
+    public void setAllie(Allie allie) {
+        this.allie = allie;
     }
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
@@ -161,7 +166,7 @@ public class DecryptionManager {
                 throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
             }
 
-            tasksProducer = new TasksProducer(bruteForceTask,decryptedMessage, dictionary,  enigmaMachine, decryptedSettingsFormat);
+            tasksProducer = new TasksProducer(bruteForceTask,decryptedMessage, dictionary,  enigmaMachine, decryptedSettingsFormat,allie);
             isMissionOnProgress = true;
 
             tasksProducerThread = new Thread(tasksProducer);

@@ -1,5 +1,7 @@
 package AllyServlet;
 
+import DTO.AgentProgressDataToTable;
+import DTO.AlliesTasksProgressToLabels;
 import DTO.OnLineContestsTable;
 import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
@@ -8,6 +10,7 @@ import Engine.AlliesManager.AlliesManager;
 import Engine.BattleField;
 import Engine.UBoatManager.UBoat;
 import Engine.UBoatManager.UBoatManager;
+import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +19,8 @@ import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static Utils.Constants.GSON_INSTANCE;
 
@@ -30,8 +35,57 @@ public class AllyOpsServlet extends HttpServlet {
         else if(request.getParameter("action").equals("getCurrentContestData")){
             getCurrentContestData(request, response);
         }
+        else if(request.getParameter("action").equals("getAgentsProgressDataToTable")){
+            getAgentsProgressDataToTable(request, response);
+        }
+        else if(request.getParameter("action").equals("getAlliesTasksProgressToLabels")){
+            getAlliesTasksProgressToLabels(request, response);
+        }
         else{
             checkIfAgentParticipateInContest(request, response);
+        }
+    }
+
+    private void getAlliesTasksProgressToLabels(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+            Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+            AlliesTasksProgressToLabels alliesTasksProgressToLabels = new AlliesTasksProgressToLabels(allie.getTotalNumberOfTasks(),
+                    allie.getTasksCompleted(), allie.getTasksProduced());
+            Gson gson = new Gson();
+            String json = gson.toJson(alliesTasksProgressToLabels);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(json);
+            response.getWriter().flush();
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    private void getAgentsProgressDataToTable(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            List<AgentProgressDataToTable> agentsProgressDataToTable = new ArrayList<>();
+            AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+            AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+            Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+            List<Agent> agents = allie.getAgents();
+
+            for(Agent agent : agents){
+                agentsProgressDataToTable.add(new AgentProgressDataToTable(agent.getAgentName(), agent.getTotalNumberOfCandidatesFound(), agent.getNumberOfTasksPulled()));
+            }
+
+            if(agentsProgressDataToTable.size() > 0){
+                String json = GSON_INSTANCE.toJson(agentsProgressDataToTable);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(json);
+                response.getWriter().flush();
+            }
+            else{
+                response.getWriter().println("No agents in this allie");
+            }
+
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

@@ -20,16 +20,24 @@ public class Allie {
     private boolean isReady;
     private boolean contestOnline;
 
+    private long tasksProduced;
+    private long tasksCompleted;
+    private long totalNumberOfTasks;
+
     private DifficultyLevel level;
     public Allie(String name){
         this.Name = name;
         this.agents = new ArrayList<>();
         this.agentsParticipatingInDecryption = new ArrayList<>();
         this.decryptionManager = new DecryptionManager();
+        decryptionManager.setAllie(this);
         this.taskSize = 0;
         this.battleName = "";
         this.isReady = true;
         this.contestOnline = false;
+        this.tasksCompleted = 0;
+        this.tasksProduced = 0;
+        this.totalNumberOfTasks = 0;
     }
     public void setLevel(String level) {
         this.level = DifficultyLevel.valueOf(level.toUpperCase());
@@ -44,6 +52,25 @@ public class Allie {
             }
         }
     }
+    public Long getTasksProduced(){
+        return tasksProduced;
+    }
+    public Long getTasksCompleted(){
+        return tasksCompleted;
+    }
+    public Long getTotalNumberOfTasks(){
+        return totalNumberOfTasks;
+    }
+    public void setTotalNumberOfTasks(long totalNumberOfTasks) {
+        this.totalNumberOfTasks = totalNumberOfTasks;
+    }
+    public void increaseTasksCompleted(long tasksCompleted) {
+        this.tasksCompleted += tasksCompleted;
+    }
+    public void increaseTasksProduced(long tasksProduced) {
+        this.tasksProduced += tasksProduced;
+    }
+
     public List<Agent> getAgentsParticipatingInDecryption() {
         return agentsParticipatingInDecryption;
     }
