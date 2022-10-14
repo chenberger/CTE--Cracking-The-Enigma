@@ -7,7 +7,6 @@ import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import EnigmaMachineException.WordNotValidInDictionaryException;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,6 +35,7 @@ public class AgentWorker implements Runnable{
             this.agentId = Thread.currentThread().getName();
             this.keyboard = agentTask.getKeyboard();
             this.enigmaMachine = agentTask.getEnigmaMachine();
+            this.enigmaMachine.setTheInitialCodeDefined(true);
             this.startingRotorPosition = agentTask.getStartingRotorPositions();
             this.agentName = agentTask.getAgentName();
             this.taskId = staticTaskId++;

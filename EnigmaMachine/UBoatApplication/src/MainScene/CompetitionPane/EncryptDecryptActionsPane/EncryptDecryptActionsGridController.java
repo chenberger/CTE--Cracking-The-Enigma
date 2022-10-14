@@ -1,15 +1,14 @@
 package MainScene.CompetitionPane.EncryptDecryptActionsPane;
 
-import MainScene.CompetitionPane.UBoatCompetitionPaneController;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceGridController;
 import DesktopUserInterface.MainScene.Common.AutoCompleteBox;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
+import MainScene.CompetitionPane.UBoatCompetitionPaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,7 +23,6 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -87,7 +85,7 @@ public class EncryptDecryptActionsGridController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
-                       new ErrorDialog(new Exception("Error, Error while trying to decrypt word: " + wordToProcess) , "Error"));
+                       new ErrorDialog(new Exception("Error while trying to decrypt word: " + wordToProcess) , "Error"));
             }
 
             @Override
@@ -135,6 +133,7 @@ public class EncryptDecryptActionsGridController {
     }
 
     @FXML private void onAddWordFromDictButtonClicked(ActionEvent event) {
+        //String wordToAdd = encryptedDecryptedWordText.getLength() > 0 ? " " + dictionarySearchComboBox.getEditor().getText() : dictionarySearchComboBox.getEditor().getText();
         encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + dictionarySearchComboBox.getEditor().getText());
         dictionarySearchComboBox.getEditor().setText("");
     }
