@@ -138,5 +138,8 @@ public class BattleField {
     public void addAgentCandidateInformationToList(AgentCandidatesInformation agentCandidatesInformation){
         this.agentsCandidatesInformation.add(agentCandidatesInformation);
     }
+    public List<AgentCandidatesInformation> getAgentsCandidatesInformation() {
+        return agentsCandidatesInformation;
+    }
 
 }

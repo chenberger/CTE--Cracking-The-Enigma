@@ -70,7 +70,7 @@ public class CompetitionHandler extends Thread {
             try {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
-                    agentCandidatesInformationList.add(new AgentCandidatesInformation("SKY", 100,engineManager.getCurrentEnigmaMachine().getCurrentSettingsFormat().toString(), "jj"));
+                    //agentCandidatesInformationList.add(new AgentCandidatesInformation("SKY", 100,engineManager.getCurrentEnigmaMachine().getCurrentSettingsFormat().toString(), "jj"));
                     sendCandidateInformationToServer();
                     numberOfCandidatesFound += agentCandidatesInformationList.size();
                     agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
@@ -78,13 +78,9 @@ public class CompetitionHandler extends Thread {
                 }
             } catch ( IOException e) {
                 e.printStackTrace();
-            } catch (CloneNotSupportedException e) {
-                throw new RuntimeException(e);
-            } catch (MachineNotExistsException e) {
-                throw new RuntimeException(e);
             }
-
         }
+        tasksPool.shutdown();
         System.out.println("Contest is over");
     }
 
@@ -146,7 +142,7 @@ public class CompetitionHandler extends Thread {
                     tasksPool.execute(agent);
                 }
                 countDownLatch.await();
-
+                tasksCompleted += tasksToAgent.size();
                 //System.out.println("All tasks completed " + countDownLatch.getCount() );
 
             } catch (CloneNotSupportedException | MachineNotExistsException e) {

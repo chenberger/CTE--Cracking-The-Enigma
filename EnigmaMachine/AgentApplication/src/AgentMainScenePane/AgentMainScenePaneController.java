@@ -37,6 +37,7 @@ import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.ACTION;
+import static Utils.Constants.GSON_INSTANCE;
 
 public class AgentMainScenePaneController {
     private CompetitionHandler competitionHandler;
@@ -251,7 +252,7 @@ public class AgentMainScenePaneController {
                 .newBuilder()
                 .addQueryParameter(ACTION, "updateCandidatesFound")
                 .addQueryParameter("agentName", agentName)
-                .addQueryParameter("numberOfCandidatesFound", String.valueOf(numberOfCandidatesFound))
+                .addQueryParameter("numberOfCandidatesFound", GSON_INSTANCE.toJson(numberOfCandidatesFound))
                 .build()
                 .toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
@@ -280,7 +281,7 @@ public class AgentMainScenePaneController {
                 .newBuilder()
                 .addQueryParameter(ACTION, "updateTasksPulled")
                 .addQueryParameter("agentName", agentName)
-                .addQueryParameter("numberOfTasksPulled", String.valueOf(numberOfTasksPulled))
+                .addQueryParameter("numberOfTasksPulled", GSON_INSTANCE.toJson(numberOfTasksPulled))
                 .build()
                 .toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {

@@ -26,10 +26,10 @@ public class Agent {
 
     public Agent(String agentName) {
         this.agentName = agentName;
-        this.tasksPulled = 0L;
         this.totalCandidatesFound = 0;
         this.numberOfWorkingThreads = 1L;
         this.tasksPullingInterval = 1L;
+        this.tasksPulled = 0L;
     }
     //region Getters and Setters
     public void setAllieName(String allieName) {

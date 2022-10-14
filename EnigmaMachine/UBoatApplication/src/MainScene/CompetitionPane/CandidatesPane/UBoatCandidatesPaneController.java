@@ -56,8 +56,8 @@ public class UBoatCandidatesPaneController implements Closeable {
         Platform.runLater(()->{
             uBoatCandidatesTable.getItems().clear();
 
-            for (int i = 0; i < allyCandidatesTableList.size(); i++) {
-                AllyCandidatesTable candidateToAdd = new AllyCandidatesTable(allyCandidatesTableList.get(i).getCandidateString(), allyCandidatesTableList.get(i).getTeamName(), allyCandidatesTableList.get(i).getCodeConfiguration());
+            for (AllyCandidatesTable allyCandidatesTable : allyCandidatesTableList) {
+                AllyCandidatesTable candidateToAdd = new AllyCandidatesTable(allyCandidatesTable.getCandidateString(), allyCandidatesTable.getTeamName(), allyCandidatesTable.getCodeConfiguration());
                 ObservableList<AllyCandidatesTable> tableData = uBoatCandidatesTable.getItems();
                 tableData.add(candidateToAdd);
                 uBoatCandidatesTable.setItems(tableData);
