@@ -1,0 +1,4 @@
+#allie-img {
+    -fx-background-image: url("allies.jpg");
+    -fx-background-size: 100% 100%;
+}
