@@ -79,8 +79,13 @@ public class AgentWorker implements Runnable{
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
                     System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
 
-                    AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
+
+
+                        AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
+
+                synchronized (this){
                     agentCandidatesInformationList.add(agentCandidatesInformation);
+                }
                     //System.out.println(candidateMessage + ": Agent " + Thread.currentThread().getName() + " " + enigmaMachine.getCurrentSettingsFormat().toString());//to check
                     //encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
                     //agentTask.addDecryptionCandidateTaskToThreadPool(new DecryptionCandidateTaskHandler(agentTask.getBruteForceUIAdapter(),

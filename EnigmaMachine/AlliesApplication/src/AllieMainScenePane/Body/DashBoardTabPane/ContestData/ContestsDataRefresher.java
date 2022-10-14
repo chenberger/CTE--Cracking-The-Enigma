@@ -48,7 +48,7 @@ public class ContestsDataRefresher extends TimerTask {
 
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
-        System.out.println("About to invoke: " + ALLIES_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+        //System.out.println("About to invoke: " + ALLIES_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
         String finalUrl = HttpUrl.parse(U_BOATS_LIST_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "getCurrentOnlineContests")

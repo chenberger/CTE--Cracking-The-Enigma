@@ -284,10 +284,9 @@ public class UBoatCompetitionPaneController implements Closeable {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseStr = response.body().string();
                 if (response.isSuccessful()) {
+                    uBoatCandidatesPaneController.startListRefreshing();
                     Platform.runLater(() -> {
-                        readyButton.setDisable(false);
-                        readyButton.setText("Ready");
-                        readyButton.setStyle("-fx-background-color: #00ff00");
+                        readyButton.setDisable(true);
 
                     });
                 } else {

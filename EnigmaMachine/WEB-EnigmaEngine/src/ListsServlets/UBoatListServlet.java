@@ -108,7 +108,7 @@ public class UBoatListServlet extends HttpServlet {
             battlesNames.add(uBoat.getBattleField().getBattleFieldName());
             difficultyLevels.add(uBoat.getBattleField().getLevel());
             contestsStatus.put(uBoat.getName(), uBoat.getContestStatus());
-            numberOfTeamsRegisteredToEachContest.put(uBoat.getName(), uBoat.getBattleField().getNumberOfTeamsInBattleField());
+            numberOfTeamsRegisteredToEachContest.put(uBoat.getName(), uBoat.getBattleField().getAlliesInBattle().size());
             numberOfTeamsNeededToEachContest.add(uBoat.getBattleField().getNumberOfAlliesToStartBattle());
         }
 
