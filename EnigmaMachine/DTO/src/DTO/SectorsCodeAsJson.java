@@ -32,8 +32,9 @@ public class SectorsCodeAsJson {
             pluginBoardElements[++i] = pluginBoardSector.getElements().get(pairIndex).getValue();
             pairIndex++;
         }
-
-        reflectorIdElement = reflectorIdSector.getElements().get(0);
+        if(reflectorIdSector.getElements().size() > 0) {
+            reflectorIdElement = reflectorIdSector.getElements().get(0);
+        }
     }
 
 
