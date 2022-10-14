@@ -1,14 +1,12 @@
 package MainScene.UBoatMachinePane.CodeCalibrationPane;
 
 import DTO.DetailsToManualCodeInitializer;
-import DTO.MachineConfigurationToShow;
-import DTO.MachineDetails;
+import DTO.SectorsCodeAsJson;
 import DesktopUserInterface.MainScene.BodyScene.Machine.MachineGridController;
 import DesktopUserInterface.MainScene.BodyScene.Machine.ManuallyCodeInitializerScene;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachine.Settings.*;
-import DTO.SectorsCodeAsJson;
 import MainScene.MainUBoatScenePaneController;
 import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;

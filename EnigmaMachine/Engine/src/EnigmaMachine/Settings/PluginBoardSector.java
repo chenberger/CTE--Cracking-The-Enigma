@@ -15,6 +15,9 @@ public class PluginBoardSector extends Sector<Pair<Character, Character>> implem
     public PluginBoardSector(List<Pair<Character, Character>> elements) {
         super(elements, SectorType.PLUGIN_BOARD);
     }
+    public PluginBoardSector() {
+        super(new ArrayList<>(), SectorType.PLUGIN_BOARD);
+    }
 
     @Override
     public String toString() {
