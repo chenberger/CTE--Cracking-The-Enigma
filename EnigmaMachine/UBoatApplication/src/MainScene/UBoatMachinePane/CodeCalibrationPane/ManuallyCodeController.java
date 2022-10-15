@@ -2,8 +2,6 @@ package MainScene.UBoatMachinePane.CodeCalibrationPane;
 
 import DTO.DetailsToManualCodeInitializer;
 import DesktopUserInterface.MainScene.BodyScene.Machine.PluggedPair;
-import MainScene.UBoatMachinePane.CodeCalibrationPane.CodeCalibrationController;
-import DTO.MachineDetails;
 import DesktopUserInterface.MainScene.Common.SkinType;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import EnigmaMachine.RomanNumber;
@@ -108,8 +106,9 @@ public class ManuallyCodeController {
         translateFromControllersToSectors();
 
         try {
-            codeCalibrationController.codeConfigurationSetted(codeConfigurationSectors);
-            codeCalibrationController.codeConfigurationSetSuccessfully();
+            if(codeCalibrationController.codeConfigurationSetted(codeConfigurationSectors)) {
+                codeCalibrationController.codeConfigurationSetSuccessfully();
+            }
         }
         catch (Exception e) {
             new ErrorDialog(e, "Failed to initialize the code configuration manually");
