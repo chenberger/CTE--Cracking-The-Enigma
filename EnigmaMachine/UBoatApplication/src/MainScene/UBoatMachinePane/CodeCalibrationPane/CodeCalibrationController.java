@@ -114,19 +114,20 @@ public class CodeCalibrationController {
         setSettingsAutomatically();
     }
 
-    public void codeConfigurationSetted(List<Sector> codeConfigurationSectors) {
-        initializeEngineSettings(codeConfigurationSectors);
+    public Boolean codeConfigurationSetted(List<Sector> codeConfigurationSectors) {
+        return initializeEngineSettings(codeConfigurationSectors);
     }
 
 
-    private void initializeEngineSettings(List<Sector> codeConfigurationSectors) {
+    private Boolean initializeEngineSettings(List<Sector> codeConfigurationSectors) {
+        final Boolean[] settingsSettedSuccsefully = {false};
         SectorsCodeAsJson sectorsAsJson = new SectorsCodeAsJson(
                 (RotorIDSector) codeConfigurationSectors.get(0),
                 (StartingRotorPositionSector) codeConfigurationSectors.get(1),
                 (ReflectorIdSector) codeConfigurationSectors.get(2),
                 (PluginBoardSector) codeConfigurationSectors.get(3));
-        Gson gson = new Gson();
-        String json = gson.toJson(sectorsAsJson);
+        final Gson[] gson = {new Gson()};
+        String json = gson[0].toJson(sectorsAsJson);
         System.out.println("JSON code: " + json);
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.SET_MACHINE_CONFIG_SERVLET)
@@ -154,6 +155,7 @@ public class CodeCalibrationController {
                     );
                 }
                 else {
+                    settingsSettedSuccsefully[0] = true;
                     Gson gson = new Gson();
                     String currentCodeConfiguration = gson.fromJson(response.body().string(), String.class);
                     Platform.runLater(() -> {
@@ -163,6 +165,8 @@ public class CodeCalibrationController {
                 }
             }
         });
+
+        return settingsSettedSuccsefully[0];
 
     }
     public void setAutomaticCodeConfiguration() {
