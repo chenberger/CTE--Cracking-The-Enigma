@@ -21,7 +21,7 @@ import java.io.IOException;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
 
 public class ContestTabPaneController {
-    @FXML private AnchorPane teamsCandidates;
+    @FXML private AnchorPane teamCandidates;
     @FXML private TeamCandidatesController teamCandidatesController;
 
     @FXML private AnchorPane currentContestDataPane;
@@ -45,6 +45,9 @@ public class ContestTabPaneController {
         }
         if (contestTeamsPaneController != null) {
             contestTeamsPaneController.setContestTabPaneController(this);
+        }
+        if(teamCandidatesController != null) {
+            teamCandidatesController.setContestTabPaneController(this);
         }
 
     }
@@ -91,5 +94,9 @@ public class ContestTabPaneController {
                 }
             }
         });
+    }
+
+    public void startRefresh() {
+        teamCandidatesController.startListRefreshing();
     }
 }

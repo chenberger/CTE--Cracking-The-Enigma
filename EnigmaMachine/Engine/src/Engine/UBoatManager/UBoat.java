@@ -99,4 +99,7 @@ public class UBoat {
         this.contestStatus = CONTEST_STARTED;
         battleField.startContest(engineManager);
     }
+    public Boolean isContestOnline(){
+        return this.contestOnline;
+    }
 }

@@ -40,7 +40,7 @@ public class TeamCandidatesRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.isSuccessful()){
+                if(response.code() == 200){
                     String jsonAllyCandidatesTable = response.body().string();
                     Gson gson = new Gson();
                     List<AllyCandidatesTable> allyCandidatesTables = Arrays.asList(gson.fromJson(jsonAllyCandidatesTable, AllyCandidatesTable[].class));

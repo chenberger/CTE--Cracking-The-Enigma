@@ -16,6 +16,7 @@ import java.util.Timer;
 
 public class TeamCandidatesController implements Closeable {
     private TeamCandidatesRefresher teamCandidatesRefresher;
+    private ContestTabPaneController contestTabPaneController;
     private Timer timer;
     @FXML
     private TableView<AllyCandidatesTable> teamsCandidateTableView;
@@ -29,6 +30,7 @@ public class TeamCandidatesController implements Closeable {
     @FXML
     private TableColumn<AllyCandidatesTable, String> codeConfigurationCol;
     public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
+        this.contestTabPaneController = contestTabPaneController;
     }
     @FXML public void initialize(){
         initializeTableColumns();
@@ -59,5 +61,9 @@ public class TeamCandidatesController implements Closeable {
 
     @Override
     public void close() {
+        if(teamCandidatesRefresher != null){
+            teamCandidatesRefresher.cancel();
+            timer.cancel();
+        }
     }
 }

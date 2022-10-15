@@ -2,12 +2,12 @@ package DTO;
 
 public class AgentsProgressAndDataTable {
     private String agentName;
-    private Long tasksPulled;
+    private String tasksPulledAndDone;
     private Integer TotalCandidates;
 
-    public AgentsProgressAndDataTable(String agentName, Long tasksPulled, Integer TotalCandidates) {
+    public AgentsProgressAndDataTable(String agentName, String tasksPulledAndDone, Integer TotalCandidates) {
         this.agentName = agentName;
-        this.tasksPulled = tasksPulled;
+        this.tasksPulledAndDone = tasksPulledAndDone;
         this.TotalCandidates = TotalCandidates;
     }
 
@@ -19,11 +19,11 @@ public class AgentsProgressAndDataTable {
         this.agentName = agentName;
     }
 
-    public Long getTasksPulled() {
-        return tasksPulled;
+    public String getTasksPulledAndDone() {
+        return tasksPulledAndDone;
     }
-    public void setTasksPulled(Long tasksPulled) {
-        this.tasksPulled = tasksPulled;
+    public void setTasksPulledAndDone(String tasksPulledAndDone) {
+        this.tasksPulledAndDone = tasksPulledAndDone;
     }
     public Integer getTotalCandidates() {
         return TotalCandidates;

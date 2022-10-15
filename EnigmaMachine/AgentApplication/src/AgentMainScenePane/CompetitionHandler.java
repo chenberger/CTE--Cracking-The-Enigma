@@ -1,6 +1,7 @@
 package AgentMainScenePane;
 
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
+import AgentMainScenePane.Body.ContestStatusRefresher;
 import DTO.AgentCandidatesInformation;
 import DTO.TaskToAgent;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -17,10 +18,12 @@ import com.google.gson.Gson;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -28,8 +31,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import static AgentsServletsPaths.AgentServletsPaths.BATTLE_CANDIDATES_SERVLET;
 import static AgentsServletsPaths.AgentServletsPaths.TASKS_SERVLET;
 import static Utils.Constants.ACTION;
+import static Utils.Constants.GSON_INSTANCE;
 
-public class CompetitionHandler extends Thread {
+public class CompetitionHandler extends Thread implements Closeable {
+    private Timer timer;
+    private ContestStatusRefresher contestStatusRefresher;
     private int numberOfCandidatesFound;
     List<AgentCandidatesInformation> agentCandidatesInformationList;
     private long tasksCompleted;
@@ -41,11 +47,8 @@ public class CompetitionHandler extends Thread {
     private OkHttpClient client;
     private String agentName;
     private BlockingQueue<Runnable> tasksQueue;
+    private boolean isContestActive;
 
-
-    public CompetitionHandler() {
-
-    }
 
     public CompetitionHandler(ThreadPoolExecutor tasksPool, EngineManager engineManager, BlockingQueue<TaskToAgent> contestTasksQueue, String agentName, OkHttpClient client,
                               AgentMainScenePaneController agentMainScenePaneController,
@@ -66,14 +69,15 @@ public class CompetitionHandler extends Thread {
 
     @Override
     public void start() {
-        while (agentMainScenePaneController.isContestActive()) {
+        isContestActive = true;
+        startRefreshingContestStatus();
+        while (isContestActive) {
             try {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
-                    //agentCandidatesInformationList.add(new AgentCandidatesInformation("SKY", 100,engineManager.getCurrentEnigmaMachine().getCurrentSettingsFormat().toString(), "jj"));
                     sendCandidateInformationToServer();
                     numberOfCandidatesFound += agentCandidatesInformationList.size();
-                    agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+                    updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
                     agentCandidatesInformationList.clear();
                 }
             } catch ( IOException e) {
@@ -84,6 +88,51 @@ public class CompetitionHandler extends Thread {
         System.out.println("Contest is over");
     }
 
+    private boolean isContestActive(Boolean isContestActive) {
+        this.isContestActive = isContestActive;
+        return isContestActive;
+    }
+
+    private void startRefreshingContestStatus() {
+        contestStatusRefresher = new ContestStatusRefresher(this::isContestActive);
+        timer = new Timer();
+        timer.schedule(contestStatusRefresher, 0, 500);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if(contestStatusRefresher != null) {
+            contestStatusRefresher.cancel();
+            timer.cancel();
+        }
+    }
+    private void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {
+        updateCandidatesFoundInServer(numberOfCandidatesFound);
+        //agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+    }
+    private void updateCandidatesFoundInServer(int numberOfCandidatesFound) {
+        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "updateCandidatesFound")
+                .addQueryParameter("agentName", agentName)
+                .addQueryParameter("numberOfCandidatesFound", GSON_INSTANCE.toJson(numberOfCandidatesFound))
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, java.io.IOException e) {
+                new ErrorDialog(e, "Error while trying to update candidates found");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws java.io.IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update candidates found");
+                }
+                response.close();
+            }
+        });
+    }
     private void sendCandidateInformationToServer() {
         Gson gson = new Gson();
         if(agentCandidatesInformationList.size() > 0) {
@@ -133,7 +182,7 @@ public class CompetitionHandler extends Thread {
             numberOfTasksPulled += tasksToAgent.size();
 
             CountDownLatch countDownLatch = new CountDownLatch(tasksToAgent.size());
-            agentMainScenePaneController.updateTasksPulled(numberOfTasksPulled);
+            updateTasksPulled(numberOfTasksPulled);
 
             try {
                 for (int i = 0; i < tasksToAgent.size(); i++) {
@@ -151,6 +200,37 @@ public class CompetitionHandler extends Thread {
                 throw new RuntimeException(e);
             }
         }
+        else {
+            tasksPool.shutdown();
+        }
+    }
+    private void updateTasksPulled(long numberOfTasksPulled) {
+        updateTasksPulledInServer(numberOfTasksPulled);
+        //agentMainScenePaneController.updateTasksPulled(numberOfTasksPulled);
+    }
+    private void updateTasksPulledInServer(long numberOfTasksPulled) {
+        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "updateTasksPulled")
+                .addQueryParameter("agentName", agentName)
+                .addQueryParameter("numberOfTasksPulled", GSON_INSTANCE.toJson(numberOfTasksPulled))
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, java.io.IOException e) {
+                new ErrorDialog(e, "Error while trying to update tasks pulled");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws java.io.IOException {
+                if (response.code() != 200) {
+                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update tasks pulled");
+                }
+                response.close();
+            }
+        });
+
     }
     private AgentTask getAgentTaskFromTaskToAgent(TaskToAgent taskToAgent) throws CloneNotSupportedException, MachineNotExistsException {
         int taskSize = (int)taskToAgent.getTaskSize();

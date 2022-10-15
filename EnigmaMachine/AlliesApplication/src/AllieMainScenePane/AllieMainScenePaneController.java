@@ -208,6 +208,7 @@ public class AllieMainScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
+                    contestsTabPaneController.startRefresh();
                     Platform.runLater(() -> {
                         readyToContestButton.setDisable(true);
                     });

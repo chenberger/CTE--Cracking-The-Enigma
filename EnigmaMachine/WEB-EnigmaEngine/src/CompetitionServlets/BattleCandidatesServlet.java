@@ -58,6 +58,14 @@ public class BattleCandidatesServlet extends HttpServlet {
         UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
         try {
             UBoat uBoat = uBoatManager.getUBoat(SessionUtils.getUsername(request));
+
+            if(uBoat == null){
+                AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+                Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+                String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+                uBoat = uBoatManager.getUBoat(uBoatName);
+            }
+
             BattleField battleField = uBoat.getBattleField();
             List<AgentCandidatesInformation> agentCandidatesInformation = battleField.getAgentsCandidatesInformation();
             for (AgentCandidatesInformation agentCandidate : agentCandidatesInformation) {
