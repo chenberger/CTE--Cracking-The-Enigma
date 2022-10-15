@@ -243,63 +243,15 @@ public class AgentMainScenePaneController {
     }
 
     public void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {
-        updateCandidatesFoundInServer(numberOfCandidatesFound);
         agentProgressAndDataPaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
     }
 
-    private void updateCandidatesFoundInServer(int numberOfCandidatesFound) {
-        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "updateCandidatesFound")
-                .addQueryParameter("agentName", agentName)
-                .addQueryParameter("numberOfCandidatesFound", GSON_INSTANCE.toJson(numberOfCandidatesFound))
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(Call call, java.io.IOException e) {
-                new ErrorDialog(e, "Error while trying to update candidates found");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if (response.code() != 200) {
-                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update candidates found");
-                }
-                response.close();
-            }
-        });
-    }
 
     public void updateTasksPulled(long numberOfTasksPulled) {
-        updateTasksPulledInServer(numberOfTasksPulled);
         agentProgressAndDataPaneController.updateTasksPulled(numberOfTasksPulled);
     }
 
-    private void updateTasksPulledInServer(long numberOfTasksPulled) {
-        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "updateTasksPulled")
-                .addQueryParameter("agentName", agentName)
-                .addQueryParameter("numberOfTasksPulled", GSON_INSTANCE.toJson(numberOfTasksPulled))
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(Call call, java.io.IOException e) {
-                new ErrorDialog(e, "Error while trying to update tasks pulled");
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws java.io.IOException {
-                if (response.code() != 200) {
-                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update tasks pulled");
-                }
-                response.close();
-            }
-        });
-
-    }
 
     //HttpClientUtil.runAsync(finalUrl, new Callback() {
        //    @Override

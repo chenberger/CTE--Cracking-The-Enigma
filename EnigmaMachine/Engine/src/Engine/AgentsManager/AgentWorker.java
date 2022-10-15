@@ -77,11 +77,11 @@ public class AgentWorker implements Runnable{
                 try {
 
                     agentTask.validateWordsInDictionary(Arrays.asList(candidateMessage.split(" ")));
-                    System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
+                    //System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
 
 
 
-                        AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
+                    AgentCandidatesInformation agentCandidatesInformation = getAgentCandidatesInformation(currentCodeConfigurationFormat, candidateMessage);
 
                 synchronized (this){
                     agentCandidatesInformationList.add(agentCandidatesInformation);

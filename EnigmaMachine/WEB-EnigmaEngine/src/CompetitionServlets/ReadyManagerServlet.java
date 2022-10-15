@@ -1,5 +1,6 @@
 package CompetitionServlets;
 
+import Engine.AgentsManager.Agent;
 import Engine.AlliesManager.Allie;
 import Engine.UBoatManager.UBoat;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
 import java.io.IOException;
+
+import static Utils.Constants.GSON_INSTANCE;
 
 @WebServlet(name = "CompetitionServlet", value = "/CompetitionServlet/ReadyManager")
 public class ReadyManagerServlet extends HttpServlet {
@@ -22,8 +25,29 @@ public class ReadyManagerServlet extends HttpServlet {
             } else if (request.getParameter("type").equals("Allies")) {
                 handleAlliesReady(request, response);
             }
+            else{//type is Agent that wants to check the contest status
+                checkContestStatus(request, response);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private synchronized void checkContestStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getAgentName(request));
+        Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(agent.getAllieName());
+        String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
+        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
+
+        if(uBoat.isContestOnline()){
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(GSON_INSTANCE.toJson(true));
+            response.getWriter().flush();
+        }
+        else{
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(GSON_INSTANCE.toJson(false));
+            response.getWriter().flush();
         }
     }
 
