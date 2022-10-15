@@ -15,7 +15,7 @@
    <children>
       <GridPane fx:id="topBorderPane" prefHeight="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="30.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -51,12 +51,12 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label id="current-file-path-label" fx:id="CurrentFilePathLabel" minHeight="20.0" minWidth="178.0" stylesheets="@TopBorderPaneSkin1.css" text="Currently Loaded File Path:" textAlignment="CENTER" textFill="#090309">
                                        <font>
@@ -66,14 +66,14 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                        <children>
-                                          <Label fx:id="CurrentFilePathTextLabel" prefHeight="30.0" prefWidth="430.0" styleClass="top-buttons" stylesheets="@TopBorderPaneSkin1.css" text="There is no any file loaded" textFill="#322424" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label fx:id="CurrentFilePathTextLabel" prefHeight="50.0" prefWidth="357.0" styleClass="top-buttons" stylesheets="@TopBorderPaneSkin1.css" text="There is no any file loaded" textFill="#322424" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                                              <padding>
-                                                <Insets bottom="20.0" top="20.0" />
+                                                <Insets left="5.0" />
                                              </padding>
                                           </Label>
                                        </children>
