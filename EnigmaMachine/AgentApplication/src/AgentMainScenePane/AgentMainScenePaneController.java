@@ -198,6 +198,7 @@ public class AgentMainScenePaneController {
     private void startWorking() {
 
         competitionHandler = new CompetitionHandler(tasksPool, engineManager, contestTasksQueue, agentName, client,this, tasksQueue );
+        String threadName = competitionHandler.getName();
         competitionHandler.start();
 
     }

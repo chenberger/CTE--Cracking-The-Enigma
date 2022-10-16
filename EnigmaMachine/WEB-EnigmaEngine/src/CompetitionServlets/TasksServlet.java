@@ -6,6 +6,8 @@ import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
+import Engine.UBoatManager.UBoat;
+import Engine.UBoatManager.UBoatManager;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +31,7 @@ public class TasksServlet extends HttpServlet {
 
     }
 
-    synchronized private void getTasksFromTasksProducer(HttpServletRequest request, HttpServletResponse response) {
+    private synchronized void getTasksFromTasksProducer(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();
         boolean wait = true;
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
@@ -51,6 +53,12 @@ public class TasksServlet extends HttpServlet {
                     tasks.add(tasksProducer.getTasksQueue().poll());
                 }
             }
+            if(tasksProducer.isNoMoreTasks()){
+                UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+                String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+                UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+                stopContest(uBoat);
+            }
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(tasks));
             response.getWriter().flush();
@@ -60,5 +68,9 @@ public class TasksServlet extends HttpServlet {
         }
 
 
+    }
+
+    private void stopContest(UBoat uBoat) {
+        uBoat.setContestOver();
     }
 }
