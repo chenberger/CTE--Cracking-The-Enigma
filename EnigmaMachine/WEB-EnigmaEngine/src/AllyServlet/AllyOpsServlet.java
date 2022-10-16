@@ -1,6 +1,7 @@
 package AllyServlet;
 
 import DTO.AgentProgressDataToTable;
+import DTO.AgentsProgressAndDataTable;
 import DTO.AlliesTasksProgressToLabels;
 import DTO.OnLineContestsTable;
 import Engine.AgentsManager.Agent;
@@ -64,14 +65,14 @@ public class AllyOpsServlet extends HttpServlet {
 
     private void getAgentsProgressDataToTable(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List<AgentProgressDataToTable> agentsProgressDataToTable = new ArrayList<>();
+            List<AgentsProgressAndDataTable> agentsProgressDataToTable = new ArrayList<>();
             AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
             AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
             Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
             List<Agent> agents = allie.getAgents();
 
             for(Agent agent : agents){
-                agentsProgressDataToTable.add(new AgentProgressDataToTable(agent.getAgentName(), agent.getTotalNumberOfCandidatesFound(), agent.getNumberOfTasksPulled()));
+                agentsProgressDataToTable.add(new AgentsProgressAndDataTable(agent.getAgentName(), getTasksPulledAndDone(agent),agent.getTotalNumberOfCandidatesFound()));
             }
 
             if(agentsProgressDataToTable.size() > 0){
@@ -87,6 +88,10 @@ public class AllyOpsServlet extends HttpServlet {
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+    }
+
+    private String getTasksPulledAndDone(Agent agent) {
+        return agent.getNumberOfTasksPulled() + "/" + agent.getNumberOfTasksDone();
     }
 
     private void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {

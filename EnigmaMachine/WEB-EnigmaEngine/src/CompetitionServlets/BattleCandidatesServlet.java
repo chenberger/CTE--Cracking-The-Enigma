@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static Utils.Constants.GSON_INSTANCE;
+
 @WebServlet(name = "BattleCandidatesServlet", urlPatterns = {"/BattleCandidates"})
 public class BattleCandidatesServlet extends HttpServlet {
     @Override
@@ -47,10 +49,19 @@ public class BattleCandidatesServlet extends HttpServlet {
             else if(request.getParameter("action").equals("getAlliesCandidates")){
                 getAlliesCandidates(request,response);
             }
+            else if(request.getParameter("action").equals("UpdateTasksCompleted")){
+                updateAgentTasksCompleted(request, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
+    }
+
+    private void updateAgentTasksCompleted(HttpServletRequest request, HttpServletResponse response) {
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        Agent agent = agentsManager.getAgent(SessionUtils.getAgentName(request));
+        agent.updateTasksDone(GSON_INSTANCE.fromJson(request.getParameter("tasksCompleted"), Long.class));
     }
 
     private synchronized void getAlliesCandidates(HttpServletRequest request, HttpServletResponse response) {

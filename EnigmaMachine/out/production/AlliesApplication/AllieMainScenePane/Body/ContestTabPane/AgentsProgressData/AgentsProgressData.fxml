@@ -27,7 +27,7 @@
             <TableView fx:id="agentProgressDataTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="agentNameCol" prefWidth="75.0" text="Agent Name" />
-                <TableColumn fx:id="tasksPulledCol" prefWidth="75.0" text="Tasks Pulled" />
+                <TableColumn fx:id="tasksPulledAndDoneCol" prefWidth="75.0" text="Tasks Pulled/Done" />
                   <TableColumn fx:id="totalCandidatesCol" prefWidth="75.0" text="Total candidates" />
               </columns>
                <columnResizePolicy>

@@ -108,8 +108,32 @@ public class CompetitionHandler extends Thread implements Closeable {
     }
     private void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {
         updateCandidatesFoundInServer(numberOfCandidatesFound);
-        //agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+        addTasksCompletedToAgentsServer(tasksCompleted);
+        agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
     }
+
+    private void addTasksCompletedToAgentsServer(long tasksCompleted) {
+        String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "UpdateTasksCompleted")
+                .addQueryParameter("tasksCompleted", GSON_INSTANCE.toJson(tasksCompleted))
+                .build().toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200) {
+                    response.close();
+                }
+                response.close();
+            }
+        });
+    }
+
     private void updateCandidatesFoundInServer(int numberOfCandidatesFound) {
         String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
                 .newBuilder()
@@ -206,7 +230,7 @@ public class CompetitionHandler extends Thread implements Closeable {
     }
     private void updateTasksPulled(long numberOfTasksPulled) {
         updateTasksPulledInServer(numberOfTasksPulled);
-        //agentMainScenePaneController.updateTasksPulled(numberOfTasksPulled);
+        agentMainScenePaneController.updateTasksPulled(numberOfTasksPulled);
     }
     private void updateTasksPulledInServer(long numberOfTasksPulled) {
         String finalUrl = HttpUrl.parse(BATTLE_CANDIDATES_SERVLET)
