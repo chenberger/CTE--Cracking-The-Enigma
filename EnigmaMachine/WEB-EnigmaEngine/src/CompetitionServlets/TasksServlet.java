@@ -23,12 +23,22 @@ import java.util.List;
 @WebServlet(name = "TasksServlet",urlPatterns = {"/Tasks"})
 public class TasksServlet extends HttpServlet {
     @Override
-    synchronized protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         if(request.getParameter("action").equals("getTasksInterval")) {
             getTasksFromTasksProducer(request, response);
         }
+        else if(request.getParameter("action").equals("stopContest")){
+            stopCurrentContest(request, response);
+        }
 
+    }
+
+    private synchronized void stopCurrentContest(HttpServletRequest request, HttpServletResponse response) {
+        UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+        UBoat uBoat = uBoatManager.getUBoat(SessionUtils.getUsername(request));
+        stopContest(uBoat);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     private synchronized void getTasksFromTasksProducer(HttpServletRequest request, HttpServletResponse response) {
@@ -57,7 +67,7 @@ public class TasksServlet extends HttpServlet {
                 UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
                 String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
                 UBoat uBoat = uBoatManager.getUBoat(uBoatName);
-                stopContest(uBoat);
+                //stopContest(uBoat);
             }
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(tasks));

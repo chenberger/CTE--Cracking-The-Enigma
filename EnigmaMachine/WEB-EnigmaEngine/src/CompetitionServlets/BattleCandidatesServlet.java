@@ -3,6 +3,7 @@ package CompetitionServlets;
 import DTO.AgentCandidatesInformation;
 import DTO.AlliesTasksProgressToLabels;
 import DTO.AllyCandidatesTable;
+import DTO.ContestWinnerInformation;
 import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
@@ -28,7 +29,7 @@ import static Utils.Constants.GSON_INSTANCE;
 @WebServlet(name = "BattleCandidatesServlet", urlPatterns = {"/BattleCandidates"})
 public class BattleCandidatesServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         try {
             if (request.getParameter("action").equals("sendCandidates")) {
@@ -52,13 +53,44 @@ public class BattleCandidatesServlet extends HttpServlet {
             else if(request.getParameter("action").equals("UpdateTasksCompleted")){
                 updateAgentTasksCompleted(request, response);
             }
+            else if(request.getParameter("action").equals("lookForWinner")){
+                lookForWinner(request, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
     }
 
-    private void updateAgentTasksCompleted(HttpServletRequest request, HttpServletResponse response) {
+    private synchronized void lookForWinner(HttpServletRequest request, HttpServletResponse response) {
+        UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+        UBoat uBoat = uBoatManager.getUBoat(SessionUtils.getUsername(request));
+        BattleField battleField = uBoat.getBattleField();
+        String wordToFind = battleField.getOriginalMessage();
+        List<AgentCandidatesInformation> AgentsCandidates = battleField.getAgentsCandidatesInformation();
+        if(wordToFind != null){
+            response.setStatus(HttpServletResponse.SC_OK);
+            try {
+                for(AgentCandidatesInformation agentCandidatesInformation : AgentsCandidates){
+                    if(agentCandidatesInformation.getCandidateString().equals(wordToFind)){
+                        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+                        Allie allie = alliesManager.getAllie(agentCandidatesInformation.getTeamName());
+                        ContestWinnerInformation contestWinnerInformation = new ContestWinnerInformation(allie.getTeamName(),wordToFind);
+                        response.getWriter().write(GSON_INSTANCE.toJson(contestWinnerInformation));
+                        response.getWriter().flush();
+                    }
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+    }
+
+    private synchronized void updateAgentTasksCompleted(HttpServletRequest request, HttpServletResponse response) {
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
         Agent agent = agentsManager.getAgent(SessionUtils.getAgentName(request));
         agent.updateTasksDone(GSON_INSTANCE.fromJson(request.getParameter("tasksCompleted"), Long.class));
@@ -168,6 +200,7 @@ public class BattleCandidatesServlet extends HttpServlet {
             for (AgentCandidatesInformation candidate : candidates) {
                 Agent agent = agentsManager.getAgent(candidate.getAgentName());
                 Allie allie = alliesManager.getAllie(agent.getAllieName());
+                System.out.println("Agent name: " + candidate.getAgentName() + " Allie name: " + allie.getTeamName() + candidate.getCandidateString());
                 String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
                 UBoat uBoat = uBoatManager.getUBoat(uBoatName);
                 candidate.setTeamName(allie.getTeamName());

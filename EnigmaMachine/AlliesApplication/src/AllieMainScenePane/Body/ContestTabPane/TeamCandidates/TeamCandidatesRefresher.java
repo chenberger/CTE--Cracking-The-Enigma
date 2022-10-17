@@ -47,7 +47,7 @@ public class TeamCandidatesRefresher extends TimerTask {
                     updateCandidatesTable.accept(allyCandidatesTables);
                 }
                 else{
-                    System.out.println("Something went wrong with the request");
+                    //System.out.println("Something went wrong with the request");
                 }
                 response.close();
             }

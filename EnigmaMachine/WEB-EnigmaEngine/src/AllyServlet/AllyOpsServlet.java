@@ -47,7 +47,7 @@ public class AllyOpsServlet extends HttpServlet {
         }
     }
 
-    private void getAlliesTasksProgressToLabels(HttpServletRequest request, HttpServletResponse response) {
+    private synchronized void getAlliesTasksProgressToLabels(HttpServletRequest request, HttpServletResponse response) {
         try {
             AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
             Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
@@ -63,7 +63,7 @@ public class AllyOpsServlet extends HttpServlet {
         }
     }
 
-    private void getAgentsProgressDataToTable(HttpServletRequest request, HttpServletResponse response) {
+    private synchronized void getAgentsProgressDataToTable(HttpServletRequest request, HttpServletResponse response) {
         try {
             List<AgentsProgressAndDataTable> agentsProgressDataToTable = new ArrayList<>();
             AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
@@ -90,11 +90,11 @@ public class AllyOpsServlet extends HttpServlet {
         }
     }
 
-    private String getTasksPulledAndDone(Agent agent) {
+    private synchronized String getTasksPulledAndDone(Agent agent) {
         return agent.getNumberOfTasksPulled() + "/" + agent.getNumberOfTasksDone();
     }
 
-    private void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {
+    private synchronized void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
@@ -116,7 +116,7 @@ public class AllyOpsServlet extends HttpServlet {
         }
     }
 
-    private void getCurrentContestData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void getCurrentContestData(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
         UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
@@ -138,7 +138,7 @@ public class AllyOpsServlet extends HttpServlet {
         UBoat uBoat = uBoatManager.getUBoat(uBoatName);
     }
 
-    synchronized private void setAllyTaskSize(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     private synchronized void setAllyTaskSize(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long taskSize = Long.parseLong(request.getParameter("taskSize"));
         AlliesManager  alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));

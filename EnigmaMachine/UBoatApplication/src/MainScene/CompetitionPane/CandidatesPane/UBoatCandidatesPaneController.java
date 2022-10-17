@@ -2,6 +2,7 @@ package MainScene.CompetitionPane.CandidatesPane;
 
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import DTO.AllyCandidatesTable;
+import DTO.ContestWinnerInformation;
 import DTO.TeamsTable;
 import MainScene.CompetitionPane.UBoatCompetitionPaneController;
 import javafx.application.Platform;
@@ -47,7 +48,7 @@ public class UBoatCandidatesPaneController implements Closeable {
     }
 
     public void startListRefreshing(){
-        uBoatCandidatesTableRefresher = new UBoatCandidatesTableRefresher(this::updateCandidatesTable);
+        uBoatCandidatesTableRefresher = new UBoatCandidatesTableRefresher(this::updateCandidatesTable,this::notifyIfWordIsFound);
         timer = new Timer();
         timer.schedule(uBoatCandidatesTableRefresher, 0, 100);
     }
@@ -64,7 +65,9 @@ public class UBoatCandidatesPaneController implements Closeable {
             }
         });
     }
-
+    private void notifyIfWordIsFound(ContestWinnerInformation contestWinner){
+        uBoatCompetitionPaneController.notifyIfWordIsFound(contestWinner);
+    }
     @Override
     public void close()  {
         //TODO : Close the timer task that refreshes the candidates table.

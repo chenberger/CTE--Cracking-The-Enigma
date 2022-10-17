@@ -68,13 +68,13 @@ public class ContestsDataRefresher extends TimerTask {
                 if(response.code() == 200){
                     synchronized (this){
                     String jsonOnlineContestsDataToTable = response.body().string();
-                    System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonOnlineContestsDataToTable);
+                    //System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonOnlineContestsDataToTable);
                     if(jsonOnlineContestsDataToTable.trim().equals("[]") || jsonOnlineContestsDataToTable.trim().equals("") || response.code() != 200){
-                        System.out.println("No Allies in the battle");
+                        //System.out.println("No Allies in the battle");
                     }
                     else {
                         OnLineContestsDataToTable onLineContestsDataToTable = extractOnlineContestToTableFromJson(jsonOnlineContestsDataToTable);
-                        System.out.println("Allies in the battle: " + jsonOnlineContestsDataToTable);
+                        //System.out.println("Allies in the battle: " + jsonOnlineContestsDataToTable);
                         ContestsConsumer.accept(onLineContestsDataToTable);
                     }
                 }

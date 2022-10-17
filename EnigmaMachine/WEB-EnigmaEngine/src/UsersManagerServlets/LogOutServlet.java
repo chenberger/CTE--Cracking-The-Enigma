@@ -44,10 +44,10 @@ public class LogOutServlet extends HttpServlet {
 
         if (usernameFromSession != null) {
             removeBoatFromBoatsManager(request, usernameFromSession);
-            System.out.println("Clearing session for " + usernameFromSession);
+            //System.out.println("Clearing session for " + usernameFromSession);
             userManager.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);
-            System.out.println("Users Registered:" + userManager.getUsers());
+            //System.out.println("Users Registered:" + userManager.getUsers());
 
         }
     }

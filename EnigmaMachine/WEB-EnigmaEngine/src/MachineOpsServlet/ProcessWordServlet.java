@@ -18,7 +18,7 @@ import static Utils.Constants.GSON_INSTANCE;
 @WebServlet(name = "ProcessWordServlet", urlPatterns = {"/machine/ProcessWord"})
 public class ProcessWordServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain;charset=UTF-8");
         if(request.getParameter("action")!= null && request.getParameter("action").equals("getProcessedWord") ){
             getProcessedWord(request, response);
@@ -29,7 +29,7 @@ public class ProcessWordServlet extends HttpServlet {
 
     }
 
-    private void processMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void processMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try  {
             synchronized (this){
                 String wordToProcess = request.getParameter("wordToProcess");
@@ -41,6 +41,7 @@ public class ProcessWordServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
                 currentBoat.setCurrentProcessedMessage(processedWord);
                 currentBoat.getBattleField().setProcessedMessage(processedWord);
+                currentBoat.getBattleField().setOriginalMessage(wordToProcess);
                 //String processedWordWithSpecialChars = getProcessedWordWithSpecialChars(processedWord);
                 String json = GSON_INSTANCE.toJson(processedWord);
                 response.getWriter().println(json);
@@ -53,7 +54,7 @@ public class ProcessWordServlet extends HttpServlet {
         }
     }
 
-    private void getProcessedWord(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void getProcessedWord(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try  {
             synchronized (this){
                 UBoat currentBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(request.getParameter("uBoatName"));

@@ -42,7 +42,7 @@ public class AlliesInBattleRefresher extends TimerTask {
 
         final int finalRequestNumber = ++requestNumber;
         //httpRequestLoggerConsumer.accept("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
-        System.out.println("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
+        //System.out.println("About to invoke: " + U_BOATS_LIST_SERVLET + " | Users Request # " + finalRequestNumber);
 
         HttpClientUtil.runAsync(U_BOATS_LIST_SERVLET, new Callback() {
 
@@ -56,13 +56,13 @@ public class AlliesInBattleRefresher extends TimerTask {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 synchronized (this){
                     String jsonAlliesToTable = response.body().string();
-                    System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonAlliesToTable);
+                    //System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonAlliesToTable);
                     if(jsonAlliesToTable.trim().equals("[]") || jsonAlliesToTable.trim().equals("") || response.code() != 200){
-                        System.out.println("No Allies in the battle");
+                       // System.out.println("No Allies in the battle");
                     }
                     else {
                         AlliesToTable alliesToTable = extractAlliesToTableFromJson(jsonAlliesToTable);
-                        System.out.println("UBoats in the battle: " + jsonAlliesToTable);
+                        //System.out.println("UBoats in the battle: " + jsonAlliesToTable);
                         updateTeamsTable.accept(alliesToTable);
                     }
                     response.close();

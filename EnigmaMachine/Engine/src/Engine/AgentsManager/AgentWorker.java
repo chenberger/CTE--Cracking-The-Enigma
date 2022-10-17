@@ -71,7 +71,7 @@ public class AgentWorker implements Runnable{
 
                 String currentCodeConfigurationFormat = enigmaMachine.getCurrentSettingsFormat().toString();
                 String candidateMessage = enigmaMachine.processedInput(agentTask.getEncryptedString().toUpperCase());
-                System.out.println(currentRotorPositions.toString() + " " + candidateMessage);
+                //System.out.println(currentRotorPositions.toString() + " " + candidateMessage);
                 //System.out.println("Agent id: " + Thread.currentThread().getName() + " code: " + currentCodeConfigurationFormat + "candidate: " + candidateMessage);
 
                 try {

@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(name = "SetMachineConfigServlet",urlPatterns = {"/machine/SetMachineConfig"})
 public class SetMachineConfigServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         try {
@@ -56,7 +56,7 @@ public class SetMachineConfigServlet extends HttpServlet {
 
     }
 
-    private void resetMachineConfig(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, CloneNotSupportedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, ServletException, IOException {
+    private synchronized void resetMachineConfig(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, CloneNotSupportedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, ServletException, IOException {
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
         uBoat.setCurrentProcessedMessage("");
         uBoat.getBattleField().setProcessedMessage("");
@@ -66,7 +66,7 @@ public class SetMachineConfigServlet extends HttpServlet {
         //request.getRequestDispatcher(GET_MACHINE_CONFIG_SERVLET).include(request, response);
     }
 
-    private void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
+    private synchronized void setMachineConfigAutomatically(HttpServletRequest request, HttpServletResponse response) throws ReflectorSettingsException, RotorsInUseSettingsException, SettingsFormatException, SettingsNotInitializedException, StartingPositionsOfTheRotorException, PluginBoardSettingsException, CloneNotSupportedException, MachineNotExistsException, IOException {
 
         synchronized (this) {
             EngineManager engine = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request)).getEngineManager();
@@ -79,7 +79,7 @@ public class SetMachineConfigServlet extends HttpServlet {
         }
     }
 
-    private void setMachineConfigManually(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
+    private synchronized void setMachineConfigManually(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectorSettingsException, RotorsInUseSettingsException,Exception, SettingsFormatException, SettingsNotInitializedException, MachineNotExistsException, StartingPositionsOfTheRotorException, CloneNotSupportedException, PluginBoardSettingsException {
         try {
             //Type type = new TypeToken<List<Sector>>() {}.getType();
             //System.out.println("TYpe: " + type);
@@ -110,7 +110,7 @@ public class SetMachineConfigServlet extends HttpServlet {
     //}
 
     //TODO chen: generate the json into list of sectors
-    private List<Sector> getListOfSectorsFromJson(String sectors) {
+    private synchronized List<Sector> getListOfSectorsFromJson(String sectors) {
         List<Sector> sectorsList = new ArrayList<>();
         String[] sectorsArray = sectors.split(",");
 

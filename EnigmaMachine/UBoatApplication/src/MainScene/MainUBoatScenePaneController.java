@@ -1,6 +1,7 @@
 package MainScene;
 
 
+import DTO.ContestWinnerInformation;
 import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.EngineManager;
@@ -29,8 +30,7 @@ import java.util.List;
 
 import static Constants.ServletConstants.USERNAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
-import static Utils.Constants.ACTION;
-import static Utils.Constants.GSON_INSTANCE;
+import static Utils.Constants.*;
 
 public class MainUBoatScenePaneController {
     private String currentSessionId;
@@ -271,5 +271,41 @@ public class MainUBoatScenePaneController {
     }
     private void closeUBoatSession(){
         UBoatCompetitionPaneController.close();
+    }
+
+    public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {
+        stopContest();
+        Platform.runLater(() -> {
+            new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
+        });
+    }
+
+    private void stopContest() {
+        String finalUrl = HttpUrl.parse(TASKS_SERVLET)
+                .newBuilder()
+                .addQueryParameter(ACTION, "stopContest")
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> new ErrorDialog(e, "Error while stopping contest"));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() != 200) {
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()), "Error while stopping contest");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+                response.close();
+            }
+        });
+
     }
 }
