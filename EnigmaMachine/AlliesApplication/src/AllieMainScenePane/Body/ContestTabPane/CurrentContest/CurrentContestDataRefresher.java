@@ -35,7 +35,7 @@ public class CurrentContestDataRefresher extends TimerTask {
             return;
         }
         final int finalRequestNumber = ++requestNumber;
-        System.out.println("About to invoke: " + " | Users Request # " + finalRequestNumber);
+       // System.out.println("About to invoke: " + " | Users Request # " + finalRequestNumber);
         String finalUrl = HttpUrl.parse(ALLIES_OPS_SERVLET)
                 .newBuilder()
                 .addQueryParameter("action", GET_CURRENT_CONTEST_DATA)

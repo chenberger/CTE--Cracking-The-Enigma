@@ -31,7 +31,7 @@ import static Constants.ServletConstants.USERNAME;
 public class FileUploadedServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
      response.setContentType("text/plain");
      response.setCharacterEncoding("UTF-8");
      PrintWriter out = response.getWriter();

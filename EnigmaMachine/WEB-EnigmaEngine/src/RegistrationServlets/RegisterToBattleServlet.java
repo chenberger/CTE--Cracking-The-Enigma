@@ -29,7 +29,7 @@ public class RegisterToBattleServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         long taskSize = request.getParameter(TASK_SIZE) != null ? Long.parseLong(request.getParameter(TASK_SIZE)) : 0;
         int numberOfAgents = request.getParameter(NUMBER_OF_AGENTS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_AGENTS)) : 0;

@@ -22,7 +22,7 @@ public class SetAgentFieldsServlet extends HttpServlet {
         response.setContentType("application/json");
         processRequest(request, response);
     }
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
             Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getAgentName(request));
             agent.setTasksPullingInterval(Long.parseLong(request.getParameter("tasksPullingInterval")));

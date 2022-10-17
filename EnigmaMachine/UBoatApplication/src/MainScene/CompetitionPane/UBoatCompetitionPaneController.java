@@ -2,6 +2,7 @@ package MainScene.CompetitionPane;
 
 import Api.UpdateHttpLine;
 import DTO.AlliesToTable;
+import DTO.ContestWinnerInformation;
 import DTO.TeamsTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AlliesManager.Allie;
@@ -308,5 +309,9 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     public void setProcessedWordExist(boolean isWordProcessed) {
         isProcessedWordExist.set(isWordProcessed);
+    }
+
+    public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {
+        mainUBoatScenePaneController.notifyIfWordIsFound(contestWinner);
     }
 }

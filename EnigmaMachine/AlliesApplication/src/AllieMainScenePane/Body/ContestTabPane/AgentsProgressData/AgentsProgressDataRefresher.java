@@ -56,7 +56,7 @@ public class AgentsProgressDataRefresher extends TimerTask {
                     updateAgentsProgressDataTable.accept(agentProgressDataToTables);
                 }
                 else{
-                    System.out.println("Something went wrong with the request");
+                    //System.out.println("Something went wrong with the request");
                 }
                 response.close();
             }

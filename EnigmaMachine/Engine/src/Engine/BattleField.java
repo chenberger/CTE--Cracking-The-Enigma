@@ -14,6 +14,7 @@ public class BattleField {
 
     private List<AgentCandidatesInformation> agentsCandidatesInformation;
     private String processedMessage;
+    private String originalMessage;
     private int numberOfTeamsInBattleField;
     private DifficultyLevel level;
     private int numberOfAlliesToStartBattle;
@@ -30,11 +31,18 @@ public class BattleField {
         this.processedMessage = "";
         this.numberOfAlliesThatAreReady = 0;
         this.agentsCandidatesInformation = new ArrayList<>();
+        this.originalMessage = "";
     }
     public BattleField(){
         this.battleFieldName = "";
         this.level = DifficultyLevel.EASY;
         this.numberOfAlliesToStartBattle = 0;
+    }
+    public void setOriginalMessage(String originalMessage) {
+        this.originalMessage = originalMessage;
+    }
+    public String getOriginalMessage() {
+        return originalMessage;
     }
     public void addTeamToBattleField(){
         this.numberOfTeamsInBattleField++;

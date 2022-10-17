@@ -35,11 +35,11 @@ public class DataToAgentServlet extends HttpServlet {
         }
     }
 
-    synchronized private void getAgentCandidates(HttpServletRequest request, HttpServletResponse response) {
+     private synchronized void getAgentCandidates(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
-    synchronized private void getAgentProgressAndStatus(HttpServletRequest request, HttpServletResponse response) {
+     private synchronized void getAgentProgressAndStatus(HttpServletRequest request, HttpServletResponse response) {
        //try{
        //    AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
        //    String agentNameFromSession = SessionUtils.getAgentName(request);
