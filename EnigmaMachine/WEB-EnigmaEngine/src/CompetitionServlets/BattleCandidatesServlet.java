@@ -78,6 +78,7 @@ public class BattleCandidatesServlet extends HttpServlet {
                         ContestWinnerInformation contestWinnerInformation = new ContestWinnerInformation(allie.getTeamName(),wordToFind);
                         response.getWriter().write(GSON_INSTANCE.toJson(contestWinnerInformation));
                         response.getWriter().flush();
+                        break;
                     }
 
                 }

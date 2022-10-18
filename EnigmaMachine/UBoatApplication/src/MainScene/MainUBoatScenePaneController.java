@@ -281,6 +281,7 @@ public class MainUBoatScenePaneController {
     }
 
     private void stopContest() {
+        UBoatCompetitionPaneController.stopContest();
         String finalUrl = HttpUrl.parse(TASKS_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "stopContest")

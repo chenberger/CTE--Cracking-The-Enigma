@@ -4,6 +4,8 @@ import DTO.AllyCandidatesTable;
 import DTO.ContestWinnerInformation;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -16,8 +18,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static Utils.Constants.ACTION;
-import static Utils.Constants.BATTLE_CANDIDATES_SERVLET;
+import static Utils.Constants.*;
 
 public class UBoatCandidatesTableRefresher extends TimerTask {
     private Consumer<List<AllyCandidatesTable>> updateCandidatesTable;
@@ -76,12 +77,19 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
                     String jsonContestWinnerInformation = response.body().string();
-                    Gson gson = new Gson();
-                    ContestWinnerInformation contestWinnerInformation = gson.fromJson(jsonContestWinnerInformation, ContestWinnerInformation.class);
+                    ContestWinnerInformation contestWinnerInformation = getWinnerInfoFromJson(jsonContestWinnerInformation);
                     updateWinnerInformation.accept(contestWinnerInformation);
                 }
+
                 response.close();
             }
         });
+    }
+
+    private ContestWinnerInformation getWinnerInfoFromJson(String jsonContestWinnerInformation) {
+        JsonObject jsonObject = JsonParser.parseString(jsonContestWinnerInformation).getAsJsonObject();
+        String winnerName = GSON_INSTANCE.fromJson(jsonObject.get("winnerName"), String.class);
+        String originalWord = GSON_INSTANCE.fromJson(jsonObject.get("originalWord"), String.class);
+        return new ContestWinnerInformation(winnerName, originalWord);
     }
 }
