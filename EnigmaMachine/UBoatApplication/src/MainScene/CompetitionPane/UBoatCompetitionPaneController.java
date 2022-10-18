@@ -247,8 +247,8 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     @Override
     public void close() {
-        teamsTableView.getItems().clear();
-        totalUsers.set(0);
+        //teamsTableView.getItems().clear();
+        //totalUsers.set(0);
         if (alliesInBattleRefresher != null && timer != null) {
             alliesInBattleRefresher.cancel();
             timer.cancel();
@@ -266,9 +266,6 @@ public class UBoatCompetitionPaneController implements Closeable {
 
 
     @FXML public void onReadyButtonClicked(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-            readyButton.setDisable(true);
-        });
 
         String finalUrl = HttpUrl.parse(READY_MANAGER_SERVLET)
                 .newBuilder()
@@ -288,7 +285,6 @@ public class UBoatCompetitionPaneController implements Closeable {
                     uBoatCandidatesPaneController.startListRefreshing();
                     Platform.runLater(() -> {
                         readyButton.setDisable(true);
-
                     });
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to set ready");
@@ -313,5 +309,9 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {
         mainUBoatScenePaneController.notifyIfWordIsFound(contestWinner);
+    }
+
+    public void stopContest() {
+        uBoatCandidatesPaneController.stopContest();
     }
 }
