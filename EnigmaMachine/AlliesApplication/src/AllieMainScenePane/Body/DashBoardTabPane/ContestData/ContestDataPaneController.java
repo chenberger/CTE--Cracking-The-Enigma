@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -90,11 +91,14 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private List<String> setTeamsRegisteredAndNeeded(Map<String, Integer> teamsRegisteredToEachBattle, List<Integer> numberOfTeamsNeededToEachContest, List<String> battleNames) {
-        List<String> teamsRegisteredAndNeeded = battleNames.stream().map(battleName -> {
-            int teamsRegistered = teamsRegisteredToEachBattle.get(battleName) == null ? 0 : teamsRegisteredToEachBattle.get(battleName).intValue();
-            int teamsNeeded = numberOfTeamsNeededToEachContest.get(battleNames.indexOf(battleName));
-            return teamsRegistered + "/" + teamsNeeded;
-        }).collect(Collectors.toList());
+        List<String> teamsRegisteredAndNeeded = new ArrayList<>();
+        //TODO: fix this so i can show the number registered and needed
+        for (int i = 0; i < battleNames.size(); i++) {
+            String battleName = battleNames.get(i);
+            //Double numberOfTeamsRegistered = Double.valueOf(teamsRegisteredToEachBattle.get(battleName) == null ? 0 : teamsRegisteredToEachBattle.get(battleName));
+            //Double numberOfTeamsNeeded = Double.valueOf(numberOfTeamsNeededToEachContest.get(i));
+            teamsRegisteredAndNeeded.add(0 + "/" + 2);
+        }
         return teamsRegisteredAndNeeded;
     }
 
