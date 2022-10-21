@@ -3,6 +3,7 @@ package AgentMainScenePane;
 import AgentMainScenePane.Body.AgentCandidates.AgentCandidatesPaneController;
 import AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController;
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
+import DTO.AgentCandidatesInformation;
 import DTO.DataToInitializeMachine;
 import DTO.TaskToAgent;
 import DesktopUserInterface.MainScene.ErrorDialog;
@@ -252,6 +253,9 @@ public class AgentMainScenePaneController {
         agentProgressAndDataPaneController.updateTasksPulled(numberOfTasksPulled);
     }
 
+    public void updateCandidatesTable(List<AgentCandidatesInformation> agentCandidatesInformationList) {
+        agentCandidatesPaneController.updateCandidatesTable(agentCandidatesInformationList);
+    }
 
 
     //HttpClientUtil.runAsync(finalUrl, new Callback() {

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static Constants.ServletConstants.USERNAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
@@ -205,6 +206,7 @@ public class MainUBoatScenePaneController {
     }
 
     synchronized private void getCurrentSessionId() throws IOException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         String finalUrl = HttpUrl.parse(UBoatsServletsPaths.U_BOAT_LOGIN_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "get_session_id")
@@ -231,6 +233,7 @@ public class MainUBoatScenePaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
                     currentSessionId = response.body().string().trim();
+                    countDownLatch.countDown();
                 }
                 else{
                     Platform.runLater(() -> {
@@ -240,6 +243,11 @@ public class MainUBoatScenePaneController {
                             throw new RuntimeException(e);
                         }
                     });
+                }
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
                 response.close();
             }

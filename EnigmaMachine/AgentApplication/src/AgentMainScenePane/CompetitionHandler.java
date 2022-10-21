@@ -76,6 +76,7 @@ public class CompetitionHandler extends Thread implements Closeable {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
                     sendCandidateInformationToServer();
+                    updateCandidatesTableOfAgent();
                     numberOfCandidatesFound += agentCandidatesInformationList.size();
                     updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
                     agentCandidatesInformationList.clear();
@@ -86,6 +87,10 @@ public class CompetitionHandler extends Thread implements Closeable {
         }
         tasksPool.shutdown();
         System.out.println("Contest is over");
+    }
+
+    private void updateCandidatesTableOfAgent() {
+        agentMainScenePaneController.updateCandidatesTable(agentCandidatesInformationList);
     }
 
     private boolean isContestActive(Boolean isContestActive) {

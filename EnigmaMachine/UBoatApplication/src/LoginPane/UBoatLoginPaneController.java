@@ -80,6 +80,7 @@ public class UBoatLoginPaneController {
 
                 });
             }
+            response.close();
         }
     });
     }
