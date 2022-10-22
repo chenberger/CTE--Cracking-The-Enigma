@@ -6,6 +6,7 @@ import DTO.AgentsProgressAndDataTable;
 import DTO.AlliesTasksProgressToLabels;
 import DTO.TeamsTable;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,6 +23,7 @@ public class AgentsProgressDataController implements Closeable {
     Timer timer;
     AgentsProgressDataRefresher agentsProgressDataRefresher;
 
+    private SimpleBooleanProperty autoUpdate;
     private ContestTabPaneController contestTabPaneController;
     @FXML
     private TableView<AgentsProgressAndDataTable> agentProgressDataTableView;
@@ -43,7 +45,11 @@ public class AgentsProgressDataController implements Closeable {
 
     @FXML
     private Label TasksCompletedLabel;
-    public void initialize() {
+
+    public AgentsProgressDataController() {
+        autoUpdate = new SimpleBooleanProperty(false);
+    }
+    @FXML public void initialize() {
         initializeTable();
     }
 
@@ -88,6 +94,9 @@ public class AgentsProgressDataController implements Closeable {
 
     @Override
     public void close() {
-
+        if(agentsProgressDataRefresher != null){
+            agentsProgressDataRefresher.cancel();
+            timer.cancel();
+        }
     }
 }

@@ -47,9 +47,9 @@
                      <children>
                         <SplitPane dividerPositions="0.3506805444355484" layoutX="416.0" layoutY="87.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane fx:id="agentsProgressAndDataPane" minHeight="240.0" minWidth="430.0" prefHeight="361.0" prefWidth="440.0">
+                            <AnchorPane fx:id="agentsProgressDataPane" minHeight="240.0" minWidth="430.0" prefHeight="361.0" prefWidth="440.0">
                                  <children>
-                                    <fx:include source="AgentsProgressData/AgentsProgressData.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include fx:id="agentsProgressDataPane" source="AgentsProgressData/AgentsProgressData.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                             <AnchorPane fx:id="candidatesInformationPane" minHeight="240.0" minWidth="600.0" prefHeight="160.0" prefWidth="100.0">

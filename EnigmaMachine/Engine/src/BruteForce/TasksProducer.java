@@ -34,6 +34,7 @@ public class TasksProducer implements Runnable {
     private long currentTaskSize;
 
     private SettingsFormat settingsFormat;
+    private boolean contestIsOn;
 
     public TasksProducer(BruteForceTask bruteForceTask, String encryptedString, Dictionary dictionary, EnigmaMachine enigmaMachine, SettingsFormat settingsFormat, Allie allie) {
         this.tasksQueue = new ArrayBlockingQueue<>(MAX_QUEUE_SIZE);
@@ -46,6 +47,7 @@ public class TasksProducer implements Runnable {
         this.noMoreTasks = false;
         this.taskSize= bruteForceTask.getTaskSize();
         this.allie = allie;
+        this.contestIsOn = false;
         initializeMachineSettings();
         calcMissionSize();
     }
@@ -198,7 +200,7 @@ public class TasksProducer implements Runnable {
         else {
             totalTasksSize = (long) (totalCombinations / taskSize);
         }
-        allie.setTaskSize(totalTasksSize);
+        allie.setTotalNumberOfTasks(totalTasksSize);
     }
 
     public void setMediumTasks() throws Exception {
@@ -222,7 +224,7 @@ public class TasksProducer implements Runnable {
         int numOfPossibleRotorsPositions = (int) Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
         StartingRotorPositionSector currentStartingRotorsPositions = new StartingRotorPositionSector(startingRotorsPositions);
 
-        while(numOfPossibleRotorsPositions > 0) {
+        while(numOfPossibleRotorsPositions > 0 && contestIsOn) {
             //if (isCancelled()) {
 //
             //    throw new TaskIsCanceledException();
@@ -232,7 +234,7 @@ public class TasksProducer implements Runnable {
             EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
             TaskToAgent agentTask = new TaskToAgent(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString);
             tasksQueue.put(agentTask);
-            allie.increaseTasksProduced(1);
+
 
 
             numOfPossibleRotorsPositions -= taskSize;
@@ -240,12 +242,15 @@ public class TasksProducer implements Runnable {
                 noMoreTasks = true;
             }
             try {
+                allie.increaseTasksProduced(1);
+                System.out.println("Tasks produced: " + allie.getTasksProduced());
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), (int) taskSize));
             }
             catch (Exception e) {
                 break;
             }
         }
+
     }
     public BlockingQueue<TaskToAgent> getTasksQueue() {
         return tasksQueue;
@@ -255,11 +260,19 @@ public class TasksProducer implements Runnable {
     @Override
     public void run() {
         try {
-            difficultyLevel.setTask(this);
+            while(!Thread.currentThread().isInterrupted()) {
+                difficultyLevel.setTask(this);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
+        System.out.println("Producer is done");
     }
+    public void setContestIsOn(){
+        contestIsOn = true;
+    }
+    public void setContestIsOff(){
+        contestIsOn = false;
+    }
+
 }

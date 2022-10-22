@@ -3,20 +3,13 @@ package AgentMainScenePane;
 import AgentMainScenePane.Body.AgentCandidates.AgentCandidatesPaneController;
 import AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController;
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
-import DTO.AgentCandidatesInformation;
+import DTO.DataToAgentApplicationTableView;
 import DTO.DataToInitializeMachine;
 import DTO.TaskToAgent;
-import DesktopUserInterface.MainScene.ErrorDialog;
-import Engine.AgentsManager.AgentTask;
 import Engine.AgentsManager.AgentThreadFactory;
-import Engine.AgentsManager.AgentWorker;
 import Engine.Dictionary;
 import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
-import EnigmaMachine.Settings.ReflectorIdSector;
-import EnigmaMachine.Settings.Sector;
-import EnigmaMachine.Settings.StartingRotorPositionSector;
-import Utils.HttpClientUtil;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,21 +17,16 @@ import javafx.scene.layout.AnchorPane;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static AgentsServletsPaths.AgentServletsPaths.BATTLE_CANDIDATES_SERVLET;
-import static AgentsServletsPaths.AgentServletsPaths.TASKS_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.ACTION;
-import static Utils.Constants.GSON_INSTANCE;
 
 public class AgentMainScenePaneController {
     private CompetitionHandler competitionHandler;
@@ -198,7 +186,8 @@ public class AgentMainScenePaneController {
     }
     private void startWorking() {
 
-        competitionHandler = new CompetitionHandler(tasksPool, engineManager, contestTasksQueue, agentName, client,this, tasksQueue );
+        competitionHandler = new CompetitionHandler(new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, tasksQueue, new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy())
+        , engineManager, new LinkedBlockingQueue<>(), agentName, client,this, new LinkedBlockingQueue<>() );
         String threadName = competitionHandler.getName();
         competitionHandler.start();
 
@@ -253,7 +242,7 @@ public class AgentMainScenePaneController {
         agentProgressAndDataPaneController.updateTasksPulled(numberOfTasksPulled);
     }
 
-    public void updateCandidatesTable(List<AgentCandidatesInformation> agentCandidatesInformationList) {
+    public void updateCandidatesTable(List<DataToAgentApplicationTableView> agentCandidatesInformationList) {
         agentCandidatesPaneController.updateCandidatesTable(agentCandidatesInformationList);
     }
 

@@ -36,6 +36,7 @@ public class AgentLoginPaneController implements Closeable {
     private static final String AGENT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/AgentMainScenePane/AgentMainScenePane.fxml";
     @FXML
     private AnchorPane agentLoginPane;
+    private int numberOfAlliesToRegisterTo;
     private String agentName;
     private String chosenTeam;
     private Integer numberOfThreads;
@@ -84,6 +85,7 @@ public class AgentLoginPaneController implements Closeable {
         this.chosenTeam = "";
         this.numberOfThreads = 0;
         this.tasksPulledEachTime = 0L;
+        this.numberOfAlliesToRegisterTo = 0;
     }
     @FXML public void initialize(){
         initializeTeamsTable();
@@ -125,6 +127,7 @@ public class AgentLoginPaneController implements Closeable {
                 } else {
                     Platform.runLater(() -> new ErrorDialog(new Exception("Failed to register to ally"), "Error"));
                 }
+                response.close();
             }
         });
     }
@@ -152,16 +155,18 @@ public class AgentLoginPaneController implements Closeable {
     }
     private void updateOptionalTeamsTable(List<TeamNameColumn> optionalTeams) {
         Platform.runLater(() -> {
-            clearTable();
+            if(optionalTeams.size() != numberOfAlliesToRegisterTo) {
+                clearTable();
+                numberOfAlliesToRegisterTo = optionalTeams.size();
+                if (optionalTeams != null && optionalTeams.size() > 0) {
 
-            if(optionalTeams != null && optionalTeams.size() > 0) {
+                    ObservableList<TeamNameColumn> allTeams = teamNameTable.getItems();
+                    for (TeamNameColumn team : optionalTeams) {
+                        allTeams.add(new TeamNameColumn(team.getTeamName()));
+                        teamNameTable.setItems(allTeams);
+                    }
 
-                ObservableList<TeamNameColumn> allTeams = teamNameTable.getItems();
-                for(TeamNameColumn team : optionalTeams) {
-                    allTeams.add(new TeamNameColumn(team.getTeamName()));
-                    teamNameTable.setItems(allTeams);
                 }
-
             }
 
         });

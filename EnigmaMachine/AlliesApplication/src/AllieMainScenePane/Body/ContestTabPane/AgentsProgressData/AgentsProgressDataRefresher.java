@@ -21,6 +21,7 @@ import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static Utils.Constants.ACTION;
 
 public class AgentsProgressDataRefresher extends TimerTask {
+    private long tasksDoneByAlly;
     private Consumer<List<AgentsProgressAndDataTable>> updateAgentsProgressDataTable;
     private Consumer<AlliesTasksProgressToLabels> updateAlliesTasksProgressToLabels;
 

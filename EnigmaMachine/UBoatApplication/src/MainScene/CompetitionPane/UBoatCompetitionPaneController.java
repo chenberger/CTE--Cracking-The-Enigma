@@ -44,7 +44,6 @@ import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.*;
 
 public class UBoatCompetitionPaneController implements Closeable {
-
     private String UBoatName;
     private Timer timer;
     private TimerTask alliesInBattleRefresher;
@@ -64,6 +63,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML private TableColumn<TeamsTable, Integer> numOfAgentsCol;
     @FXML private TableColumn<TeamsTable, Long> taskSizeCol;
     private SimpleBooleanProperty isProcessedWordExist;
+    private SimpleBooleanProperty isReadyToBattle;
     private SimpleBooleanProperty areTeamsInBattle;
     private boolean isWordProcessed;
 
@@ -75,7 +75,7 @@ public class UBoatCompetitionPaneController implements Closeable {
             uBoatCandidatesPaneController.setUBoatCompetitionPaneController(this);
         }
 
-        readyButton.disableProperty().bind(isProcessedWordExist.not());
+        readyButton.disableProperty().bind(isProcessedWordExist.not().or(isReadyToBattle));
         initializeCompetitionTable();
     }
 
@@ -91,6 +91,7 @@ public class UBoatCompetitionPaneController implements Closeable {
         this.isProcessedWordExist = new SimpleBooleanProperty(false);
         UBoatName = "";
         this.areTeamsInBattle = new SimpleBooleanProperty(false);
+        this.isReadyToBattle = new SimpleBooleanProperty(false);
         isWordProcessed = false;
     }
 
@@ -284,7 +285,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                 if (response.isSuccessful()) {
                     uBoatCandidatesPaneController.startListRefreshing();
                     Platform.runLater(() -> {
-                        readyButton.setDisable(true);
+                        isReadyToBattle.set(true);
                     });
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to set ready");
@@ -314,4 +315,5 @@ public class UBoatCompetitionPaneController implements Closeable {
     public void stopContest() {
         uBoatCandidatesPaneController.stopContest();
     }
+
 }

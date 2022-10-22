@@ -11,6 +11,7 @@ import java.util.List;
 public class BattleField {
     /* this class is the battle field class, it contains the battle field name, the level of the battle field and the number of allies in the battle field */
     private String battleFieldName;
+    private String winner;
 
     private List<AgentCandidatesInformation> agentsCandidatesInformation;
     private String processedMessage;
@@ -32,6 +33,7 @@ public class BattleField {
         this.numberOfAlliesThatAreReady = 0;
         this.agentsCandidatesInformation = new ArrayList<>();
         this.originalMessage = "";
+        winner = "";
     }
     public BattleField(){
         this.battleFieldName = "";
@@ -149,5 +151,17 @@ public class BattleField {
     public List<AgentCandidatesInformation> getAgentsCandidatesInformation() {
         return agentsCandidatesInformation;
     }
+    public void stopContest(){
+        for(Allie allie : alliesInBattleField){
+            allie.stopContest();
+        }
+        numberOfAlliesThatAreReady = 0;
+    }
 
+    public String getWinner() {
+        return winner;
+    }
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
 }

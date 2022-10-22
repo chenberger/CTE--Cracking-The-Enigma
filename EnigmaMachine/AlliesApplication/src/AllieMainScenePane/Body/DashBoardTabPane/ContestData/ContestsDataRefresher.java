@@ -93,6 +93,7 @@ public class ContestsDataRefresher extends TimerTask {
         List<DifficultyLevel> difficultyLevels = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("difficultyLevels"), DifficultyLevel[].class));
         Map<String, String>  contestsStatus = GSON_INSTANCE.fromJson(jsonObject.get("contestsStatus"), Map.class);
         Map<String, Integer> numberOfTeamsRegisteredToEachContest = GSON_INSTANCE.fromJson(jsonObject.get("numberOfTeamsRegisteredToEachContest"), Map.class);
+
         List<Integer> numberOfTeamsNeededToEachContest = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("numberOfTeamsNeededToEachContest"), Integer[].class));
         return new OnLineContestsDataToTable(battlesNames, uBoatsNames, difficultyLevels, contestsStatus, numberOfTeamsRegisteredToEachContest, numberOfTeamsNeededToEachContest);
 

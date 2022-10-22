@@ -108,6 +108,7 @@ public class EncryptDecryptActionsGridController {
                         uBoatCompetitionPaneController.setProcessedWordExist(true);
                         uBoatCompetitionPaneController.machineDetailsChanged();
 
+
                         //uBoatCompetitionPaneController.setIsWordProcessed();
                         //uBoatCompetitionPaneController.setIsReadyOrNot();
                         //uBoatCompetitionPaneController.addDecryptedWord(decryptedWord);

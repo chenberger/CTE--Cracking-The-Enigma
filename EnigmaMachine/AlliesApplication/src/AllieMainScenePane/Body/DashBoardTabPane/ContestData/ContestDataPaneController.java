@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static Utils.Constants.REFRESH_RATE;
 
 public class ContestDataPaneController implements Closeable {
+    private int numberOfContests;
     private AllieMainScenePaneController allieMainScenePaneController;
     private DashboardTabPaneController dashboardTabPaneController;
     private ContestTabPaneController contestTabPaneController;
@@ -57,6 +58,7 @@ public class ContestDataPaneController implements Closeable {
     }
 
     public void startListRefresher() {
+        numberOfContests = 0;
         contestsDataRefresher = new ContestsDataRefresher(
                 autoUpdate,
                 this::updateContestsTable);
@@ -66,26 +68,29 @@ public class ContestDataPaneController implements Closeable {
 
     private void updateContestsTable(OnLineContestsDataToTable onLineContestsDataToTable) {
         Platform.runLater(() -> {
-            clearContestsTable();
+            if(onLineContestsDataToTable.getBattleNames().size() != numberOfContests) {
+                clearContestsTable();
 
-            List<String> battleNames = onLineContestsDataToTable.getBattleNames();
-            List<String> boatNames = onLineContestsDataToTable.getUBoatNames();
-            Map<String,String> contestStatuses = onLineContestsDataToTable.getContestsStatus();
-            List<String> difficulties = onLineContestsDataToTable.getDifficultyLevels().stream().map(Enum::toString).collect(Collectors.toList());
-            Map<String,Integer> teamsRegisteredToEachBattle = onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest();
-            List<Integer> numberOfTeamsNeededToEachContest = onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest();
+                List<String> battleNames = onLineContestsDataToTable.getBattleNames();
+                List<String> boatNames = onLineContestsDataToTable.getUBoatNames();
+                Map<String, String> contestStatuses = onLineContestsDataToTable.getContestsStatus();
+                List<String> difficulties = onLineContestsDataToTable.getDifficultyLevels().stream().map(Enum::toString).collect(Collectors.toList());
+                Map<String, Integer> teamsRegisteredToEachBattle = onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest();
+                List<Integer> numberOfTeamsNeededToEachContest = onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest();
 
-            List<String> teamsRegisteredAndNeeded = setTeamsRegisteredAndNeeded(teamsRegisteredToEachBattle, numberOfTeamsNeededToEachContest, battleNames);
-            for (int i = 0; i < boatNames.size(); i++) {
-                OnLineContestsTable contestToAdd = new OnLineContestsTable(
-                        battleNames.get(i),
-                        boatNames.get(i),
-                        contestStatuses.get(boatNames.get(i)),
-                        difficulties.get(i),
-                        teamsRegisteredAndNeeded.get(i));
-                ObservableList<OnLineContestsTable> tableData = contestsTable.getItems();
-                tableData.add(contestToAdd);
-                contestsTable.setItems(tableData);
+                List<String> teamsRegisteredAndNeeded = setTeamsRegisteredAndNeeded(teamsRegisteredToEachBattle, numberOfTeamsNeededToEachContest, battleNames);
+                for (int i = 0; i < boatNames.size(); i++) {
+                    OnLineContestsTable contestToAdd = new OnLineContestsTable(
+                            battleNames.get(i),
+                            boatNames.get(i),
+                            contestStatuses.get(boatNames.get(i)),
+                            difficulties.get(i),
+                            teamsRegisteredAndNeeded.get(i));
+                    ObservableList<OnLineContestsTable> tableData = contestsTable.getItems();
+                    tableData.add(contestToAdd);
+                    contestsTable.setItems(tableData);
+                    numberOfContests = battleNames.size();
+                }
             }
         });
     }
@@ -95,8 +100,8 @@ public class ContestDataPaneController implements Closeable {
         //TODO: fix this so i can show the number registered and needed
         for (int i = 0; i < battleNames.size(); i++) {
             String battleName = battleNames.get(i);
-            //Double numberOfTeamsRegistered = Double.valueOf(teamsRegisteredToEachBattle.get(battleName) == null ? 0 : teamsRegisteredToEachBattle.get(battleName));
-            //Double numberOfTeamsNeeded = Double.valueOf(numberOfTeamsNeededToEachContest.get(i));
+            //Integer numberOfTeamsRegistered = Integer.valueOf(teamsRegisteredToEachBattle.get(battleName) == null ? "0" : teamsRegisteredToEachBattle.get(battleName).toString());
+            //int numberOfTeamsNeeded = numberOfTeamsNeededToEachContest.get(i);
             teamsRegisteredAndNeeded.add(0 + "/" + 2);
         }
         return teamsRegisteredAndNeeded;

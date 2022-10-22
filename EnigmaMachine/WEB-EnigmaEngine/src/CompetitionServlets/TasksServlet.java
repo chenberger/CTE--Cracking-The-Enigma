@@ -6,6 +6,7 @@ import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
+import Engine.BattleField;
 import Engine.UBoatManager.UBoat;
 import Engine.UBoatManager.UBoatManager;
 import com.google.gson.Gson;
@@ -13,6 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import okhttp3.Request;
+import okhttp3.Response;
 import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
@@ -30,17 +33,48 @@ public class TasksServlet extends HttpServlet {
         }
         else if(request.getParameter("action").equals("stopContest")){
             stopCurrentContest(request, response);
+        } else if (request.getParameter("action").equals("checkIfContestIsOver")) {
+            checkIfContestIsOver(request, response);
         }
+
 
     }
 
     private synchronized void stopCurrentContest(HttpServletRequest request, HttpServletResponse response) {
         UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
         UBoat uBoat = uBoatManager.getUBoat(SessionUtils.getUsername(request));
+        uBoat.getBattleField().setWinner(request.getParameter("winner"));
         stopContest(uBoat);
         response.setStatus(HttpServletResponse.SC_OK);
     }
+    private synchronized void checkIfContestIsOver(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+        String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+        UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+        if(uBoat.getBattleField().getWinner().equals("")){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        else if(uBoat.getBattleField().getWinner().equals(allie.getTeamName())){
+            String message = "You Won! the encrypted message is: " + uBoat.getBattleField().getOriginalMessage();
+            Gson gson = new Gson();
+            String json = gson.toJson(message);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(json);
+            response.getWriter().flush();
+        }
+        else{
+            String message = "You Lost! The winner is: " + uBoat.getBattleField().getWinner() +
+                    System.lineSeparator() + "the encrypted message is: " + uBoat.getBattleField().getOriginalMessage();
+            Gson gson = new Gson();
+            String json = gson.toJson(message);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(json);
+            response.getWriter().flush();
 
+        }
+    }
     private synchronized void getTasksFromTasksProducer(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();
         boolean wait = true;
@@ -81,6 +115,7 @@ public class TasksServlet extends HttpServlet {
     }
 
     private void stopContest(UBoat uBoat) {
+        uBoat.getBattleField().stopContest();
         uBoat.setContestOver();
     }
 }
