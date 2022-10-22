@@ -34,6 +34,7 @@ import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
 
 public class MainUBoatScenePaneController {
+    private boolean isWinnerFound;
     private String currentSessionId;
     private String currentBoatName;
     private UBoatMachinePaneController uBoatMachinePaneController;
@@ -61,6 +62,7 @@ public class MainUBoatScenePaneController {
         this.isMachineExsists = new SimpleBooleanProperty(false);
         this.isCodeConfigurationSet = new SimpleBooleanProperty(false);
         this.httpClient = new OkHttpClient().newBuilder().build();
+        this.isWinnerFound = false;
     }
     public void initialize() {
         if (UBoatLoginPane != null) {
@@ -282,17 +284,21 @@ public class MainUBoatScenePaneController {
     }
 
     public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {
-        stopContest();
+        stopContest(contestWinner.getWinnerName());
         Platform.runLater(() -> {
-            new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
+            if(!isWinnerFound) {
+                isWinnerFound = true;
+                new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
+            }
         });
     }
 
-    private void stopContest() {
+    private void stopContest(String contestWinner) {
         UBoatCompetitionPaneController.stopContest();
         String finalUrl = HttpUrl.parse(TASKS_SERVLET)
                 .newBuilder()
                 .addQueryParameter(ACTION, "stopContest")
+                .addQueryParameter("winner", contestWinner)
                 .build()
                 .toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {

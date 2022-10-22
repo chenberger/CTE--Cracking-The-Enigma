@@ -90,7 +90,6 @@ public class AllieMainScenePaneController {
     }
     public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
         try {
-            ///contestsDataPaneController.getSelectedContest();
             String chosenContestName = dashboardTabPaneController.getSelectedContest();
             String finalUrl = HttpUrl.parse(REGISTER_TO_BATTLE_SERVLET)
                     .newBuilder()
@@ -240,7 +239,7 @@ public class AllieMainScenePaneController {
                 if(response.code() == 200) {
                     new ErrorDialog(new Exception("Logged out successfully"), "Logged out");
                     dashboardTabPaneController.close();
-                    contestsTabPaneController.close();
+                    contestsTabPaneController.closeActivity();
                 }
                 else{
                     new ErrorDialog(new Exception("Error logging out"), "Error");

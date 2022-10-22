@@ -61,13 +61,15 @@ public class Allie {
     public Long getTotalNumberOfTasks(){
         return totalNumberOfTasks;
     }
-    public void setTotalNumberOfTasks(long totalNumberOfTasks) {
-        this.totalNumberOfTasks = totalNumberOfTasks;
-    }
+    public void setTotalNumberOfTasks(long totalNumberOfTasks) {this.totalNumberOfTasks = totalNumberOfTasks;}
+
     public void increaseTasksCompleted(long tasksCompleted) {
         this.tasksCompleted += tasksCompleted;
     }
-    public void increaseTasksProduced(long tasksProduced) {
+    public void updateTasksCompleted(long tasksCompleted) {
+        this.tasksCompleted = tasksCompleted;
+    }
+    public synchronized void increaseTasksProduced(long tasksProduced) {
         this.tasksProduced += tasksProduced;
     }
 
@@ -129,5 +131,25 @@ public class Allie {
 
     public DecryptionManager getDecryptionManager() {
         return decryptionManager;
+    }
+
+    public void stopContest() {
+        decryptionManager.stopDeciphering();
+        for(Agent agent : agentsParticipatingInDecryption){
+            agent.stopWorking();
+        }
+        //battleName = "";
+        agentsParticipatingInDecryption.clear();
+        isReady = false;
+        contestOnline = false;
+
+    }
+
+    public Long getTotalTasksCompleted() {
+        long totalTasksCompleted = 0;
+        for(Agent agent : agents){
+            totalTasksCompleted += agent.getNumberOfTasksDone();
+        }
+        return totalTasksCompleted;
     }
 }

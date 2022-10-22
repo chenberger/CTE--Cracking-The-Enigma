@@ -3,6 +3,7 @@ package AgentMainScenePane;
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
 import AgentMainScenePane.Body.ContestStatusRefresher;
 import DTO.AgentCandidatesInformation;
+import DTO.DataToAgentApplicationTableView;
 import DTO.TaskToAgent;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AgentsManager.AgentTask;
@@ -89,8 +90,12 @@ public class CompetitionHandler extends Thread implements Closeable {
         System.out.println("Contest is over");
     }
 
-    private void updateCandidatesTableOfAgent() {
-        agentMainScenePaneController.updateCandidatesTable(agentCandidatesInformationList);
+    private synchronized void updateCandidatesTableOfAgent() {
+        List<DataToAgentApplicationTableView> candidatesInfoToAgentTable = new ArrayList<>();
+        for(AgentCandidatesInformation agentCandidatesInformation : agentCandidatesInformationList){
+            candidatesInfoToAgentTable.add(new DataToAgentApplicationTableView(agentCandidatesInformation.getCandidateString(), agentCandidatesInformation.getNumberOfTask(),agentCandidatesInformation.getConfigurationOfTask()));
+        }
+        agentMainScenePaneController.updateCandidatesTable(candidatesInfoToAgentTable);
     }
 
     private boolean isContestActive(Boolean isContestActive) {
@@ -208,9 +213,10 @@ public class CompetitionHandler extends Thread implements Closeable {
             Gson gson = new Gson();
             String responseString = response.body().string();
             List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
-            numberOfTasksPulled += tasksToAgent.size();
 
             CountDownLatch countDownLatch = new CountDownLatch(tasksToAgent.size());
+            numberOfTasksPulled += tasksToAgent.size();
+            System.out.println("Number of tasks pulled: " + numberOfTasksPulled);
             updateTasksPulled(numberOfTasksPulled);
 
             try {

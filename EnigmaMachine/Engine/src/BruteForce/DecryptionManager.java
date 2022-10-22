@@ -43,9 +43,11 @@ public class DecryptionManager {
         this.decryptedMessage = null;
         this.isMissionOnProgress = false;
     }
+
     public void setAllie(Allie allie) {
         this.allie = allie;
     }
+
     public DecryptionManager(EnigmaMachine enigmaMachine, Dictionary dictionary, BruteForceUIAdapter bruteForceUIAdapter, BruteForceTask bruteForceTask, String encryptedString) {
         this.bruteForceUIAdapter = bruteForceUIAdapter;
         this.bruteForceTask = bruteForceTask;
@@ -57,10 +59,9 @@ public class DecryptionManager {
     }
 
     public void setMaxCurrentAmountOfAgents(int maxCurrentAmountOfAgents) throws IllegalAgentsAmountException {
-        if(maxCurrentAmountOfAgents >= MIN_AGENTS_AMOUNT && maxCurrentAmountOfAgents <= MAX_AGENTS_AMOUNT) {
+        if (maxCurrentAmountOfAgents >= MIN_AGENTS_AMOUNT && maxCurrentAmountOfAgents <= MAX_AGENTS_AMOUNT) {
             this.maxCurrentAmountOfAgents = maxCurrentAmountOfAgents;
-        }
-        else {
+        } else {
             throw new IllegalAgentsAmountException(maxCurrentAmountOfAgents, MIN_AGENTS_AMOUNT, MAX_AGENTS_AMOUNT);
         }
     }
@@ -69,26 +70,26 @@ public class DecryptionManager {
         return maxCurrentAmountOfAgents;
     }
 
-   //public void startDeciphering() throws Exception {
-   //    try {
-   //        if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
-   //            //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
-   //            throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
-   //        }
+    //public void startDeciphering() throws Exception {
+    //    try {
+    //        if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
+    //            //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
+    //            throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
+    //        }
 
-   //        tasksManager = new TasksManager(enigmaMachine, decryptedMessage, bruteForceTask, bruteForceUIAdapter,
-   //                                        dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
-   //                                        (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
-   //        //mainController.bindTaskToUIComponents(tasksManager, onFinish);
-   //        tasksManager.valueProperty().addListener((observable, oldValue, newValue) -> {isMissionOnProgress = false; });
-   //        isMissionOnProgress = true;
-   //
-   //        tasksManagerThread = new Thread(tasksManager);
-   //        tasksManagerThread.start();
-   //    }catch (Exception e) {
-   //        throw new BruteForceException("You must enter a string to process before start deciphering");
-   //    }
-   //}
+    //        tasksManager = new TasksManager(enigmaMachine, decryptedMessage, bruteForceTask, bruteForceUIAdapter,
+    //                                        dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
+    //                                        (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
+    //        //mainController.bindTaskToUIComponents(tasksManager, onFinish);
+    //        tasksManager.valueProperty().addListener((observable, oldValue, newValue) -> {isMissionOnProgress = false; });
+    //        isMissionOnProgress = true;
+    //
+    //        tasksManagerThread = new Thread(tasksManager);
+    //        tasksManagerThread.start();
+    //    }catch (Exception e) {
+    //        throw new BruteForceException("You must enter a string to process before start deciphering");
+    //    }
+    //}
 
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {
@@ -134,6 +135,8 @@ public class DecryptionManager {
         this.decryptedSettingsFormat = currentSettingsFormat;
     }
 
+
+
     public void stopBruteForceMission() {
         this.isMissionOnProgress = false;
         tasksManager.cancel();
@@ -145,10 +148,10 @@ public class DecryptionManager {
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
     }
 
-   //public void pauseMission() {
-   //    System.out.println("=== try to pause ");
-   //    tasksManagerThread.interrupt();
-   //}
+    //public void pauseMission() {
+    //    System.out.println("=== try to pause ");
+    //    tasksManagerThread.interrupt();
+    //}
 
     //public void resumeMission() {
     //    tasksManager.resumeMission();
@@ -158,21 +161,22 @@ public class DecryptionManager {
         return isMissionOnProgress;
     }
 
-    public void startDeciphering(String processedMessage, Long taskSize, DifficultyLevel level, EngineManager engineManager)  {
+    public void startDeciphering(String processedMessage, Long taskSize, DifficultyLevel level, EngineManager engineManager) {
         try {
             setRelevantDecipheringData(processedMessage, taskSize, level, engineManager);
-            if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
+            if (decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
                 //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
                 throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
             }
 
-            tasksProducer = new TasksProducer(bruteForceTask,decryptedMessage, dictionary,  enigmaMachine, decryptedSettingsFormat,allie);
+            tasksProducer = new TasksProducer(bruteForceTask, decryptedMessage, dictionary, enigmaMachine, decryptedSettingsFormat, allie);
             isMissionOnProgress = true;
+            tasksProducer.setContestIsOn();
 
             tasksProducerThread = new Thread(tasksProducer);
             tasksProducerThread.start();
 
-        }catch (CloneNotSupportedException | IllegalArgumentException e) {
+        } catch (CloneNotSupportedException | IllegalArgumentException e) {
             new Exception("Error: Failed to clone enigma machine");
         }
 
@@ -180,12 +184,25 @@ public class DecryptionManager {
 
     private void setRelevantDecipheringData(String processedMessage, Long taskSize, DifficultyLevel level, EngineManager engineManager) throws CloneNotSupportedException {
         this.decryptedMessage = processedMessage;
-        this.bruteForceTask = new BruteForceTask(level,taskSize.intValue());
+        this.bruteForceTask = new BruteForceTask(level, taskSize.intValue());
         this.dictionary = engineManager.getDictionaryObject();
         this.enigmaMachine = engineManager.getEnigmaMachine();
         setCodeConfigurationBeforeProcess(this.enigmaMachine.getCurrentSettingsFormat());
     }
+
     public TasksProducer getTasksProducer() {
         return tasksProducer;
     }
+
+    public void stopDeciphering() {
+        this.isMissionOnProgress = false;
+        try {
+            tasksProducer.setContestIsOff();
+            tasksProducerThread.interrupt();
+            System.out.println("=== stop deciphering");
+        } catch (Exception e) {
+            System.out.println("Error: Failed to stop deciphering");
+        }
+    }
+
 }

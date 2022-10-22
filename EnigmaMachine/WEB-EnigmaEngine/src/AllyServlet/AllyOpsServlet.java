@@ -51,8 +51,9 @@ public class AllyOpsServlet extends HttpServlet {
         try {
             AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
             Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+            long totalTasksCompletedByAlly = allie.getTotalTasksCompleted();
             AlliesTasksProgressToLabels alliesTasksProgressToLabels = new AlliesTasksProgressToLabels(allie.getTotalNumberOfTasks(),
-                    allie.getTasksCompleted(), allie.getTasksProduced());
+                    totalTasksCompletedByAlly, allie.getTasksProduced());
             Gson gson = new Gson();
             String json = gson.toJson(alliesTasksProgressToLabels);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -82,6 +83,7 @@ public class AllyOpsServlet extends HttpServlet {
                 response.getWriter().flush();
             }
             else{
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("No agents in this allie");
             }
 
@@ -91,7 +93,7 @@ public class AllyOpsServlet extends HttpServlet {
     }
 
     private synchronized String getTasksPulledAndDone(Agent agent) {
-        return agent.getNumberOfTasksPulled() + "/" + agent.getNumberOfTasksDone();
+        return  agent.getNumberOfTasksDone() + "/" + agent.getNumberOfTasksPulled();
     }
 
     private synchronized void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {

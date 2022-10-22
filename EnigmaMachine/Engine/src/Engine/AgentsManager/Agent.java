@@ -87,5 +87,14 @@ public class Agent {
     public void setTotalNumberOfCandidatesFound(int totalCandidatesFound){
         this.totalCandidatesFound = totalCandidatesFound;
     }
+
+    public void stopWorking() {
+        //TODO chen: stop the agent from working when the competition is over.
+    }
+    public void clearAgentsBattleData(){
+        tasksPulled = 0L;
+        tasksDone = 0L;
+        totalCandidatesFound = 0;
+    }
 }
 
