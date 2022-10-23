@@ -20,7 +20,7 @@ public class AutoCompleteBox<T> implements EventHandler{
 
     private void doAutoCompleteBox() {
         this.comboBox.setEditable(true);
-        this.comboBox.getEditor().setText(null);;
+        this.comboBox.getEditor().setText(null);
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             comboBox.getEditor().setText(oldValue.toString() + newValue.toString());
             comboBox.show();
@@ -46,6 +46,7 @@ public class AutoCompleteBox<T> implements EventHandler{
         }
 
         if(list.isEmpty()) this.comboBox.hide();
+        else this.comboBox.show();
 
         this.comboBox.setItems(list);
     }

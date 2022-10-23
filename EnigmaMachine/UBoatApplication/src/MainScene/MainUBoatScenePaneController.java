@@ -2,11 +2,9 @@ package MainScene;
 
 
 import DTO.ContestWinnerInformation;
-import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import DesktopUserInterface.MainScene.ErrorDialog;
-import Engine.EngineManager;
 import LoginPane.UBoatLoginPaneController;
-
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import TopBorderPane.TopBorderPaneController;
 import UBoatServletsPaths.UBoatsServletsPaths;
@@ -34,9 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import static Constants.ServletConstants.USERNAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
-import static Utils.Constants.*;
+import static Utils.Constants.ACTION;
+import static Utils.Constants.TASKS_SERVLET;
 
 public class MainUBoatScenePaneController {
     private boolean isWinnerFound;
@@ -283,7 +281,8 @@ public class MainUBoatScenePaneController {
         machineGridController.setCodeConfiguration(currentMachineConfiguration);
     }
 
-    public void newCodeConfigurationSetted() {
+    public void newCodeConfigurationSetted(String currentCodeConfiguration) {
+        UBoatCompetitionPaneController.setNewConfiguration(currentCodeConfiguration);
         isCodeConfigurationSet.set(true);
     }
 

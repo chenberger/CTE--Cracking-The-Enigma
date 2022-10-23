@@ -106,10 +106,9 @@ public class ManuallyCodeController {
         translateFromControllersToSectors();
 
         try {
-            if(codeCalibrationController.codeConfigurationSetted(codeConfigurationSectors)) {
-                codeCalibrationController.codeConfigurationSetSuccessfully();
+             codeCalibrationController.codeConfigurationSetted(codeConfigurationSectors, codeCalibrationController);
+               // codeCalibrationController.codeConfigurationSetSuccessfully();
             }
-        }
         catch (Exception e) {
             new ErrorDialog(e, "Failed to initialize the code configuration manually");
         }
