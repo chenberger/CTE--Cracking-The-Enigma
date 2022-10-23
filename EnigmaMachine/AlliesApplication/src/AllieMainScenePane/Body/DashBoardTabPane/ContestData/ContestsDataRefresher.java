@@ -6,6 +6,7 @@ import DTO.OnLineContestsDataToTable;
 import Utils.HttpClientUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -14,6 +15,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +94,8 @@ public class ContestsDataRefresher extends TimerTask {
         List<String> uBoatsNames = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("uBoatNames"), String[].class));
         List<DifficultyLevel> difficultyLevels = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("difficultyLevels"), DifficultyLevel[].class));
         Map<String, String>  contestsStatus = GSON_INSTANCE.fromJson(jsonObject.get("contestsStatus"), Map.class);
-        Map<String, Integer> numberOfTeamsRegisteredToEachContest = GSON_INSTANCE.fromJson(jsonObject.get("numberOfTeamsRegisteredToEachContest"), Map.class);
+        Type numberOfTeamsRegisteredToEachContestType = new TypeToken<Map<String, Integer>>(){}.getType();
+        Map<String, Integer> numberOfTeamsRegisteredToEachContest = GSON_INSTANCE.fromJson(jsonObject.get("numberOfTeamsRegisteredToEachContest"), numberOfTeamsRegisteredToEachContestType);
 
         List<Integer> numberOfTeamsNeededToEachContest = Arrays.asList(GSON_INSTANCE.fromJson(jsonObject.get("numberOfTeamsNeededToEachContest"), Integer[].class));
         return new OnLineContestsDataToTable(battlesNames, uBoatsNames, difficultyLevels, contestsStatus, numberOfTeamsRegisteredToEachContest, numberOfTeamsNeededToEachContest);

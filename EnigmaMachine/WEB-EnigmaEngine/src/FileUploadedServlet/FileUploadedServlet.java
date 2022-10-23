@@ -36,7 +36,7 @@ public class FileUploadedServlet extends HttpServlet {
      response.setCharacterEncoding("UTF-8");
      PrintWriter out = response.getWriter();
      synchronized (this){
-        String name = SessionUtils.getUsername(request);
+        String name = request.getParameter(USERNAME); //SessionUtils.getUsername(request);
         name = name != null ? name : "Guest";
 
 

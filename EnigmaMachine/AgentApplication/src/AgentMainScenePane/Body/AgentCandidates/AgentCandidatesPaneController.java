@@ -43,12 +43,22 @@ public class AgentCandidatesPaneController implements Closeable {
     }
 
     public void startRefreshing() {
+        agentCandidatesRefresher = new AgentsCandidatesRefresher(this::updateCandidatesTable);
+        timer = new Timer();
+        timer.schedule(agentCandidatesRefresher, 0, 100);
     }
     @Override public void close() {
+        if (agentCandidatesRefresher != null) {
+            agentCandidatesRefresher.cancel();
+        }
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     public void updateCandidatesTable(List<DataToAgentApplicationTableView> agentCandidatesInformationList) {
         Platform.runLater(()->{
+            candidatesTableView.getItems().clear();
             for (DataToAgentApplicationTableView agentCandidatesInformation : agentCandidatesInformationList) {
                 candidatesTableView.getItems().add(new DataToAgentApplicationTableView(agentCandidatesInformation.getCandidateString(),agentCandidatesInformation.getNumberOfTask(),agentCandidatesInformation.getConfigurationOfTask()));
             }

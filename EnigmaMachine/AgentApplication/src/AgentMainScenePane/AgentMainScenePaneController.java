@@ -186,8 +186,8 @@ public class AgentMainScenePaneController {
     }
     private void startWorking() {
 
-        competitionHandler = new CompetitionHandler(new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, tasksQueue, new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy())
-        , engineManager, new LinkedBlockingQueue<>(), agentName, client,this, new LinkedBlockingQueue<>() );
+        competitionHandler = new CompetitionHandler(new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy())
+        , engineManager, new LinkedBlockingQueue<>(), agentName, new OkHttpClient(),this, new LinkedBlockingQueue<>() );
         String threadName = competitionHandler.getName();
         competitionHandler.start();
 
@@ -244,6 +244,10 @@ public class AgentMainScenePaneController {
 
     public void updateCandidatesTable(List<DataToAgentApplicationTableView> agentCandidatesInformationList) {
         agentCandidatesPaneController.updateCandidatesTable(agentCandidatesInformationList);
+    }
+
+    public void stopRefreshing() {
+        agentCandidatesPaneController.close();
     }
 
 
