@@ -197,9 +197,9 @@ public class DecryptionManager {
     public void stopDeciphering() {
         this.isMissionOnProgress = false;
         try {
-            tasksProducer.setContestIsOff();
             tasksProducerThread.interrupt();
-            System.out.println("=== stop deciphering");
+            tasksProducer.setContestIsOff();
+            //System.out.println("=== stop deciphering");
         } catch (Exception e) {
             System.out.println("Error: Failed to stop deciphering");
         }

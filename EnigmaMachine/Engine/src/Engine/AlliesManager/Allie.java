@@ -70,7 +70,7 @@ public class Allie {
         this.tasksCompleted = tasksCompleted;
     }
     public synchronized void increaseTasksProduced(long tasksProduced) {
-        this.tasksProduced += tasksProduced;
+        this.tasksProduced = tasksProduced;
     }
 
     public List<Agent> getAgentsParticipatingInDecryption() {

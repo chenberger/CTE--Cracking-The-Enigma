@@ -145,7 +145,7 @@ public class BattleCandidatesServlet extends HttpServlet {
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
         Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
         Long tasksPulled = gson.fromJson(request.getParameter("numberOfTasksPulled"), Long.class);
-        agent.addNumberOfTasksPulled(tasksPulled);
+        agent.updateNumberOfTasksPulled(tasksPulled);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
