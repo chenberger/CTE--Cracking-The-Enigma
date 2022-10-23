@@ -43,7 +43,7 @@ public class UBoatMachinePaneController {
 
     public void setNewConfiguration(String currentCodeConfiguration) {
         currentCodeConfigurationPaneController.setCodeConfiguration(currentCodeConfiguration);
-        mainUBoatScenePaneController.newCodeConfigurationSetted();
+        mainUBoatScenePaneController.newCodeConfigurationSetted(currentCodeConfiguration);
     }
 
     public void newFileLoaded() {

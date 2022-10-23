@@ -26,13 +26,59 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="1200.0" GridPane.columnSpan="2" GridPane.rowSpan="2">
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" GridPane.columnSpan="2" GridPane.rowSpan="2">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <SplitPane dividerPositions="0.337228714524207" minHeight="350.0" minWidth="400.0" prefHeight="400.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.6479933110367893" minHeight="344.0" minWidth="400.0" prefHeight="344.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="398.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0">
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="393.0" prefWidth="767.0">
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="369.0" minHeight="10.0" prefHeight="302.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="50.0" minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                        <AnchorPane minHeight="100.0" minWidth="100.0" prefHeight="160.0" prefWidth="591.0">
+                                             <children>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="176.0" layoutY="105.0" prefHeight="395.0" prefWidth="771.0" AnchorPane.bottomAnchor="-93.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-180.0" AnchorPane.topAnchor="0.0">
+                                                   <content>
+                                                      <fx:include fx:id="encryptDecryptActionsGrid" source="EncryptDecryptActionsPane/EncryptDecryptActionsGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane GridPane.rowIndex="1">
+                                             <children>
+                                                <Button fx:id="readyButton" alignment="CENTER" layoutX="200.0" layoutY="22.0" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onReadyButtonClicked" prefHeight="55.0" prefWidth="191.0" text="Ready" textFill="#2da10a" AnchorPane.bottomAnchor="-33.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="22.0">
+                                                   <font>
+                                                      <Font name="Arial" size="18.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="300.0">
+                                 <children>
+                                    <fx:include fx:id="currentCodeConfiguration" prefHeight="300.0" source="../UBoatMachinePane/CurrentCodeConfigurationPane/CurrentCodeConfiguration.fxml" />
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <SplitPane dividerPositions="0.29797979797979796" prefHeight="319.0" prefWidth="1200.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
@@ -58,42 +104,13 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <GridPane>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints maxHeight="369.0" minHeight="10.0" prefHeight="302.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="275.0" minHeight="10.0" prefHeight="96.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="1148.0">
                                  <children>
-                                  <AnchorPane minHeight="100.0" minWidth="100.0" prefHeight="160.0" prefWidth="591.0">
-                                       <children>
-                                          <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="176.0" layoutY="105.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <content>
-                                                <fx:include fx:id="encryptDecryptActionsGrid" source="EncryptDecryptActionsPane/EncryptDecryptActionsGrid.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                             </content>
-                                          </ScrollPane>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane GridPane.rowIndex="1">
-                                       <children>
-                                          <Button fx:id="readyButton" alignment="CENTER" layoutX="302.0" layoutY="23.0" minHeight="30.0" minWidth="110.0" mnemonicParsing="false" onAction="#onReadyButtonClicked" prefHeight="48.0" prefWidth="185.0" text="Ready" textFill="#2da10a">
-                                             <font>
-                                                <Font name="Arial" size="18.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                    </AnchorPane>
+                                    <fx:include fx:id="uBoatCandidatesPane" source="CandidatesPane/UBoatCandidatesPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
-                              </GridPane>
+                              </AnchorPane>
                           </items>
                         </SplitPane>
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                     <children>
-                        <fx:include fx:id="uBoatCandidatesPane" source="CandidatesPane/UBoatCandidatesPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
               </items>

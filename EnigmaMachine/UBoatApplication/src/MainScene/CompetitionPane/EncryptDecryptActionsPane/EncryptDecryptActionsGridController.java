@@ -72,7 +72,6 @@ public class EncryptDecryptActionsGridController {
         if (wordToProcess.isEmpty()) {
             return;
         }
-
         //noinspection ConstantConditions
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.PROCESS_WORD_SERVLET)
@@ -134,8 +133,8 @@ public class EncryptDecryptActionsGridController {
     }
 
     @FXML private void onAddWordFromDictButtonClicked(ActionEvent event) {
-        //String wordToAdd = encryptedDecryptedWordText.getLength() > 0 ? " " + dictionarySearchComboBox.getEditor().getText() : dictionarySearchComboBox.getEditor().getText();
-        encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + dictionarySearchComboBox.getEditor().getText());
+        String wordToAdd = encryptedDecryptedWordText.getLength() > 0 ? " " + dictionarySearchComboBox.getEditor().getText() : dictionarySearchComboBox.getEditor().getText();
+        encryptedDecryptedWordText.setText(encryptedDecryptedWordText.getText() + wordToAdd);
         dictionarySearchComboBox.getEditor().setText("");
     }
     public void setDictionarySearchComboBox() {

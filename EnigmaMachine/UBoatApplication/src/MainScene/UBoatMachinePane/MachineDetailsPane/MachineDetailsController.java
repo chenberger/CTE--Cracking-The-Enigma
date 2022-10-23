@@ -58,7 +58,7 @@ public class MachineDetailsController {
         Platform.runLater(() -> {
             totalAmountRotorsLabel.setText("The total amount of rotors that can be use in the machine is: " + machineDetailsToShow.getNumOfPossibleRotors());
             currentAmountRotorsLabel.setText("The current amount of rotors in use in the machine is: " + machineDetailsToShow.getNumOfRotorsInUse());
-            totalAmountReflectorsLabel.setText("The total amount of reflectors that can be use in the machine is: " + machineDetailsToShow.getNumberOfReflectors());
+            totalAmountReflectorsLabel.setText("The total amount of reflectors that can be use in the machine is: " + machineDetailsToShow.getNumOfPossibleRotors());
             messagesAmountLabel.setText("The total amount of messages have been processed by the machine so far is: " + machineDetailsToShow.getNumOfProcessedMessages());
             currentCodeLabel.setText(machineDetailsToShow.getCurrentCodeConfiguration());
             originalCodeLabel.setText(machineDetailsToShow.getOriginalCodeConfiguration());

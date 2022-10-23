@@ -114,12 +114,12 @@ public class CodeCalibrationController {
         setSettingsAutomatically();
     }
 
-    public Boolean codeConfigurationSetted(List<Sector> codeConfigurationSectors) {
-        return initializeEngineSettings(codeConfigurationSectors);
+    public Boolean codeConfigurationSetted(List<Sector> codeConfigurationSectors, CodeCalibrationController codeCalibrationController) {
+        return initializeEngineSettings(codeConfigurationSectors, codeCalibrationController);
     }
 
 
-    private Boolean initializeEngineSettings(List<Sector> codeConfigurationSectors) {
+    private Boolean initializeEngineSettings(List<Sector> codeConfigurationSectors, CodeCalibrationController codeCalibrationController) {
         final Boolean[] settingsSettedSuccsefully = {false};
         SectorsCodeAsJson sectorsAsJson = new SectorsCodeAsJson(
                 (RotorIDSector) codeConfigurationSectors.get(0),
@@ -161,6 +161,7 @@ public class CodeCalibrationController {
                     Platform.runLater(() -> {
                         uBoatMachinePaneController.setNewConfiguration(currentCodeConfiguration);
                         uBoatMachinePaneController.machineDetailsChanged();
+                        codeCalibrationController.codeConfigurationSetSuccessfully();
                     });
                 }
             }

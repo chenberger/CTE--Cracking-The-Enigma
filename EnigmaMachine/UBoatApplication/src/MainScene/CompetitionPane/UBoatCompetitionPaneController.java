@@ -10,6 +10,7 @@ import Engine.UBoatManager.UBoat;
 import MainScene.CompetitionPane.CandidatesPane.UBoatCandidatesPaneController;
 import MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController;
 import MainScene.MainUBoatScenePaneController;
+import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import UBoatServletsPaths.UBoatsServletsPaths;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -62,6 +64,8 @@ public class UBoatCompetitionPaneController implements Closeable {
     @FXML private TableColumn<TeamsTable, String> teamNameCol;
     @FXML private TableColumn<TeamsTable, Integer> numOfAgentsCol;
     @FXML private TableColumn<TeamsTable, Long> taskSizeCol;
+    @FXML private VBox currentCodeConfiguration;
+    @FXML private CurrentCodeConfigurationController currentCodeConfigurationController;
     private SimpleBooleanProperty isProcessedWordExist;
     private SimpleBooleanProperty isReadyToBattle;
     private SimpleBooleanProperty areTeamsInBattle;
@@ -174,6 +178,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                     String currentMachineConfiguration =GSON_INSTANCE.fromJson(responseStr, String.class);
                     Platform.runLater(() -> {
                         mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
+                        currentCodeConfigurationController.setCodeConfiguration(currentMachineConfiguration);
                         //currentCodeConfigurationPaneController.updateMachineConfiguration();
                     });
                 } else {
@@ -297,6 +302,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     }
 
     public void setNewConfiguration(String currentMachineConfiguration) {
+        currentCodeConfigurationController.setCodeConfiguration(currentMachineConfiguration);
         mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
     }
 
@@ -314,6 +320,7 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     public void stopContest() {
         uBoatCandidatesPaneController.stopContest();
+        isReadyToBattle.set(false);
     }
 
 }
