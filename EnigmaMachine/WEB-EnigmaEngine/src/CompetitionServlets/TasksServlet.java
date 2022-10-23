@@ -57,7 +57,7 @@ public class TasksServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         else if(uBoat.getBattleField().getWinner().equals(allie.getTeamName())){
-            String message = "You Won! the encrypted message is: " + uBoat.getBattleField().getOriginalMessage();
+            String message = "You Won!!! the encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
             Gson gson = new Gson();
             String json = gson.toJson(message);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -66,7 +66,7 @@ public class TasksServlet extends HttpServlet {
         }
         else{
             String message = "You Lost! The winner is: " + uBoat.getBattleField().getWinner() +
-                    System.lineSeparator() + "the encrypted message is: " + uBoat.getBattleField().getOriginalMessage();
+                    "!!! The encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
             Gson gson = new Gson();
             String json = gson.toJson(message);
             response.setStatus(HttpServletResponse.SC_OK);

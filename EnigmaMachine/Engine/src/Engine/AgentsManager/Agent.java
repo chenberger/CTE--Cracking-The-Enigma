@@ -84,6 +84,9 @@ public class Agent {
     public void addNumberOfTasksPulled(Long tasksPulled){
         this.tasksPulled += tasksPulled;
     }
+    public void updateNumberOfTasksPulled(Long tasksPulled){
+        this.tasksPulled = tasksPulled;
+    }
     public void setTotalNumberOfCandidatesFound(int totalCandidatesFound){
         this.totalCandidatesFound = totalCandidatesFound;
     }

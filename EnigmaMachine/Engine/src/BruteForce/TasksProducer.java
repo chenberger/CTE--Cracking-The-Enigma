@@ -32,6 +32,7 @@ public class TasksProducer implements Runnable {
     private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
     private long totalTasksSize;
     private long currentTaskSize;
+    private long numberOfTasksProduced;
 
     private SettingsFormat settingsFormat;
     private boolean contestIsOn;
@@ -48,6 +49,7 @@ public class TasksProducer implements Runnable {
         this.taskSize= bruteForceTask.getTaskSize();
         this.allie = allie;
         this.contestIsOn = false;
+        this.numberOfTasksProduced = 0;
         initializeMachineSettings();
         calcMissionSize();
     }
@@ -230,21 +232,23 @@ public class TasksProducer implements Runnable {
             //    throw new TaskIsCanceledException();
             //}
 
+            if(!noMoreTasks) {
+                EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
+                TaskToAgent agentTask = new TaskToAgent(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine, encryptedString);
 
-            EnigmaMachine clonedEnigmaMachine = enigmaMachine.cloneMachine();
-            TaskToAgent agentTask = new TaskToAgent(taskSize, (StartingRotorPositionSector) currentStartingRotorsPositions.clone(), clonedEnigmaMachine , encryptedString);
-            tasksQueue.put(agentTask);
-
-
+                tasksQueue.put(agentTask);
+            }
 
             numOfPossibleRotorsPositions -= taskSize;
             if (numOfPossibleRotorsPositions <= 0 && difficultyLevel.equals(DifficultyLevel.EASY)) {
                 noMoreTasks = true;
             }
             try {
-                allie.increaseTasksProduced(1);
-                System.out.println("Tasks produced: " + allie.getTasksProduced());
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), (int) taskSize));
+                if(!noMoreTasks) {
+                    ++numberOfTasksProduced;
+                    allie.increaseTasksProduced(numberOfTasksProduced);
+                }
             }
             catch (Exception e) {
                 break;

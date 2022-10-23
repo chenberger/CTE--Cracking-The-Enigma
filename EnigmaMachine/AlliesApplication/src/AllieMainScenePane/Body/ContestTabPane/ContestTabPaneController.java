@@ -24,6 +24,7 @@ import java.util.Timer;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
 
 public class ContestTabPaneController implements Closeable {
+    private boolean isWinnerFound = false;
     private Timer timer;
     private LookForWinnerRefresher lookForWinnerRefresher;
     @FXML private AnchorPane teamCandidates;
@@ -99,38 +100,43 @@ public class ContestTabPaneController implements Closeable {
     }
 
     public void startRefresh() {
-        //teamCandidatesController.startListRefreshing();
-        //    LookForWinnerRefresher lookForWinnerRefresher = new LookForWinnerRefresher(this::notifyIfWinnerFound);
-        //    timer = new Timer();
-        //    timer.schedule(lookForWinnerRefresher, 0, 100);
+        teamCandidatesController.startListRefreshing();
+            LookForWinnerRefresher lookForWinnerRefresher = new LookForWinnerRefresher(this::notifyIfWinnerFound);
+            timer = new Timer();
+            timer.schedule(lookForWinnerRefresher, 0, 100);
     }
     @Override
     public void close(){
-        if(timer != null) {
-            timer.cancel();
-        }
-        if(lookForWinnerRefresher != null) {
-            lookForWinnerRefresher.cancel();
-        }
-        if(currentContestDataPaneController != null) {
-            currentContestDataPaneController.close();
-        }
-        if(agentsProgressDataPaneController != null) {
-            agentsProgressDataPaneController.close();
-        }
-        if (contestTeamsPaneController != null) {
-            contestTeamsPaneController.close();
-        }
-        if(teamCandidatesController != null) {
-            teamCandidatesController.close();
+        if(!isWinnerFound) {
+            if (timer != null) {
+                timer.cancel();
+            }
+            if (lookForWinnerRefresher != null) {
+                lookForWinnerRefresher.cancel();
+            }
+            if (currentContestDataPaneController != null) {
+                currentContestDataPaneController.close();
+            }
+            if (agentsProgressDataPaneController != null) {
+                agentsProgressDataPaneController.close();
+            }
+            if (contestTeamsPaneController != null) {
+                contestTeamsPaneController.close();
+            }
+            if (teamCandidatesController != null) {
+                teamCandidatesController.close();
+            }
         }
     }
     private void notifyIfWinnerFound(String winnerMessage) {
-        close();
-        Platform.runLater(() -> {
-            if(winnerMessage != null) {
-               new ErrorDialog(new Exception(winnerMessage), "The contest is over");
-            }
-        });
+        if(!isWinnerFound) {
+            isWinnerFound = true;
+            Platform.runLater(() -> {
+                if (winnerMessage != null) {
+                    new ErrorDialog(new Exception(winnerMessage), "The contest is over");
+                }
+            });
+            close();
+        }
     }
 }

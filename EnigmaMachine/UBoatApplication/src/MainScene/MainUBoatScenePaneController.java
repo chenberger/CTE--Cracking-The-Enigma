@@ -15,7 +15,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -25,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,6 +41,7 @@ import static Utils.Constants.*;
 public class MainUBoatScenePaneController {
     private boolean isWinnerFound;
     private String currentSessionId;
+
     private String currentBoatName;
     private UBoatMachinePaneController uBoatMachinePaneController;
     @FXML private GridPane UBoatLoginPane;
@@ -107,6 +113,7 @@ public class MainUBoatScenePaneController {
                         try {
                             new ErrorDialog(new Exception("You have been logged out"), "Logged out");
                             closeUBoatSession();
+                            loadLoginPage();
                         } catch (Exception e) {
                             new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
                         }
@@ -118,6 +125,11 @@ public class MainUBoatScenePaneController {
             }
         });
     }
+
+    private void loadLoginPage() {
+
+    }
+
     public void switchToCompetitionRoom() {
         UBoatLoginPane.setVisible(false);
         UBoatCompetitionPane.setVisible(true);
@@ -246,14 +258,14 @@ public class MainUBoatScenePaneController {
                         }
                     });
                 }
-                try {
-                    countDownLatch.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 response.close();
             }
         });
+        try{
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+
+        }
 
     }
 
