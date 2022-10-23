@@ -103,10 +103,9 @@ public class EncryptDecryptActionsGridController {
                     String decryptedWord = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                     Platform.runLater(() -> {
                         processedWordText.setText(decryptedWord);
-                        uBoatCompetitionPaneController.getCurrentMachineConfiguration();
                         uBoatCompetitionPaneController.setProcessedWordExist(true);
                         uBoatCompetitionPaneController.machineDetailsChanged();
-
+                        uBoatCompetitionPaneController.getCurrentMachineConfiguration();
 
                         //uBoatCompetitionPaneController.setIsWordProcessed();
                         //uBoatCompetitionPaneController.setIsReadyOrNot();
@@ -121,9 +120,9 @@ public class EncryptDecryptActionsGridController {
             encryptedDecryptedWordText.setText("");
             processedWordText.setText("");
             resetMachineState();
-            uBoatCompetitionPaneController.getCurrentMachineConfiguration();
             uBoatCompetitionPaneController.setProcessedWordExist(false);
             uBoatCompetitionPaneController.machineDetailsChanged();
+            uBoatCompetitionPaneController.getCurrentMachineConfiguration();
 
             //uBoatCompetitionPaneController.setNoWordProcessed();
     }

@@ -163,7 +163,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     public void getCurrentMachineConfiguration(){
         String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()
-                .addQueryParameter(ACTION, "get_current_configuration")
+                .addQueryParameter(ACTION, "getCurrentMachineConfig")
                 .build().toString();
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
