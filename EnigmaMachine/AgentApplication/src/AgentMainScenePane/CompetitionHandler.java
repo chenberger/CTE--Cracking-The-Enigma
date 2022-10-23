@@ -77,7 +77,7 @@ public class CompetitionHandler extends Thread implements Closeable {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
                     sendCandidateInformationToServer();
-                    updateCandidatesTableOfAgent();
+                    //updateCandidatesTableOfAgent();
                     numberOfCandidatesFound += agentCandidatesInformationList.size();
                     updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
                     agentCandidatesInformationList.clear();
@@ -87,6 +87,7 @@ public class CompetitionHandler extends Thread implements Closeable {
             }
         }
         tasksPool.shutdown();
+        agentMainScenePaneController.stopRefreshing();
         System.out.println("Contest is over");
     }
 
@@ -137,7 +138,7 @@ public class CompetitionHandler extends Thread implements Closeable {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    response.close();
+
                 }
                 response.close();
             }

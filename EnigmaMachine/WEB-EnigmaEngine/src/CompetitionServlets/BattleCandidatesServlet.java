@@ -1,9 +1,6 @@
 package CompetitionServlets;
 
-import DTO.AgentCandidatesInformation;
-import DTO.AlliesTasksProgressToLabels;
-import DTO.AllyCandidatesTable;
-import DTO.ContestWinnerInformation;
+import DTO.*;
 import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
@@ -56,10 +53,46 @@ public class BattleCandidatesServlet extends HttpServlet {
             else if(request.getParameter("action").equals("lookForWinner")){
                 lookForWinner(request, response);
             }
+            else if(request.getParameter("action").equals("getAgentsCandidates")){
+                getAgentsCandidates(request, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
+    }
+
+    private void getAgentsCandidates(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<DataToAgentApplicationTableView> dataToAgentApplicationTableViewList = new ArrayList<>();
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        Agent agent = agentsManager.getAgent(SessionUtils.getAgentName(request));
+        String agentName = agent.getAgentName();
+
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Allie allie = alliesManager.getAllie(agent.getAllieName());
+        UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
+
+        String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
+        UBoat uBoat = uBoatManager.getUBoat(uBoatName);
+        BattleField battleField = uBoat.getBattleField();
+
+        List<AgentCandidatesInformation> agentCandidatesInformation = battleField.getAgentsCandidatesInformation();
+        for(AgentCandidatesInformation agentCandidateInformation : agentCandidatesInformation){
+            if(agentCandidateInformation.getAgentName().equals(agentName)){
+                DataToAgentApplicationTableView dataToAgentApplicationTableView =new DataToAgentApplicationTableView(agentCandidateInformation.getCandidateString()
+                        ,agentCandidateInformation.getNumberOfTask(),agentCandidateInformation.getConfigurationOfTask());
+                dataToAgentApplicationTableViewList.add(dataToAgentApplicationTableView);
+            }
+        }
+        if(dataToAgentApplicationTableViewList.size() == 0){
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+        else{
+            response.setStatus(HttpServletResponse.SC_OK);
+            String json = GSON_INSTANCE.toJson(dataToAgentApplicationTableViewList);
+            response.getWriter().println(json);
+            response.getWriter().flush();
+        }
     }
 
     private synchronized void lookForWinner(HttpServletRequest request, HttpServletResponse response) {

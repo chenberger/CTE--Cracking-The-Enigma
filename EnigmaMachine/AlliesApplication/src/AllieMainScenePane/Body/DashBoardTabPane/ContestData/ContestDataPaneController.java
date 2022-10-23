@@ -67,8 +67,9 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private void updateContestsTable(OnLineContestsDataToTable onLineContestsDataToTable) {
+        boolean isNumberOfRegisteredTeamsChanged = false;
         Platform.runLater(() -> {
-            if(onLineContestsDataToTable.getBattleNames().size() != numberOfContests) {
+            if(onLineContestsDataToTable.getBattleNames().size() != numberOfContests || numberOfRegisteredTeamsChanged(onLineContestsDataToTable,contestsTable.getItems())){
                 clearContestsTable();
 
                 List<String> battleNames = onLineContestsDataToTable.getBattleNames();
@@ -79,6 +80,7 @@ public class ContestDataPaneController implements Closeable {
                 List<Integer> numberOfTeamsNeededToEachContest = onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest();
 
                 List<String> teamsRegisteredAndNeeded = setTeamsRegisteredAndNeeded(teamsRegisteredToEachBattle, numberOfTeamsNeededToEachContest, battleNames);
+
                 for (int i = 0; i < boatNames.size(); i++) {
                     OnLineContestsTable contestToAdd = new OnLineContestsTable(
                             battleNames.get(i),
@@ -95,14 +97,30 @@ public class ContestDataPaneController implements Closeable {
         });
     }
 
+    private boolean numberOfRegisteredTeamsChanged(OnLineContestsDataToTable onLineContestsDataToTable, ObservableList<OnLineContestsTable> items) {
+        int i = 0;
+        for(String battleName : onLineContestsDataToTable.getBattleNames()){
+            for (int j = 0; j <onLineContestsDataToTable.getBattleNames().size(); j++) {
+                if (items.get(i).getBattleName().equals(battleName)) {
+                    if (!items.get(i).getTeamsRegisteredAndNeeded().equals(onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest().get(battleName) + "/" + onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest().get(i))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     private List<String> setTeamsRegisteredAndNeeded(Map<String, Integer> teamsRegisteredToEachBattle, List<Integer> numberOfTeamsNeededToEachContest, List<String> battleNames) {
         List<String> teamsRegisteredAndNeeded = new ArrayList<>();
         //TODO: fix this so i can show the number registered and needed
         for (int i = 0; i < battleNames.size(); i++) {
             String battleName = battleNames.get(i);
-            //Integer numberOfTeamsRegistered = Integer.valueOf(teamsRegisteredToEachBattle.get(battleName) == null ? "0" : teamsRegisteredToEachBattle.get(battleName).toString());
-            //int numberOfTeamsNeeded = numberOfTeamsNeededToEachContest.get(i);
-            teamsRegisteredAndNeeded.add(0 + "/" + 2);
+            Integer numberOfTeamsRegistered = Integer.valueOf(teamsRegisteredToEachBattle.get(battleName) == null ? "0" : teamsRegisteredToEachBattle.get(battleName).toString());
+            int numberOfTeamsNeeded = numberOfTeamsNeededToEachContest.get(i);
+            teamsRegisteredAndNeeded.add(numberOfTeamsRegistered + "/" + numberOfTeamsNeeded);
         }
         return teamsRegisteredAndNeeded;
     }
