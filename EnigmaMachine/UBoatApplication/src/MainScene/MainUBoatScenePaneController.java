@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import static Constants.ServletConstants.USERNAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.ACTION;
 import static Utils.Constants.TASKS_SERVLET;

@@ -1,6 +1,5 @@
 package AgentMainScenePane;
 
-import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
 import AgentMainScenePane.Body.ContestStatusRefresher;
 import DTO.AgentCandidatesInformation;
 import DTO.DataToAgentApplicationTableView;
@@ -284,9 +283,13 @@ public class CompetitionHandler extends Thread implements Closeable {
         }
         StartingRotorPositionSector startingRotorPositionSector = new StartingRotorPositionSector(startingRotorPosition);
         sectors.get(0).setSectorInTheMachine(enigmaMachine);
+        sectors.get(0).addSectorToSettingsFormat(enigmaMachine);
         startingRotorPositionSector.setSectorInTheMachine(enigmaMachine);
+        startingRotorPositionSector.addSectorToSettingsFormat(enigmaMachine);
         sectors.get(2).setSectorInTheMachine(enigmaMachine);
+        sectors.get(2).addSectorToSettingsFormat(enigmaMachine);
         sectors.get(3).setSectorInTheMachine(enigmaMachine);
+        sectors.get(3).addSectorToSettingsFormat(enigmaMachine);
         String encryptedMessage = taskToAgent.getEncryptedMessage();
         Dictionary dictionary = engineManager.getDictionaryObject();
 
