@@ -59,7 +59,6 @@ public class FileUploadedServlet extends HttpServlet {
 
              } else {
                  ServletUtils.getEngineManager(request.getServletContext()).setMachineDetailsFromXmlFile(cteEnigma);
-
                  ServletUtils.getUBoatManager(request.getServletContext()).addUBoat(name, ServletUtils.getEngineManager(request.getServletContext()).getCurrentEnigmaMachine()
                          , cteEnigma.getCTEBattlefield(), ServletUtils.getEngineManager(request.getServletContext()).getDictionaryObject());
                  response.setStatus(HttpServletResponse.SC_OK);

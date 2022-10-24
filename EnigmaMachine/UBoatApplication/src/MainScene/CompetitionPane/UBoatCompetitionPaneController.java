@@ -320,6 +320,7 @@ public class UBoatCompetitionPaneController implements Closeable {
 
     public void stopContest() {
         uBoatCandidatesPaneController.stopContest();
+        encryptDecryptActionsGridController.clearTexts();
         isReadyToBattle.set(false);
     }
 

@@ -24,6 +24,7 @@ public class UBoat {
     public UBoat(String name, CTEBattlefield battleField, EnigmaMachine enigmaMachine, Dictionary dictionary) {
         this.name = name;
         this.battleField = new BattleField(battleField.getBattleName(), battleField.getLevel(), battleField.getAllies());
+        this.battleField.setDifficultyLevel(battleField.getLevel());
         //this.enigmaMachine = enigmaMachine;
         this.isReady = false;
         //this.statisticsAndHistoryAnalyzer = new StatisticsAndHistoryAnalyzer();

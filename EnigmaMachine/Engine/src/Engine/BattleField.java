@@ -60,17 +60,19 @@ public class BattleField {
     }
     private DifficultyLevel stringToDifficultyLevel(String level) {
         switch (level) {
-            case "EASY":
+            case "Easy":
                 return DifficultyLevel.EASY;
-            case "MEDIUM":
+            case "Medium":
                 return DifficultyLevel.MEDIUM;
-            case "HARD":
+            case "Hard":
                 return DifficultyLevel.HARD;
             default:
                 return DifficultyLevel.EASY;
         }
     }
-
+    public void setDifficultyLevel(String level) {
+        this.level = stringToDifficultyLevel(level);
+    }
     // getters and setters region
     public String getProcessedMessage() {
         return processedMessage;

@@ -66,4 +66,8 @@ public class TeamCandidatesController implements Closeable {
             timer.cancel();
         }
     }
+
+    public void cleanTable() {
+        teamsCandidateTableView.getItems().clear();
+    }
 }
