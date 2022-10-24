@@ -65,8 +65,8 @@ public class AgentMainScenePaneController {
         client = new OkHttpClient();
     }
     public void setActive() {
-        agentCandidatesPaneController.startRefreshing();
-        agentProgressAndDataPaneController.startRefreshing();
+        //agentCandidatesPaneController.startRefreshing();
+        //agentProgressAndDataPaneController.startRefreshing();
         contestAndTeamDataPaneController.startRefreshing();
     }
     public void setAgentName(String agentName) {
@@ -186,7 +186,6 @@ public class AgentMainScenePaneController {
 
         competitionHandler = new CompetitionHandler(new ThreadPoolExecutor(numberOfThreads, numberOfThreads, 5000, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new AgentThreadFactory(numberOfThreads), new ThreadPoolExecutor.CallerRunsPolicy())
         , engineManager, new LinkedBlockingQueue<>(), agentName, new OkHttpClient(),this, new LinkedBlockingQueue<>() );
-        String threadName = competitionHandler.getName();
         competitionHandler.start();
 
     }

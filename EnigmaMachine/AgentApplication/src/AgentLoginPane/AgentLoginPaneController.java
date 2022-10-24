@@ -276,7 +276,7 @@ public class AgentLoginPaneController implements Closeable {
             }
             else {
                 tasksPulledTextField.setDisable(true);
-                tasksPulledButton.setDisable(trueagi1);
+                tasksPulledButton.setDisable(true);
             }
         }
         catch (Exception e) {
