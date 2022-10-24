@@ -274,7 +274,10 @@ public class AgentLoginPaneController implements Closeable {
                 tasksPulledEachTime = 0L;
                 new ErrorDialog(new Exception("Tasks pulled each time must be positive"), "You inputted a negative number");
             }
-            tasksPulledTextField.setDisable(true);
+            else {
+                tasksPulledTextField.setDisable(true);
+                tasksPulledButton.setDisable(trueagi1);
+            }
         }
         catch (Exception e) {
             new ErrorDialog(new Exception("You must choose a positive number"), "You didn't input a number");
