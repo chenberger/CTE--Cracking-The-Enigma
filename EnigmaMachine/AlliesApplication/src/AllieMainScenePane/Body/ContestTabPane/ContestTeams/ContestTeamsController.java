@@ -99,4 +99,8 @@ public class ContestTeamsController implements Closeable {
     public void setShouldUpdateToTrue() {
         autoUpdate.set(true);
     }
+
+    public void cleanTable() {
+        contestTeamsTable.getItems().clear();
+    }
 }

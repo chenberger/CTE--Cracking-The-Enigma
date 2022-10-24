@@ -42,8 +42,23 @@ public class AllyOpsServlet extends HttpServlet {
         else if(request.getParameter("action").equals("getAlliesTasksProgressToLabels")){
             getAlliesTasksProgressToLabels(request, response);
         }
+        else if(request.getParameter("action").equals("quitFromBattle")) {
+            quitFromBattle(request, response);
+        }
         else{
             checkIfAgentParticipateInContest(request, response);
+        }
+    }
+
+    private void quitFromBattle(HttpServletRequest request, HttpServletResponse response) {
+        AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+        Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
+        if(allie != null) {
+            allie.setBattleName("");
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        else{
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

@@ -21,7 +21,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Timer;
 
+import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOATS_LIST_SERVLET;
+import static Utils.Constants.ACTION;
 
 public class ContestTabPaneController implements Closeable {
     private boolean isWinnerFound = false;
@@ -51,7 +53,6 @@ public class ContestTabPaneController implements Closeable {
         if(teamCandidatesController != null) {
             teamCandidatesController.setContestTabPaneController(this);
         }
-
     }
     public void setAllieMainScenePaneController(AllieMainScenePaneController allieMainScenePaneController) {
         this.allieMainScenePaneController = allieMainScenePaneController;
@@ -134,10 +135,50 @@ public class ContestTabPaneController implements Closeable {
             Platform.runLater(() -> {
                 if (winnerMessage != null) {
                     new ErrorDialog(new Exception(winnerMessage), "The contest is over");
+                    contestTeamsPaneController.cleanTable();
+                    agentsProgressDataPaneController.cleanTable();
+                    agentsProgressDataPaneController.cleanLabels();
+                    teamCandidatesController.cleanTable();
+                    quitFromBattle();
                 }
             });
-            close();
+            closeContestRefreshers();
             allieMainScenePaneController.resetControllers();
+        }
+    }
+
+    private void quitFromBattle() {
+        String finalUrl = HttpUrl.parse(ALLIES_OPS_SERVLET).
+                newBuilder().
+                addQueryParameter(ACTION, "quitFromBattle").
+                build().
+                toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                new ErrorDialog(new Exception("Something went wrong: " + e.getMessage()), "Error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() != 200) {
+                    new ErrorDialog(new Exception("Something went wrong: " + response.message()), "Error");
+                }
+                response.close();
+            }
+        });
+    }
+
+
+    private void closeContestRefreshers() {
+        if (lookForWinnerRefresher != null) {
+            lookForWinnerRefresher.cancel();
+        }
+        if (agentsProgressDataPaneController != null) {
+            agentsProgressDataPaneController.close();
+        }
+        if (teamCandidatesController != null) {
+            teamCandidatesController.close();
         }
     }
 }

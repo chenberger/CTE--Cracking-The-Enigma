@@ -91,14 +91,16 @@ public class TasksProducer implements Runnable {
 
 
     public void setImpossibleTasks() throws Exception {
-        List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist();
+        if(!noMoreTasks) {
+            List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist();
 
-        for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
-            RotorIDSector rotorIDSector = new RotorIDSector(rotorCombination);
-            setSectorInMachine(rotorIDSector);
-            setHardTasks();
+            for (List<Integer> rotorCombination : allPossibleRotorsCombinationsFromAllRotors) {
+                RotorIDSector rotorIDSector = new RotorIDSector(rotorCombination);
+                setSectorInMachine(rotorIDSector);
+                setHardTasks();
+            }
+            noMoreTasks = true;
         }
-        noMoreTasks = true;
     }
 
     private List<List<Integer>> getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist() {
@@ -131,14 +133,16 @@ public class TasksProducer implements Runnable {
 
 
     public void setHardTasks() throws Exception {
-        List<List<Integer>> allPossibleRotorsCombinationsFromCurrentRotors = getAllPossibleRotorsCombinations();
-        for(List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
-            RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
-            setSectorInMachine(rotorIDSector);
-            setMediumTasks();
-        }
-        if (difficultyLevel.equals(DifficultyLevel.HARD)) {
-            noMoreTasks = true;
+        if(!noMoreTasks) {
+            List<List<Integer>> allPossibleRotorsCombinationsFromCurrentRotors = getAllPossibleRotorsCombinations();
+            for (List<Integer> rotorsCombination : allPossibleRotorsCombinationsFromCurrentRotors) {
+                RotorIDSector rotorIDSector = new RotorIDSector(rotorsCombination);
+                setSectorInMachine(rotorIDSector);
+                setMediumTasks();
+            }
+            if (difficultyLevel.equals(DifficultyLevel.HARD)) {
+                noMoreTasks = true;
+            }
         }
     }
 
@@ -206,13 +210,15 @@ public class TasksProducer implements Runnable {
     }
 
     public void setMediumTasks() throws Exception {
-        for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
-            ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
-            setSectorInMachine(reflectorIdSector);
-            setEasyTasks();
-        }
-        if(difficultyLevel.equals(DifficultyLevel.MEDIUM)) {
-            noMoreTasks = true;
+        if(!noMoreTasks) {
+            for (Reflector reflector : enigmaMachine.getAllReflectors().values()) {
+                ReflectorIdSector reflectorIdSector = new ReflectorIdSector(Arrays.asList(reflector.id()));
+                setSectorInMachine(reflectorIdSector);
+                setEasyTasks();
+            }
+            if (difficultyLevel.equals(DifficultyLevel.MEDIUM)) {
+                noMoreTasks = true;
+            }
         }
     }
 

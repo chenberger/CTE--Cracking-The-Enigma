@@ -99,4 +99,13 @@ public class AgentsProgressDataController implements Closeable {
             timer.cancel();
         }
     }
+
+    public void cleanTable() {
+        agentProgressDataTableView.getItems().clear();
+    }
+    public void cleanLabels(){
+        totalTasksOfAllyLabel.setText("");
+        tasksProducedLabel.setText("");
+        TasksCompletedLabel.setText("");
+    }
 }
