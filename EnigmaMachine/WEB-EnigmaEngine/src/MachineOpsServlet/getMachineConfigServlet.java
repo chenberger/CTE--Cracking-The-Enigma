@@ -116,7 +116,6 @@ public class getMachineConfigServlet extends HttpServlet {
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     synchronized private void getCurrentMachineConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, MachineNotExistsException, CloneNotSupportedException {

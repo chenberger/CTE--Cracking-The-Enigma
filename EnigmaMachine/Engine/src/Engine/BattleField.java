@@ -155,6 +155,8 @@ public class BattleField {
         for(Allie allie : alliesInBattleField){
             allie.stopContest();
         }
+        alliesInBattleField.clear();
+        numberOfTeamsInBattleField = 0;
         numberOfAlliesThatAreReady = 0;
     }
 
