@@ -91,7 +91,11 @@ public class CurrentContestDataPaneController implements Closeable {
             setDifficultyLabel(onLineContestsTable.getDifficulty());
             setContestStatusLabel(onLineContestsTable.getContestStatus());
             setTeamsRegisteredAndNeededLabel(onLineContestsTable.getTeamsRegisteredAndNeeded());
-            handleProcessedWordFromBattle(onLineContestsTable.getBoatName());
+            if(onLineContestsTable.getBoatName().equals("N/A")){
+                setProcessedWordLabel("N/A");
+            }else {
+                handleProcessedWordFromBattle(onLineContestsTable.getBoatName());
+            }
         });
     }
 
@@ -121,7 +125,8 @@ public class CurrentContestDataPaneController implements Closeable {
                     }
                 }
                 else{
-                    String processedWord = response.body().string();
+                    String jsonProcessedWord = response.body().string();
+                    String processedWord = GSON_INSTANCE.fromJson(jsonProcessedWord, String.class);
                     Platform.runLater(() -> setProcessedWordLabel(processedWord.trim()));
                 }
             }

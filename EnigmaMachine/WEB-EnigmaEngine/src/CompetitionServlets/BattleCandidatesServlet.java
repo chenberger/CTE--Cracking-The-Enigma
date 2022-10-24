@@ -56,10 +56,35 @@ public class BattleCandidatesServlet extends HttpServlet {
             else if(request.getParameter("action").equals("getAgentsCandidates")){
                 getAgentsCandidates(request, response);
             }
+            else if(request.getParameter("action").equals("getAgentsTasksProgress")){
+                getAgentsTasksProgress(request, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
+    }
+
+    private synchronized void getAgentsTasksProgress(HttpServletRequest request, HttpServletResponse response) {
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        String agentNameFromSession = SessionUtils.getAgentName(request);
+        Agent agent = agentsManager.getAgent(agentNameFromSession);
+
+        AgentProgressData agentProgressData = new AgentProgressData(agent.getNumberOfTasksPulled(), agent.getNumberOfTasksDone(),agent.getTotalNumberOfCandidatesFound());
+        String jsonResponse = GSON_INSTANCE.toJson(agentProgressData);
+        try{
+            if(agentProgressData.getTasksPulled() > 0){
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(jsonResponse);
+                response.getWriter().flush();
+            }
+            else{
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
+        }
+        catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     private void getAgentsCandidates(HttpServletRequest request, HttpServletResponse response) throws IOException {

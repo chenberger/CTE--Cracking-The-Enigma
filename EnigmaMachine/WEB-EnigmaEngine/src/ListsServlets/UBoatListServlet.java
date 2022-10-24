@@ -62,6 +62,9 @@ public class UBoatListServlet extends HttpServlet {
                 response.getWriter().println("Error: " + e.getMessage());
             }
         }
+        else{
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
     }
 
     private void getCurrentRegisteredAllies(HttpServletRequest request, HttpServletResponse response) throws IOException {

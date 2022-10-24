@@ -1,6 +1,7 @@
 package AgentMainScenePane.Body.AgentProgressAndStatusPane;
 
 import AgentMainScenePane.AgentMainScenePaneController;
+import DTO.AgentProgressData;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,9 +27,25 @@ public class AgentProgressAndStatusPaneController implements Closeable {
     }
 
     public void startRefreshing() {
+        agentProgressAndStatusRefresher = new AgentProgressAndStatusRefresher(this::updateProgressAndStatus);
+        timer = new Timer();
+        timer.schedule(agentProgressAndStatusRefresher, 0, 100);
     }
     @Override
     public void close() {
+        if(timer != null) {
+            timer.cancel();
+        }
+        if(agentProgressAndStatusRefresher != null) {
+            agentProgressAndStatusRefresher.cancel();
+        }
+    }
+    private void updateProgressAndStatus(AgentProgressData agentProgressData) {
+        Platform.runLater(() -> {
+            tasksProcessedLabel.setText(String.valueOf((agentProgressData.getTasksProcessed())));
+            candidatesFoundLabel.setText(String.valueOf(agentProgressData.getCandidatesFound()));
+            tasksPulledLabel.setText(String.valueOf(agentProgressData.getTasksPulled()));
+        });
     }
 
     public void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {

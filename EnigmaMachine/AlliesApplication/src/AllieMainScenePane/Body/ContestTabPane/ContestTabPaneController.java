@@ -137,6 +137,7 @@ public class ContestTabPaneController implements Closeable {
                 }
             });
             close();
+            allieMainScenePaneController.resetControllers();
         }
     }
 }

@@ -55,16 +55,18 @@ public class ContestTeamsController implements Closeable {
         Platform.runLater(() -> {
 
             clearContestTeamsTable();
-            String currentUBoatName = alliesToTable.getBoatName();
-            List<String> teams = alliesToTable.getTeams();
-            List<Integer> numOfAgentsList = alliesToTable.getNumberOfAgentsForEachAllie();
-            List<Long> taskSize = alliesToTable.getTasksSize();
+            if(alliesToTable != null) {
+                String currentUBoatName = alliesToTable.getBoatName();
+                List<String> teams = alliesToTable.getTeams();
+                List<Integer> numOfAgentsList = alliesToTable.getNumberOfAgentsForEachAllie();
+                List<Long> taskSize = alliesToTable.getTasksSize();
 
-            for (int i = 0; i < teams.size(); i++) {
-                TeamsTable teamToAdd = new TeamsTable(teams.get(i), numOfAgentsList.get(i), taskSize.get(i));
-                ObservableList<TeamsTable> tableData = contestTeamsTable.getItems();
-                tableData.add(teamToAdd);
-                contestTeamsTable.setItems(tableData);
+                for (int i = 0; i < teams.size(); i++) {
+                    TeamsTable teamToAdd = new TeamsTable(teams.get(i), numOfAgentsList.get(i), taskSize.get(i));
+                    ObservableList<TeamsTable> tableData = contestTeamsTable.getItems();
+                    tableData.add(teamToAdd);
+                    contestTeamsTable.setItems(tableData);
+                }
             }
         });
 

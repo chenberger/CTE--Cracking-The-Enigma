@@ -21,6 +21,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -113,8 +114,8 @@ public class MainUBoatScenePaneController {
                     Platform.runLater(() -> {
                         try {
                             new ErrorDialog(new Exception("You have been logged out"), "Logged out");
-                            closeUBoatSession();
                             loadLoginPage();
+                            closeUBoatSession();
                         } catch (Exception e) {
                             new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
                         }
@@ -127,7 +128,7 @@ public class MainUBoatScenePaneController {
         });
     }
 
-    private void loadLoginPage() {
+    private void loadLoginPage() throws IOException {
         Scene scene = UBoatMainScenePane.getScene();
         URL url = getClass().getResource(LOGIN_PAGE_FXML_RESOURCE_LOCATION);
         FXMLLoader fxmlLoader = new FXMLLoader(url);
@@ -290,6 +291,7 @@ public class MainUBoatScenePaneController {
 
     public void setActive() {
         UBoatCompetitionPaneController.setActive();
+        httpClient = new OkHttpClient();
     }
 
     public void setCompetitionPaneDisabled() {
@@ -312,6 +314,7 @@ public class MainUBoatScenePaneController {
     }
     private void closeUBoatSession(){
         UBoatCompetitionPaneController.close();
+        HttpClientUtil.removeCookiesOf("localhost");
     }
 
     public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {

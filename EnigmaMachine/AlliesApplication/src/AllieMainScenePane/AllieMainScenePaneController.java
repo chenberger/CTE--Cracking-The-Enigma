@@ -147,6 +147,7 @@ public class AllieMainScenePaneController {
             }
             else{
                 setAllyTaskSize(taskSize);
+                taskSizeTextField.setDisable(true);
             }
         } catch (NumberFormatException e) {
             new ErrorDialog(new Exception("Task size must be a number"), "Error");
@@ -245,6 +246,15 @@ public class AllieMainScenePaneController {
                     new ErrorDialog(new Exception("Error logging out"), "Error");
                 }
             }
+        });
+    }
+
+    public void resetControllers() {
+        Platform.runLater(() -> {
+            taskSizeTextField.setText("");
+            taskSizeTextField.setDisable(false);
+            setTaskSizeButton.setDisable(false);
+            registerToBattleButton.setDisable(false);
         });
     }
 }

@@ -55,6 +55,10 @@ public class CurrentContestDataRefresher extends TimerTask {
                     OnLineContestsTable onLineContestsTable = onLineContestFromJson(response.body().string());
                     currentContestDataConsumer.accept(onLineContestsTable);
                 }
+                else{
+                    OnLineContestsTable onLineContestsTable = new OnLineContestsTable("N/A","N/A","N/A","N/A","N/A");
+                    currentContestDataConsumer.accept(onLineContestsTable);
+                }
             }
         });
     }

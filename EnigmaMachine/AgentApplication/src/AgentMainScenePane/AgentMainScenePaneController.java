@@ -102,8 +102,6 @@ public class AgentMainScenePaneController {
 
     }
 
-
-
     private void getBattlesEnigmaMachine() throws IOException {
         String finalUrl = HttpUrl.parse(GET_MACHINE_CONFIG_SERVLET)
                 .newBuilder()

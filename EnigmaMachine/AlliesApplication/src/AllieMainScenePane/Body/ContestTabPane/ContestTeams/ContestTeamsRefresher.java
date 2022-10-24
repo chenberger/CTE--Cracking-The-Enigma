@@ -63,6 +63,7 @@ public class ContestTeamsRefresher extends TimerTask {
                     //System.out.println("Users Request # " + finalRequestNumber + " | Response: " + jsonAlliesToTable);
                     if(jsonAlliesToTable.trim().equals("[]") || jsonAlliesToTable.trim().equals("") || response.code() != 200){
                         //System.out.println("No battles are currently in progress");
+                        updateTeamsTable.accept(null);
                     }
                     else {
                         AlliesToTable alliesToTable = extractAlliesToTableFromJson(jsonAlliesToTable);
