@@ -52,6 +52,9 @@ public class TeamAgentsDataPaneController implements Closeable {
             List<Long> threadsForEachAgent = agentsToTable.getThreadsForEachAgent();
             List<Long> tasksTakenOnceForEachAgent = agentsToTable.getTasksTakenOnceForEachAgent();
 
+            if(agents.size() > 0) {
+                dashboardTabPaneController.moreThenOneAgentJoined();
+            }
             for (int i = 0; i < agents.size(); i++) {
                 AgentsTable agentToAdd = new AgentsTable(agents.get(i), threadsForEachAgent.get(i), tasksTakenOnceForEachAgent.get(i));
                 ObservableList<AgentsTable> tableData = agentsTableView.getItems();
@@ -78,5 +81,9 @@ public class TeamAgentsDataPaneController implements Closeable {
 
     public void setDashboardTabPaneController(DashboardTabPaneController dashboardTabPaneController) {
         this.dashboardTabPaneController = dashboardTabPaneController;
+    }
+
+    public int getAmountOfAgentInTheTeam() {
+        return agentsTableView.getItems().size();
     }
 }

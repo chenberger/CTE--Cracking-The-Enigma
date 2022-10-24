@@ -4,27 +4,8 @@ import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsDataPaneController;
-import DTO.OnLineContestsTable;
-import DesktopUserInterface.MainScene.ErrorDialog;
-import Utils.HttpClientUtil;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-
-import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
-import static Constants.ServletConstants.USER_NAME;
-import static Utils.Constants.*;
 
 public class DashboardTabPaneController {
 
@@ -64,5 +45,13 @@ public class DashboardTabPaneController {
     public void close() {
         teamAgentsDataPaneController.close();
         contestsDataPaneController.close();
+    }
+
+    public int getAmountOfAgents() {
+        return teamAgentsDataPaneController.getAmountOfAgentInTheTeam();
+    }
+
+    public void moreThenOneAgentJoined() {
+        allieMainScenePaneController.moreThenOneAgentJoined();
     }
 }

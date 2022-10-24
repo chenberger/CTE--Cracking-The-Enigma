@@ -2,13 +2,14 @@ package AllieMainScenePane;
 
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
-import DTO.OnLineContestsTable;
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
+import DTO.OnLineContestsTable;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,13 +23,12 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.List;
 
-import static AlliesServletsPaths.AlliesServletsPaths.*;
+import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
+import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
 import static Constants.ServletConstants.USER_NAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
-import static Utils.Constants.TASK_SIZE;
 
 public class AllieMainScenePaneController {
     @FXML private Label allieHeaderLabel;
@@ -41,6 +41,17 @@ public class AllieMainScenePaneController {
     @FXML private Button logOutButton;
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
+    private SimpleBooleanProperty isContestSet;
+    private SimpleBooleanProperty isTaskSizeSet;
+    private SimpleBooleanProperty isOneAgentAtLeastRegistered;
+    private SimpleBooleanProperty isReadyButtonClicked;
+
+    public AllieMainScenePaneController() {
+        isTaskSizeSet = new SimpleBooleanProperty(false);
+        isContestSet = new SimpleBooleanProperty(false);
+        isOneAgentAtLeastRegistered = new SimpleBooleanProperty(false);
+        isReadyButtonClicked = new SimpleBooleanProperty(false);
+    }
 
     public void initialize() {
         if(dashboardTabPaneController != null) {
@@ -49,6 +60,10 @@ public class AllieMainScenePaneController {
         if(contestsTabPaneController != null) {
             contestsTabPaneController.setAllieMainScenePaneController(this);
         }
+
+        registerToBattleButton.disableProperty().bind(isContestSet);
+        setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
+        readyToContestButton.disableProperty().bind(isContestSet.not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
         setAllyName();
     }
 
@@ -109,8 +124,7 @@ public class AllieMainScenePaneController {
                         OnLineContestsTable chosenContest = onLineContestFromJson(body);
                         setChosenContest(chosenContest);
                         Platform.runLater(() -> {
-                            registerToBattleButton.setDisable(true);
-                            setTaskSizeButton.setDisable(false);
+                            isContestSet.set(true);
                         });
                     } else {
                         new ErrorDialog(new Exception("Error registering to battle"), "Error");
@@ -147,7 +161,7 @@ public class AllieMainScenePaneController {
             }
             else{
                 setAllyTaskSize(taskSize);
-                taskSizeTextField.setDisable(true);
+                isTaskSizeSet.set(true);
             }
         } catch (NumberFormatException e) {
             new ErrorDialog(new Exception("Task size must be a number"), "Error");
@@ -172,7 +186,7 @@ public class AllieMainScenePaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
                     Platform.runLater(() -> {
-                        setTaskSizeButton.setDisable(true);
+                        //setTaskSizeButton.setDisable(true);
                         //readyToContestButton.setDisable(true);
                     });
 
@@ -191,6 +205,7 @@ public class AllieMainScenePaneController {
 
     public void setChosenContest(OnLineContestsTable chosenContest) {
         contestsTabPaneController.setChosenContest(chosenContest);
+        isContestSet.set(true);
     }
 
     public void onReadyToContestButtonClicked(ActionEvent actionEvent) {
@@ -209,9 +224,10 @@ public class AllieMainScenePaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
                     contestsTabPaneController.startRefresh();
-                    Platform.runLater(() -> {
+                    isReadyButtonClicked.set(true);
+/*                    Platform.runLater(() -> {
                         readyToContestButton.setDisable(true);
-                    });
+                    });*/
                     //String body = response.body().string();
                 }
                 else{
@@ -249,12 +265,16 @@ public class AllieMainScenePaneController {
         });
     }
 
+    public void moreThenOneAgentJoined() {
+        isOneAgentAtLeastRegistered.set(true);
+    }
+
     public void resetControllers() {
         Platform.runLater(() -> {
             taskSizeTextField.setText("");
-            taskSizeTextField.setDisable(false);
-            setTaskSizeButton.setDisable(false);
-            registerToBattleButton.setDisable(false);
+            isTaskSizeSet.set(false);
+            isContestSet.set(false);
+            isReadyButtonClicked.set(false);
         });
     }
 }
