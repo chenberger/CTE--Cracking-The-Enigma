@@ -1,6 +1,5 @@
 package AllyServlet;
 
-import DTO.AgentProgressDataToTable;
 import DTO.AgentsProgressAndDataTable;
 import DTO.AlliesTasksProgressToLabels;
 import DTO.OnLineContestsTable;
@@ -127,6 +126,7 @@ public class AllyOpsServlet extends HttpServlet {
         else{
             try {
                 response.getWriter().println(GSON_INSTANCE.toJson(false));
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } catch (IOException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
