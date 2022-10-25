@@ -11,6 +11,7 @@ import Engine.Dictionary;
 import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
 import com.google.gson.Gson;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,7 @@ import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.ACTION;
 
 public class AgentMainScenePaneController {
+    //private SimpleIntegerProperty numberOfTasksInQueue;
     private CompetitionHandler competitionHandler;
     private OkHttpClient client;
     private boolean isMachineExists;
@@ -63,6 +65,8 @@ public class AgentMainScenePaneController {
         isDictionaryExists = false;
         isMachineExists = false;
         client = new OkHttpClient();
+        //numberOfTasksInQueue = new SimpleIntegerProperty(0);
+
     }
     public void setActive() {
         //agentCandidatesPaneController.startRefreshing();
@@ -245,6 +249,10 @@ public class AgentMainScenePaneController {
 
     public void stopRefreshing() {
         agentCandidatesPaneController.close();
+    }
+
+    public void updateNumberOfTasksInQueueToLabel(long numberOfTasksInQueue) {
+        agentProgressAndDataPaneController.updateNumberOfTasksInQueue(numberOfTasksInQueue);
     }
 
 

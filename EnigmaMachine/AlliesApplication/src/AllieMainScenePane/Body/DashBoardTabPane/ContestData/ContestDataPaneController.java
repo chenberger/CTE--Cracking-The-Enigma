@@ -98,11 +98,11 @@ public class ContestDataPaneController implements Closeable {
     }
 
     private boolean numberOfRegisteredTeamsChanged(OnLineContestsDataToTable onLineContestsDataToTable, ObservableList<OnLineContestsTable> items) {
-        int i = 0;
+
         for(String battleName : onLineContestsDataToTable.getBattleNames()){
             for (int j = 0; j <onLineContestsDataToTable.getBattleNames().size(); j++) {
-                if (items.get(i).getBattleName().equals(battleName)) {
-                    if (!items.get(i).getTeamsRegisteredAndNeeded().equals(onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest().get(battleName) + "/" + onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest().get(i))) {
+                if (items.get(j).getBattleName().equals(battleName)) {
+                    if (!items.get(j).getTeamsRegisteredAndNeeded().equals(onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest().get(battleName) + "/" + onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest().get(j))) {
                         return true;
                     }
                 }

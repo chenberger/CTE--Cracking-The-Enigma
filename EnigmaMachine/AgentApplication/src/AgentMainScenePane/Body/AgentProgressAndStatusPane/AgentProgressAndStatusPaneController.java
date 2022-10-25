@@ -3,6 +3,7 @@ package AgentMainScenePane.Body.AgentProgressAndStatusPane;
 import AgentMainScenePane.AgentMainScenePaneController;
 import DTO.AgentProgressData;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -10,8 +11,11 @@ import java.io.Closeable;
 import java.util.Timer;
 
 public class AgentProgressAndStatusPaneController implements Closeable {
+
+
     private AgentProgressAndStatusRefresher agentProgressAndStatusRefresher;
     private Timer timer;
+    @FXML private Label numberOfTasksInQueueLabel;
     @FXML
     private Label tasksPulledLabel;
 
@@ -45,6 +49,7 @@ public class AgentProgressAndStatusPaneController implements Closeable {
             tasksProcessedLabel.setText(String.valueOf((agentProgressData.getTasksProcessed())));
             candidatesFoundLabel.setText(String.valueOf(agentProgressData.getCandidatesFound()));
             tasksPulledLabel.setText(String.valueOf(agentProgressData.getTasksPulled()));
+            numberOfTasksInQueueLabel.setText(String.valueOf(agentProgressData.getNumberOfTasksInQueue()));
         });
     }
 
@@ -58,6 +63,11 @@ public class AgentProgressAndStatusPaneController implements Closeable {
     public void updateTasksPulled(long numberOfTasksPulled) {
         Platform.runLater(() -> {
             tasksPulledLabel.setText(String.valueOf(numberOfTasksPulled));
+        });
+    }
+    public void updateNumberOfTasksInQueue(long numberOfTasksInQueue) {
+        Platform.runLater(() -> {
+            numberOfTasksInQueueLabel.setText(String.valueOf(numberOfTasksInQueue));
         });
     }
 }
