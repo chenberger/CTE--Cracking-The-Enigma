@@ -128,14 +128,18 @@ public class AllieMainScenePaneController {
                             contestsTabPaneController.cleanPreviousContestData();
                         });
                     } else {
-                        new ErrorDialog(new Exception("Error registering to battle"), "Error");
+                        Platform.runLater(() -> {
+                            new ErrorDialog(new Exception("Error registering to battle"), "Error");
+                        });
                     }
                 }
             });
         }
 
         catch(IllegibleContestAmountChosenException ex) {
-            new ErrorDialog(ex, "Error: Failed to register to contest");
+            Platform.runLater(() -> {
+                new ErrorDialog(ex, "Error: Failed to register to contest");
+            });
         }
     }
     public static OnLineContestsTable onLineContestFromJson(String jsonChosenContest) {
