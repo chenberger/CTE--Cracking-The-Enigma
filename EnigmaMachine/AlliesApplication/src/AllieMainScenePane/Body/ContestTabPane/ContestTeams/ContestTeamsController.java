@@ -101,6 +101,8 @@ public class ContestTeamsController implements Closeable {
     }
 
     public void cleanTable() {
-        contestTeamsTable.getItems().clear();
+        Platform.runLater(() -> {
+            contestTeamsTable.getItems().clear();
+        });
     }
 }
