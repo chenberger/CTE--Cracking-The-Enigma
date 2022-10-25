@@ -15,6 +15,8 @@ import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.MachineNotExistsException;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +36,8 @@ import static Utils.Constants.ACTION;
 import static Utils.Constants.GSON_INSTANCE;
 
 public class CompetitionHandler extends Thread implements Closeable {
+    private SimpleLongProperty numberOfTasksInQueueProperty;
+    private Long numberOfTasksInQueueToLabel;
     private Timer timer;
     private ContestStatusRefresher contestStatusRefresher;
     private int numberOfCandidatesFound;
@@ -64,7 +68,16 @@ public class CompetitionHandler extends Thread implements Closeable {
         this.tasksCompleted = 0;
         this.agentCandidatesInformationList = new ArrayList<>();
         this.numberOfCandidatesFound = 0;
+
+        this.numberOfTasksInQueueProperty = new SimpleLongProperty(0L);
+        this.numberOfTasksInQueueToLabel = 0L;
+
+        numberOfTasksInQueueProperty.addListener((observable, oldValue, newValue) -> {
+            agentMainScenePaneController.updateNumberOfTasksInQueueToLabel(numberOfTasksInQueueProperty.get());
+        });
     }
+
+
 
 
     @Override
@@ -215,15 +228,17 @@ public class CompetitionHandler extends Thread implements Closeable {
             List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
 
             CountDownLatch countDownLatch = new CountDownLatch(tasksToAgent.size());
+            numberOfTasksInQueueProperty.set(countDownLatch.getCount());
             numberOfTasksPulled += tasksToAgent.size();
             updateTasksPulled(numberOfTasksPulled);
 
             try {
                 for (int i = 0; i < tasksToAgent.size(); i++) {
                     AgentTask agentTask = getAgentTaskFromTaskToAgent(tasksToAgent.get(i));
-                    AgentWorker agent = new AgentWorker(agentTask,agentName,numberOfTasksPulled,agentCandidatesInformationList,countDownLatch);
+                    AgentWorker agent = new AgentWorker(agentTask,agentName,numberOfTasksPulled,agentCandidatesInformationList,countDownLatch, numberOfTasksInQueueProperty);
                     tasksPool.execute(agent);
                 }
+
                 countDownLatch.await();
                 tasksCompleted += tasksToAgent.size();
                 //System.out.println("All tasks completed " + countDownLatch.getCount() );

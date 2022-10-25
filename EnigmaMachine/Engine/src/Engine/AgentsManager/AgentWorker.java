@@ -6,6 +6,8 @@ import EnigmaMachine.Keyboard;
 import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.StartingPositionsOfTheRotorException;
 import EnigmaMachineException.WordNotValidInDictionaryException;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,12 +26,13 @@ public class AgentWorker implements Runnable{
     private EnigmaMachine enigmaMachine;
     private StartingRotorPositionSector startingRotorPosition;
     private static int staticTaskId;
+    private SimpleLongProperty numberOfTasksInQueue;
 
     private int taskId;
 
     private String AllieName;
 
-    public AgentWorker(AgentTask agentTask, String AgentName, long numberOfTasksPulled, List<AgentCandidatesInformation> agentCandidatesInformationList, CountDownLatch countDownLatch) {
+    public AgentWorker(AgentTask agentTask, String AgentName, long numberOfTasksPulled, List<AgentCandidatesInformation> agentCandidatesInformationList, CountDownLatch countDownLatch, SimpleLongProperty numberOfTasksInQueueProperty) {
         synchronized (this) {
             this.agentTask = agentTask;
             this.agentId = Thread.currentThread().getName();
@@ -42,6 +45,7 @@ public class AgentWorker implements Runnable{
             this.numberOfTasksPulled = numberOfTasksPulled;
             this.agentCandidatesInformationList = agentCandidatesInformationList;
             this.countDownLatch = countDownLatch;
+            this.numberOfTasksInQueue = numberOfTasksInQueueProperty;
 
         }
     }
@@ -105,6 +109,9 @@ public class AgentWorker implements Runnable{
         }
         //TODO: add all the candidate information into list and send it to the Server in the end of the task.
         //long totalTaskTime = Duration.between(startTaskTime, Instant.now()).toMillis();
+        synchronized (this) {
+            numberOfTasksInQueue.set(numberOfTasksInQueue.get() - 1);
+        }
         countDownLatch.countDown();
     }
 

@@ -43,7 +43,7 @@ public class ContestStatusRefresher extends TimerTask {
                     updateContestStatus.accept(isReadyBoolean);
                 }
                 else{
-                    System.out.println("Something went wrong with the request");
+                    //System.out.println("Something went wrong with the request");
                 }
                 response.close();
             }
