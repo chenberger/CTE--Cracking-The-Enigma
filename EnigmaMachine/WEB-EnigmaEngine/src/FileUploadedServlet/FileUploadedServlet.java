@@ -1,10 +1,10 @@
 package FileUploadedServlet;
 
-import Engine.BattleField;
 import Engine.JaxbToMachineTransformer;
-import Engine.UBoatManager.UBoat;
-import Engine.UBoatManager.UBoatManager;
-import EnigmaMachineException.*;
+import EnigmaMachineException.BruteForceInProgressException;
+import EnigmaMachineException.GeneralEnigmaMachineException;
+import EnigmaMachineException.IllegalAgentsAmountException;
+import EnigmaMachineException.MachineNotExistsException;
 import Jaxb.Schema.Generated.CTEEnigma;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import servletUtils.ServletUtils;
-import servletUtils.SessionUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class FileUploadedServlet extends HttpServlet {
                      //out.print("File is already uploaded" + " by: " + "Guest");
                  }
                  else {
-                     out.print("File is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
+                     out.print("The battle is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
                      out.flush();
                  }
 
