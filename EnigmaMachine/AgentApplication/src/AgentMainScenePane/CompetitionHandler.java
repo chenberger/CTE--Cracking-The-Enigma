@@ -68,21 +68,19 @@ public class CompetitionHandler extends Thread implements Closeable {
 
 
     @Override
-    public void start() {
+    public void run() {
         //TODO : erase the prints
         isContestActive = true;
         startRefreshingContestStatus();
-        System.out.println(currentThread().getName() + " started");
         while (isContestActive) {
             try {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
                     sendCandidateInformationToServer();
-                    //updateCandidatesTableOfAgent();
+                    updateCandidatesTableOfAgent();
                     numberOfCandidatesFound += agentCandidatesInformationList.size();
                     updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
                     agentCandidatesInformationList.clear();
-                    System.out.println(currentThread().getName() + " in progress");
                 }
             } catch ( IOException e) {
                 e.printStackTrace();
@@ -90,8 +88,6 @@ public class CompetitionHandler extends Thread implements Closeable {
         }
         tasksPool.shutdown();
         agentMainScenePaneController.stopRefreshing();
-        System.out.println(currentThread().getName() + " stopped");
-        System.out.println("Contest is over");
     }
 
     private synchronized void updateCandidatesTableOfAgent() {
@@ -123,7 +119,7 @@ public class CompetitionHandler extends Thread implements Closeable {
     private void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {
         updateCandidatesFoundInServer(numberOfCandidatesFound);
         addTasksCompletedToAgentsServer(tasksCompleted);
-        //agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
+        agentMainScenePaneController.updateTasksCompleted(tasksCompleted, numberOfCandidatesFound);
     }
 
     private void addTasksCompletedToAgentsServer(long tasksCompleted) {
@@ -214,14 +210,12 @@ public class CompetitionHandler extends Thread implements Closeable {
 
         Response response = client.newCall(request).execute();
         if (response.code() == 200) {
-            System.out.println(currentThread().getName() + " got task");
             Gson gson = new Gson();
             String responseString = response.body().string();
             List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
 
             CountDownLatch countDownLatch = new CountDownLatch(tasksToAgent.size());
             numberOfTasksPulled += tasksToAgent.size();
-            System.out.println("Number of tasks pulled: " + numberOfTasksPulled);
             updateTasksPulled(numberOfTasksPulled);
 
             try {

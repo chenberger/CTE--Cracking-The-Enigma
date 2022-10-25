@@ -101,11 +101,15 @@ public class AgentsProgressDataController implements Closeable {
     }
 
     public void cleanTable() {
-        agentProgressDataTableView.getItems().clear();
+        Platform.runLater(()->{
+            agentProgressDataTableView.getItems().clear();
+        });
     }
     public void cleanLabels(){
-        totalTasksOfAllyLabel.setText("");
-        tasksProducedLabel.setText("");
-        TasksCompletedLabel.setText("");
+        Platform.runLater(()->{
+            totalTasksOfAllyLabel.setText("");
+            tasksProducedLabel.setText("");
+            TasksCompletedLabel.setText("");
+        });
     }
 }

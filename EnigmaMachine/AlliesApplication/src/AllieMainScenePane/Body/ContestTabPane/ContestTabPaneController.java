@@ -135,10 +135,6 @@ public class ContestTabPaneController implements Closeable {
             Platform.runLater(() -> {
                 if (winnerMessage != null) {
                     new ErrorDialog(new Exception(winnerMessage), "The contest is over");
-                    contestTeamsPaneController.cleanTable();
-                    agentsProgressDataPaneController.cleanTable();
-                    agentsProgressDataPaneController.cleanLabels();
-                    teamCandidatesController.cleanTable();
                     quitFromBattle();
                 }
             });
@@ -180,5 +176,12 @@ public class ContestTabPaneController implements Closeable {
         if (teamCandidatesController != null) {
             teamCandidatesController.close();
         }
+    }
+
+    public void cleanPreviousContestData() {
+        contestTeamsPaneController.cleanTable();
+        agentsProgressDataPaneController.cleanTable();
+        agentsProgressDataPaneController.cleanLabels();
+        teamCandidatesController.cleanTable();
     }
 }

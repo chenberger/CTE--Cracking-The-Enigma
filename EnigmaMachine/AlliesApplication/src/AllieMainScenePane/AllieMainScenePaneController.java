@@ -125,6 +125,7 @@ public class AllieMainScenePaneController {
                         setChosenContest(chosenContest);
                         Platform.runLater(() -> {
                             isContestSet.set(true);
+                            contestsTabPaneController.cleanPreviousContestData();
                         });
                     } else {
                         new ErrorDialog(new Exception("Error registering to battle"), "Error");
