@@ -21,7 +21,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -356,5 +355,9 @@ public class MainUBoatScenePaneController {
             }
         });
 
+    }
+
+    public void incrementMessagesCounter() {
+        machineGridController.incrementMessagesCounter();
     }
 }
