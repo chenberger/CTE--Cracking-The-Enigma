@@ -177,6 +177,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                 if (response.isSuccessful()) {
                     String currentMachineConfiguration =GSON_INSTANCE.fromJson(responseStr, String.class);
                     Platform.runLater(() -> {
+                        System.out.println("code: " + currentMachineConfiguration);
                         mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
                         currentCodeConfigurationController.setCodeConfiguration(currentMachineConfiguration);
                         //currentCodeConfigurationPaneController.updateMachineConfiguration();
@@ -324,4 +325,7 @@ public class UBoatCompetitionPaneController implements Closeable {
         isReadyToBattle.set(false);
     }
 
+    public void incrementMessagesCounter () {
+        mainUBoatScenePaneController.incrementMessagesCounter();
+    }
 }

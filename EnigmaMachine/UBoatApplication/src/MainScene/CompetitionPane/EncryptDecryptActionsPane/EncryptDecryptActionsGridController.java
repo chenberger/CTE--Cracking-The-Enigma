@@ -106,6 +106,7 @@ public class EncryptDecryptActionsGridController {
                         uBoatCompetitionPaneController.setProcessedWordExist(true);
                         uBoatCompetitionPaneController.machineDetailsChanged();
                         uBoatCompetitionPaneController.getCurrentMachineConfiguration();
+                        uBoatCompetitionPaneController.incrementMessagesCounter();
 
                         //uBoatCompetitionPaneController.setIsWordProcessed();
                         //uBoatCompetitionPaneController.setIsReadyOrNot();
@@ -187,24 +188,23 @@ public class EncryptDecryptActionsGridController {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Platform.runLater(() ->
-                            new ErrorDialog(new Exception("Error, Error while trying to reset machine state" + e) , "Error"));
+                            new ErrorDialog(new Exception("Error while trying to reset machine state" + e) , "Error"));
                 }
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.code() != 200) {
-                        new ErrorDialog(new Exception("Error, Error while trying to reset machine state") , "Error");
+                        new ErrorDialog(new Exception("Error while trying to reset machine state") , "Error");
                     }
                     else{
 
                         Platform.runLater(() -> {
                             Gson gson = new Gson();
-                            System.out.println("success in reset machine state " );
                             try {
                                 String originalConfiguration = response.body().string();
                                 uBoatCompetitionPaneController.setNewConfiguration(gson.fromJson(originalConfiguration, String.class));
                             } catch (IOException e) {
-                                new ErrorDialog(new Exception("Error, Error while trying to reset machine state, " + e) , "Error");
+                                new ErrorDialog(new Exception("Error while trying to reset machine state, " + e) , "Error");
                             }
                         });
                     }

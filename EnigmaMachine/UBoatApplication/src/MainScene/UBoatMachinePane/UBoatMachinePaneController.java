@@ -53,4 +53,8 @@ public class UBoatMachinePaneController {
     public void machineDetailsChanged(){
         machineDetailsPaneController.machineDetailsChanged();
     }
+
+    public void incrementMessagesCounter() {
+        machineDetailsPaneController.incrementMessagesCounter();
+    }
 }
