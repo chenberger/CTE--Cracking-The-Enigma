@@ -26,7 +26,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import okhttp3.Call;
@@ -54,7 +53,7 @@ public class UBoatCompetitionPaneController implements Closeable {
     private UpdateHttpLine.HttpStatusUpdate httpStatusUpdate;
     private MainUBoatScenePaneController mainUBoatScenePaneController;
     @FXML private Button readyButton;
-    @FXML private AnchorPane uBoatCandidatesPane;
+    @FXML private GridPane uBoatCandidatesPane;
     @FXML private UBoatCandidatesPaneController uBoatCandidatesPaneController;
     @FXML private GridPane UBoatCompetitionPane;
     @FXML private GridPane encryptDecryptActionsGrid;

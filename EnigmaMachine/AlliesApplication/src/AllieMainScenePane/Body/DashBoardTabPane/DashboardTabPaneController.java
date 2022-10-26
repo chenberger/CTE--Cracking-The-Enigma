@@ -4,6 +4,8 @@ import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsDataPaneController;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
@@ -53,5 +55,17 @@ public class DashboardTabPaneController {
 
     public void moreThenOneAgentJoined() {
         allieMainScenePaneController.moreThenOneAgentJoined();
+    }
+
+    public void setContest(boolean isContestReady) {
+        contestsDataPaneController.setContestProperty(isContestReady);
+    }
+
+    public SimpleBooleanProperty getContestSetProperty() {
+        return contestsDataPaneController.getIsContestSetProperty();
+    }
+
+    public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
+        allieMainScenePaneController.onRegisterToBattleButtonClicked(actionEvent);
     }
 }

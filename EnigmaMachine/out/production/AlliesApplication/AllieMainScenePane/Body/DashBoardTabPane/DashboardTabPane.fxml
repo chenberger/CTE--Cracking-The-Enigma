@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="550.0" prefWidth="1253.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController">
+<AnchorPane prefWidth="1253.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController">
    <children>
       <GridPane layoutX="7.0" minHeight="500.0" prefHeight="642.0" prefWidth="1253.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="935.0" minWidth="10.0" prefWidth="499.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="761.0" minWidth="10.0" prefWidth="761.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="499.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="761.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="645.0" minHeight="10.0" prefHeight="500.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
                <children>
-                  <SplitPane dividerPositions="0.40063593004769477" layoutX="-8.0" layoutY="155.0" prefHeight="500.0" prefWidth="1253.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.40063593004769477" layoutX="-8.0" layoutY="155.0" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="1253.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <items>
-                        <fx:include fx:id="teamAgentsDataPane" source="TeamAgentsData/TeamAgentsDataPane.fxml" />
-                        <fx:include fx:id="contestsDataPane" source="ContestData/ContestDataPane.fxml" />
+                        <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                          <content>
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="500.0">
+                                 <children>
+                                    <fx:include fx:id="teamAgentsDataPane" prefHeight="300.0" source="TeamAgentsData/TeamAgentsDataPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0">
+                          <content>
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="640.0">
+                                 <children>
+                                    <fx:include fx:id="contestsDataPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="ContestData/ContestDataPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </items>
                   </SplitPane>
                </children>

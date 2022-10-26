@@ -41,14 +41,14 @@ public class AllieMainScenePaneController {
     @FXML private Button logOutButton;
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
-    private SimpleBooleanProperty isContestSet;
+    //private SimpleBooleanProperty isContestSet;
     private SimpleBooleanProperty isTaskSizeSet;
     private SimpleBooleanProperty isOneAgentAtLeastRegistered;
     private SimpleBooleanProperty isReadyButtonClicked;
 
     public AllieMainScenePaneController() {
         isTaskSizeSet = new SimpleBooleanProperty(false);
-        isContestSet = new SimpleBooleanProperty(false);
+        //isContestSet = new SimpleBooleanProperty(false);
         isOneAgentAtLeastRegistered = new SimpleBooleanProperty(false);
         isReadyButtonClicked = new SimpleBooleanProperty(false);
     }
@@ -61,9 +61,9 @@ public class AllieMainScenePaneController {
             contestsTabPaneController.setAllieMainScenePaneController(this);
         }
 
-        registerToBattleButton.disableProperty().bind(isContestSet);
+        //registerToBattleButton.disableProperty().bind(isContestSet);
         setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
-        readyToContestButton.disableProperty().bind(isContestSet.not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
+        readyToContestButton.disableProperty().bind(dashboardTabPaneController.getContestSetProperty().not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
         setAllyName();
     }
 
@@ -124,7 +124,8 @@ public class AllieMainScenePaneController {
                         OnLineContestsTable chosenContest = onLineContestFromJson(body);
                         setChosenContest(chosenContest);
                         Platform.runLater(() -> {
-                            isContestSet.set(true);
+                            dashboardTabPaneController.setContest(true);
+                            //isContestSet.set(true);
                             contestsTabPaneController.cleanPreviousContestData();
                         });
                     } else {
@@ -210,7 +211,8 @@ public class AllieMainScenePaneController {
 
     public void setChosenContest(OnLineContestsTable chosenContest) {
         contestsTabPaneController.setChosenContest(chosenContest);
-        isContestSet.set(true);
+        dashboardTabPaneController.setContest(true);
+        //isContestSet.set(true);
     }
 
     public void onReadyToContestButtonClicked(ActionEvent actionEvent) {
@@ -281,12 +283,14 @@ public class AllieMainScenePaneController {
         Platform.runLater(() -> {
             taskSizeTextField.setText("");
             isTaskSizeSet.set(false);
-            isContestSet.set(false);
+            //isContestSet.set(false);
+            dashboardTabPaneController.setContest(false);
             isReadyButtonClicked.set(false);
         });
     }
 
     public void unsetContest() {
-        isContestSet.set(false);
+        //isContestSet.set(false);
+        dashboardTabPaneController.setContest(false);
     }
 }
