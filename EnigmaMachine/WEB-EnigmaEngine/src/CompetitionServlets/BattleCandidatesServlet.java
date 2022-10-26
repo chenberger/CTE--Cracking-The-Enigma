@@ -195,7 +195,6 @@ public class BattleCandidatesServlet extends HttpServlet {
         }catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-
     }
 
     private synchronized void updateNumberOfTasksPulledByAgent(HttpServletRequest request, HttpServletResponse response) {

@@ -192,7 +192,13 @@ public class MainUBoatScenePaneController {
             });
 
         } else {
-            new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
+            Platform.runLater(() -> {
+                try {
+                    new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
+                } catch (IOException e) {
+                }
+            });
+
         }
         response.close();
 

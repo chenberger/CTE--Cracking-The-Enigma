@@ -36,9 +36,12 @@ public class ContestAndTeamDataRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull okhttp3.Call call, @NotNull Response response) throws IOException {
-                String responseString = response.body().string();
-                AgentContestAndTeamData agentContestAndTeamData = GSON_INSTANCE.fromJson(responseString, AgentContestAndTeamData.class);
-                contestAndTeamDataConsumer.accept(agentContestAndTeamData);
+                if(response.code() == 200){
+                    String contestAndTeamDataJson = response.body().string();
+                    AgentContestAndTeamData agentContestAndTeamData = GSON_INSTANCE.fromJson(contestAndTeamDataJson, AgentContestAndTeamData.class);
+                    contestAndTeamDataConsumer.accept(agentContestAndTeamData);
+                }
+                response.close();
             }
         });
     }

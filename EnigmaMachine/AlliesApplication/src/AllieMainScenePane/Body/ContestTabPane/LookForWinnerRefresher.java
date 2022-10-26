@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static Utils.Constants.ACTION;
-import static Utils.Constants.TASKS_SERVLET;
+import static Utils.Constants.*;
 
 public class LookForWinnerRefresher extends TimerTask {
     private Consumer<String> updateWinnerFound;
@@ -40,7 +39,7 @@ public class LookForWinnerRefresher extends TimerTask {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == HttpServletResponse.SC_OK){
-                    String winnerFound = response.body().string();
+                    String winnerFound = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                     updateWinnerFound.accept(winnerFound);
                 }
                 response.close();

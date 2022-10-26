@@ -133,7 +133,7 @@ public class Allie {
         return decryptionManager;
     }
 
-    public void stopContest() {
+    public synchronized void stopContest() {
         decryptionManager.stopDeciphering();
         for(Agent agent : agentsParticipatingInDecryption){
             agent.stopWorking();
@@ -158,5 +158,20 @@ public class Allie {
         for(Agent agent : agentsParticipatingInDecryption){
             agent.clearAgentsBattleData();
         }
+    }
+
+    public void removeAgent(Agent agent) {
+        agents.remove(agent);
+        if(agentsParticipatingInDecryption.contains(agent)){
+            agentsParticipatingInDecryption.remove(agent);
+        }
+    }
+
+    public void removeAllAgents() {
+        for(Agent agent : agents){
+            agent.removeAgentFromAllie();
+        }
+        agents.clear();
+        agentsParticipatingInDecryption.clear();
     }
 }

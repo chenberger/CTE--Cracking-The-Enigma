@@ -22,4 +22,6 @@ public class Constants {
     public static final String BATTLE_CANDIDATES_SERVLET = FULL_SERVER_PATH + "/BattleCandidates";
 
     public static final String TASKS_SERVLET = FULL_SERVER_PATH + "/Tasks";
+
+    public static final String LOGOUT_SERVLET = FULL_SERVER_PATH + "/users/logout";
 }

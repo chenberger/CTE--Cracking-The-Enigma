@@ -66,8 +66,10 @@ public class UBoatCandidatesPaneController implements Closeable {
         });
     }
     private void notifyIfWordIsFound(ContestWinnerInformation contestWinner){
-        uBoatCompetitionPaneController.notifyIfWordIsFound(contestWinner);
-        close();
+        if(contestWinner!= null) {
+            uBoatCompetitionPaneController.notifyIfWordIsFound(contestWinner);
+            close();
+        }
     }
     @Override
     public void close()  {

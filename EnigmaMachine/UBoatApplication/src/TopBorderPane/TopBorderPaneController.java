@@ -3,6 +3,7 @@ package TopBorderPane;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import MainScene.MainUBoatScenePaneController;
 import Utils.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -40,7 +41,7 @@ public class TopBorderPaneController {
     }
 
     public void setFileUploadedName(String name) {
-        CurrentFilePathTextLabel.setText(name);
+        Platform.runLater(() -> CurrentFilePathTextLabel.setText(name));
     }
 
     public void disableLoadMachineButton() {

@@ -61,7 +61,7 @@ public class DataToAgentServlet extends HttpServlet {
             Allie allie = alliesManager.getAllie(agent.getAllieName());
 
             teamName = allie.getTeamName();
-            if(allie.getBattleName().equals("")){
+            if(allie.getBattleName().equals("") || allie.getBattleName() == null){
                 battleName = "N/A";
                 contestStatus = "N/A";
             }

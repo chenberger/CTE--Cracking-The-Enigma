@@ -199,7 +199,7 @@ public class DecryptionManager {
         try {
             tasksProducerThread.interrupt();
             tasksProducer.setContestIsOff();
-            //System.out.println("=== stop deciphering");
+
         } catch (Exception e) {
             System.out.println("Error: Failed to stop deciphering");
         }

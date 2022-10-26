@@ -32,6 +32,7 @@ public class Agent {
         this.tasksPullingInterval = 1L;
         this.tasksPulled = 0L;
         this.tasksDone = 0L;
+        this.allieName = null;
     }
     //region Getters and Setters
     public void setAllieName(String allieName) {
@@ -98,6 +99,10 @@ public class Agent {
         tasksPulled = 0L;
         tasksDone = 0L;
         totalCandidatesFound = 0;
+    }
+
+    public void quitFromAllie() {
+        allieName = "";
     }
 }
 

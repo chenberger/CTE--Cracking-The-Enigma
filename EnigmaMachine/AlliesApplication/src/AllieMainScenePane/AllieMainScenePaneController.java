@@ -1,5 +1,6 @@
 package AllieMainScenePane;
 
+import AllieLoginPane.AllieLoginPaneController;
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
@@ -12,8 +13,12 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import okhttp3.Call;
@@ -23,6 +28,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URL;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static AlliesServletsPaths.AlliesServletsPaths.REGISTER_TO_BATTLE_SERVLET;
@@ -31,6 +37,10 @@ import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
 import static Utils.Constants.*;
 
 public class AllieMainScenePaneController {
+    private final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/AllieLoginPane/AllieLoginPane.fxml";
+    @FXML
+    private ScrollPane allyMainScenePane;
+    private AllieLoginPaneController allyLoginPaneController;
     @FXML private Label allieHeaderLabel;
     @FXML private AnchorPane dashboardTabPane;
     @FXML private DashboardTabPaneController dashboardTabPaneController;
@@ -54,6 +64,9 @@ public class AllieMainScenePaneController {
     }
 
     public void initialize() {
+        if(allyLoginPaneController != null) {
+            allyLoginPaneController.setAllieMainScenePaneController(this);
+        }
         if(dashboardTabPaneController != null) {
             dashboardTabPaneController.setAllieMainScenePaneController(this);
         }
@@ -82,7 +95,7 @@ public class AllieMainScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String userName = response.body().string();
-                allieHeaderLabel.setText("Ally - " + userName);
+                Platform.runLater(() -> allieHeaderLabel.setText("Ally - " + userName));
             }
         });
     }
@@ -264,15 +277,33 @@ public class AllieMainScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    new ErrorDialog(new Exception("Logged out successfully"), "Logged out");
                     dashboardTabPaneController.close();
-                    contestsTabPaneController.closeActivity();
+                    contestsTabPaneController.close();
+                    Platform.runLater(()->{
+                        new ErrorDialog(new Exception("Logged out successfully"), "Logged out");
+                        HttpClientUtil.removeCookiesOf("localhost");
+                        loadLoginPage();
+                    });
+;
                 }
                 else{
                     new ErrorDialog(new Exception("Error logging out"), "Error");
                 }
             }
         });
+    }
+
+    private void loadLoginPage() {
+        Scene scene = allyMainScenePane.getScene();
+        URL url = getClass().getResource(LOGIN_PAGE_FXML_RESOURCE_LOCATION);
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        try {
+            Parent root = fxmlLoader.load();
+            allyLoginPaneController = fxmlLoader.getController();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void moreThenOneAgentJoined() {
@@ -292,5 +323,9 @@ public class AllieMainScenePaneController {
     public void unsetContest() {
         //isContestSet.set(false);
         dashboardTabPaneController.setContest(false);
+    }
+
+    public void noAgentsJoined() {
+        isOneAgentAtLeastRegistered.set(false);
     }
 }

@@ -53,26 +53,42 @@ public class TasksServlet extends HttpServlet {
         Allie allie = alliesManager.getAllie(SessionUtils.getAllieName(request));
         String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
         UBoat uBoat = uBoatManager.getUBoat(uBoatName);
-        if(uBoat.getBattleField().getWinner().equals("")){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-        else if(uBoat.getBattleField().getWinner().equals(allie.getTeamName())){
-            String message = "You Won!!! the encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
-            Gson gson = new Gson();
-            String json = gson.toJson(message);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(json);
-            response.getWriter().flush();
-        }
-        else{
-            String message = "You Lost! The winner is: " + uBoat.getBattleField().getWinner() +
-                    "!!! The encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
-            Gson gson = new Gson();
-            String json = gson.toJson(message);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(json);
-            response.getWriter().flush();
+        try {
+            if (uBoat.getBattleField().getWinner().equals("")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            } else if (uBoat.getBattleField().getWinner().equals(allie.getTeamName())) {
+                String message = "You Won!!! the encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
+                Gson gson = new Gson();
+                String json = gson.toJson(message);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(json);
+                response.getWriter().flush();
+            } else if (uBoat.getBattleField().getWinner().equals("Battle Host Left")) {
+                String message = "Sorry, but the host has left so the battle is over!! ";
+                allie.setBattleName("");
+                Gson gson = new Gson();
+                String json = gson.toJson(message);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(json);
+                response.getWriter().flush();
+            } else {
+                String message = "You Lost! The winner is: " + uBoat.getBattleField().getWinner() +
+                        "!!! The encrypted message was: " + uBoat.getBattleField().getOriginalMessage();
+                Gson gson = new Gson();
+                String json = gson.toJson(message);
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(json);
+                response.getWriter().flush();
 
+            }
+        } catch (Exception e) {
+            String message = "Sorry, but the host has left so the battle is over!! ";
+            allie.setBattleName("");
+            Gson gson = new Gson();
+            String json = gson.toJson(message);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(json);
+            response.getWriter().flush();
         }
     }
     private synchronized void getTasksFromTasksProducer(HttpServletRequest request, HttpServletResponse response) {

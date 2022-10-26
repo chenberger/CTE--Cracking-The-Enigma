@@ -62,8 +62,13 @@ public class ContestTabPaneController implements Closeable {
         if(currentContestDataPaneController != null) {
             currentContestDataPaneController.close();
         }
-
-        allieMainScenePaneController.close();
+        if(agentsProgressDataPaneController != null) {
+            agentsProgressDataPaneController.close();
+        }
+        if (contestTeamsPaneController != null) {
+            contestTeamsPaneController.close();
+        }
+        //allieMainScenePaneController.close();
     }
 
     public void setActive() {

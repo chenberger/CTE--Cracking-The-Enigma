@@ -84,6 +84,7 @@ public class CompetitionHandler extends Thread implements Closeable {
     public void run() {
         //TODO : erase the prints
         isContestActive = true;
+        agentMainScenePaneController.setContestActivity(true);
         startRefreshingContestStatus();
         while (isContestActive) {
             try {
@@ -101,6 +102,7 @@ public class CompetitionHandler extends Thread implements Closeable {
         }
         tasksPool.shutdown();
         agentMainScenePaneController.stopRefreshing();
+        agentMainScenePaneController.setContestActivity(false);
     }
 
     private synchronized void updateCandidatesTableOfAgent() {
