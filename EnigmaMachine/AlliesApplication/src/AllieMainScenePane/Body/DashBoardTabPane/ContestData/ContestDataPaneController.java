@@ -8,7 +8,9 @@ import DTO.OnLineContestsTable;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,11 +37,17 @@ public class ContestDataPaneController implements Closeable {
    @FXML private TableColumn<OnLineContestsTable, String> contestStatusCol;
    @FXML private TableColumn<OnLineContestsTable, String> difficultyCol;
    @FXML private TableColumn<OnLineContestsTable, String> teamsRegisteredAndNeededCol;
+    @FXML private Button registerToBattleButton;
+    private SimpleBooleanProperty isContestSet;
     private Timer timer;
 
-
+    public ContestDataPaneController() {
+        isContestSet = new SimpleBooleanProperty(false);
+    }
     @FXML public void initialize(){
         initializeContestsTable();
+
+        registerToBattleButton.disableProperty().bind(isContestSet);
     }
 
     private void initializeContestsTable() {
@@ -48,6 +56,10 @@ public class ContestDataPaneController implements Closeable {
        contestStatusCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("contestStatus"));
        difficultyCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("difficulty"));
        teamsRegisteredAndNeededCol.setCellValueFactory(new PropertyValueFactory<OnLineContestsTable, String>("teamsRegisteredAndNeeded"));
+    }
+
+    @FXML public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
+        dashboardTabPaneController.onRegisterToBattleButtonClicked(actionEvent);
     }
 
     public void setDashboardTabPaneController(DashboardTabPaneController dashboardTabPaneController) {
@@ -152,5 +164,13 @@ public class ContestDataPaneController implements Closeable {
         else {
             return selectedContests.get(0);
         }
+    }
+
+    public SimpleBooleanProperty getIsContestSetProperty() {
+        return isContestSet;
+    }
+
+    public void setContestProperty(Boolean isContestReady) {
+        isContestSet.set(isContestReady);
     }
 }

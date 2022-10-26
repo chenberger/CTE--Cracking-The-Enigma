@@ -52,7 +52,7 @@ public class MainUBoatScenePaneController {
     @FXML private AnchorPane UBoatCompetitionPane;
     @FXML private MainScene.CompetitionPane.UBoatCompetitionPaneController UBoatCompetitionPaneController;
 
-    @FXML private AnchorPane machineGrid;
+    @FXML private GridPane machineGrid;
     @FXML private UBoatMachinePaneController machineGridController;
     private SimpleBooleanProperty isMachineExsists;
     private SimpleBooleanProperty isCodeConfigurationSet;
