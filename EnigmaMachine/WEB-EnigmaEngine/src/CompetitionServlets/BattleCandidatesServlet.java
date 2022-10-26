@@ -177,18 +177,18 @@ public class BattleCandidatesServlet extends HttpServlet {
             }
 
             BattleField battleField = uBoat.getBattleField();
+
             List<AgentCandidatesInformation> agentCandidatesInformation = battleField.getAgentsCandidatesInformation();
             for (AgentCandidatesInformation agentCandidate : agentCandidatesInformation) {
                 allyCandidatesTables.add(new AllyCandidatesTable(agentCandidate.getCandidateString(), agentCandidate.getTeamName(), agentCandidate.getConfigurationOfTask()));
             }
-            if(allyCandidatesTables.size() > 0){
+            if (allyCandidatesTables.size() > 0) {
                 Gson gson = new Gson();
                 String json = gson.toJson(allyCandidatesTables);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(json);
                 response.getWriter().flush();
-            }
-            else{
+            } else {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
 

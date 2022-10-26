@@ -58,10 +58,15 @@ public class AgentCandidatesPaneController implements Closeable {
 
     public void updateCandidatesTable(List<DataToAgentApplicationTableView> agentCandidatesInformationList) {
         Platform.runLater(()->{
-            //candidatesTableView.getItems().clear();
             for (DataToAgentApplicationTableView agentCandidatesInformation : agentCandidatesInformationList) {
                 candidatesTableView.getItems().add(new DataToAgentApplicationTableView(agentCandidatesInformation.getCandidateString(),agentCandidatesInformation.getNumberOfTask(),agentCandidatesInformation.getConfigurationOfTask()));
             }
+        });
+    }
+
+    public void clearTable() {
+        Platform.runLater(()->{
+            candidatesTableView.getItems().clear();
         });
     }
 }

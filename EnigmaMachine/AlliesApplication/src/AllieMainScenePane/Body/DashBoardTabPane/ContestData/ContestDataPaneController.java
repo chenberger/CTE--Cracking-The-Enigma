@@ -69,30 +69,36 @@ public class ContestDataPaneController implements Closeable {
     private void updateContestsTable(OnLineContestsDataToTable onLineContestsDataToTable) {
         boolean isNumberOfRegisteredTeamsChanged = false;
         Platform.runLater(() -> {
-            if(onLineContestsDataToTable.getBattleNames().size() != numberOfContests || numberOfRegisteredTeamsChanged(onLineContestsDataToTable,contestsTable.getItems())){
-                clearContestsTable();
+            if(onLineContestsDataToTable != null) {
+                if (onLineContestsDataToTable.getBattleNames().size() != numberOfContests || numberOfRegisteredTeamsChanged(onLineContestsDataToTable, contestsTable.getItems())) {
+                    clearContestsTable();
 
-                List<String> battleNames = onLineContestsDataToTable.getBattleNames();
-                List<String> boatNames = onLineContestsDataToTable.getUBoatNames();
-                Map<String, String> contestStatuses = onLineContestsDataToTable.getContestsStatus();
-                List<String> difficulties = onLineContestsDataToTable.getDifficultyLevels().stream().map(Enum::toString).collect(Collectors.toList());
-                Map<String, Integer> teamsRegisteredToEachBattle = onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest();
-                List<Integer> numberOfTeamsNeededToEachContest = onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest();
+                    List<String> battleNames = onLineContestsDataToTable.getBattleNames();
+                    List<String> boatNames = onLineContestsDataToTable.getUBoatNames();
+                    Map<String, String> contestStatuses = onLineContestsDataToTable.getContestsStatus();
+                    List<String> difficulties = onLineContestsDataToTable.getDifficultyLevels().stream().map(Enum::toString).collect(Collectors.toList());
+                    Map<String, Integer> teamsRegisteredToEachBattle = onLineContestsDataToTable.getNumberOfTeamsRegisteredToEachContest();
+                    List<Integer> numberOfTeamsNeededToEachContest = onLineContestsDataToTable.getNumberOfTeamsNeededToEachContest();
 
-                List<String> teamsRegisteredAndNeeded = setTeamsRegisteredAndNeeded(teamsRegisteredToEachBattle, numberOfTeamsNeededToEachContest, battleNames);
+                    List<String> teamsRegisteredAndNeeded = setTeamsRegisteredAndNeeded(teamsRegisteredToEachBattle, numberOfTeamsNeededToEachContest, battleNames);
 
-                for (int i = 0; i < boatNames.size(); i++) {
-                    OnLineContestsTable contestToAdd = new OnLineContestsTable(
-                            battleNames.get(i),
-                            boatNames.get(i),
-                            contestStatuses.get(boatNames.get(i)),
-                            difficulties.get(i),
-                            teamsRegisteredAndNeeded.get(i));
-                    ObservableList<OnLineContestsTable> tableData = contestsTable.getItems();
-                    tableData.add(contestToAdd);
-                    contestsTable.setItems(tableData);
-                    numberOfContests = battleNames.size();
+                    for (int i = 0; i < boatNames.size(); i++) {
+                        OnLineContestsTable contestToAdd = new OnLineContestsTable(
+                                battleNames.get(i),
+                                boatNames.get(i),
+                                contestStatuses.get(boatNames.get(i)),
+                                difficulties.get(i),
+                                teamsRegisteredAndNeeded.get(i));
+                        ObservableList<OnLineContestsTable> tableData = contestsTable.getItems();
+                        tableData.add(contestToAdd);
+                        contestsTable.setItems(tableData);
+                        numberOfContests = battleNames.size();
+                    }
                 }
+            }
+            else{
+                numberOfContests = 0;
+                clearContestsTable();
             }
         });
     }

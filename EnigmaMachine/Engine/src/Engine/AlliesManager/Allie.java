@@ -140,6 +140,7 @@ public class Allie {
         }
         //battleName = "";
         agentsParticipatingInDecryption.clear();
+
         isReady = false;
         contestOnline = false;
 
@@ -151,5 +152,11 @@ public class Allie {
             totalTasksCompleted += agent.getNumberOfTasksDone();
         }
         return totalTasksCompleted;
+    }
+
+    public void clearAgentsProcessData() {
+        for(Agent agent : agentsParticipatingInDecryption){
+            agent.clearAgentsBattleData();
+        }
     }
 }

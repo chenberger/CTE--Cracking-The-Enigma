@@ -82,6 +82,10 @@ public class UBoatCandidatesPaneController implements Closeable {
         close();
     }
 
+    public void setNoneWinnerFound() {
+
+    }
+
     // public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
     //    this.contestTabPaneController = contestTabPaneController;
    // }

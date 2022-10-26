@@ -292,6 +292,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                     uBoatCandidatesPaneController.startListRefreshing();
                     Platform.runLater(() -> {
                         isReadyToBattle.set(true);
+                        mainUBoatScenePaneController.setNoneWinnerFound();
                     });
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to set ready");
@@ -323,6 +324,7 @@ public class UBoatCompetitionPaneController implements Closeable {
         uBoatCandidatesPaneController.stopContest();
         encryptDecryptActionsGridController.clearTexts();
         isReadyToBattle.set(false);
+        isProcessedWordExist.set(false);
     }
 
     public void incrementMessagesCounter () {

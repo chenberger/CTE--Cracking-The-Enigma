@@ -228,8 +228,11 @@ public class AllieMainScenePaneController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    contestsTabPaneController.startRefresh();
+                    contestsTabPaneController.setNoneWinnerFound();
                     isReadyButtonClicked.set(true);
+                    //contestsTabPaneController.startRefresh();
+
+
 /*                    Platform.runLater(() -> {
                         readyToContestButton.setDisable(true);
                     });*/
@@ -281,5 +284,9 @@ public class AllieMainScenePaneController {
             isContestSet.set(false);
             isReadyButtonClicked.set(false);
         });
+    }
+
+    public void unsetContest() {
+        isContestSet.set(false);
     }
 }

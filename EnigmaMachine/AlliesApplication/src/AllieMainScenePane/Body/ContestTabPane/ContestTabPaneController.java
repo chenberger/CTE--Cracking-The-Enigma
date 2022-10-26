@@ -99,9 +99,9 @@ public class ContestTabPaneController implements Closeable {
             }
         });
     }
-
     public void startRefresh() {
         teamCandidatesController.startListRefreshing();
+        agentsProgressDataPaneController.startListRefreshing();
             LookForWinnerRefresher lookForWinnerRefresher = new LookForWinnerRefresher(this::notifyIfWinnerFound);
             timer = new Timer();
             timer.schedule(lookForWinnerRefresher, 0, 100);
@@ -132,13 +132,15 @@ public class ContestTabPaneController implements Closeable {
     private void notifyIfWinnerFound(String winnerMessage) {
         if(!isWinnerFound) {
             isWinnerFound = true;
+            closeContestRefreshers();
+            currentContestDataPaneController.setContestAlreadyStartedToFalse();
             Platform.runLater(() -> {
                 if (winnerMessage != null) {
                     new ErrorDialog(new Exception(winnerMessage), "The contest is over");
                     quitFromBattle();
                 }
             });
-            closeContestRefreshers();
+
             allieMainScenePaneController.resetControllers();
         }
     }
@@ -183,5 +185,13 @@ public class ContestTabPaneController implements Closeable {
         agentsProgressDataPaneController.cleanTable();
         agentsProgressDataPaneController.cleanLabels();
         teamCandidatesController.cleanTable();
+    }
+
+    public void unsetContest() {
+        allieMainScenePaneController.unsetContest();
+    }
+
+    public void setNoneWinnerFound() {
+        isWinnerFound = false;
     }
 }

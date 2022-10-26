@@ -115,6 +115,7 @@ public class AllyOpsServlet extends HttpServlet {
         AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
         Agent agent = agentsManager.getAgent(request.getParameter("agentName"));
         Allie allie = alliesManager.getAllie(agent.getAllieName());
+
         if(allie.getAgentsParticipatingInDecryption().contains(agent)){
             try {
                 response.setStatus(HttpServletResponse.SC_OK);

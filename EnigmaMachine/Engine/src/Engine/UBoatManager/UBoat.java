@@ -107,6 +107,6 @@ public class UBoat {
     public void setContestOver() {
         this.contestOnline = false;
         this.contestStatus = CONTEST_NOT_STARTED;
-        this.isReady = false;
+        isReady = false;
     }
 }
