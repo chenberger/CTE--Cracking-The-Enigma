@@ -67,7 +67,7 @@ public class AgentsProgressDataController implements Closeable {
                 this::updateAgentsProgressDataTable,
                 this::updateAlliesTasksProgressToLabels);
         timer = new Timer();
-        timer.schedule(agentsProgressDataRefresher, 0, 100);
+        timer.schedule(agentsProgressDataRefresher, 0, 50);
     }
     private void updateAgentsProgressDataTable(List<AgentsProgressAndDataTable> agentProgressDataToTableList){
         Platform.runLater(()->{

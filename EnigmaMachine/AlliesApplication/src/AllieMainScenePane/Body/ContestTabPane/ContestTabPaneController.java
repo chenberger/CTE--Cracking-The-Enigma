@@ -69,7 +69,7 @@ public class ContestTabPaneController implements Closeable {
     public void setActive() {
         contestTeamsPaneController.startListRefresher();
         currentContestDataPaneController.startListRefresher();
-        agentsProgressDataPaneController.startListRefreshing();
+        //agentsProgressDataPaneController.startListRefreshing();
     }
 
     public void setChosenContest(OnLineContestsTable chosenContest) {

@@ -125,7 +125,7 @@ public class Allie {
 
 
     public void startContest(String processedMessage, EngineManager engineManager) {
-        setAgentsParticipatingInDecryption();
+        //setAgentsParticipatingInDecryption();
         decryptionManager.startDeciphering(processedMessage, taskSize, level, engineManager);
     }
 

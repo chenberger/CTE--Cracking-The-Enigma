@@ -57,6 +57,7 @@ public class ReadyManagerServlet extends HttpServlet {
             String uBoatName = ServletUtils.getUBoatsManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
             UBoat uBoat = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(uBoatName);
             uBoat.getBattleField().addTeamToReady();
+            allie.setAgentsParticipatingInDecryption();
             if((uBoat.getBattleField().getNumberOfAlliesThatAreReady() == uBoat.getBattleField().getNumberOfAlliesToStartBattle()) && uBoat.isReady()){
                 uBoat.getBattleField().clearCandidatesInformationList();
                 uBoat.getBattleField().getAlliesInBattle().forEach(Allie::clearAgentsProcessData);

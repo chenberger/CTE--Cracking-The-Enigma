@@ -56,7 +56,7 @@ public class TeamCandidatesController implements Closeable {
     public void startListRefreshing(){
         teamCandidatesRefresher = new TeamCandidatesRefresher(this::updateCandidatesTable);
         timer = new Timer();
-        timer.schedule(teamCandidatesRefresher, 0, 100);
+        timer.schedule(teamCandidatesRefresher, 0, 20);
     }
 
     @Override
