@@ -39,7 +39,7 @@ public class ReadyManagerServlet extends HttpServlet {
         String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
         UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
 
-        if(uBoat.isContestOnline()){
+        if(uBoat != null && uBoat.isContestOnline()){
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(GSON_INSTANCE.toJson(true));
             response.getWriter().flush();

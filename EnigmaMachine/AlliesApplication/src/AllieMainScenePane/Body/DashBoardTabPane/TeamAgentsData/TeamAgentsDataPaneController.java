@@ -55,6 +55,9 @@ public class TeamAgentsDataPaneController implements Closeable {
             if(agents.size() > 0) {
                 dashboardTabPaneController.moreThenOneAgentJoined();
             }
+            else{
+                dashboardTabPaneController.noAgentsJoined();
+            }
             for (int i = 0; i < agents.size(); i++) {
                 AgentsTable agentToAdd = new AgentsTable(agents.get(i), threadsForEachAgent.get(i), tasksTakenOnceForEachAgent.get(i));
                 ObservableList<AgentsTable> tableData = agentsTableView.getItems();

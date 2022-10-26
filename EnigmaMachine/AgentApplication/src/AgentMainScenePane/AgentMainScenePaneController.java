@@ -1,34 +1,47 @@
 package AgentMainScenePane;
 
+import AgentLoginPane.AgentLoginPaneController;
 import AgentMainScenePane.Body.AgentCandidates.AgentCandidatesPaneController;
 import AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController;
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
 import DTO.DataToAgentApplicationTableView;
 import DTO.DataToInitializeMachine;
 import DTO.TaskToAgent;
+import DesktopUserInterface.MainScene.ErrorDialog;
 import Engine.AgentsManager.AgentThreadFactory;
 import Engine.Dictionary;
 import Engine.EngineManager;
 import EnigmaMachine.EnigmaMachine;
+import Utils.HttpClientUtil;
 import com.google.gson.Gson;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.*;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
-import static Utils.Constants.ACTION;
+import static Utils.Constants.*;
 
 public class AgentMainScenePaneController {
+    private final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/AgentLoginPane/AgentLoginPane.fxml";
     //private SimpleIntegerProperty numberOfTasksInQueue;
     private CompetitionHandler competitionHandler;
+    private SimpleBooleanProperty isContestRuns;
     private OkHttpClient client;
     private boolean isMachineExists;
     private boolean isDictionaryExists;
@@ -41,7 +54,9 @@ public class AgentMainScenePaneController {
     private BlockingQueue<Runnable> tasksQueue;
     private int numberOfThreads;
     private Long tasksPullingInterval;
-
+    AgentLoginPaneController agentLoginPaneController;
+    @FXML private AnchorPane agentMainScenePane;
+    @FXML private Button logOutButton;
     @FXML private AnchorPane agentCandidatesPane;
     @FXML private AgentCandidatesPaneController agentCandidatesPaneController;
     @FXML private AnchorPane agentProgressAndDataPane;
@@ -49,6 +64,9 @@ public class AgentMainScenePaneController {
     @FXML private AnchorPane contestAndTeamDataPane;
     @FXML private ContestAndTeamDataPaneController contestAndTeamDataPaneController;
     @FXML public void initialize() {
+        if(agentLoginPaneController != null) {
+            agentLoginPaneController.setAgentMainScenePaneController(this);
+        }
         if (agentCandidatesPaneController != null) {
             agentCandidatesPaneController.setAgentMainSceneController(this);
         }
@@ -59,9 +77,11 @@ public class AgentMainScenePaneController {
             contestAndTeamDataPaneController.setAgentMainSceneController(this);
         }
         engineManager = new EngineManager();
+        isContestRuns = new SimpleBooleanProperty(false);
         isDictionaryExists = false;
         isMachineExists = false;
         client = new OkHttpClient();
+        logOutButton.disableProperty().bind(isContestRuns);
         //numberOfTasksInQueue = new SimpleIntegerProperty(0);
 
     }
@@ -71,7 +91,8 @@ public class AgentMainScenePaneController {
         contestAndTeamDataPaneController.startRefreshing();
     }
     public void setAgentName(String agentName) {
-        this.agentName = agentName;
+        Platform.runLater(()->{this.agentName = agentName; });
+
     }
     public void setNumberOfThreads(int numberOfThreads) {
         this.numberOfThreads = numberOfThreads;
@@ -81,6 +102,42 @@ public class AgentMainScenePaneController {
     }
 
     public void onLogOutButtonClicked(ActionEvent actionEvent) {
+        String finalUrl  = HttpUrl.parse(LOGOUT_SERVLET).newBuilder()
+                .addQueryParameter(ACTION, "agentLogout")
+                .build().toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Error while trying to log out"), "Error while trying to log out");
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code() == 200){
+                    String responseString = GSON_INSTANCE.fromJson(response.body().string(), String.class);
+                    Platform.runLater(()->{
+                        HttpClientUtil.removeCookiesOf("localhost");
+                        new ErrorDialog(new Exception(responseString), "Logged out successfully");
+                        closeAgent();
+                    });
+
+                }else {
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception("Error while trying to log out"), "Error while trying to log out");
+                    });
+                }
+                response.close();
+            }
+        });
+    }
+
+    private void closeAgent() {
+        contestAndTeamDataPaneController.close();
+        agentProgressAndDataPaneController.close();
+        agentCandidatesPaneController.close();
+        loadLoginPage();
     }
 
     public void startContest() {
@@ -254,6 +311,10 @@ public class AgentMainScenePaneController {
         agentProgressAndDataPaneController.updateNumberOfTasksInQueue(numberOfTasksInQueue);
     }
 
+    public void setContestActivity(boolean contestIsActive) {
+        isContestRuns.set(contestIsActive);
+    }
+
 
     //HttpClientUtil.runAsync(finalUrl, new Callback() {
        //    @Override
@@ -283,4 +344,16 @@ public class AgentMainScenePaneController {
 
        //    }
        //});
+       private void loadLoginPage() {
+           Scene scene = agentMainScenePane.getScene();
+           URL url = getClass().getResource(LOGIN_PAGE_FXML_RESOURCE_LOCATION);
+           FXMLLoader fxmlLoader = new FXMLLoader(url);
+           try {
+               Parent root = fxmlLoader.load();
+               agentLoginPaneController = fxmlLoader.getController();
+               scene.setRoot(root);
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       }
 }

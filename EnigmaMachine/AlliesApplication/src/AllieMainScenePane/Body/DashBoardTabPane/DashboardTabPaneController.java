@@ -47,6 +47,7 @@ public class DashboardTabPaneController {
     public void close() {
         teamAgentsDataPaneController.close();
         contestsDataPaneController.close();
+
     }
 
     public int getAmountOfAgents() {
@@ -67,5 +68,10 @@ public class DashboardTabPaneController {
 
     public void onRegisterToBattleButtonClicked(ActionEvent actionEvent) {
         allieMainScenePaneController.onRegisterToBattleButtonClicked(actionEvent);
+    }
+
+    public void noAgentsJoined() {
+        allieMainScenePaneController.noAgentsJoined();
+
     }
 }

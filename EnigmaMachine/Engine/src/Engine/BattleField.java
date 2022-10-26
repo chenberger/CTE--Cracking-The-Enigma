@@ -174,4 +174,9 @@ public class BattleField {
     public void clearCandidatesInformationList() {
         agentsCandidatesInformation.clear();
     }
+
+    public void removeAllyFromBattle(Allie allie) {
+        this.numberOfTeamsInBattleField--;
+        alliesInBattleField.remove(allie);
+    }
 }

@@ -255,10 +255,11 @@ public class UBoatCompetitionPaneController implements Closeable {
     public void close() {
         //teamsTableView.getItems().clear();
         //totalUsers.set(0);
+        uBoatCandidatesPaneController.close();
         if (alliesInBattleRefresher != null && timer != null) {
             alliesInBattleRefresher.cancel();
-            timer.cancel();
         }
+
         mainUBoatScenePaneController.close();
     }
 

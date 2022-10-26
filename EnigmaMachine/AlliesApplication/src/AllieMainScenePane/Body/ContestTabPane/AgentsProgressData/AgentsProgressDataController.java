@@ -96,7 +96,9 @@ public class AgentsProgressDataController implements Closeable {
     public void close() {
         if(agentsProgressDataRefresher != null){
             agentsProgressDataRefresher.cancel();
-            timer.cancel();
+            if(timer != null){
+                timer.cancel();
+            }
         }
     }
 

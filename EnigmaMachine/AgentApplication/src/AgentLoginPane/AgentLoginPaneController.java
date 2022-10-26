@@ -247,10 +247,13 @@ public class AgentLoginPaneController implements Closeable {
             @Override
             public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
                 if(response.isSuccessful()) {
-                    agentName = setAgentNameTextField.getText();
-                    setAgentNameTextField.setDisable(true);
-                    setAgentNameButton.setDisable(true);
-                    agentMainScenePaneController.setAgentName(agentName);
+                    Platform.runLater(() -> {
+                        agentName = setAgentNameTextField.getText();
+                        setAgentNameTextField.setDisable(true);
+                        setAgentNameButton.setDisable(true);
+                        agentMainScenePaneController.setAgentName(agentName);
+                    });
+
                 } else {
                     Platform.runLater(() -> {
                         try {
@@ -283,5 +286,9 @@ public class AgentLoginPaneController implements Closeable {
             new ErrorDialog(new Exception("You must choose a positive number"), "You didn't input a number");
         }
 
+    }
+
+    public void setAgentMainScenePaneController(AgentMainScenePaneController agentMainScenePaneController) {
+        this.agentMainScenePaneController = agentMainScenePaneController;
     }
 }

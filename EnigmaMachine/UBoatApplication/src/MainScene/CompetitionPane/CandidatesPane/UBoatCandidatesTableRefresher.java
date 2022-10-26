@@ -76,9 +76,14 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    String jsonContestWinnerInformation = response.body().string();
-                    ContestWinnerInformation contestWinnerInformation = getWinnerInfoFromJson(jsonContestWinnerInformation);
-                    updateWinnerInformation.accept(contestWinnerInformation);
+                    try {
+                        String jsonContestWinnerInformation = response.body().string();
+                        ContestWinnerInformation contestWinnerInformation = getWinnerInfoFromJson(jsonContestWinnerInformation);
+                        updateWinnerInformation.accept(contestWinnerInformation);
+                    }catch (Exception e){
+                        updateWinnerInformation.accept(null);
+                    }
+
                 }
 
                 response.close();
