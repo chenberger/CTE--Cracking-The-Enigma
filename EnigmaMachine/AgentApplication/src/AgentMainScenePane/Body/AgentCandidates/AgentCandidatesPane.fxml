@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.Body.AgentCandidates.AgentCandidatesPaneController">
    <children>
       <GridPane layoutX="245.0" layoutY="130.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,9 +31,9 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0">
                      <children>
                         <TableView fx:id="candidatesTableView" layoutX="185.0" layoutY="99.0" minHeight="250.0" minWidth="700.0" prefHeight="358.0" prefWidth="748.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
