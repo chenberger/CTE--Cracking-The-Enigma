@@ -49,9 +49,11 @@ public class RegisterToBattleServlet extends HttpServlet {
                 response.getWriter().println("Battle is full");
             }
             else {
+
                 allie.setLevel(battleField.getLevel().toString());
                 battleField.addTeam(allie);
                 battleField.setWinner("");
+                cleanAgentsProcessAndTasks(allie);
                 //create the response json string
                 allie.setBattleName(battleField.getBattleFieldName());
                 Gson gson = new Gson();
@@ -66,6 +68,10 @@ public class RegisterToBattleServlet extends HttpServlet {
             }
         }
 
+    }
+
+    private void cleanAgentsProcessAndTasks(Allie allie) {
+        allie.clearAgentsProcessData();
     }
 
     private void registerToBattleByItsName(String battleName, Allie allie) {
