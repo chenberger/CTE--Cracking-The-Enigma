@@ -24,6 +24,7 @@ import static Utils.Constants.REFRESH_RATE;
 
 
 public class CurrentContestDataPaneController implements Closeable {
+    private boolean isContestAlreadyStarted = false;
     private CurrentContestDataRefresher currentContestDataRefresher;
     private Timer timer;
     @FXML private ContestTabPaneController contestTabPaneController;
@@ -90,9 +91,15 @@ public class CurrentContestDataPaneController implements Closeable {
             setUBoatNameLabel(onLineContestsTable.getBoatName());
             setDifficultyLabel(onLineContestsTable.getDifficulty());
             setContestStatusLabel(onLineContestsTable.getContestStatus());
+            if(onLineContestsTable.getContestStatus().equals("Contest Started") && !isContestAlreadyStarted){
+                isContestAlreadyStarted = true;
+                contestTabPaneController.startRefresh();
+            }
+
             setTeamsRegisteredAndNeededLabel(onLineContestsTable.getTeamsRegisteredAndNeeded());
             if(onLineContestsTable.getBoatName().equals("N/A")){
                 setProcessedWordLabel("N/A");
+                contestTabPaneController.unsetContest();
             }else {
                 handleProcessedWordFromBattle(onLineContestsTable.getBoatName());
             }
@@ -131,5 +138,9 @@ public class CurrentContestDataPaneController implements Closeable {
                 }
             }
         });
+    }
+
+    public void setContestAlreadyStartedToFalse() {
+        isContestAlreadyStarted = false;
     }
 }

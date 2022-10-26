@@ -51,6 +51,7 @@ public class RegisterToBattleServlet extends HttpServlet {
             else {
                 allie.setLevel(battleField.getLevel().toString());
                 battleField.addTeam(allie);
+                battleField.setWinner("");
                 //create the response json string
                 allie.setBattleName(battleField.getBattleFieldName());
                 Gson gson = new Gson();

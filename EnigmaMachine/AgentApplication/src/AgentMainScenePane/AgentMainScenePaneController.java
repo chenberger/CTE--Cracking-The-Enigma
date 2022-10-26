@@ -19,10 +19,7 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
@@ -91,6 +88,7 @@ public class AgentMainScenePaneController {
 
     public void startBruteForce()  {
         try {
+            agentCandidatesPaneController.clearTable();
             checkIfParticipateInBattle();
             if (participateInContest) {
                 contestTasksQueue = new LinkedBlockingQueue<>();
@@ -209,6 +207,7 @@ public class AgentMainScenePaneController {
             participateInContest = true;
         }
         response.close();
+
         //HttpClientUtil.runAsync(finalUrl, new Callback() {
         //    @Override
         //    public void onFailure(okhttp3.Call call, java.io.IOException e) {

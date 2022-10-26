@@ -46,9 +46,6 @@ public class TeamCandidatesRefresher extends TimerTask {
                     List<AllyCandidatesTable> allyCandidatesTables = Arrays.asList(gson.fromJson(jsonAllyCandidatesTable, AllyCandidatesTable[].class));
                     updateCandidatesTable.accept(allyCandidatesTables);
                 }
-                else{
-                    //System.out.println("Something went wrong with the request");
-                }
                 response.close();
             }
         });

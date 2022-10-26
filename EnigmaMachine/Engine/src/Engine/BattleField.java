@@ -170,4 +170,8 @@ public class BattleField {
     public void setWinner(String winner) {
         this.winner = winner;
     }
+
+    public void clearCandidatesInformationList() {
+        agentsCandidatesInformation.clear();
+    }
 }

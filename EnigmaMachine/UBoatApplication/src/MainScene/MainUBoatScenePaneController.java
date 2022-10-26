@@ -317,13 +317,13 @@ public class MainUBoatScenePaneController {
     }
 
     public void notifyIfWordIsFound(ContestWinnerInformation contestWinner) {
-        stopContest(contestWinner.getWinnerName());
-        Platform.runLater(() -> {
-            if(!isWinnerFound) {
-                isWinnerFound = true;
-                new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
-            }
-        });
+        if(!isWinnerFound) {
+            isWinnerFound = true;
+            stopContest(contestWinner.getWinnerName());
+            Platform.runLater(() -> {
+                    new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
+            });
+        }
     }
 
     private void stopContest(String contestWinner) {
@@ -359,5 +359,8 @@ public class MainUBoatScenePaneController {
 
     public void incrementMessagesCounter() {
         machineGridController.incrementMessagesCounter();
+    }
+    public void setNoneWinnerFound() {
+        isWinnerFound = false;
     }
 }

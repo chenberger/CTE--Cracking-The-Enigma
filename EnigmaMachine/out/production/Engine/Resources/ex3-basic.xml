@@ -225,5 +225,9 @@
 		</Words>
 		</CTE-Dictionary>
 	</CTE-Decipher>	
+<<<<<<< HEAD
 	<CTE-Battlefield battle-name="pearl harbour" allies="2" level="Hard"/>
+=======
+	<CTE-Battlefield battle-name="pearl harbour" allies="1" level="Easy"/>
+>>>>>>> 81fa903 (fixed the finish second contest and on problem)
 </CTE-Enigma>

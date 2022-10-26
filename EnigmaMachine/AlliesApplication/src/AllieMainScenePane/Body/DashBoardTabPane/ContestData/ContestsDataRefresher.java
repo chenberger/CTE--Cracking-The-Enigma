@@ -80,10 +80,11 @@ public class ContestsDataRefresher extends TimerTask {
                         ContestsConsumer.accept(onLineContestsDataToTable);
                     }
                 }
-            }
-                else {
-                    System.out.println("No Battles online");
                 }
+                else {
+                    ContestsConsumer.accept(null);
+                }
+                response.close();
             }
         });
     }
