@@ -128,7 +128,6 @@ public class AgentMainScenePaneController implements Closeable {
                 if(response.code() == 200){
                     String responseString = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                     Platform.runLater(()->{
-                        HttpClientUtil.removeCookiesOf("localhost");
                         new ErrorDialog(new Exception(responseString), "Logged out successfully");
                         close();
                     });
@@ -151,7 +150,11 @@ public class AgentMainScenePaneController implements Closeable {
         if(isTeamLogout){
             Platform.runLater(()->{
                 new ErrorDialog(new Exception("Please register to different team"), "Your team has been logged out");
-                closeAgent();
+                try {
+                    closeAgent();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
     }
@@ -161,12 +164,24 @@ public class AgentMainScenePaneController implements Closeable {
             currentTeamLogoutRefresher.cancel();
             timer.cancel();
         }
-        closeAgent();
+        try {
+            closeAgent();
+        } catch (Exception e) {
+        }
     }
-    private void closeAgent() {
+    private void closeAgent() throws IOException {
+        HttpClientUtil.removeCookiesOf("localhost");
         contestAndTeamDataPaneController.close();
         agentProgressAndDataPaneController.close();
         agentCandidatesPaneController.close();
+        if(competitionHandler != null) {
+            try {
+
+                competitionHandler.interrupt();
+            } catch (Exception e) {
+            }
+        }
+
         loadLoginPage();
     }
 
@@ -212,7 +227,6 @@ public class AgentMainScenePaneController implements Closeable {
                        ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
         }
         response.close();
-
     }
 
     private void  getBattlesDictionary() throws IOException {
