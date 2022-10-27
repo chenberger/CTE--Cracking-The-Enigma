@@ -35,19 +35,25 @@ public class ReadyManagerServlet extends HttpServlet {
 
     private synchronized void checkContestStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getAgentName(request));
-        Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(agent.getAllieName());
-        String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
-        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
-
-        if(uBoat != null && uBoat.isContestOnline()){
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(GSON_INSTANCE.toJson(true));
-            response.getWriter().flush();
-        }
-        else{
+        if(agent.getAllieName().equals("")){
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(GSON_INSTANCE.toJson(false));
             response.getWriter().flush();
+        }
+        else {
+            Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(agent.getAllieName());
+            String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
+            UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
+
+            if (uBoat != null && uBoat.isContestOnline()) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(true));
+                response.getWriter().flush();
+            } else {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(false));
+                response.getWriter().flush();
+            }
         }
     }
 

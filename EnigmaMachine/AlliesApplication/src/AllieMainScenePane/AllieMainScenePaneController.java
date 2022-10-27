@@ -208,7 +208,6 @@ public class AllieMainScenePaneController {
                         //setTaskSizeButton.setDisable(true);
                         //readyToContestButton.setDisable(true);
                     });
-
                 }
                 else{
                     new ErrorDialog(new Exception("Error setting task size"), "Error");
@@ -245,6 +244,7 @@ public class AllieMainScenePaneController {
                 if(response.code() == 200) {
                     contestsTabPaneController.setNoneWinnerFound();
                     isReadyButtonClicked.set(true);
+                    contestsTabPaneController.setIsReadyToBattle();
                     //contestsTabPaneController.startRefresh();
 
 
@@ -271,15 +271,18 @@ public class AllieMainScenePaneController {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Error");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Error logging out"), "Error");
+                });
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() == 200) {
-                    dashboardTabPaneController.close();
                     contestsTabPaneController.close();
+                    dashboardTabPaneController.close();
                     Platform.runLater(()->{
+                        contestsTabPaneController.setNotReadyToBattle();
                         new ErrorDialog(new Exception("Logged out successfully"), "Logged out");
                         HttpClientUtil.removeCookiesOf("localhost");
                         loadLoginPage();

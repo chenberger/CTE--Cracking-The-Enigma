@@ -27,6 +27,7 @@ import static Utils.Constants.ACTION;
 
 public class ContestTabPaneController implements Closeable {
     private boolean isWinnerFound = false;
+    private boolean isReadyToBattle = false;
     private Timer timer;
     private LookForWinnerRefresher lookForWinnerRefresher;
     @FXML private AnchorPane teamCandidates;
@@ -53,6 +54,7 @@ public class ContestTabPaneController implements Closeable {
         if(teamCandidatesController != null) {
             teamCandidatesController.setContestTabPaneController(this);
         }
+        this.isReadyToBattle = false;
     }
     public void setAllieMainScenePaneController(AllieMainScenePaneController allieMainScenePaneController) {
         this.allieMainScenePaneController = allieMainScenePaneController;
@@ -68,7 +70,10 @@ public class ContestTabPaneController implements Closeable {
         if (contestTeamsPaneController != null) {
             contestTeamsPaneController.close();
         }
-        //allieMainScenePaneController.close();
+        if (lookForWinnerRefresher != null) {
+            lookForWinnerRefresher.cancel();
+            timer.cancel();
+        }
     }
 
     public void setActive() {
@@ -114,11 +119,9 @@ public class ContestTabPaneController implements Closeable {
     @Override
     public void close(){
         if(!isWinnerFound) {
-            if (timer != null) {
-                timer.cancel();
-            }
             if (lookForWinnerRefresher != null) {
                 lookForWinnerRefresher.cancel();
+                timer.cancel();
             }
             if (currentContestDataPaneController != null) {
                 currentContestDataPaneController.close();
@@ -135,8 +138,9 @@ public class ContestTabPaneController implements Closeable {
         }
     }
     private void notifyIfWinnerFound(String winnerMessage) {
-        if(!isWinnerFound) {
+        if(!isWinnerFound && isReadyToBattle) {
             isWinnerFound = true;
+            isReadyToBattle = false;
             closeContestRefreshers();
             currentContestDataPaneController.setContestAlreadyStartedToFalse();
             Platform.runLater(() -> {
@@ -198,5 +202,11 @@ public class ContestTabPaneController implements Closeable {
 
     public void setNoneWinnerFound() {
         isWinnerFound = false;
+    }
+    public void setIsReadyToBattle() {
+        this.isReadyToBattle = true;
+    }
+    public void setNotReadyToBattle() {
+        this.isReadyToBattle = false;
     }
 }
