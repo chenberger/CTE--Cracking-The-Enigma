@@ -107,7 +107,7 @@ public class AllyOpsServlet extends HttpServlet {
     }
 
     private synchronized String getTasksPulledAndDone(Agent agent) {
-        return  agent.getNumberOfTasksDone() + "/" + agent.getNumberOfTasksPulled();
+        return  agent.getNumberOfTasksPulled() - agent.getNumberOfTasksDone() + "/" + agent.getNumberOfTasksPulled();
     }
 
     private synchronized void checkIfAgentParticipateInContest(HttpServletRequest request, HttpServletResponse response) {
