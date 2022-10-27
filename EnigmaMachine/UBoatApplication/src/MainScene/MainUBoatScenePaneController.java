@@ -326,9 +326,16 @@ public class MainUBoatScenePaneController {
         if(!isWinnerFound) {
             isWinnerFound = true;
             stopContest(contestWinner.getWinnerName());
-            Platform.runLater(() -> {
+            if(!contestWinner.getWinnerName().equals("")) {
+                Platform.runLater(() -> {
                     new ErrorDialog(new Exception(contestWinner.getWinnerName() + " found the word: " + contestWinner.getOriginalWord()), "Winner found");
-            });
+                });
+            }
+            else{
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("All of the competitors left the contest!!"), "Contest is Over");
+                });
+            }
         }
     }
 

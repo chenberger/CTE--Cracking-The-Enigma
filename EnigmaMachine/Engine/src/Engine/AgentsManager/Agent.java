@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Agent {
+    private boolean isAgentRegisteredToTeam;
     private Long tasksPulled;
     private Long tasksDone;
     private Integer totalCandidatesFound;
@@ -33,6 +34,7 @@ public class Agent {
         this.tasksPulled = 0L;
         this.tasksDone = 0L;
         this.allieName = null;
+        this.isAgentRegisteredToTeam = false;
     }
     //region Getters and Setters
     public void setAllieName(String allieName) {
@@ -56,6 +58,16 @@ public class Agent {
     public void setTasksPullingInterval(long tasksPullingInterval) {
         this.tasksPullingInterval = tasksPullingInterval;
     }
+    public  void setIsAgentRegisteredToTeam() {
+        this.isAgentRegisteredToTeam = true;
+    }
+    public void setAgentUnRegisteredToTeam() {
+        this.isAgentRegisteredToTeam = false;
+    }
+    public boolean getAgentRegistrationStatus() {
+        return isAgentRegisteredToTeam;
+    }
+
     //endregion
     public List<String> getAgentFields() {
         //TODO chen: add the team the agent in, the number of threads, the number of tasks cloned from server each time.
@@ -103,6 +115,7 @@ public class Agent {
 
     public void quitFromAllie() {
         allieName = "";
+        setAgentUnRegisteredToTeam();
     }
 }
 

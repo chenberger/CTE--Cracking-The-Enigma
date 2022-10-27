@@ -93,7 +93,7 @@ public class ContestTeamsController implements Closeable {
             contestTeamsRefresher.cancel();
             timer.cancel();
         }
-        contestTabPaneController.close();
+        //contestTabPaneController.close();
     }
 
     public void setShouldUpdateToTrue() {

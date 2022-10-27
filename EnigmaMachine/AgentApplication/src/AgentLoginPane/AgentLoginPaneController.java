@@ -188,10 +188,10 @@ public class AgentLoginPaneController implements Closeable {
     }
     private void updateOptionalTeamsTable(List<TeamNameColumn> optionalTeams) {
         Platform.runLater(() -> {
-            if(optionalTeams.size() != numberOfAlliesToRegisterTo) {
+            if(optionalTeams != null && optionalTeams.size() != numberOfAlliesToRegisterTo) {
                 clearTable();
                 numberOfAlliesToRegisterTo = optionalTeams.size();
-                if (optionalTeams != null && optionalTeams.size() > 0) {
+                if (optionalTeams.size() > 0) {
 
                     ObservableList<TeamNameColumn> allTeams = teamNameTable.getItems();
                     for (TeamNameColumn team : optionalTeams) {
@@ -201,7 +201,10 @@ public class AgentLoginPaneController implements Closeable {
 
                 }
             }
-
+            if(optionalTeams == null){
+                numberOfAlliesToRegisterTo = 0;
+                clearTable();
+            }
         });
     }
 

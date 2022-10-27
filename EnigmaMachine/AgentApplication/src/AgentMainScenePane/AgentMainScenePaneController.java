@@ -27,20 +27,20 @@ import javafx.scene.layout.AnchorPane;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
+import java.util.Timer;
+import java.util.concurrent.*;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.GET_MACHINE_CONFIG_SERVLET;
 import static Utils.Constants.*;
 
-public class AgentMainScenePaneController {
+public class AgentMainScenePaneController implements Closeable {
     private final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/AgentLoginPane/AgentLoginPane.fxml";
     //private SimpleIntegerProperty numberOfTasksInQueue;
     private CompetitionHandler competitionHandler;
@@ -48,6 +48,8 @@ public class AgentMainScenePaneController {
     private OkHttpClient client;
     private boolean isMachineExists;
     private boolean isDictionaryExists;
+    private CurrentTeamLogoutRefresher currentTeamLogoutRefresher;
+    private Timer timer;
 
     String agentName;
     private boolean participateInContest = false;
@@ -93,6 +95,7 @@ public class AgentMainScenePaneController {
         //agentCandidatesPaneController.startRefreshing();
         //agentProgressAndDataPaneController.startRefreshing();
         contestAndTeamDataPaneController.startRefreshing();
+        startRefreshing();
     }
     public void setAgentName(String agentName) {
         Platform.runLater(()->{
@@ -127,7 +130,7 @@ public class AgentMainScenePaneController {
                     Platform.runLater(()->{
                         HttpClientUtil.removeCookiesOf("localhost");
                         new ErrorDialog(new Exception(responseString), "Logged out successfully");
-                        closeAgent();
+                        close();
                     });
 
                 }else {
@@ -139,7 +142,27 @@ public class AgentMainScenePaneController {
             }
         });
     }
-
+    public void startRefreshing(){
+        currentTeamLogoutRefresher = new CurrentTeamLogoutRefresher(this::updateTeamLogoutStatus);
+        timer = new Timer();
+        timer.schedule(currentTeamLogoutRefresher, 0, 200);
+    }
+    private void updateTeamLogoutStatus(Boolean isTeamLogout) {
+        if(isTeamLogout){
+            Platform.runLater(()->{
+                new ErrorDialog(new Exception("Please register to different team"), "Your team has been logged out");
+                closeAgent();
+            });
+        }
+    }
+    @Override
+    public void close(){
+        if(currentTeamLogoutRefresher != null) {
+            currentTeamLogoutRefresher.cancel();
+            timer.cancel();
+        }
+        closeAgent();
+    }
     private void closeAgent() {
         contestAndTeamDataPaneController.close();
         agentProgressAndDataPaneController.close();
@@ -189,25 +212,7 @@ public class AgentMainScenePaneController {
                        ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
         }
         response.close();
-        //HttpClientUtil.runAsync(finalUrl, new Callback() {
-        //    @Override
-        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
-        //        e.printStackTrace();
-        //    }
-////
-        //    @Override
-        //    public void onResponse(Call call, Response response) throws java.io.IOException {
-        //        if(response.code() == 200) {
-        //            Gson gson = new Gson();
-        //            String responseString = response.body().string();
-        //            DataToInitializeMachine dataToInitializeMachine = gson.fromJson(responseString, DataToInitializeMachine.class);
-        //            engineManager.setEnigmaMachine(new EnigmaMachine(dataToInitializeMachine.getRotors(), dataToInitializeMachine.getReflectors()
-        //                    ,dataToInitializeMachine.getKeyboard(), dataToInitializeMachine.getAmountCurrentRotorsInUse()));
-        //            isMachineExists = true;
-        //        }
-        //        response.close();
-        //    }
-        //});
+
     }
 
     private void  getBattlesDictionary() throws IOException {
@@ -229,24 +234,6 @@ public class AgentMainScenePaneController {
             Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
             engineManager.setDictionary(dictionary);
         }
-        //HttpClientUtil.runAsync(finalUrl, new Callback() {
-        //    @Override
-        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
-        //        e.printStackTrace();
-        //    }
-////
-        //    @Override
-        //    public void onResponse(Call call, Response response) throws java.io.IOException {
-        //        if(response.code() == 200) {
-        //            Gson gson = new Gson();
-        //            String responseString = response.body().string();
-        //            Engine.Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
-        //            engineManager.setDictionary(dictionary);
-        //            isDictionaryExists = true;
-////
-        //        }
-        //    }
-        //});
     }
     private void startWorking() {
 
@@ -272,25 +259,6 @@ public class AgentMainScenePaneController {
         }
         response.close();
 
-        //HttpClientUtil.runAsync(finalUrl, new Callback() {
-        //    @Override
-        //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
-        //        new ErrorDialog(e, "Error while trying to get participate value");
-        //    }
-//
-        //    @Override
-        //    public void onResponse(Call call, Response response) throws java.io.IOException {
-        //        if (response.code() == 200) {
-        //            Gson gson = new Gson();
-        //            String responseString = response.body().string();
-        //            //TODO: change to boolean from json
-        //            participateInContest = gson.fromJson(responseString, Boolean.class);
-        //        } else {
-        //            new ErrorDialog(new Exception(response.body().string()), "Error while trying to get participate value");
-        //        }
-//
-        //    }
-        //});
     }
 
     public boolean isContestActive() {
@@ -323,34 +291,6 @@ public class AgentMainScenePaneController {
     }
 
 
-    //HttpClientUtil.runAsync(finalUrl, new Callback() {
-       //    @Override
-       //    public void onFailure(okhttp3.Call call, java.io.IOException e) {
-       //        e.printStackTrace();
-       //    }
-
-       //    @Override
-       //    public void onResponse(Call call, Response response) throws java.io.IOException {
-       //        if(response.code() == 200) {
-       //            Gson gson = new Gson();
-       //            String responseString = response.body().string();
-       //            List<TaskToAgent> tasksToAgent = Arrays.asList(gson.fromJson(responseString, TaskToAgent[].class));
-
-       //            contestTasksQueue.addAll(tasksToAgent);
-       //            try {
-       //                 for(int i = 0; i < tasksToAgent.size(); i++) {
-       //                     AgentTask agentTask = getAgentTaskFromTaskToAgent(tasksToAgent.get(i));
-       //                     AgentWorker agent = new AgentWorker(agentTask);
-       //                     tasksPool.execute(agent);
-       //                 }
-
-       //            } catch (CloneNotSupportedException e) {
-       //                e.printStackTrace();
-       //            }
-       //        }
-
-       //    }
-       //});
        private void loadLoginPage() {
            Scene scene = agentMainScenePane.getScene();
            URL url = getClass().getResource(LOGIN_PAGE_FXML_RESOURCE_LOCATION);
