@@ -67,7 +67,7 @@ public class BattleField {
             case "Hard":
                 return DifficultyLevel.HARD;
             case "Insane":
-                return DifficultyLevel.IMPOSSIBLE;
+                return DifficultyLevel.INSANE;
             default:
                 return DifficultyLevel.EASY;
         }

@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Timer;
 
 import static Utils.Constants.*;
-import static Utils.Constants.REFRESH_RATE;
 
 
 public class CurrentContestDataPaneController implements Closeable {
@@ -74,7 +73,7 @@ public class CurrentContestDataPaneController implements Closeable {
     public void startListRefresher() {
         currentContestDataRefresher = new CurrentContestDataRefresher(shouldRefresh, this::updateCurrentContestData);
         timer = new Timer();
-        timer.schedule(currentContestDataRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(currentContestDataRefresher, 0, 500);
     }
     @Override
     public void close(){

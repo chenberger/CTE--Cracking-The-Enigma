@@ -22,4 +22,8 @@ public class AgentsManager {
     public Agent getAgent(String parameter) {
         return agents.get(parameter);
     }
+
+    public void removeAgent(String agentName) {
+        agents.remove(agentName);
+    }
 }

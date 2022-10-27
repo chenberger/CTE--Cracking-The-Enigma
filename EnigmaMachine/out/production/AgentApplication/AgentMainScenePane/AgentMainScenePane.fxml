@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="agentMainScenePane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.AgentMainScenePaneController">
@@ -16,18 +17,27 @@
                <top>
                   <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="CENTER" layoutX="565.0" layoutY="40.0" text="Agent App" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <font>
-                              <Font name="Arial" size="29.0" />
-                           </font>
-                        </Label>
+                        <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label alignment="CENTER" text="Agent - ">
+                                 <font>
+                                    <Font name="Arial" size="29.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="agentNameLabel" alignment="CENTER">
+                                 <font>
+                                    <Font name="Arial" size="29.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </top>
                <bottom>
                   <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="logOutButton" layoutX="1075.0" layoutY="35.0" mnemonicParsing="false" onAction="#onLogOutButtonClicked" text="Log Out">
+                        <Button fx:id="logOutButton" layoutX="1075.0" layoutY="35.0" mnemonicParsing="false" onAction="#onLogOutButtonClicked" text="Logout" textFill="#e10b0b">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
@@ -47,8 +57,16 @@
                            <children>
                               <SplitPane dividerPositions="0.4088628762541806" layoutX="7.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <items>
-                                    <fx:include fx:id="agentProgressAndDataPane" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
-                                    <fx:include fx:id="agentCandidatesPane" source="Body/AgentCandidates/AgentCandidatesPane.fxml" />
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                                      <content>
+                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0">
+                                             <children>
+                                                <fx:include fx:id="agentProgressAndDataPane" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </ScrollPane>
+                                    <fx:include fx:id="agentCandidatesPane" minWidth="500.0" source="Body/AgentCandidates/AgentCandidatesPane.fxml" />
                                  </items>
                               </SplitPane>
                            </children>

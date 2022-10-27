@@ -369,4 +369,9 @@ public class MainUBoatScenePaneController {
     public void setNoneWinnerFound() {
         isWinnerFound = false;
     }
+
+    public void setPaneSize() {
+        UBoatMainScenePane.prefWidth(1200);
+        UBoatMainScenePane.prefHeight(920);
+    }
 }

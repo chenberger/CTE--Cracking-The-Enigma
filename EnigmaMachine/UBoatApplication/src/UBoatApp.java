@@ -1,7 +1,4 @@
-import DesktopUserInterface.MainScene.MainController;
-import Engine.EngineManager;
 import LoginPane.UBoatLoginPaneController;
-import MainScene.MainUBoatScenePaneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 
 public class UBoatApp extends Application {
@@ -28,7 +24,7 @@ public class UBoatApp extends Application {
             uBoatLoginPaneController = fxmlLoader.getController();
 
 
-            Scene scene = new Scene(root,1200,800);
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

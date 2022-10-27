@@ -2,10 +2,7 @@ package BruteForce;
 
 import DTO.BruteForceTask;
 import DesktopUserInterface.MainScene.BodyScene.BruteForce.BruteForceUIAdapter;
-import Engine.AgentsManager.Agent;
-import Engine.AgentsManager.AgentTask;
 import Engine.AgentsManager.AgentThreadFactory;
-import Engine.AgentsManager.AgentWorker;
 import Engine.Dictionary;
 import EnigmaMachine.EnigmaMachine;
 import EnigmaMachine.Reflector;
@@ -204,7 +201,7 @@ public class TasksManager extends Task<Boolean> {
                 totalCombinations *= enigmaMachine.getAllReflectors().size();
                 totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());
                 break;
-            case IMPOSSIBLE:
+            case INSANE:
                 totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
                 totalCombinations *= enigmaMachine.getAllReflectors().size();
                 totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());
