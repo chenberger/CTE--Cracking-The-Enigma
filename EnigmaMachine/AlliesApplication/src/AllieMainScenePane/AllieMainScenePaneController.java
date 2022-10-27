@@ -323,6 +323,8 @@ public class AllieMainScenePaneController {
     public void unsetContest() {
         //isContestSet.set(false);
         dashboardTabPaneController.setContest(false);
+        isTaskSizeSet.set(false);
+        taskSizeTextField.setText("");
     }
 
     public void noAgentsJoined() {
