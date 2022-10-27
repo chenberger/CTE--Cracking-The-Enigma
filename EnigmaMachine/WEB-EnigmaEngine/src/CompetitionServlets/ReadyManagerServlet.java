@@ -11,6 +11,7 @@ import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static Utils.Constants.GSON_INSTANCE;
 
@@ -35,19 +36,26 @@ public class ReadyManagerServlet extends HttpServlet {
 
     private synchronized void checkContestStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getAgentName(request));
-        Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(agent.getAllieName());
-        String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
-        UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
 
-        if(uBoat != null && uBoat.isContestOnline()){
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(GSON_INSTANCE.toJson(true));
-            response.getWriter().flush();
-        }
-        else{
+        if(Objects.equals(agent.getAllieName(), "")) {
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(GSON_INSTANCE.toJson(false));
             response.getWriter().flush();
+        }
+        else {
+            Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(agent.getAllieName());
+            String uBoatName = ServletUtils.getUBoatManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
+            UBoat uBoat = ServletUtils.getUBoatManager(getServletContext()).getUBoat(uBoatName);
+
+            if (uBoat != null && uBoat.isContestOnline()) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(true));
+                response.getWriter().flush();
+            } else {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(GSON_INSTANCE.toJson(false));
+                response.getWriter().flush();
+            }
         }
     }
 
