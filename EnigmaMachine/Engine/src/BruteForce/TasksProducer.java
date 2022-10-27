@@ -192,7 +192,7 @@ public class TasksProducer implements Runnable {
                 totalCombinations *= enigmaMachine.getAllReflectors().size();
                 totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());
                 break;
-            case IMPOSSIBLE:
+            case INSANE:
                 totalCombinations = Math.pow(enigmaMachine.getKeyboard().size(), enigmaMachine.getNumOfActiveRotors());
                 totalCombinations *= enigmaMachine.getAllReflectors().size();
                 totalCombinations *= factorial(enigmaMachine.getNumOfActiveRotors());

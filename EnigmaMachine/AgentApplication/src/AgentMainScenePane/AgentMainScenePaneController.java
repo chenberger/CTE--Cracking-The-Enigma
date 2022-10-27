@@ -16,13 +16,13 @@ import Utils.HttpClientUtil;
 import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_OPS_SERVLET;
 import static UBoatServletsPaths.UBoatsServletsPaths.DICTIONARY_SERVLET;
@@ -63,6 +66,7 @@ public class AgentMainScenePaneController {
     @FXML private AgentProgressAndStatusPaneController agentProgressAndDataPaneController;
     @FXML private AnchorPane contestAndTeamDataPane;
     @FXML private ContestAndTeamDataPaneController contestAndTeamDataPaneController;
+    @FXML private Label agentNameLabel;
     @FXML public void initialize() {
         if(agentLoginPaneController != null) {
             agentLoginPaneController.setAgentMainScenePaneController(this);
@@ -91,7 +95,10 @@ public class AgentMainScenePaneController {
         contestAndTeamDataPaneController.startRefreshing();
     }
     public void setAgentName(String agentName) {
-        Platform.runLater(()->{this.agentName = agentName; });
+        Platform.runLater(()->{
+            this.agentName = agentName;
+            this.agentNameLabel.setText(agentName);
+        });
 
     }
     public void setNumberOfThreads(int numberOfThreads) {

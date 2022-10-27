@@ -19,7 +19,7 @@ public enum DifficultyLevel implements SetTask {
             tasksManager.setHardTasks();
         }
     },
-    IMPOSSIBLE(){
+    INSANE(){
         @Override
         public void setTask(TasksProducer tasksManager) throws Exception {
             tasksManager.setImpossibleTasks();

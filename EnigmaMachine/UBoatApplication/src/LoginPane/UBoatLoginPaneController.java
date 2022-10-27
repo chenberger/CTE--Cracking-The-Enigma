@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -34,6 +33,7 @@ public class UBoatLoginPaneController {
     @FXML private Button quitButton;
 
     @FXML private Button registerButton;
+
     public void setMainUBoatScenePaneController(MainUBoatScenePaneController mainUBoatScenePaneController) {
         this.mainUBoatScenePaneController = mainUBoatScenePaneController;
     }
@@ -94,6 +94,7 @@ public class UBoatLoginPaneController {
             mainUBoatScenePaneController = fxmlLoader.getController();
             scene.setRoot(root);
             mainUBoatScenePaneController.setActive();
+            mainUBoatScenePaneController.setPaneSize();
         } catch (IOException e) {
             e.printStackTrace();
         }

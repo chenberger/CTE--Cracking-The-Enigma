@@ -12,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javafx.application.Platform;
 import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
@@ -61,6 +60,9 @@ public class LogOutServlet extends HttpServlet {
         String json = GSON_INSTANCE.toJson(logoutMessage);
         if(usersManager.isUserExists(agent.getAgentName())) {
             usersManager.removeUser(agent.getAgentName());
+        }
+        if(agentsManager.isAgentExists(agent.getAgentName())) {
+            agentsManager.removeAgent(agent.getAgentName());
         }
         response.getWriter().println(json);
         response.getWriter().flush();

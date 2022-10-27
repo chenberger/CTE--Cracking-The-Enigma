@@ -49,9 +49,6 @@ public class AgentLoginPaneController implements Closeable {
     private TextField setAgentNameTextField;
 
     @FXML
-    private Button setAgentNameButton;
-
-    @FXML
     private TableView<TeamNameColumn> teamNameTable;
 
     @FXML
@@ -97,10 +94,46 @@ public class AgentLoginPaneController implements Closeable {
 
     @FXML
     void onLoginButtonClicked(ActionEvent event) {
-        if(agentName.equals("") || chosenTeam.equals("") || numberOfThreads == 0 || tasksPulledEachTime == 0) {
+        if(setAgentNameTextField.equals("") || chosenTeam.equals("") || numberOfThreads == 0 || tasksPulledEachTime == 0) {
             new ErrorDialog(new Exception("Please fill all the fields"), "Error");
         } else {
-            registerToAlly();
+            if(setAgentNameTextField.getText().equals("")) {
+                return;
+            }
+            String finalUrl = HttpUrl.parse(AGENT_LOGIN_SERVLET).
+                    newBuilder().
+                    addQueryParameter("action", "setAgentName").
+                    addQueryParameter("agentName", setAgentNameTextField.getText()).
+                    build().
+                    toString();
+            HttpClientUtil.runAsync(finalUrl, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Platform.runLater(() -> new ErrorDialog(e, "Error"));
+                }
+
+                @Override
+                public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
+                    if(response.isSuccessful()) {
+                        Platform.runLater(() -> {
+                            agentName = setAgentNameTextField.getText();
+                            setAgentNameTextField.setDisable(true);
+                        });
+
+                        registerToAlly();
+
+                    } else {
+                        Platform.runLater(() -> {
+                            try {
+                                setAgentNameTextField.setText("");
+                                new ErrorDialog(new Exception(response.body().string()), "User name already exists");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 
@@ -228,47 +261,6 @@ public class AgentLoginPaneController implements Closeable {
     }
 
     @FXML
-    void onSetAgentNameButtonClicked(ActionEvent event) {
-        if(setAgentNameTextField.getText().equals("")) {
-            return;
-        }
-        String finalUrl = HttpUrl.parse(AGENT_LOGIN_SERVLET).
-                newBuilder().
-                addQueryParameter("action", "setAgentName").
-                addQueryParameter("agentName", setAgentNameTextField.getText()).
-                build().
-                toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> new ErrorDialog(e, "Error"));
-            }
-
-            @Override
-            public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                if(response.isSuccessful()) {
-                    Platform.runLater(() -> {
-                        agentName = setAgentNameTextField.getText();
-                        setAgentNameTextField.setDisable(true);
-                        setAgentNameButton.setDisable(true);
-                        agentMainScenePaneController.setAgentName(agentName);
-                    });
-
-                } else {
-                    Platform.runLater(() -> {
-                        try {
-                            setAgentNameTextField.setText("");
-                            new ErrorDialog(new Exception(response.body().string()), "User name already exists");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    @FXML
     void onTasksPulledButtonClicked(ActionEvent event) {
         try {
             tasksPulledEachTime = Long.parseLong(tasksPulledTextField.getText());
@@ -290,5 +282,8 @@ public class AgentLoginPaneController implements Closeable {
 
     public void setAgentMainScenePaneController(AgentMainScenePaneController agentMainScenePaneController) {
         this.agentMainScenePaneController = agentMainScenePaneController;
+        Platform.runLater( ()-> {
+                agentMainScenePaneController.setAgentName(agentName);
+        });
     }
 }
