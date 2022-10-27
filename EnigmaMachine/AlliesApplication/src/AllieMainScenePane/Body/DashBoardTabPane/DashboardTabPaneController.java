@@ -47,7 +47,6 @@ public class DashboardTabPaneController {
     public void close() {
         teamAgentsDataPaneController.close();
         contestsDataPaneController.close();
-
     }
 
     public int getAmountOfAgents() {

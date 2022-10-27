@@ -176,10 +176,8 @@ public class UBoatCompetitionPaneController implements Closeable {
                 if (response.isSuccessful()) {
                     String currentMachineConfiguration =GSON_INSTANCE.fromJson(responseStr, String.class);
                     Platform.runLater(() -> {
-                        System.out.println("code: " + currentMachineConfiguration);
                         mainUBoatScenePaneController.setCodeConfiguration(currentMachineConfiguration);
                         currentCodeConfigurationController.setCodeConfiguration(currentMachineConfiguration);
-                        //currentCodeConfigurationPaneController.updateMachineConfiguration();
                     });
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to get machine configuration");

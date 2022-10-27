@@ -143,7 +143,6 @@ public class Allie {
 
         isReady = false;
         contestOnline = false;
-
     }
 
     public Long getTotalTasksCompleted() {

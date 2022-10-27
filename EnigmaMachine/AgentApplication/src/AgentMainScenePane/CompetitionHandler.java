@@ -86,7 +86,7 @@ public class CompetitionHandler extends Thread implements Closeable {
         isContestActive = true;
         agentMainScenePaneController.setContestActivity(true);
         startRefreshingContestStatus();
-        while (isContestActive) {
+        while (isContestActive && !Thread.currentThread().isInterrupted()) {
             try {
                 if (tasksQueue.isEmpty()) {
                     getTaskFromServer();
@@ -129,6 +129,7 @@ public class CompetitionHandler extends Thread implements Closeable {
         if(contestStatusRefresher != null) {
             contestStatusRefresher.cancel();
             timer.cancel();
+            isContestActive = false;
         }
     }
     private void updateTasksCompleted(long tasksCompleted, int numberOfCandidatesFound) {

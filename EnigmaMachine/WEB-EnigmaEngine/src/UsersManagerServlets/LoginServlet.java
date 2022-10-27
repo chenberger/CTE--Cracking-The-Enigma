@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-     private void getSessionId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     private synchronized void getSessionId(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
         synchronized (getSessionIdLock){

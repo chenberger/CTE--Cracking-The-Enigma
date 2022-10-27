@@ -23,7 +23,7 @@ import static Utils.Constants.GSON_INSTANCE;
 public class LogOutServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         if(request.getParameter("action").equals("uBoatLogout")) {
             uBoatLogout(request, response);
@@ -47,7 +47,6 @@ public class LogOutServlet extends HttpServlet {
 
         if(agent.getAgentRegistrationStatus() == true){
             try {
-                String aTEAMnAME = agent.getAllieName();
                 if(agent.getAllieName() == null || agent.getAllieName().equals("")){
                     agent.setAgentUnRegisteredToTeam();
                     response.setStatus(HttpServletResponse.SC_OK);

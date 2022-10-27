@@ -37,7 +37,7 @@ public class ReadyManagerServlet extends HttpServlet {
     private synchronized void checkContestStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Agent agent = ServletUtils.getAgentsManager(getServletContext()).getAgent(SessionUtils.getAgentName(request));
 
-        if(Objects.equals(agent.getAllieName(), "")) {
+        if(agent.getAllieName().equals("")){
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(GSON_INSTANCE.toJson(false));
             response.getWriter().flush();
@@ -59,7 +59,7 @@ public class ReadyManagerServlet extends HttpServlet {
         }
     }
 
-    synchronized private void handleAlliesReady(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void handleAlliesReady(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try{
             Allie allie = ServletUtils.getAlliesManager(getServletContext()).getAllie(SessionUtils.getAllieName(request));
             String uBoatName = ServletUtils.getUBoatsManager(getServletContext()).getUBoatByBattleName(allie.getBattleName());
@@ -81,7 +81,7 @@ public class ReadyManagerServlet extends HttpServlet {
 
     }
 
-    synchronized private void handleUBoatReady(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void handleUBoatReady(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             UBoat uBoat = ServletUtils.getUBoatsManager(getServletContext()).getUBoat(SessionUtils.getUsername(request));
             uBoat.setReady(true);
