@@ -129,21 +129,25 @@ public class BattleCandidatesServlet extends HttpServlet {
             String wordToFind = battleField.getOriginalMessage();
             List<AgentCandidatesInformation> AgentsCandidates = battleField.getAgentsCandidatesInformation();
             if (wordToFind != null) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                try {
-                    for (AgentCandidatesInformation agentCandidatesInformation : AgentsCandidates) {
-                        if (agentCandidatesInformation.getCandidateString().equals(wordToFind)) {
-                            AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
-                            Allie allie = alliesManager.getAllie(agentCandidatesInformation.getTeamName());
-                            ContestWinnerInformation contestWinnerInformation = new ContestWinnerInformation(allie.getTeamName(), wordToFind);
-                            response.getWriter().write(GSON_INSTANCE.toJson(contestWinnerInformation));
-                            response.getWriter().flush();
-                            break;
-                        }
+                if(battleField.getNumberOfTeamsInBattleField() > 0) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    try {
+                        for (AgentCandidatesInformation agentCandidatesInformation : AgentsCandidates) {
+                            if (agentCandidatesInformation.getCandidateString().equals(wordToFind)) {
+                                AlliesManager alliesManager = ServletUtils.getAlliesManager(getServletContext());
+                                Allie allie = alliesManager.getAllie(agentCandidatesInformation.getTeamName());
+                                ContestWinnerInformation contestWinnerInformation = new ContestWinnerInformation(allie.getTeamName(), wordToFind);
+                                response.getWriter().write(GSON_INSTANCE.toJson(contestWinnerInformation));
+                                response.getWriter().flush();
+                                break;
+                            }
 
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }else {
+                    response.setStatus(HttpServletResponse.SC_ACCEPTED);
                 }
             }
             else{

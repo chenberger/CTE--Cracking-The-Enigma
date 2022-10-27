@@ -175,7 +175,7 @@ public class BattleField {
         agentsCandidatesInformation.clear();
     }
 
-    public void removeAllyFromBattle(Allie allie) {
+    public synchronized void removeAllyFromBattle(Allie allie) {
         this.numberOfTeamsInBattleField--;
         alliesInBattleField.remove(allie);
     }

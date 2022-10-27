@@ -34,7 +34,34 @@ public class LogOutServlet extends HttpServlet {
         else if(request.getParameter("action").equals("agentLogout")) {
             agentLogout(request, response);
         }
+        else if(request.getParameter("action").equals("checkIfAgentTeamLoggedOut")) {
+            checkIfAgentTeamLoggedOut(request, response);
+        }
 
+
+    }
+
+    private synchronized void checkIfAgentTeamLoggedOut(HttpServletRequest request, HttpServletResponse response) {
+        AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());
+        Agent agent = agentsManager.getAgent(SessionUtils.getAgentName(request));
+
+        if(agent.getAgentRegistrationStatus() == true){
+            try {
+                String aTEAMnAME = agent.getAllieName();
+                if(agent.getAllieName() == null || agent.getAllieName().equals("")){
+                    agent.setAgentUnRegisteredToTeam();
+                    response.setStatus(HttpServletResponse.SC_OK);
+                }
+                else{
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+        else{
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     private synchronized void agentLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -84,12 +111,12 @@ public class LogOutServlet extends HttpServlet {
                 UBoat uBoat = uBoatManager.getUBoat(uBoatName);
                 if (uBoat.isContestOnline()) {
                     allie.stopContest();
-                    uBoat.getBattleField().removeAllyFromBattle(allie);
                 }
                 allie.setBattleName("");
+                uBoat.getBattleField().removeAllyFromBattle(allie);
             }
 
-            allie.removeAllAgents();
+            //allie.removeAllAgents();
             Gson gson = new Gson();
             String json = gson.toJson("Ally " + allie.getTeamName() + " has logged out");
             alliesManager.removeAlly(allyNameFromSession);

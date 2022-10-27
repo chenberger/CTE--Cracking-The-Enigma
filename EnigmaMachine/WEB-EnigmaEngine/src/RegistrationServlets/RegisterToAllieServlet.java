@@ -45,6 +45,7 @@ public class RegisterToAllieServlet extends HttpServlet {
             currentAllie.addAgent(agent);
             //create the response json string
             agent.setAllieName(currentAllie.getTeamName());
+            agent.setIsAgentRegisteredToTeam();
             Gson gson = new Gson();
             List<String> agentFields = agent.getAgentFields();
             String jsonResponse = gson.toJson(agentFields);

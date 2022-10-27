@@ -6,6 +6,7 @@ import Utils.HttpClientUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import jakarta.servlet.http.HttpServletResponse;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -83,7 +84,10 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
                     }catch (Exception e){
                         updateWinnerInformation.accept(null);
                     }
-
+                }
+                else if(response.code() == HttpServletResponse.SC_ACCEPTED){
+                    ContestWinnerInformation contestWinnerInformation = new ContestWinnerInformation("","");
+                    updateWinnerInformation.accept(contestWinnerInformation);
                 }
 
                 response.close();
