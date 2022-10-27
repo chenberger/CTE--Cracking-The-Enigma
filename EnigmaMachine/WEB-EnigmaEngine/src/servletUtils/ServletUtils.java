@@ -50,14 +50,14 @@ public class ServletUtils {
         }
         return (EngineManager) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
     }
-   //public static UsersManager getChatManager(ServletContext servletContext) {
-   //    synchronized (chatManagerLock) {
-   //        if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
-   //            servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new UsersManager());
-   //        }
-   //    }
-   //    return (UsersManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
-   //}
+   public static UsersManager getChatManager(ServletContext servletContext) {
+       synchronized (chatManagerLock) {
+           if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
+               servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new UsersManager());
+           }
+       }
+       return (UsersManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
+   }
     public static UBoatManager getUBoatManager(ServletContext servletContext) {
         synchronized (uBoatManagerLock) {
             if (servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME) == null) {
