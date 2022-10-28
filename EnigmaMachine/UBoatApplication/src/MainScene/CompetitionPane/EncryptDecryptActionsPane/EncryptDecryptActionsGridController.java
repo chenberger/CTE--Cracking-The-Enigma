@@ -168,7 +168,6 @@ public class EncryptDecryptActionsGridController {
                     String dict = response.body().string();
                     Platform.runLater(() -> {
                         Gson gson = new Gson();
-                        System.out.println("dictionary got " );
                         autoCompleteDictionaryBox.setData(gson.fromJson(dict, Set.class));
                     });
                 }

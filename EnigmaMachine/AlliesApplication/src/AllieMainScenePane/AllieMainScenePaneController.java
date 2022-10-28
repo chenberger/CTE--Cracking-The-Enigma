@@ -82,7 +82,7 @@ public class AllieMainScenePaneController {
         taskSizeTextField.disableProperty().bind(isTaskSizeSet);
         setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
         readyToContestButton.disableProperty().bind(dashboardTabPaneController.getContestSetProperty().not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
-git         setAllyName();
+        setAllyName();
     }
 
     private void setAllyName() {
@@ -145,6 +145,8 @@ git         setAllyName();
                             dashboardTabPaneController.setContest(true);
                             //isContestSet.set(true);
                             contestsTabPaneController.cleanPreviousContestData();
+                            contestsTabPaneController.setNotReadyToBattle();
+
                         });
                     } else {
                         Platform.runLater(() -> {

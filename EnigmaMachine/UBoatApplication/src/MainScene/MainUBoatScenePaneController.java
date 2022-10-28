@@ -36,8 +36,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static Constants.ServletConstants.USERNAME;
 import static UBoatServletsPaths.UBoatsServletsPaths.U_BOAT_LOGOUT_SERVLET;
-import static Utils.Constants.ACTION;
-import static Utils.Constants.TASKS_SERVLET;
+import static Utils.Constants.*;
 
 public class MainUBoatScenePaneController {
     private static final String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/LoginPane/UBoatLoginPane.fxml";
@@ -202,10 +201,8 @@ public class MainUBoatScenePaneController {
 
         } else {
             Platform.runLater(() -> {
-                try {
-                    new ErrorDialog(new Exception(response.body().string()), "Error while loading machine");
-                } catch (IOException e) {
-                }
+                //String responseStr = GSON_INSTANCE.fromJson(response.body().string(), String.class);
+                new ErrorDialog(new Exception("File is Already Uploaded!!! Please choose different file"), "Error while loading machine");
             });
 
         }
