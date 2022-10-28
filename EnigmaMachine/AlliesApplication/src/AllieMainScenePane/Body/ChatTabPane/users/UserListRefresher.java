@@ -43,6 +43,7 @@ public class UserListRefresher extends TimerTask {
                     List<String> temp = Arrays.asList(usersNames);
                     usersListConsumer.accept(Arrays.asList(usersNames));
                 }
+                response.close();
             }
         });
     }

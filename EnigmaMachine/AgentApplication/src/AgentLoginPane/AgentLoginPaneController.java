@@ -94,7 +94,9 @@ public class AgentLoginPaneController implements Closeable {
     @FXML
     void onLoginButtonClicked(ActionEvent event) {
         if(setAgentNameTextField.equals("") || chosenTeam.equals("") || numberOfThreads == 0 || tasksPulledEachTime == 0) {
-            new ErrorDialog(new Exception("Please fill all the fields"), "Error");
+            Platform.runLater(() -> {
+                new ErrorDialog(new Exception("Please fill all the fields"), "Error");
+            });
         } else {
             if(setAgentNameTextField.getText().equals("")) {
                 return;

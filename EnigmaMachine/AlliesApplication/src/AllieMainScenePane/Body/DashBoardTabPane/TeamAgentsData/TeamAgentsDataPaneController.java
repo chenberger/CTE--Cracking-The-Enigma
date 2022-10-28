@@ -74,8 +74,11 @@ public class TeamAgentsDataPaneController implements Closeable {
 
     @Override
     public void close() {
-        agentsTableView.getItems().clear();
-        totalAgents.set(0);
+        Platform.runLater(() -> {
+            clearAgentsTable();
+            totalAgents.set(0);
+        });
+
         if (teamAgentsListRefresher != null && timer != null) {
             teamAgentsListRefresher.cancel();
             timer.cancel();
