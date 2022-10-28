@@ -82,7 +82,7 @@ public class AllieMainScenePaneController {
         taskSizeTextField.disableProperty().bind(isTaskSizeSet);
         setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
         readyToContestButton.disableProperty().bind(dashboardTabPaneController.getContestSetProperty().not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
-        setAllyName();
+git         setAllyName();
     }
 
     private void setAllyName() {

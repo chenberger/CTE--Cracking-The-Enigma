@@ -46,7 +46,6 @@ public class SendChatServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
-            System.out.println("Error: " + e);
         }
     }
 }
