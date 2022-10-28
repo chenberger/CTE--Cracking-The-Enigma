@@ -14,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -35,7 +34,7 @@ public class AgentLoginPaneController implements Closeable {
 
     private static final String AGENT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/AgentMainScenePane/AgentMainScenePane.fxml";
     @FXML
-    private AnchorPane agentLoginPane;
+    private ScrollPane agentLoginPane;
     private int numberOfAlliesToRegisterTo;
     private String agentName;
     private String chosenTeam;

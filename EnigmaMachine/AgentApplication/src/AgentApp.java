@@ -25,7 +25,7 @@ public class AgentApp extends Application {
             AgentLoginPaneController = fxmlLoader.getController();
 
 
-            Scene scene = new Scene(root,1200,800);
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
