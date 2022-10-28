@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AlliesApplication:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AlliesApplication_jar</output-path>
+    <root id="archive" name="AlliesApplication.jar">
+      <element id="module-output" name="AlliesApplication" />
+      <element id="module-output" name="ClientAppsCommons" />
+      <element id="module-output" name="UserInterface" />
+      <element id="module-output" name="UBoatApplication" />
+      <element id="module-output" name="WEB-EnigmaEngine" />
+      <element id="module-output" name="Engine" />
+      <element id="module-output" name="DTO" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson/gson-2.8.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson/gson-2.8.8-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/gson/gson-2.8.8-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okHttp/okio-2.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okHttp/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okHttp/kotlin-stdlib-1.4.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/WEB_EnigmaEngine_Web_exploded/WEB-INF/lib/okHttp/kotlin-stdlib-common-1.4.10.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
