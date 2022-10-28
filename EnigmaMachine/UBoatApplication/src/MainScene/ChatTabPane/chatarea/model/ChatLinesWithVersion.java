@@ -5,7 +5,7 @@ import java.util.List;
 public class ChatLinesWithVersion {
 
     private int version;
-    private List<ChatTabPane.chatarea.model.SingleChatLine> entries;
+    private List<SingleChatLine> entries;
 
     public int getVersion() {
         return version;
@@ -15,11 +15,11 @@ public class ChatLinesWithVersion {
         this.version = version;
     }
 
-    public List<ChatTabPane.chatarea.model.SingleChatLine> getEntries() {
+    public List<SingleChatLine> getEntries() {
         return entries;
     }
 
-    public void setEntries(List<ChatTabPane.chatarea.model.SingleChatLine> entries) {
+    public void setEntries(List<SingleChatLine> entries) {
         this.entries = entries;
     }
 }

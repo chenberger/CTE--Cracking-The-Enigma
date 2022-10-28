@@ -24,4 +24,11 @@ public class Constants {
     public static final String TASKS_SERVLET = FULL_SERVER_PATH + "/Tasks";
 
     public static final String LOGOUT_SERVLET = FULL_SERVER_PATH + "/users/logout";
+    public static final String CHAT_USERS_LIST = FULL_SERVER_PATH + "/Chat/UsersListServlet";
+    public final static String JHON_DOE = "<Anonymous>";
+    //TODO : change path from here down
+    public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/client/component/chatroom/chat-room-main.fxml";
+    public final static String SEND_CHAT_LINE = FULL_SERVER_PATH + "/pages/chatroom/sendChat";
+    public final static String CHAT_LINE_FORMATTING = "%tH:%tM:%tS | %.10s: %s%n";
+    public final static String CHAT_LINES_LIST = FULL_SERVER_PATH + "/chat";
 }

@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static ChatTabPane.util.Constants.REFRESH_RATE;
+import static Utils.Constants.REFRESH_RATE;
+
 
 public class UsersListController implements Closeable {
 
@@ -58,10 +59,7 @@ public class UsersListController implements Closeable {
     }
 
     public void startListRefresher() {
-        listRefresher = new ChatTabPane.users.UserListRefresher(
-                autoUpdate,
-                httpStatusUpdate::updateHttpLine,
-                this::updateUsersList);
+        listRefresher = new UserListRefresher(this::updateUsersList);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

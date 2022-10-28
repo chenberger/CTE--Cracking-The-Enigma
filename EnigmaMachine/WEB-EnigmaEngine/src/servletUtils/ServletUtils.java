@@ -1,12 +1,12 @@
 package servletUtils;
 
 
+import Chat.ChatManager;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.AlliesManager;
 import Engine.EngineManager;
 import Engine.UBoatManager.UBoatManager;
 import UserManager.UsersManager;
-import com.sun.xml.internal.ws.api.pipe.Engine;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -27,7 +27,9 @@ public class ServletUtils {
     private static final Object uBoatManagerLock = new Object();
     private static final Object alliesManagerLock = new Object();
     private static  final Object agentsManagerLock = new Object();
-    private static final int INT_PARAMETER_ERROR = -1;
+
+    public static final String CHAT_VERSION_PARAMETER = "chatversion";
+    public static final int INT_PARAMETER_ERROR = Integer.MIN_VALUE;
 
     public static UsersManager getUserManager(ServletContext servletContext) {
 
@@ -50,13 +52,13 @@ public class ServletUtils {
         }
         return (EngineManager) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
     }
-   public static UsersManager getChatManager(ServletContext servletContext) {
+   public static ChatManager getChatManager(ServletContext servletContext) {
        synchronized (chatManagerLock) {
            if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
-               servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new UsersManager());
+               servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
            }
        }
-       return (UsersManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
+       return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
    }
     public static UBoatManager getUBoatManager(ServletContext servletContext) {
         synchronized (uBoatManagerLock) {
