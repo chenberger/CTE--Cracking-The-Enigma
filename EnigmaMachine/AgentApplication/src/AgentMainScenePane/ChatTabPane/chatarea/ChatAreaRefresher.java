@@ -52,6 +52,7 @@ public class ChatAreaRefresher extends TimerTask {
                     ChatLinesWithVersion chatLinesWithVersion = GSON_INSTANCE.fromJson(rawBody, ChatLinesWithVersion.class);
                     chatlinesConsumer.accept(chatLinesWithVersion);
                 }
+                response.close();
             }
         });
 

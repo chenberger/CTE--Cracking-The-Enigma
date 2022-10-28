@@ -75,7 +75,7 @@ public class ChatAreaController implements Closeable {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+                response.close();
             }
         });
 
