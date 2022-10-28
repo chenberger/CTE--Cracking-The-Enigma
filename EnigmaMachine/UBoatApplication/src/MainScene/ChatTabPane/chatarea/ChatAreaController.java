@@ -1,8 +1,7 @@
 package MainScene.ChatTabPane.chatarea;
 
-import MainScene.ChatTabPane.api.HttpStatusUpdate;
 import MainScene.ChatTabPane.chatarea.model.ChatLinesWithVersion;
-import MainScene.ChatTabPane.util.http.HttpClientUtil;
+import Utils.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -25,14 +24,14 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
-import static ChatTabPane.util.Constants.*;
+import static Constants.ServletConstants.CHAT_PARAMETER;
+import static Utils.Constants.*;
 
 public class ChatAreaController implements Closeable {
 
     private final IntegerProperty chatVersion;
     private final BooleanProperty autoScroll;
     private final BooleanProperty autoUpdate;
-    private HttpStatusUpdate httpStatusUpdate;
     private ChatAreaRefresher chatAreaRefresher;
     private Timer timer;
 
@@ -63,31 +62,25 @@ public class ChatAreaController implements Closeable {
         String finalUrl = HttpUrl
                 .parse(SEND_CHAT_LINE)
                 .newBuilder()
-                .addQueryParameter("userstring", chatLine)
+                .addQueryParameter(CHAT_PARAMETER, chatLine)
                 .build()
                 .toString();
 
-        httpStatusUpdate.updateHttpLine(finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                httpStatusUpdate.updateHttpLine("Attempt to send chat line [" + chatLine + "] request ended with failure...:(");
+                chatLineTextArea.setText("error");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    httpStatusUpdate.updateHttpLine("Attempt to send chat line [" + chatLine + "] request ended with failure. Error code: " + response.code());
-                }
+                chatLineTextArea.setText("yeahh");
             }
         });
 
-        chatLineTextArea.clear();
+        //chatLineTextArea.clear();
     }
 
-    public void setHttpStatusUpdate(HttpStatusUpdate chatRoomMainController) {
-        this.httpStatusUpdate = chatRoomMainController;
-    }
 
     private void updateChatLines(ChatLinesWithVersion chatLinesWithVersion) {
         if (chatLinesWithVersion.getVersion() != chatVersion.get()) {
@@ -118,8 +111,6 @@ public class ChatAreaController implements Closeable {
     public void startListRefresher() {
         chatAreaRefresher = new ChatAreaRefresher(
                 chatVersion,
-                autoUpdate,
-                httpStatusUpdate::updateHttpLine,
                 this::updateChatLines);
         timer = new Timer();
         timer.schedule(chatAreaRefresher, REFRESH_RATE, REFRESH_RATE);

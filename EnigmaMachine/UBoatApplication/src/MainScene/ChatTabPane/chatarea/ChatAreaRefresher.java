@@ -1,8 +1,7 @@
 package MainScene.ChatTabPane.chatarea;
 
 import MainScene.ChatTabPane.chatarea.model.ChatLinesWithVersion;
-import MainScene.ChatTabPane.util.http.HttpClientUtil;
-import javafx.beans.property.BooleanProperty;
+import Utils.HttpClientUtil;
 import javafx.beans.property.IntegerProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -14,32 +13,23 @@ import java.io.IOException;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static ChatTabPane.util.Constants.CHAT_LINES_LIST;
-import static ChatTabPane.util.Constants.GSON_INSTANCE;
+import static Utils.Constants.CHAT_LINES_LIST;
+import static Utils.Constants.GSON_INSTANCE;
 
 public class ChatAreaRefresher extends TimerTask {
 
-    private final Consumer<String> httpRequestLoggerConsumer;
     private final Consumer<ChatLinesWithVersion> chatlinesConsumer;
     private final IntegerProperty chatVersion;
-    private final BooleanProperty shouldUpdate;
     private int requestNumber;
 
-    public ChatAreaRefresher(IntegerProperty chatVersion, BooleanProperty shouldUpdate, Consumer<String> httpRequestLoggerConsumer, Consumer<ChatLinesWithVersion> chatlinesConsumer) {
-        this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
+    public ChatAreaRefresher(IntegerProperty chatVersion, Consumer<ChatLinesWithVersion> chatlinesConsumer) {
         this.chatlinesConsumer = chatlinesConsumer;
         this.chatVersion = chatVersion;
-        this.shouldUpdate = shouldUpdate;
         requestNumber = 0;
     }
 
     @Override
     public void run() {
-
-        if (!shouldUpdate.get()) {
-            return;
-        }
-
         final int finalRequestNumber = ++requestNumber;
 
         //noinspection ConstantConditions
@@ -50,23 +40,18 @@ public class ChatAreaRefresher extends TimerTask {
                 .build()
                 .toString();
 
-        httpRequestLoggerConsumer.accept("About to invoke: " + finalUrl + " | Chat Request # " + finalRequestNumber);
 
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                httpRequestLoggerConsumer.accept("Something went wrong with Chat Request # " + finalRequestNumber);
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String rawBody = response.body().string();
-                    httpRequestLoggerConsumer.accept("Response of Chat Request # " + finalRequestNumber + ": " + rawBody);
                     ChatLinesWithVersion chatLinesWithVersion = GSON_INSTANCE.fromJson(rawBody, ChatLinesWithVersion.class);
                     chatlinesConsumer.accept(chatLinesWithVersion);
-                } else {
-                    httpRequestLoggerConsumer.accept("Something went wrong with Request # " + finalRequestNumber + ". Code is " + response.code());
                 }
             }
         });

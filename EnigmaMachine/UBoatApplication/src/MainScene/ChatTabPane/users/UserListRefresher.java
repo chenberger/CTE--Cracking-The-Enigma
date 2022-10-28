@@ -1,7 +1,6 @@
 package MainScene.ChatTabPane.users;
 
-import MainScene.ChatTabPane.util.http.HttpClientUtil;
-import javafx.beans.property.BooleanProperty;
+import Utils.HttpClientUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -13,45 +12,32 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static ChatTabPane.util.Constants.GSON_INSTANCE;
-import static ChatTabPane.util.Constants.USERS_LIST;
+import static Utils.Constants.CHAT_USERS_LIST;
+import static Utils.Constants.GSON_INSTANCE;
 
 public class UserListRefresher extends TimerTask {
 
-    private final Consumer<String> httpRequestLoggerConsumer;
     private final Consumer<List<String>> usersListConsumer;
     private int requestNumber;
-    private final BooleanProperty shouldUpdate;
 
-
-    public UserListRefresher(BooleanProperty shouldUpdate, Consumer<String> httpRequestLoggerConsumer, Consumer<List<String>> usersListConsumer) {
-        this.shouldUpdate = shouldUpdate;
-        this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
+    public UserListRefresher(Consumer<List<String>> usersListConsumer) {
         this.usersListConsumer = usersListConsumer;
         requestNumber = 0;
     }
 
     @Override
     public void run() {
-
-        if (!shouldUpdate.get()) {
-            return;
-        }
-
         final int finalRequestNumber = ++requestNumber;
-        httpRequestLoggerConsumer.accept("About to invoke: " + USERS_LIST + " | Users Request # " + finalRequestNumber);
-        HttpClientUtil.runAsync(USERS_LIST, new Callback() {
+        HttpClientUtil.runAsync(CHAT_USERS_LIST, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Ended with failure...");
 
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
-                httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
                 String[] usersNames = GSON_INSTANCE.fromJson(jsonArrayOfUsersNames, String[].class);
                 usersListConsumer.accept(Arrays.asList(usersNames));
             }
