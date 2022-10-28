@@ -1,9 +1,0 @@
-#decipher {
-    -fx-background-image: url("dechiper.png");
-    -fx-background-size: 100% 100%;    
-}
-#dm-settings-label {
-    -fx-text-fill: rgba(83, 116, 138, 0.726);
-    -fx-font: Arial, BOLD;
-    -fx-font-size: 30px;
-}
