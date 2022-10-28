@@ -121,8 +121,11 @@ public class ChatAreaController implements Closeable {
 
     @Override
     public void close() throws IOException {
-        chatVersion.set(0);
-        chatLineTextArea.clear();
+        Platform.runLater(() -> {
+            chatVersion.set(0);
+            chatLineTextArea.clear();
+        });
+
         if (chatAreaRefresher != null && timer != null) {
             chatAreaRefresher.cancel();
             timer.cancel();
