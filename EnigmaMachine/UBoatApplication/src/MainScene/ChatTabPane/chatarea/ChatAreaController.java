@@ -63,22 +63,23 @@ public class ChatAreaController implements Closeable {
                 .parse(SEND_CHAT_LINE)
                 .newBuilder()
                 .addQueryParameter(CHAT_PARAMETER, chatLine)
+                .addQueryParameter(TYPE, "UBoat")
                 .build()
                 .toString();
 
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                chatLineTextArea.setText("error");
+
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                chatLineTextArea.setText("yeahh");
+
             }
         });
 
-        //chatLineTextArea.clear();
+        chatLineTextArea.clear();
     }
 
 

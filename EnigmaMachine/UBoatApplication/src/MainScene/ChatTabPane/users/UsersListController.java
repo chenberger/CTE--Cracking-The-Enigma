@@ -1,6 +1,5 @@
 package MainScene.ChatTabPane.users;
 
-import MainScene.ChatTabPane.api.HttpStatusUpdate;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -26,7 +25,6 @@ public class UsersListController implements Closeable {
     private TimerTask listRefresher;
     private final BooleanProperty autoUpdate;
     private final IntegerProperty totalUsers;
-    private HttpStatusUpdate httpStatusUpdate;
 
     @FXML private ListView<String> usersListView;
     @FXML private Label chatUsersLabel;
@@ -41,10 +39,6 @@ public class UsersListController implements Closeable {
         chatUsersLabel.textProperty().bind(Bindings.concat("Chat Users: (", totalUsers.asString(), ")"));
     }
 
-    public void setHttpStatusUpdate(HttpStatusUpdate httpStatusUpdate) {
-        this.httpStatusUpdate = httpStatusUpdate;
-
-    }
     public BooleanProperty autoUpdatesProperty() {
         return autoUpdate;
     }

@@ -26,6 +26,7 @@ public class ChatRoomMainController implements Closeable {
     public void close() throws IOException {
         usersListComponentController.close();
         chatAreaComponentController.close();
+
     }
 
     public void setActive() {

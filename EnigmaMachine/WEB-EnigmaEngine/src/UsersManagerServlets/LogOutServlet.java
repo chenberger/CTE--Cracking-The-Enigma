@@ -133,12 +133,15 @@ public class LogOutServlet extends HttpServlet {
         UBoatManager uBoatManager = ServletUtils.getUBoatManager(request.getServletContext());
         if (usernameFromSession != null) {
             UBoat uBoat = uBoatManager.getUBoat(usernameFromSession);
-            if(uBoat.isContestOnline()) {
+            if(uBoat != null && uBoat.isContestOnline()) {
                 uBoat.getBattleField().setWinner("Battle Host Left");
                 uBoat.getBattleField().stopContest();
                 uBoat.setContestOver();
             }
-            removeBoatFromBoatsManager(request, usernameFromSession);
+
+            if(uBoat != null) {
+                removeBoatFromBoatsManager(request, usernameFromSession);
+            }
 
             userManager.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);
