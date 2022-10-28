@@ -70,6 +70,7 @@ public class ContestTeamsRefresher extends TimerTask {
                         //System.out.println("UBoats in the battle: " + jsonAlliesToTable);
                         updateTeamsTable.accept(alliesToTable);
                     }
+                    response.close();
                 }
             }
         });

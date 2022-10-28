@@ -171,6 +171,7 @@ public class EncryptDecryptActionsGridController {
                         autoCompleteDictionaryBox.setData(gson.fromJson(dict, Set.class));
                     });
                 }
+                response.close();
             }
         });
     }
@@ -207,6 +208,7 @@ public class EncryptDecryptActionsGridController {
                             }
                         });
                     }
+                    response.close();
                 }
             });
         }

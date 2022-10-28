@@ -64,6 +64,7 @@ public class TopBorderPaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String userName = response.body().string();
                 appHeaderLabel.setText("UBoat - " + userName);
+                response.close();
             }
         });
     }
