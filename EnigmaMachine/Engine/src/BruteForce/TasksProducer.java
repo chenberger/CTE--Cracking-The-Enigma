@@ -273,8 +273,8 @@ public class TasksProducer implements Runnable {
             while(!Thread.currentThread().isInterrupted()) {
                 difficultyLevel.setTask(this);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception ignored) {
+
         }
         System.out.println("Producer is done");
     }

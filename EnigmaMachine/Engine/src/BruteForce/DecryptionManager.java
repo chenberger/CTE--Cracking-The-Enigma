@@ -70,26 +70,6 @@ public class DecryptionManager {
         return maxCurrentAmountOfAgents;
     }
 
-    //public void startDeciphering() throws Exception {
-    //    try {
-    //        if(decryptedMessage == null || enigmaMachine.containsCharNotInMAMachineKeyboard((decryptedMessage))) {
-    //            //List<Character> lettersNotInAbc = new ArrayList<>(enigmaMachine.getCharsNotInMachineKeyboard(decryptedMessege));
-    //            throw new IllegalArgumentException("Error: You must enter a string to process before start deciphering: " + System.lineSeparator());
-    //        }
-
-    //        tasksManager = new TasksManager(enigmaMachine, decryptedMessage, bruteForceTask, bruteForceUIAdapter,
-    //                                        dictionary, candidatesThreadPoolExecutor, decryptedSettingsFormat,
-    //                                        (stop) -> mainController.onTaskFinished(Optional.ofNullable(onFinish)));
-    //        //mainController.bindTaskToUIComponents(tasksManager, onFinish);
-    //        tasksManager.valueProperty().addListener((observable, oldValue, newValue) -> {isMissionOnProgress = false; });
-    //        isMissionOnProgress = true;
-    //
-    //        tasksManagerThread = new Thread(tasksManager);
-    //        tasksManagerThread.start();
-    //    }catch (Exception e) {
-    //        throw new BruteForceException("You must enter a string to process before start deciphering");
-    //    }
-    //}
 
 
     public void setUIAdapter(BruteForceUIAdapter bruteForceUIAdapter) {
@@ -148,14 +128,6 @@ public class DecryptionManager {
         this.candidatesThreadPoolExecutor = Executors.newFixedThreadPool(1);
     }
 
-    //public void pauseMission() {
-    //    System.out.println("=== try to pause ");
-    //    tasksManagerThread.interrupt();
-    //}
-
-    //public void resumeMission() {
-    //    tasksManager.resumeMission();
-    //}
 
     public boolean onProgress() {
         return isMissionOnProgress;

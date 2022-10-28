@@ -279,7 +279,7 @@ public class BattleCandidatesServlet extends HttpServlet {
             for (AgentCandidatesInformation candidate : candidates) {
                 Agent agent = agentsManager.getAgent(candidate.getAgentName());
                 Allie allie = alliesManager.getAllie(agent.getAllieName());
-                System.out.println("Agent name: " + candidate.getAgentName() + " Allie name: " + allie.getTeamName() + candidate.getCandidateString());
+
                 String uBoatName = uBoatManager.getUBoatByBattleName(allie.getBattleName());
                 UBoat uBoat = uBoatManager.getUBoat(uBoatName);
                 candidate.setTeamName(allie.getTeamName());
