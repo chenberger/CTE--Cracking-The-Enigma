@@ -54,7 +54,7 @@ public class AgentMainScenePaneController implements Closeable {
     private Timer timer;
 
     @FXML private BorderPane chatRoomPane;
-    private ChatRoomMainController chatRoomPaneController;
+    @FXML private ChatRoomMainController chatRoomPaneController;
 
     String agentName;
     private boolean participateInContest = false;

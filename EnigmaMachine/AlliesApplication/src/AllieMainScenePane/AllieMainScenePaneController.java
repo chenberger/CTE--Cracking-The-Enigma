@@ -54,7 +54,7 @@ public class AllieMainScenePaneController {
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
     @FXML private BorderPane chatRoomPane;
-    private ChatRoomMainController chatRoomPaneController;
+    @FXML private ChatRoomMainController chatRoomPaneController;
     //private SimpleBooleanProperty isContestSet;
     private SimpleBooleanProperty isTaskSizeSet;
     private SimpleBooleanProperty isOneAgentAtLeastRegistered;
@@ -79,6 +79,7 @@ public class AllieMainScenePaneController {
         }
 
         //registerToBattleButton.disableProperty().bind(isContestSet);
+        taskSizeTextField.disableProperty().bind(isTaskSizeSet);
         setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
         readyToContestButton.disableProperty().bind(dashboardTabPaneController.getContestSetProperty().not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
         setAllyName();
@@ -332,7 +333,7 @@ public class AllieMainScenePaneController {
         //isContestSet.set(false);
         dashboardTabPaneController.setContest(false);
         isTaskSizeSet.set(false);
-        taskSizeTextField.setText("");
+        //taskSizeTextField.setDisable(true);
     }
 
     public void noAgentsJoined() {
