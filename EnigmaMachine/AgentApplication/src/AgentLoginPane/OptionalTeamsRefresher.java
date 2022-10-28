@@ -48,6 +48,7 @@ public class OptionalTeamsRefresher extends TimerTask {
                 } else {
                     updateTableConsumer.accept(null);
                 }
+                response.close();
             }
 
         });

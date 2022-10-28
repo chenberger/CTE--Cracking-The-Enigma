@@ -255,6 +255,7 @@ public class CompetitionHandler extends Thread implements Closeable {
         else {
             tasksPool.shutdown();
         }
+        response.close();
     }
     private void updateTasksPulled(long numberOfTasksPulled) {
         updateTasksPulledInServer(numberOfTasksPulled);

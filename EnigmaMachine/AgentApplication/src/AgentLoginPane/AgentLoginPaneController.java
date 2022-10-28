@@ -133,6 +133,7 @@ public class AgentLoginPaneController implements Closeable {
                             }
                         });
                     }
+                    response.close();
                 }
             });
         }

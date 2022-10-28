@@ -10,6 +10,7 @@ import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import jakarta.servlet.http.HttpServletResponse;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -101,6 +102,7 @@ public class AllieMainScenePaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String userName = response.body().string();
                 Platform.runLater(() -> allieHeaderLabel.setText("Ally - " + userName));
+                response.close();
             }
         });
     }
@@ -148,11 +150,17 @@ public class AllieMainScenePaneController {
                             contestsTabPaneController.setNotReadyToBattle();
 
                         });
-                    } else {
+                    } else if (response.code() == HttpServletResponse.SC_BAD_REQUEST){
+                        Platform.runLater(() -> {
+                            new ErrorDialog(new Exception("Battle is full!!!"), "Error");
+                        });
+                    }
+                     else {
                         Platform.runLater(() -> {
                             new ErrorDialog(new Exception("Error registering to battle"), "Error");
                         });
                     }
+                    response.close();
                 }
             });
         }
@@ -220,6 +228,7 @@ public class AllieMainScenePaneController {
                     new ErrorDialog(new Exception("Error setting task size"), "Error");
                     taskSizeTextField.setText("");
                 }
+                response.close();
             }
         });
     }
@@ -300,6 +309,7 @@ public class AllieMainScenePaneController {
                 else{
                     new ErrorDialog(new Exception("Error logging out"), "Error");
                 }
+                response.close();
             }
         });
     }

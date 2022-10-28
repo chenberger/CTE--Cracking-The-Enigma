@@ -135,6 +135,7 @@ public class CurrentContestDataPaneController implements Closeable {
                     String processedWord = GSON_INSTANCE.fromJson(jsonProcessedWord, String.class);
                     Platform.runLater(() -> setProcessedWordLabel(processedWord.trim()));
                 }
+                response.close();
             }
         });
     }

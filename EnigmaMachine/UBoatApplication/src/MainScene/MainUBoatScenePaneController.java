@@ -189,7 +189,6 @@ public class MainUBoatScenePaneController {
                 try {
                     isMachineExsists.set(true);
 
-                    //new ErrorDialog(new Exception(response.body().string()),"Machine loaded successfully");
                     topBorderPaneController.setFileUploadedName(selectedFile.getAbsolutePath());
                     UBoatCompetitionPaneController.setDictionary();
                     machineGridController.newFileLoaded();
@@ -201,8 +200,8 @@ public class MainUBoatScenePaneController {
 
         } else {
             Platform.runLater(() -> {
-                //String responseStr = GSON_INSTANCE.fromJson(response.body().string(), String.class);
-                new ErrorDialog(new Exception("File is Already Uploaded!!! Please choose different file"), "Error while loading machine");
+                new ErrorDialog(new Exception("File is Already Uploaded different U Boat!!!! Please choose different file"), "Error while loading machine");
+
             });
 
         }

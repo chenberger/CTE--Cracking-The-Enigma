@@ -258,6 +258,7 @@ public class AgentMainScenePaneController implements Closeable {
             Dictionary dictionary = gson.fromJson(responseString, Dictionary.class);
             engineManager.setDictionary(dictionary);
         }
+        response.close();
     }
     private void startWorking() {
 

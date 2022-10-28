@@ -74,6 +74,7 @@ public class TeamAgentsListRefresher extends TimerTask {
                         //System.out.println("Allies in the battle: " + jsonAgentsToTable);
                         agentsToTableConsumer.accept(agentsToTable);
                     }
+                    response.close();
                 }
             }
         });
