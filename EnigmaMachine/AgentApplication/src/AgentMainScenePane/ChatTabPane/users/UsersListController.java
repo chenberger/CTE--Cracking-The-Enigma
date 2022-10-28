@@ -60,8 +60,11 @@ public class UsersListController implements Closeable {
 
     @Override
     public void close() {
-        usersListView.getItems().clear();
-        totalUsers.set(0);
+        Platform.runLater(() -> {
+            usersListView.getItems().clear();
+            totalUsers.set(0);
+        });
+
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

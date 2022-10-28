@@ -114,13 +114,14 @@ public class MainUBoatScenePaneController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseStr = response.body().string();
                 if (response.isSuccessful()) {
+                    closeUBoatSession();
                     Platform.runLater(() -> {
                         try {
                             new ErrorDialog(new Exception("You have been logged out"), "Logged out");
                             loadLoginPage();
-                            closeUBoatSession();
                         } catch (Exception e) {
                             Platform.runLater(() -> {
+                                e.printStackTrace();
                                 new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
                             });
                         }
@@ -259,16 +260,6 @@ public class MainUBoatScenePaneController {
                 .build()
                 .toString();
 
-       // Request request = new Request.Builder()
-       //         .url(finalUrl)
-       //         .build();
-       // Response response = new OkHttpClient().newCall(request).execute();
-       //if(response.code() == 200) {
-       //      currentSessionId = response.body().string().trim();
-       //}
-       //else{
-       //     new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
-       //}
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -328,7 +319,9 @@ public class MainUBoatScenePaneController {
     private void closeUBoatSession(){
         UBoatCompetitionPaneController.close();
         try {
-            chatRoomPaneController.close();
+            if(chatRoomPaneController != null) {
+                chatRoomPaneController.close();
+            }
         } catch (IOException ignored) {
 
         }
