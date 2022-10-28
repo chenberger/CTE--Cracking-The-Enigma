@@ -257,16 +257,6 @@ public class MainUBoatScenePaneController {
                 .build()
                 .toString();
 
-       // Request request = new Request.Builder()
-       //         .url(finalUrl)
-       //         .build();
-       // Response response = new OkHttpClient().newCall(request).execute();
-       //if(response.code() == 200) {
-       //      currentSessionId = response.body().string().trim();
-       //}
-       //else{
-       //     new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
-       //}
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

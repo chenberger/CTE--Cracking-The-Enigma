@@ -64,9 +64,6 @@ public class CodeCalibrationController {
     public void setMainUBoatScenePaneController(MainUBoatScenePaneController mainUBoatScenePaneController) {
         this.mainUBoatScenePaneController = mainUBoatScenePaneController;
     }
-    //public void setEngineManager(EngineManager engineManager) {
-    //    this.engineManager = engineManager;
-    //}
 
     @FXML void OnSetManuallyCodeButtonClicked(ActionEvent event) throws IOException {
         manuallyCodeInitializerScene= new ManuallyCodeInitializerScene();
@@ -109,8 +106,7 @@ public class CodeCalibrationController {
     }
 
     @FXML void OnSetRandomCodeButtonClicked(ActionEvent event) {
-        //machineGridController.setAutomaticCodeConfiguration();
-        //uBoatCompetitionPaneController.setAutomaticCodeConfiguration();
+
         setSettingsAutomatically();
     }
 
@@ -196,7 +192,6 @@ public class CodeCalibrationController {
                            String machineDetails = gson.fromJson(response.body().string(), String.class);
                            uBoatMachinePaneController.setNewConfiguration(machineDetails);
                            uBoatMachinePaneController.machineDetailsChanged();
-                           //new ErrorDialog(new Exception(response.body().string()), "Machine configuration setted successfully");
                        } catch (IOException e) {
                            throw new RuntimeException(e);
                        }

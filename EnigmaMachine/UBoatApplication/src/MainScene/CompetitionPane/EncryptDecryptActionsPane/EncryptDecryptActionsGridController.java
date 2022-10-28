@@ -59,20 +59,15 @@ public class EncryptDecryptActionsGridController {
         }
     }
 
-    //public void setBruteForceGridController(BruteForceGridController bruteForceGridController) {
-    //    this.bruteForceGridController = bruteForceGridController;
-    //}
     public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
         this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
     }
 
     @FXML private void onDecryptionButtonClicked(ActionEvent event) {
-        //bruteForceGridController.decodeFromDictionary(encryptedDecryptedWordText.getText());
         String wordToProcess = encryptedDecryptedWordText.getText();
         if (wordToProcess.isEmpty()) {
             return;
         }
-        //noinspection ConstantConditions
         String finalUrl = HttpUrl
                 .parse(UBoatsServletsPaths.PROCESS_WORD_SERVLET)
                 .newBuilder()
@@ -95,7 +90,7 @@ public class EncryptDecryptActionsGridController {
                         try {
                             new ErrorDialog(new Exception(response.body().string()) , "Error while trying to decrypt word: " + wordToProcess);
                         } catch (IOException e) {
-                            //throw new RuntimeException(e);
+
                         }
                     });
                 }
@@ -108,16 +103,12 @@ public class EncryptDecryptActionsGridController {
                         uBoatCompetitionPaneController.getCurrentMachineConfiguration();
                         uBoatCompetitionPaneController.incrementMessagesCounter();
 
-                        //uBoatCompetitionPaneController.setIsWordProcessed();
-                        //uBoatCompetitionPaneController.setIsReadyOrNot();
-                        //uBoatCompetitionPaneController.addDecryptedWord(decryptedWord);
                     });
                 }
             }
         });
     }
     @FXML private void onResetMachineStateButtonClicked(ActionEvent event) {
-            //bruteForceGridController.resetMachineState();
             encryptedDecryptedWordText.setText("");
             processedWordText.setText("");
             resetMachineState();
@@ -125,7 +116,6 @@ public class EncryptDecryptActionsGridController {
             uBoatCompetitionPaneController.machineDetailsChanged();
             uBoatCompetitionPaneController.getCurrentMachineConfiguration();
 
-            //uBoatCompetitionPaneController.setNoWordProcessed();
     }
 
     public void setProcessedString(String processedString) {
@@ -211,11 +201,6 @@ public class EncryptDecryptActionsGridController {
                 }
             });
         }
-    //public void setDictionary(Object source, Dictionary dictionary) {
-    //    this.autoCompleteDictionaryBox.setData(dictionary.getDictionary());
-    //    dictionarySearchComboBox.setDisable(false);
-    //    addWordFromDictButton.setDisable(false);
-    //}
 
     public void setSkin(SkinType skinType) {
         encryptDecryptActionGrid.getStylesheets().clear();

@@ -34,7 +34,7 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
 
     @Override
     public void run() {
-        //uBoatCandidatesPaneController.refreshCandidatesTable();
+
         checkIfWordWasFound();
         String finalUrl = HttpUrl
                 .parse(BATTLE_CANDIDATES_SERVLET)

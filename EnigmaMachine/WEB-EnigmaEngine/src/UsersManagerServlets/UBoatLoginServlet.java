@@ -29,12 +29,10 @@ public class UBoatLoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String UBoatNameFromSession = SessionUtils.getUsername(request);
-        //UBoatManager uBoatManager = ServletUtils.getUBoatManager(getServletContext());
         if (UBoatNameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(U_BOAT_NAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                //response.sendRedirect(SIGN_UP_URL);
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
@@ -46,16 +44,13 @@ public class UBoatLoginServlet extends HttpServlet {
                         request.setAttribute(ServletConstants.U_BOAT_NAME_ERROR, errorMessage);
                         response.getWriter().println(errorMessage);
 
-                        //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                     }
                     else {
 
-                        //uBoatManager.addUBoat(usernameFromParameter);
 
                         request.getSession(true).setAttribute(U_BOAT_NAME, usernameFromParameter);
                         RequestDispatcher rd = request.getRequestDispatcher("/fileUploaded");
                         rd.include(request, response);
-                        //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
                 }

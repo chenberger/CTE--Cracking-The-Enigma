@@ -66,7 +66,6 @@ public class getMachineConfigServlet extends HttpServlet {
             try {
 
                 EngineManager engineManager = uBoat.getEngineManager();
-                //MachineDetails machineDetails = engineManager.displaySpecifications();
                 EnigmaMachine enigmaMachine = engineManager.getCurrentEnigmaMachine();
                 DataToInitializeMachine dataToInitializeMachine = new DataToInitializeMachine(enigmaMachine.cloneRotors(), enigmaMachine.getCurrentRotorsInUse(), enigmaMachine.cloneReflectors(), enigmaMachine.getCurrentReflectorInUse(), enigmaMachine.cloneKeyboard());
                 String json = gson.toJson(dataToInitializeMachine);

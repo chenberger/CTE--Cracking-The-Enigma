@@ -31,8 +31,7 @@ public class UBoatCandidatesPaneController implements Closeable {
     @FXML
     private TableColumn<AllyCandidatesTable, String> codeConfigurationCol;
     private UBoatCompetitionPaneController uBoatCompetitionPaneController;
-    //TODO : Make sure that the dependency that i added(this client on the allies client) does not create circular dependency.
-    //private ContestTabPaneController contestTabPaneController;
+
 
     public void setUBoatCompetitionPaneController(UBoatCompetitionPaneController uBoatCompetitionPaneController) {
         this.uBoatCompetitionPaneController = uBoatCompetitionPaneController;
@@ -88,7 +87,4 @@ public class UBoatCandidatesPaneController implements Closeable {
 
     }
 
-    // public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {
-    //    this.contestTabPaneController = contestTabPaneController;
-   // }
 }

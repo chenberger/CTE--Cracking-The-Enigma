@@ -56,10 +56,8 @@ public class UBoatLoginPaneController {
                 .build()
                 .toString();
 
-        //updateHttpStatusLine("New request is launched for: " + finalUrl);
 
         HttpClientUtil.runAsync(finalUrl, new Callback() {
-
         @Override
         public void onFailure(@NotNull Call call, @NotNull IOException e) {
             Platform.runLater(() ->
@@ -99,6 +97,4 @@ public class UBoatLoginPaneController {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -27,8 +27,7 @@ public class RegisterToAllieServlet extends HttpServlet {
     }
 
     private synchronized void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //int numberOfThreads = request.getParameter(NUMBER_OF_THREADS) != null ? Integer.parseInt(request.getParameter(NUMBER_OF_THREADS)) : 0;
-        //long numberOfPulledTasks = request.getParameter(NUMBER_OF_PULLED_TASKS) != null ? Long.parseLong(request.getParameter(NUMBER_OF_PULLED_TASKS)) : 0;
+
         String agentName = SessionUtils.getAgentName(request);
 
         AgentsManager agentsManager = ServletUtils.getAgentsManager(getServletContext());

@@ -65,8 +65,6 @@ public class MachineDetailsController {
             originalCodeLabel.setText(machineDetailsToShow.getOriginalCodeConfiguration());
         });
 
-        //originalCodeLabel.setText(String.valueOf(machineDetails.getOriginalMachineSettings()));
-        //currentCodeLabel.setText(String.valueOf(machineDetails.getCurrentMachineSettings()));
     }
 
     private void setOriginalAndCurrentCodeLabels() {

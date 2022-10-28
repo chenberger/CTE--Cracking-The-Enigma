@@ -46,7 +46,6 @@ public class AllieLoginServlet extends HttpServlet {
                 String usernameFromParameter = request.getParameter(ALLIE_NAME);
                 if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    //response.sendRedirect(SIGN_UP_URL);
                 } else {
                     //normalize the username value
                     usernameFromParameter = usernameFromParameter.trim();
@@ -60,14 +59,12 @@ public class AllieLoginServlet extends HttpServlet {
                             response.getWriter().println(errorMessage);
 
 
-                            //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                         } else {
 
                             alliesManager.addAllie(usernameFromParameter);
                             usersManager.addUser(usernameFromParameter);
                             request.getSession(true).setAttribute(ALLIE_NAME, usernameFromParameter);
 
-                            //System.out.println("On login, request URI is: " + request.getRequestURI());
                             response.setStatus(HttpServletResponse.SC_OK);
                         }
                     }

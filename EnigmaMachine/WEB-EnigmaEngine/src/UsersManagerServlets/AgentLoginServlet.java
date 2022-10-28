@@ -31,9 +31,6 @@ public class AgentLoginServlet extends HttpServlet {
         if (agentNameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(AGENT_NAME);
-            //String allieTeamName = request.getParameter("AllieTeamName");
-            //int numberOfWorkingThreads = Integer.parseInt(request.getParameter("NumberOfWorkingThreads"));
-            //long numberOfClonedTasks = Long.parseLong(request.getParameter("NumberOfClonedTasks"));
 
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //response.sendRedirect(SIGN_UP_URL);
@@ -50,16 +47,13 @@ public class AgentLoginServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println(errorMessage);
 
-                        //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                     }
                     else {
 
-                        //alliesManager.addAllie(usernameFromParameter);
                         agentsManager.addAgent(usernameFromParameter);
                         usersManager.addUser(usernameFromParameter);
                         request.getSession(true).setAttribute(AGENT_NAME, usernameFromParameter);
 
-                        //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
                 }

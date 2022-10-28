@@ -49,7 +49,6 @@ public class FileUploadedServlet extends HttpServlet {
                  response.setStatus(HttpServletResponse.SC_CONFLICT);
                  if(name.equals("Guest")) {
                      System.out.println("didnt got the session");
-                     //out.print("File is already uploaded" + " by: " + "Guest");
                  }
                  else {
                      out.print("The battle is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
