@@ -61,7 +61,7 @@ public class MainUBoatScenePaneController {
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
     @FXML private Button logoutButton;
     @FXML private BorderPane chatRoomPane;
-    private ChatRoomMainController chatRoomPaneController;
+    @FXML private ChatRoomMainController chatRoomPaneController;
     private OkHttpClient httpClient;
 
     //TODO: make sure that log out is possible only between competitions//
