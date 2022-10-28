@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 
 import static Constants.ServletConstants.USERNAME;
+import static Utils.Constants.GSON_INSTANCE;
 
 @WebServlet(name = "FileUploadedServlet", urlPatterns = "/fileUploaded")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -31,7 +32,7 @@ public class FileUploadedServlet extends HttpServlet {
 
     @Override
     protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-     response.setContentType("text/plain");
+     response.setContentType("application/json");
      response.setCharacterEncoding("UTF-8");
      PrintWriter out = response.getWriter();
      synchronized (this){
@@ -52,8 +53,9 @@ public class FileUploadedServlet extends HttpServlet {
 
                  }
                  else {
-                     out.print("The battle is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName()));
-                     out.flush();
+                     String jsonAlreadyUploadedMessage = "The battle is already uploaded" + " by: " + ServletUtils.getUBoatManager(request.getServletContext()).getUBoatByBattleName(cteEnigma.getCTEBattlefield().getBattleName());
+                     response.getWriter().println(GSON_INSTANCE.toJson(jsonAlreadyUploadedMessage));
+                     response.getWriter().flush();
                  }
 
              } else {
@@ -62,12 +64,12 @@ public class FileUploadedServlet extends HttpServlet {
                          , cteEnigma.getCTEBattlefield(), ServletUtils.getEngineManager(request.getServletContext()).getDictionaryObject());
                  response.setStatus(HttpServletResponse.SC_OK);
 
-                 out.println("File uploaded successfully by" + " " + name);
+                 out.println(GSON_INSTANCE.toJson("File uploaded successfully by" + " " + name));
              }
          } catch (GeneralEnigmaMachineException | JAXBException | IllegalAgentsAmountException |
                   MachineNotExistsException | CloneNotSupportedException | BruteForceInProgressException e) {
              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-             out.println(e.getMessage());
+             out.println(GSON_INSTANCE.toJson(e.getMessage()));
          }
      }
      }
