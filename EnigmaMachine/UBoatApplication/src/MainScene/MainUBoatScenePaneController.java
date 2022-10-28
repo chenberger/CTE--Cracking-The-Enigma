@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -58,6 +59,7 @@ public class MainUBoatScenePaneController {
     private SimpleBooleanProperty isCodeConfigurationSet;
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
     @FXML private Button logoutButton;
+    @FXML private BorderPane chatRoomPane;
     private OkHttpClient httpClient;
 
     //TODO: make sure that log out is possible only between competitions//
@@ -116,11 +118,15 @@ public class MainUBoatScenePaneController {
                             loadLoginPage();
                             closeUBoatSession();
                         } catch (Exception e) {
-                            new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+                            Platform.runLater(() -> {
+                                new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+                            });
                         }
                     });
                 } else {
-                    new ErrorDialog(new Exception(responseStr), "Failed to logout");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception(responseStr), "Failed to logout");
+                    });
                 }
                 response.close();
             }

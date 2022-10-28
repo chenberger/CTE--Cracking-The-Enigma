@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,6 +51,8 @@ public class AgentMainScenePaneController implements Closeable {
     private boolean isDictionaryExists;
     private CurrentTeamLogoutRefresher currentTeamLogoutRefresher;
     private Timer timer;
+
+    @FXML private BorderPane chatRoomPane;
 
     String agentName;
     private boolean participateInContest = false;

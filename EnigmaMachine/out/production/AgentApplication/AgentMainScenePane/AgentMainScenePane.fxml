@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -46,33 +48,52 @@
                   </AnchorPane>
                </bottom>
                <center>
-                  <SplitPane dividerPositions="0.3093645484949833" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-                    <items>
-                      <AnchorPane minHeight="120.0" minWidth="800.0">
-                           <children>
-                              <fx:include fx:id="contestAndTeamDataPane" source="Body/ContestAndTeamDataPane/ContestAndTeamDataPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                      <AnchorPane minHeight="350.0" minWidth="1150.0">
-                           <children>
-                              <SplitPane dividerPositions="0.4088628762541806" layoutX="7.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <items>
-                                    <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-                                      <content>
-                                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0">
-                                             <children>
-                                                <fx:include fx:id="agentProgressAndDataPane" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
-                                             </children>
-                                          </AnchorPane>
-                                      </content>
-                                    </ScrollPane>
-                                    <fx:include fx:id="agentCandidatesPane" minWidth="500.0" source="Body/AgentCandidates/AgentCandidatesPane.fxml" />
-                                 </items>
+                  <TabPane BorderPane.alignment="CENTER">
+                     <tabs>
+                        <Tab text="Contest">
+                           <content>
+                              <SplitPane dividerPositions="0.3093645484949833" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                                <items>
+                                  <AnchorPane minHeight="120.0" minWidth="800.0">
+                                       <children>
+                                          <fx:include fx:id="contestAndTeamDataPane" source="Body/ContestAndTeamDataPane/ContestAndTeamDataPane.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="350.0" minWidth="1150.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.4088628762541806" layoutX="7.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <items>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                                                  <content>
+                                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0">
+                                                         <children>
+                                                            <fx:include fx:id="agentProgressAndDataPane" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                  </content>
+                                                </ScrollPane>
+                                                <fx:include fx:id="agentCandidatesPane" minWidth="500.0" source="Body/AgentCandidates/AgentCandidatesPane.fxml" />
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
                               </SplitPane>
-                           </children>
-                        </AnchorPane>
-                    </items>
-                  </SplitPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Chat">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="559.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    </ScrollPane>
+                                    <fx:include fx:id="chatRoomPane" source="ChatTabPane/chatroom/chat-room-main.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
                </center>
             </BorderPane>
          </content>

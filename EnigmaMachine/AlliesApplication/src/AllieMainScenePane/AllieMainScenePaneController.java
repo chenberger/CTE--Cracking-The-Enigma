@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -51,6 +52,7 @@ public class AllieMainScenePaneController {
     @FXML private Button logOutButton;
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
+    @FXML private BorderPane chatRoomPane;
     //private SimpleBooleanProperty isContestSet;
     private SimpleBooleanProperty isTaskSizeSet;
     private SimpleBooleanProperty isOneAgentAtLeastRegistered;
