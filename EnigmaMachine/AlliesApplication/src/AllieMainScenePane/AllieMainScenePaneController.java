@@ -1,6 +1,7 @@
 package AllieMainScenePane;
 
 import AllieLoginPane.AllieLoginPaneController;
+import AllieMainScenePane.Body.ChatTabPane.chatroom.ChatRoomMainController;
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.DashboardTabPaneController;
@@ -53,6 +54,7 @@ public class AllieMainScenePaneController {
     @FXML private Button setTaskSizeButton;
     @FXML private TextField taskSizeTextField;
     @FXML private BorderPane chatRoomPane;
+    private ChatRoomMainController chatRoomPaneController;
     //private SimpleBooleanProperty isContestSet;
     private SimpleBooleanProperty isTaskSizeSet;
     private SimpleBooleanProperty isOneAgentAtLeastRegistered;
@@ -283,6 +285,7 @@ public class AllieMainScenePaneController {
                 if(response.code() == 200) {
                     contestsTabPaneController.close();
                     dashboardTabPaneController.close();
+                    chatRoomPaneController.close();
                     Platform.runLater(()->{
                         contestsTabPaneController.setNotReadyToBattle();
                         new ErrorDialog(new Exception("Logged out successfully"), "Logged out");

@@ -37,9 +37,12 @@ public class UserListRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonArrayOfUsersNames = response.body().string();
-                String[] usersNames = GSON_INSTANCE.fromJson(jsonArrayOfUsersNames, String[].class);
-                usersListConsumer.accept(Arrays.asList(usersNames));
+                if(response.code() == 200) {
+                    String jsonArrayOfUsersNames = response.body().string();
+                    String[] usersNames = GSON_INSTANCE.fromJson(jsonArrayOfUsersNames, String[].class);
+                    List<String> temp = Arrays.asList(usersNames);
+                    usersListConsumer.accept(Arrays.asList(usersNames));
+                }
             }
         });
     }

@@ -4,6 +4,7 @@ package MainScene;
 import DTO.ContestWinnerInformation;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import LoginPane.UBoatLoginPaneController;
+import MainScene.ChatTabPane.chatroom.ChatRoomMainController;
 import MainScene.UBoatMachinePane.CurrentCodeConfigurationPane.CurrentCodeConfigurationController;
 import MainScene.UBoatMachinePane.UBoatMachinePaneController;
 import TopBorderPane.TopBorderPaneController;
@@ -60,6 +61,7 @@ public class MainUBoatScenePaneController {
     @FXML private List<CurrentCodeConfigurationController> currentCodeConfigurationGridControllers;
     @FXML private Button logoutButton;
     @FXML private BorderPane chatRoomPane;
+    private ChatRoomMainController chatRoomPaneController;
     private OkHttpClient httpClient;
 
     //TODO: make sure that log out is possible only between competitions//
@@ -325,6 +327,11 @@ public class MainUBoatScenePaneController {
     }
     private void closeUBoatSession(){
         UBoatCompetitionPaneController.close();
+        try {
+            chatRoomPaneController.close();
+        } catch (IOException ignored) {
+
+        }
         HttpClientUtil.removeCookiesOf("localhost");
     }
 

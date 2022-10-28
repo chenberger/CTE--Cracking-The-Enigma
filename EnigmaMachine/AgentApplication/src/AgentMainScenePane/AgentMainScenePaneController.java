@@ -4,6 +4,7 @@ import AgentLoginPane.AgentLoginPaneController;
 import AgentMainScenePane.Body.AgentCandidates.AgentCandidatesPaneController;
 import AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController;
 import AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController;
+import AgentMainScenePane.ChatTabPane.chatroom.ChatRoomMainController;
 import DTO.DataToAgentApplicationTableView;
 import DTO.DataToInitializeMachine;
 import DTO.TaskToAgent;
@@ -53,6 +54,7 @@ public class AgentMainScenePaneController implements Closeable {
     private Timer timer;
 
     @FXML private BorderPane chatRoomPane;
+    private ChatRoomMainController chatRoomPaneController;
 
     String agentName;
     private boolean participateInContest = false;
@@ -163,6 +165,11 @@ public class AgentMainScenePaneController implements Closeable {
     }
     @Override
     public void close(){
+        try {
+            chatRoomPaneController.close();
+        } catch (IOException e) {
+
+        }
         if(currentTeamLogoutRefresher != null) {
             currentTeamLogoutRefresher.cancel();
             timer.cancel();

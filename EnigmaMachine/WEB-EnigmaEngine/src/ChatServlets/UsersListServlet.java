@@ -10,24 +10,24 @@ import servletUtils.ServletUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @WebServlet(name = "ChatUsersListServlet", value = "/Chat/UsersListServlet")
 public class UsersListServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
             UsersManager userManager = ServletUtils.getUserManager(getServletContext());
             Set<String> usersList = userManager.getUsers();
-            List<String> userListAsStringArray = new ArrayList<>(usersList);
-            String json = gson.toJson(userListAsStringArray);
+            //List<String> userListAsStringArray = new ArrayList<>(usersList);
+            String json = gson.toJson(usersList);
             out.println(json);
             out.flush();
+
+            response.setStatus(HttpServletResponse.SC_OK);
         }
     }
 

@@ -1,7 +1,7 @@
 package servletUtils;
 
 
-import Chat.ChatManager;
+import Engine.Chat.ChatManager;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.AlliesManager;
 import Engine.EngineManager;
@@ -42,7 +42,7 @@ public class ServletUtils {
         }
         return (UsersManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
     }
-    public static EngineManager getEngineManager(ServletContext servletContext) {
+    public synchronized static EngineManager getEngineManager(ServletContext servletContext) {
 
         synchronized (engineManagerLock) {
 
@@ -52,14 +52,14 @@ public class ServletUtils {
         }
         return (EngineManager) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
     }
-   public static ChatManager getChatManager(ServletContext servletContext) {
-       synchronized (chatManagerLock) {
-           if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
-               servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
-           }
-       }
-       return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
-   }
+    public static ChatManager getChatManager(ServletContext servletContext) {
+        synchronized (chatManagerLock) {
+            if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
+                servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
+            }
+        }
+        return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
+    }
     public static UBoatManager getUBoatManager(ServletContext servletContext) {
         synchronized (uBoatManagerLock) {
             if (servletContext.getAttribute(U_BOAT_MANAGER_ATTRIBUTE_NAME) == null) {
