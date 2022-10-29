@@ -18,7 +18,6 @@ import servletUtils.SessionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static Utils.Constants.GSON_INSTANCE;
@@ -126,7 +125,7 @@ public class BattleCandidatesServlet extends HttpServlet {
 
         if(uBoat.isContestOnline()) {
             BattleField battleField = uBoat.getBattleField();
-            String wordToFind = battleField.getOriginalMessage();
+            String wordToFind = battleField.getOriginalMessage().toUpperCase();
             List<AgentCandidatesInformation> AgentsCandidates = battleField.getAgentsCandidatesInformation();
             if (wordToFind != null) {
                 if(battleField.getNumberOfTeamsInBattleField() > 0) {
@@ -287,7 +286,8 @@ public class BattleCandidatesServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_OK);
+            //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }

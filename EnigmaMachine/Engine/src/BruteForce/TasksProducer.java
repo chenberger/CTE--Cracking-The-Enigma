@@ -276,7 +276,6 @@ public class TasksProducer implements Runnable {
         } catch (Exception ignored) {
 
         }
-        System.out.println("Producer is done");
     }
     public void setContestIsOn(){
         contestIsOn = true;

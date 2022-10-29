@@ -4,6 +4,7 @@ import AllieMainScenePane.AllieMainScenePaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.ContestDataPaneController;
 import AllieMainScenePane.Body.DashBoardTabPane.ContestData.IllegibleContestAmountChosenException;
 import AllieMainScenePane.Body.DashBoardTabPane.TeamAgentsData.TeamAgentsDataPaneController;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ public class DashboardTabPaneController {
 
     @FXML private AnchorPane contestsDataPane;
     @FXML private ContestDataPaneController contestsDataPaneController;
+    private SimpleBooleanProperty isReadyButtonClicked;
 
     //TODO: Erez: get the name of the boat from the line the user marked(when he clicked the register button).
     public void initialize() {
@@ -59,6 +61,12 @@ public class DashboardTabPaneController {
 
     public void setContest(boolean isContestReady) {
         contestsDataPaneController.setContestProperty(isContestReady);
+
+        if(!isContestReady) {
+            Platform.runLater(() -> {
+            isReadyButtonClicked.set(false);
+            });
+        }
     }
 
     public SimpleBooleanProperty getContestSetProperty() {
@@ -72,5 +80,9 @@ public class DashboardTabPaneController {
     public void noAgentsJoined() {
         allieMainScenePaneController.noAgentsJoined();
 
+    }
+
+    public void setIsReadyProperty(SimpleBooleanProperty isReadyButtonClicked) {
+        this.isReadyButtonClicked = isReadyButtonClicked;
     }
 }

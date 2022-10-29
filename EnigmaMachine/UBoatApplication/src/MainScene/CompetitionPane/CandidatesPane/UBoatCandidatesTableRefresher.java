@@ -36,29 +36,30 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
     public void run() {
         //uBoatCandidatesPaneController.refreshCandidatesTable();
         checkIfWordWasFound();
-        String finalUrl = HttpUrl
-                .parse(BATTLE_CANDIDATES_SERVLET)
-                .newBuilder()
-                .addQueryParameter(ACTION, "getAlliesCandidates")
-                .build()
-                .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code() == 200) {
-                    String jsonAllyCandidatesTable = response.body().string();
-                    Gson gson = new Gson();
-                    List<AllyCandidatesTable> allyCandidatesTables = Arrays.asList(gson.fromJson(jsonAllyCandidatesTable, AllyCandidatesTable[].class));
-                    updateCandidatesTable.accept(allyCandidatesTables);
+            String finalUrl = HttpUrl
+                    .parse(BATTLE_CANDIDATES_SERVLET)
+                    .newBuilder()
+                    .addQueryParameter(ACTION, "getAlliesCandidates")
+                    .build()
+                    .toString();
+            HttpClientUtil.runAsync(finalUrl, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    e.printStackTrace();
                 }
-                response.close();
-            }
-        });
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code() == 200) {
+                        String jsonAllyCandidatesTable = response.body().string();
+                        Gson gson = new Gson();
+                        List<AllyCandidatesTable> allyCandidatesTables = Arrays.asList(gson.fromJson(jsonAllyCandidatesTable, AllyCandidatesTable[].class));
+                        updateCandidatesTable.accept(allyCandidatesTables);
+                    }
+                    response.close();
+                }
+            });
+
     }
 
     private void checkIfWordWasFound() {

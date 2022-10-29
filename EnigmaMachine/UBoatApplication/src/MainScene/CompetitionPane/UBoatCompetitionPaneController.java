@@ -291,6 +291,7 @@ public class UBoatCompetitionPaneController implements Closeable {
                     Platform.runLater(() -> {
                         isReadyToBattle.set(true);
                         mainUBoatScenePaneController.setNoneWinnerFound();
+                        uBoatCandidatesPaneController.clearTable();
                     });
                 } else {
                     new ErrorDialog(new Exception(responseStr), "Failed to set ready");

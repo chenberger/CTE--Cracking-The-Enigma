@@ -1,9 +1,7 @@
 package MainScene.CompetitionPane.CandidatesPane;
 
-import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
 import DTO.AllyCandidatesTable;
 import DTO.ContestWinnerInformation;
-import DTO.TeamsTable;
 import MainScene.CompetitionPane.UBoatCompetitionPaneController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -53,10 +51,8 @@ public class UBoatCandidatesPaneController implements Closeable {
         timer.schedule(uBoatCandidatesTableRefresher, 0, 100);
     }
     private void updateCandidatesTable(List<AllyCandidatesTable> allyCandidatesTableList){
-
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             uBoatCandidatesTable.getItems().clear();
-
             for (AllyCandidatesTable allyCandidatesTable : allyCandidatesTableList) {
                 AllyCandidatesTable candidateToAdd = new AllyCandidatesTable(allyCandidatesTable.getCandidateString(), allyCandidatesTable.getTeamName(), allyCandidatesTable.getCodeConfiguration());
                 ObservableList<AllyCandidatesTable> tableData = uBoatCandidatesTable.getItems();
@@ -64,6 +60,7 @@ public class UBoatCandidatesPaneController implements Closeable {
                 uBoatCandidatesTable.setItems(tableData);
             }
         });
+
     }
     private void notifyIfWordIsFound(ContestWinnerInformation contestWinner){
         if(contestWinner!= null) {
@@ -86,6 +83,10 @@ public class UBoatCandidatesPaneController implements Closeable {
 
     public void setNoneWinnerFound() {
 
+    }
+
+    public void clearTable() {
+        uBoatCandidatesTable.getItems().clear();
     }
 
     // public void setContestTabPaneController(ContestTabPaneController contestTabPaneController) {

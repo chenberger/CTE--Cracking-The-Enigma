@@ -6,7 +6,6 @@ import Engine.AgentsManager.Agent;
 import Engine.AgentsManager.AgentsManager;
 import Engine.AlliesManager.Allie;
 import Engine.AlliesManager.AlliesManager;
-import Engine.BattleField;
 import Engine.UBoatManager.UBoat;
 import Engine.UBoatManager.UBoatManager;
 import com.google.gson.Gson;
@@ -14,8 +13,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import okhttp3.Request;
-import okhttp3.Response;
 import servletUtils.ServletUtils;
 import servletUtils.SessionUtils;
 
