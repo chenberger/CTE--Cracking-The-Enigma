@@ -198,7 +198,7 @@ public class CodeCalibrationController {
                            uBoatMachinePaneController.machineDetailsChanged();
                            //new ErrorDialog(new Exception(response.body().string()), "Machine configuration setted successfully");
                        } catch (IOException e) {
-                           throw new RuntimeException(e);
+
                        }
                    });
                 }
@@ -207,7 +207,7 @@ public class CodeCalibrationController {
                         try {
                             new ErrorDialog(new Exception(response.body().string()), "Error while setting machine configuration");
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+
                         }
                     });
                 }

@@ -83,13 +83,15 @@ public class MachineDetailsController {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to get current machine config"), "Failed to get current machine config");
+                Platform.runLater(() -> {
+                    ;
+                    new ErrorDialog(new Exception("Failed to get current machine config"), "Failed to get current machine config");
+                });
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Platform.runLater(() -> {
-
                     try {
                         String currentMachineConfig = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                         currentCodeLabel.setText(currentMachineConfig);
@@ -111,7 +113,9 @@ public class MachineDetailsController {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to get original machine config"), "Failed to get original machine config");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Failed to get original machine config"), "Failed to get original machine config");
+                });
             }
 
             @Override
@@ -121,7 +125,7 @@ public class MachineDetailsController {
                         String originalMachineConfig = GSON_INSTANCE.fromJson(response.body().string(), String.class);
                         originalCodeLabel.setText(originalMachineConfig);
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+
                     }
 
                 });
@@ -151,7 +155,9 @@ public class MachineDetailsController {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Unable to get specifications");
+                Platform.runLater(() -> {
+                    new ErrorDialog(e, "Unable to get specifications");
+                });
 
             }
 

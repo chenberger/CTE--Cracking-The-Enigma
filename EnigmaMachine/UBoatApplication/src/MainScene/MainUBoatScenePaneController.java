@@ -106,7 +106,10 @@ public class MainUBoatScenePaneController {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+                Platform.runLater(() -> {
+                    ;
+                    new ErrorDialog(new Exception("Failed to log out from session"), "Failed to logout");
+                });
             }
 
             @Override
@@ -194,7 +197,9 @@ public class MainUBoatScenePaneController {
                     machineGridController.newFileLoaded();
                     topBorderPaneController.disableLoadMachineButton();
                 } catch (Exception e) {
-                    new ErrorDialog(e, "Error while loading machine");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(e, "Error while loading machine");
+                    });
                 }
             });
 
@@ -234,7 +239,7 @@ public class MainUBoatScenePaneController {
                         try {
                             new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+
                         }
                     });
                 }
@@ -244,7 +249,7 @@ public class MainUBoatScenePaneController {
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+
         }
     }
 
@@ -273,7 +278,7 @@ public class MainUBoatScenePaneController {
                         try {
                             new ErrorDialog(new Exception(response.body().string()), "Error while getting session id");
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+
                         }
                     });
                 }
@@ -362,7 +367,6 @@ public class MainUBoatScenePaneController {
                         try {
                             new ErrorDialog(new Exception(response.body().string()), "Error while stopping contest");
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
                         }
                     });
                 }
