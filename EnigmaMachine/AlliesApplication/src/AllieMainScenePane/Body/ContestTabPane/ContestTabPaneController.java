@@ -91,13 +91,17 @@ public class ContestTabPaneController implements Closeable {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Something went wrong: " + e.getMessage()), "Error");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Something went wrong: " + e.getMessage()), "Error");
+                });
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.code() != 200) {
-                    new ErrorDialog(new Exception("Something went wrong: " + response.message()), "Error");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception("Something went wrong: " + response.message()), "Error");
+                    });
                 }
                 else {
                     String uBoatName = response.body().string();

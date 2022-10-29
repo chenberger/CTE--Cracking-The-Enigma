@@ -1,9 +1,9 @@
 package AllieMainScenePane.Body.ContestTabPane;
 
-import CompetitionServlets.TasksServlet;
 import DesktopUserInterface.MainScene.ErrorDialog;
 import Utils.HttpClientUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import javafx.application.Platform;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -33,7 +33,9 @@ public class LookForWinnerRefresher extends TimerTask {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Something went wrong with the request"), "Something went wrong with the request");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Something went wrong with the request"), "Something went wrong with the request");
+                });
             }
 
             @Override

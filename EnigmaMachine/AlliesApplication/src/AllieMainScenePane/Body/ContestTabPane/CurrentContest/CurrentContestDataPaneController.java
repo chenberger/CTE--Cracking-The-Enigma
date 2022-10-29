@@ -117,7 +117,9 @@ public class CurrentContestDataPaneController implements Closeable {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to get processed word"), "Failed to get processed word");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Failed to get processed word"), "Failed to get processed word");
+                });
             }
 
             @Override
@@ -127,7 +129,9 @@ public class CurrentContestDataPaneController implements Closeable {
                         Platform.runLater(() -> setProcessedWordLabel("N/A"));
                     }
                     else {
-                        new ErrorDialog(new Exception("Failed to get processed word"), "Failed to get processed word");
+                        Platform.runLater(() -> {
+                            new ErrorDialog(new Exception("Failed to get processed word"), "Failed to get processed word");
+                        });
                     }
                 }
                 else{

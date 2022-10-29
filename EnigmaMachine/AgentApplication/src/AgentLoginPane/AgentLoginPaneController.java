@@ -158,7 +158,9 @@ public class AgentLoginPaneController implements Closeable {
             @Override
             public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
                 if(response.isSuccessful()) {
-                    switchToMainScene();
+                    Platform.runLater(() -> {
+                        switchToMainScene();
+                    });
                 } else {
                     Platform.runLater(() -> new ErrorDialog(new Exception("Failed to register to ally"), "Error"));
                 }

@@ -77,7 +77,6 @@ public class UBoatLoginPaneController {
             } else {
                 Platform.runLater(() -> {
                     showMainUBoatScene();
-
                 });
             }
             response.close();

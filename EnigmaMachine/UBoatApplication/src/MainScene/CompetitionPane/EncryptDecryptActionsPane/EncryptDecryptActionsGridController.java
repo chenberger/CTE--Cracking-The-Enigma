@@ -162,7 +162,9 @@ public class EncryptDecryptActionsGridController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
-                    new ErrorDialog(new Exception("Error, Error while trying to get dictionary") , "Error");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception("Error, Error while trying to get dictionary"), "Error");
+                    });
                 }
                 else{
                     String dict = response.body().string();
@@ -194,7 +196,9 @@ public class EncryptDecryptActionsGridController {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.code() != 200) {
-                        new ErrorDialog(new Exception("Error while trying to reset machine state") , "Error");
+                        Platform.runLater(() -> {
+                            new ErrorDialog(new Exception("Error while trying to reset machine state"), "Error");
+                        });
                     }
                     else{
 

@@ -45,7 +45,7 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
             HttpClientUtil.runAsync(finalUrl, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    e.printStackTrace();
+
                 }
 
                 @Override
@@ -72,7 +72,7 @@ public class UBoatCandidatesTableRefresher extends TimerTask {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
+
             }
 
             @Override

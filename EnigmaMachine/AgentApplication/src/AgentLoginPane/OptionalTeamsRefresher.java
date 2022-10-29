@@ -16,7 +16,6 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LIST_SERVLET;
-import static AlliesServletsPaths.AlliesServletsPaths.ALLIES_LOGIN_SERVLET;
 import static Utils.Constants.ACTION;
 import static Utils.Constants.GSON_INSTANCE;
 

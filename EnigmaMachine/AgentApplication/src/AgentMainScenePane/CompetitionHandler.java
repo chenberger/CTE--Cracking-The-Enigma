@@ -276,13 +276,21 @@ public class CompetitionHandler extends Thread implements Closeable {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(Call call, java.io.IOException e) {
-                new ErrorDialog(e, "Error while trying to update tasks pulled");
+                Platform.runLater(() -> {
+                    new ErrorDialog(e, "Error while trying to update tasks pulled");
+                });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws java.io.IOException {
                 if (response.code() != 200) {
-                    new ErrorDialog(new Exception(response.body().string()), "Error while trying to update tasks pulled");
+                    Platform.runLater(() -> {
+                        try {
+                            new ErrorDialog(new Exception(response.body().string()), "Error while trying to update tasks pulled");
+                        } catch (IOException e) {
+
+                        }
+                    });
                 }
                 response.close();
             }

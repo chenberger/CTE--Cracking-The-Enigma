@@ -167,7 +167,9 @@ public class UBoatCompetitionPaneController implements Closeable {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Failed to get machine configuration");
+                Platform.runLater(() -> {
+                    new ErrorDialog(e, "Failed to get machine configuration");
+                });
             }
 
             @Override
@@ -180,7 +182,9 @@ public class UBoatCompetitionPaneController implements Closeable {
                         currentCodeConfigurationController.setCodeConfiguration(currentMachineConfiguration);
                     });
                 } else {
-                    new ErrorDialog(new Exception(responseStr), "Failed to get machine configuration");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception(responseStr), "Failed to get machine configuration");
+                    });
                 }
             }
         });
@@ -280,7 +284,9 @@ public class UBoatCompetitionPaneController implements Closeable {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(e, "Failed to set ready");
+                Platform.runLater(() -> {
+                    new ErrorDialog(e, "Failed to set ready");
+                });
             }
 
             @Override
@@ -294,7 +300,9 @@ public class UBoatCompetitionPaneController implements Closeable {
                         uBoatCandidatesPaneController.clearTable();
                     });
                 } else {
-                    new ErrorDialog(new Exception(responseStr), "Failed to set ready");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception(responseStr), "Failed to set ready");
+                    });
                 }
                 response.close();
 

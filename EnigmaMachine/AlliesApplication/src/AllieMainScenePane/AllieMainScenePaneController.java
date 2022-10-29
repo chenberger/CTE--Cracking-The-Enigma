@@ -96,7 +96,9 @@ public class AllieMainScenePaneController {
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new ErrorDialog(new Exception("Failed to get user name"), "Failed to get user name");
+                Platform.runLater(() -> {
+                    new ErrorDialog(new Exception("Failed to get user name"), "Failed to get user name");
+                });
             }
 
             @Override
@@ -308,7 +310,9 @@ public class AllieMainScenePaneController {
 ;
                 }
                 else{
-                    new ErrorDialog(new Exception("Error logging out"), "Error");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception("Error logging out"), "Error");
+                    });
                 }
                 response.close();
             }
