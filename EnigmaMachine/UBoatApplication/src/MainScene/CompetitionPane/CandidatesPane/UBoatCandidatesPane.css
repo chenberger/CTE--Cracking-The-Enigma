@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap')
+#candidates-information-label{
+    -fx-text-fill:  #70655e;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-background-color:  #ede9e4;
+ 
+
+}
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color: #2a384c;
+    -fx-text-fill:  #ede9e4;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Secular One', sans-serif;
+
+}

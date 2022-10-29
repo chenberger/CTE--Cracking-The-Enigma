@@ -1,0 +1,17 @@
+
+.scroll-pane:fitToWidth:fitToHeight .scroll-bar:vertical .thumb{
+    -fx-background-color:  #dc6414;
+
+}
+.scroll-pane:fitToWidth:fitToHeight .scroll-bar:vertical .thumb{
+    -fx-background-color:  #dc6414;
+
+}
+.scroll-pane:fitToWidth:fitToHeight .scroll-bar:horizontal .thumb{
+    -fx-background-color:  #dc6414;
+   
+}
+
+#contest-data-anchor {
+    -fx-background-color: white;
+}

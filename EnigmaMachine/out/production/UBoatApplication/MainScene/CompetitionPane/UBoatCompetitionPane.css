@@ -1,0 +1,39 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#allie-teams-info-label{
+    -fx-text-fill:  #70655e;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-background-color:  #ede9e4;
+ 
+}
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column:last-visible .label{
+    -fx-background-color: #2a384c;
+    -fx-text-fill:  #ede9e4;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Secular One', sans-serif;
+
+}
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color: #2a384c;
+    -fx-text-fill:  #ede9e4;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Secular One', sans-serif;
+
+}
+.button{
+    -fx-background-color:  #8db57b;
+    -fx-text-fill: white;
+    -fx-border-radius: 10px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 15px;
+}
+
+.button:hover{
+    -fx-background-color: #aecda0;
+}
+
+#vbox {
+    -fx-background-color:  #ede9e4;
+}

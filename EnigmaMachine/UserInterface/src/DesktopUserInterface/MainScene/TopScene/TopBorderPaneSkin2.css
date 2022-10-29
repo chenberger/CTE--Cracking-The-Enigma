@@ -44,7 +44,7 @@
 }
 
 #skin-hbox {
-    -fx-background-image: url("background.jpg")s;
+    -fx-background-image: url("background.jpg");
     -fx-background-size: 100% 200%;
 }
 

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.CompetitionPane.UBoatCompetitionPaneController">
+<AnchorPane prefHeight="1000.0" prefWidth="1500.0" stylesheets="@UBoatCompetitionPane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.CompetitionPane.UBoatCompetitionPaneController">
    <children>
       <GridPane fx:id="UBoatCompetitionPane" layoutX="-14.0" layoutY="-45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -78,15 +78,18 @@
                                  <children>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="100.0" prefHeight="639.0" prefWidth="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <content>
-                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="400.0">
+                                          <VBox id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="400.0">
                                              <children>
-                                                <Label text="Allie teams Information">
+                                                <Label id="allie-teams-info-label" prefHeight="32.0" prefWidth="437.0" text="Allie teams Information" VBox.vgrow="ALWAYS">
                                                    <VBox.margin>
-                                                      <Insets left="100.0" top="2.0" />
+                                                      <Insets top="2.0" />
                                                    </VBox.margin>
                                                    <font>
                                                       <Font name="Arial Black" size="15.0" />
                                                    </font>
+                                                   <padding>
+                                                      <Insets left="100.0" />
+                                                   </padding>
                                                 </Label>
                                                 <TableView fx:id="teamsTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="599.0" prefWidth="458.0" VBox.vgrow="ALWAYS">
                                                   <columns>

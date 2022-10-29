@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#contest-data-label{
+    -fx-text-fill:  #dc6414;
+    -fx-font-family: 'Rampart One', cursive;
+    -fx-font-size: 30px;
+    -fx-background-color: #ffffff; 
+}
+
+.ccdp-labels{
+    -fx-font-size: 15px;
+    -fx-text-fill: #7ed8d8;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #7ed8d8;
+}
+.ccdp-labels1{
+    -fx-font-size: 18px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+}
+
+#ccdp-background{
+    -fx-background-image: url("allyapp.image3.jpg");
+    -fx-background-size: 100% 100%;
+    
+}

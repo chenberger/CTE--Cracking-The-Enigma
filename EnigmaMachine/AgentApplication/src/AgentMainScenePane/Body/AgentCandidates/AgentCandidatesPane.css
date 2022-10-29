@@ -1,0 +1,21 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+#candidates-info-label{
+    -fx-text-fill:#ede9e4;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 20px;
+    -fx-border-style: ridge;
+    -fx-border-width: 3px;
+    -fx-border-radius: 20px;
+    -fx-background-color:  #70655e;
+    -fx-background-radius: 20px;
+
+}
+
+ .table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color: #8db57b;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 15px;
+ }

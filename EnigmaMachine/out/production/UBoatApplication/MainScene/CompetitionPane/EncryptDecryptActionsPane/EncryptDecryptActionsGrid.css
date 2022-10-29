@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
 #encrypted-word-title{
     font-size: 20px;
     font-weight: bold;
@@ -7,24 +9,28 @@
 }
 
 .encryption-buttons{
-    -fx-background-color: rgba(83, 116, 138, 0.726);
+    -fx-background-color:  #8db57b;
     -fx-text-fill: white;
-    -fx-text-fill: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 15px;
 }
 
 .encryption-buttons:hover{
-    -fx-background-color: rgb(47, 151, 177);
+    -fx-background-color:  #aecda0;
 }
 
 
 .reset-state-button {
-    -fx-background-color: rgba(241, 200, 4, 0.94);
-    -fx-text-fill: #0c0b0b;
+    -fx-background-color:  #8db57b;
+    -fx-text-fill: white;
+    -fx-border-radius: 10px;
+    -fx-font-family: 'Secular One', sans-serif;
     -fx-font-size: 15px;
 }
 
 .reset-state-button:hover{
-    -fx-background-color: rgb(252, 173, 3);
+    -fx-background-color: #aecda0;
 }
 .encrypt-grid-pane{
     -fx-max-width: 100%;
@@ -40,8 +46,19 @@
 }
 
 #process-messege-label {
-    -fx-text-fill: rgba(83, 116, 138, 0.726);
-    -fx-font: Arial, BOLD;
-    -fx-font-size: 30px;
+    -fx-font-size: 25px;
+    -fx-text-fill: #70655e;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-padding: 5px;
 }
 
+#edag-background{
+    -fx-background-color:  #ede9e4;
+ 
+}
+.edag-label{
+    -fx-font-size: 15px;
+    -fx-text-fill:  #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-padding: 5px;
+}
