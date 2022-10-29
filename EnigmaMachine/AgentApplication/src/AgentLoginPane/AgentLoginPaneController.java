@@ -93,14 +93,11 @@ public class AgentLoginPaneController implements Closeable {
 
     @FXML
     void onLoginButtonClicked(ActionEvent event) {
-        if(setAgentNameTextField.equals("") || chosenTeam.equals("") || numberOfThreads == 0 || tasksPulledEachTime == 0) {
+        if(setAgentNameTextField.getText() == null || setAgentNameTextField.getText().equals("") || chosenTeam.equals("") || numberOfThreads == 0 || tasksPulledEachTime == 0) {
             Platform.runLater(() -> {
                 new ErrorDialog(new Exception("Please fill all the fields"), "Error");
             });
         } else {
-            if(setAgentNameTextField.getText().equals("")) {
-                return;
-            }
             String finalUrl = HttpUrl.parse(AGENT_LOGIN_SERVLET).
                     newBuilder().
                     addQueryParameter("action", "setAgentName").

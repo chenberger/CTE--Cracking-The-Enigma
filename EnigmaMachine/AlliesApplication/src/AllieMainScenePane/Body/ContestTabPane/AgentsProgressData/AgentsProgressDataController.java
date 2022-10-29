@@ -1,10 +1,8 @@
 package AllieMainScenePane.Body.ContestTabPane.AgentsProgressData;
 
 import AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController;
-import DTO.AgentProgressDataToTable;
 import DTO.AgentsProgressAndDataTable;
 import DTO.AlliesTasksProgressToLabels;
-import DTO.TeamsTable;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
@@ -16,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.Closeable;
 import java.util.List;
-import java.util.Observable;
 import java.util.Timer;
 
 public class AgentsProgressDataController implements Closeable {
@@ -88,7 +85,12 @@ public class AgentsProgressDataController implements Closeable {
         Platform.runLater(()->{
             totalTasksOfAllyLabel.setText(alliesTasksProgressToLabels.getTotalTasks().toString());
             tasksProducedLabel.setText(alliesTasksProgressToLabels.getTasksPulled().toString());
-            TasksCompletedLabel.setText(alliesTasksProgressToLabels.getTasksDone().toString());
+            if(alliesTasksProgressToLabels.getTasksDone() > alliesTasksProgressToLabels.getTasksPulled()) {
+                TasksCompletedLabel.setText(alliesTasksProgressToLabels.getTasksPulled().toString());
+            }
+            else {
+                TasksCompletedLabel.setText(alliesTasksProgressToLabels.getTasksDone().toString());
+            }
         });
     }
 
