@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="currentContestDataPane" prefHeight="240.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.CurrentContest.CurrentContestDataPaneController">
+<AnchorPane id="ccdp-background" fx:id="currentContestDataPane" prefHeight="240.0" prefWidth="705.0" stylesheets="@CurrentContestDataPane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.CurrentContest.CurrentContestDataPaneController">
    <children>
       <GridPane prefWidth="705.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -25,7 +25,7 @@
          <children>
             <AnchorPane GridPane.columnSpan="2">
                <children>
-                  <Label alignment="CENTER" text="Contest Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label id="contest-data-label" alignment="CENTER" text="Contest Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="10.0" top="5.0" />
                      </padding>
@@ -37,7 +37,7 @@
             </AnchorPane>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Label prefHeight="20.0" prefWidth="127.0" text="Battlefield Name: ">
+                  <Label prefHeight="26.0" prefWidth="140.0" styleClass="ccdp-labels" text="Battlefield Name: ">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -45,7 +45,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="battlefieldNameLabel" text="N/A">
+                  <Label fx:id="battlefieldNameLabel" styleClass="ccdp-labels1" text="N/A">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -57,7 +57,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label text="U-Boat Name:">
+                  <Label styleClass="ccdp-labels" text="U-Boat Name:">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -65,7 +65,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="uBoatNameLabel" text="N/A">
+                  <Label fx:id="uBoatNameLabel" styleClass="ccdp-labels1" text="N/A">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -77,7 +77,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Label text="Contest Status:">
+                  <Label styleClass="ccdp-labels" text="Contest Status:">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -85,7 +85,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="contestStatusLabel" text="N/A">
+                  <Label fx:id="contestStatusLabel" styleClass="ccdp-labels1" text="N/A">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -97,7 +97,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label text="Difficulty:">
+                  <Label styleClass="ccdp-labels" text="Difficulty:">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -105,7 +105,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="difficultyLabel" text="N/A">
+                  <Label fx:id="difficultyLabel" styleClass="ccdp-labels1" text="N/A">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -117,7 +117,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
-                  <Label text="Teams Registered/Needed:">
+                  <Label styleClass="ccdp-labels" text="Teams Registered/Needed:">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -125,7 +125,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="teamsRegisteredAndNeededLabel" text="None/None">
+                  <Label fx:id="teamsRegisteredAndNeededLabel" styleClass="ccdp-labels1" text="None/None">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>
@@ -137,7 +137,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Label text="Processed Word:">
+                  <Label styleClass="ccdp-labels" text="Processed Word:">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -145,7 +145,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="processedWordLabel" text="N/A">
+                  <Label fx:id="processedWordLabel" styleClass="ccdp-labels1" text="N/A">
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
                      </HBox.margin>

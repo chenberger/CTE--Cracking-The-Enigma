@@ -1,0 +1,25 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#agents-progress-data-label{
+    -fx-font-size: 25px;
+    -fx-text-fill: #dc6414;
+    -fx-font-family: 'Rampart One', cursive;
+    -fx-background-color: #ffffff; 
+}
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color:  #ebd020;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+}
+.apd-label{
+    -fx-font-size: 20px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+}
+#bottom-background{
+    -fx-background-image: url("allyapp.image4.jpg");
+    -fx-background-size: 100% 100%;
+}

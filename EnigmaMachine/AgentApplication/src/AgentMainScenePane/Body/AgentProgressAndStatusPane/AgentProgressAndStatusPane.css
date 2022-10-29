@@ -1,0 +1,27 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+.apasp-labels{
+    -fx-text-fill:   #2a384c;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 20px;
+}
+
+#agent-process-label{
+    -fx-text-fill:#ede9e4;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 20px;
+    -fx-border-style: ridge;
+    -fx-border-width: 3px;
+    -fx-border-radius: 20px;
+    -fx-background-color:  #70655e;
+    -fx-background-radius: 20px;
+
+}
+ #apasp-image{
+    -fx-background-image: url("agentimage.jpg");
+    -fx-background-size: 100% 165%;
+    -fx-background-position: bottom;
+ }

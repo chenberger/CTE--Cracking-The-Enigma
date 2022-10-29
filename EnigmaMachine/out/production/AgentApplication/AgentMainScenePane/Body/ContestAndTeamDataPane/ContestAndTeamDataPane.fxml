@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="180.0" prefWidth="1190.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController">
+<AnchorPane id="anchorpane-background" prefHeight="180.0" prefWidth="1190.0" stylesheets="@ContestAndTeamDataPane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.Body.ContestAndTeamDataPane.ContestAndTeamDataPaneController">
    <children>
       <HBox layoutX="132.0" layoutY="51.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="500.0">
                <children>
-                  <Label fx:id="currentBattleLabel" text="Battle:">
+                  <Label fx:id="currentBattleLabel" styleClass="agent-label" text="Battle:">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
@@ -22,7 +21,7 @@
                         <Insets left="30.0" top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="contestStatusLabel" text="Contest Status:">
+                  <Label fx:id="contestStatusLabel" styleClass="agent-label" text="Contest Status:">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
@@ -34,7 +33,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="500.0">
                <children>
-                  <Label fx:id="teamLabel" text="Team: ">
+                  <Label fx:id="teamLabel" styleClass="agent-label" text="Team: ">
                      <VBox.margin>
                         <Insets left="30.0" top="30.0" />
                      </VBox.margin>

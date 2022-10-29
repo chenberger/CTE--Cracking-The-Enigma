@@ -18,13 +18,13 @@ public class SendChatServlet extends HttpServlet {
         try {
             String username;
             if (request.getParameter(TYPE).equals("Agent")) {
-                username = SessionUtils.getAgentName(request);
+                username = "Agent " + SessionUtils.getAgentName(request);
             }
             else if(request.getParameter(TYPE).equals("Ally")) {
-                username = SessionUtils.getAllieName(request);
+                username = "Ally " + SessionUtils.getAllieName(request);
             }
             else if(request.getParameter(TYPE).equals("UBoat")){
-                username = SessionUtils.getUsername(request);
+                username = "UBoat " + SessionUtils.getUsername(request);
             }
             else {
                 username = null;

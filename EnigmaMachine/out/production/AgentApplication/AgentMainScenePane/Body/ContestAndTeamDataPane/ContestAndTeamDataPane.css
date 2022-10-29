@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+.agent-label{
+    -fx-text-fill:  #2a384c;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-font-size: 25px;
+
+}
+#anchorpane-background{
+    -fx-background-image: url("agentimage.jpg");
+    -fx-background-size: 100% 200%;
+    -fx-background-position: top;
+}
+

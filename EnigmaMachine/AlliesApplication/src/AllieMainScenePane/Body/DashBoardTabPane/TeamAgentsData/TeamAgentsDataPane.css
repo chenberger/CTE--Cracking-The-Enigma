@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap');
+
+#team-agents-data-label{
+    -fx-background-image: url("allyapp.image.jpg");
+    -fx-background-size: 100% 130%;
+    -fx-background-position: bottom right;
+    -fx-font-size: 25px;
+    -fx-text-fill: #ebd020;
+    -fx-font-family: 'Rampart One', cursive;
+    
+}
+
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color:  #ebd020;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+}

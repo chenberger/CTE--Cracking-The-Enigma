@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="680.0" prefWidth="1253.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController">
+<AnchorPane prefHeight="680.0" prefWidth="1253.0" stylesheets="@ContestTabPane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.ContestTabPaneController">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -35,7 +35,7 @@
                                     </ScrollPane>
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="200.0" minWidth="700.0" prefHeight="292.0" prefWidth="873.0" SplitPane.resizableWithParent="false">
+                            <AnchorPane id="contest-data-anchor" minHeight="200.0" minWidth="700.0" prefHeight="292.0" prefWidth="873.0" SplitPane.resizableWithParent="false">
                                  <children>
                                     <fx:include fx:id="currentContestDataPane" source="CurrentContest/CurrentContestDataPane.fxml" />
                                  </children></AnchorPane>
@@ -45,11 +45,11 @@
                   </AnchorPane>
                 <AnchorPane minHeight="330.0" minWidth="1200.0">
                      <children>
-                        <SplitPane dividerPositions="0.4035228182546037" layoutX="416.0" layoutY="87.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.4675740592473979" layoutX="416.0" layoutY="87.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                               <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="400.0">
                                 <content>
-                                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="438.0">
+                                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="550.0">
                                        <children>
                                           <fx:include fx:id="agentsProgressDataPane" source="AgentsProgressData/AgentsProgressData.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>

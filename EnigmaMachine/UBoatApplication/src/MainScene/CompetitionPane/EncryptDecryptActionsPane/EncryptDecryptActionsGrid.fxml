@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="encryptDecryptActionGrid" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController">
+<GridPane fx:id="encryptDecryptActionGrid" stylesheets="@EncryptDecryptActionsGrid.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainScene.CompetitionPane.EncryptDecryptActionsPane.EncryptDecryptActionsGridController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints maxWidth="575.0" minWidth="500.0" prefWidth="575.0" />
@@ -63,7 +63,7 @@
                <HBox.margin>
                   <Insets top="30.0" />
                </HBox.margin></TextField>
-              <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefWidth="190.0" text="Proccess">
+              <Button fx:id="encryptDecryptButton" mnemonicParsing="false" onAction="#onDecryptionButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Proccess">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -78,12 +78,12 @@
       </HBox>
       <HBox prefHeight="31.0" prefWidth="439.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <Label fx:id="encryptDecryptTextLabel11" prefHeight="31.0" prefWidth="221.0" styleClass="edag-label" text="Choose word from Dictionary:">
+            <Label fx:id="encryptDecryptTextLabel11" prefHeight="34.0" prefWidth="240.0" styleClass="edag-label" text="Choose word from Dictionary:">
                <padding>
                   <Insets bottom="5.0" top="5.0" />
                </padding>
             </Label>
-            <ComboBox fx:id="dictionarySearchComboBox" prefHeight="31.0" prefWidth="256.0" promptText="type here to search word" styleClass="edag-label" />
+            <ComboBox fx:id="dictionarySearchComboBox" prefHeight="31.0" prefWidth="256.0" promptText="type here to search word" styleClass="encryption-buttons" />
             <Button fx:id="addWordFromDictButton" mnemonicParsing="false" onAction="#onAddWordFromDictButtonClicked" prefWidth="190.0" styleClass="encryption-buttons" text="Add Word">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

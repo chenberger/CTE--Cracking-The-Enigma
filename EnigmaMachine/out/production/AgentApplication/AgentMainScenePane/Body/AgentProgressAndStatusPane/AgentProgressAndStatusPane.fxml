@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="410.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController">
+<AnchorPane id="apasp-image" prefHeight="410.0" prefWidth="450.0" stylesheets="@AgentProgressAndStatusPane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.Body.AgentProgressAndStatusPane.AgentProgressAndStatusPaneController">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -28,32 +28,18 @@
                         <Insets left="5.0" top="30.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="Tasks Pulled:">
+                        <Label styleClass="apasp-labels" text="Tasks Pulled:" underline="true">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
                         </Label>
-                        <Label fx:id="tasksPulledLabel">
+                        <Label fx:id="tasksPulledLabel" styleClass="apasp-labels">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <VBox.margin>
-                        <Insets left="5.0" top="60.0" />
-                     </VBox.margin>
-                     <children>
-                        <Label text="Tasks Processed: ">
-                           <font>
-                              <Font name="Arial" size="21.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="tasksProcessedLabel">
-                           <font>
-                              <Font name="Arial" size="21.0" />
-                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
@@ -62,29 +48,55 @@
                         <Insets left="5.0" top="60.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="Candidates Found:">
+                        <Label styleClass="apasp-labels" text="Tasks Processed: " underline="true">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
                         </Label>
-                        <Label fx:id="candidatesFoundLabel">
+                        <Label fx:id="tasksProcessedLabel" styleClass="apasp-labels">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <VBox.margin>
+                        <Insets left="5.0" top="60.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label styleClass="apasp-labels" text="Candidates Found:" underline="true">
+                           <font>
+                              <Font name="Arial" size="21.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="candidatesFoundLabel" styleClass="apasp-labels">
+                           <font>
+                              <Font name="Arial" size="21.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label text="Tasks In Queue:">
+                        <Label styleClass="apasp-labels" text="Tasks In Queue:" underline="true">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
                         </Label>
-                        <Label fx:id="numberOfTasksInQueueLabel">
+                        <Label fx:id="numberOfTasksInQueueLabel" styleClass="apasp-labels">
                            <font>
                               <Font name="Arial" size="21.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                      <VBox.margin>
@@ -93,9 +105,9 @@
                   </HBox>
                </children>
             </VBox>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@AgentProgressAndStatusPane.css">
                <children>
-                  <Label alignment="CENTER" layoutX="201.0" layoutY="10.0" text="Agent's Process" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label id="agent-process-label" alignment="CENTER" layoutX="201.0" layoutY="10.0" text="Agent's Process" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="Arial" size="21.0" />
                      </font>

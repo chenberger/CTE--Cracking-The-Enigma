@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+#contests-on-line-label{
+    -fx-background-image: url("allyapp.image.jpg");
+    -fx-background-size: 100% 130%;
+    -fx-background-position: bottom right;
+    -fx-font-size: 25px;
+    -fx-text-fill: #ebd020;
+    -fx-font-family: 'Rampart One', cursive;
+}
+
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label{
+    -fx-background-color:  #ebd020;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+}
+#cdp-button{
+    -fx-background-color:  #7ed8d8;
+    -fx-font-size: 15px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    
+}
+#cdp-button:hover {
+    -fx-background-color:  #fdffff;
+    -fx-font-size: 15px;
+    -fx-text-fill: #2a384c;
+    -fx-font-family: 'Secular One', sans-serif;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-border-color:#2a384c;
+}

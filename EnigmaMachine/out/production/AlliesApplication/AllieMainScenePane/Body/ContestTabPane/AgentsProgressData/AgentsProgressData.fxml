@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.AgentsProgressData.AgentsProgressDataController">
+<AnchorPane prefHeight="400.0" stylesheets="@AgentsProgressData.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AllieMainScenePane.Body.ContestTabPane.AgentsProgressData.AgentsProgressDataController">
    <children>
       <GridPane prefHeight="400.0" prefWidth="649.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -36,7 +36,7 @@
             </TableView>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" layoutX="276.0" layoutY="18.0" text="Agents Progress Data And Total Progress" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label id="agents-progress-data-label" alignment="CENTER" layoutX="276.0" layoutY="18.0" text="Agents Progress Data And Total Progress" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="Arial Black" size="18.0" />
                      </font>
@@ -45,39 +45,25 @@
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <VBox layoutX="152.0" layoutY="-40.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox id="bottom-background" layoutX="152.0" layoutY="-40.0" prefHeight="200.0" prefWidth="100.0" styleClass="apd-label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <HBox>
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
                            <children>
-                              <Label text="Total Tasks:">
+                              <Label styleClass="apd-label" text="Total Tasks:">
                                  <font>
                                     <Font name="Arial" size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalTasksOfAllyLabel">
+                              <Label fx:id="totalTasksOfAllyLabel" styleClass="apd-label">
                                  <font>
                                     <Font name="Arial" size="20.0" />
                                  </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                           <children>
-                              <Label text="Tasks Produced:">
-                                 <font>
-                                    <Font name="Arial" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="tasksProducedLabel">
-                                 <font>
-                                    <Font name="Arial" size="20.0" />
-                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
                               </Label>
                            </children>
                         </HBox>
@@ -86,15 +72,38 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                            <children>
-                              <Label text="Tasks Processed:">
+                              <Label styleClass="apd-label" text="Tasks Produced:">
                                  <font>
                                     <Font name="Arial" size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="TasksCompletedLabel">
+                              <Label fx:id="tasksProducedLabel" styleClass="apd-label">
                                  <font>
                                     <Font name="Arial" size="20.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label styleClass="apd-label" text="Tasks Processed:">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="TasksCompletedLabel" styleClass="apd-label">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
                               </Label>
                            </children>
                         </HBox>

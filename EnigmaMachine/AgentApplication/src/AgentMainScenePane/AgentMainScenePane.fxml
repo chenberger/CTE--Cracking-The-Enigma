@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="agentMainScenePane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.AgentMainScenePaneController">
+<AnchorPane fx:id="agentMainScenePane" prefHeight="800.0" prefWidth="1200.0" stylesheets="@AgentMainScenePane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AgentMainScenePane.AgentMainScenePaneController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
@@ -19,14 +19,14 @@
                <top>
                   <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox id="headline-background" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label alignment="CENTER" text="Agent - ">
+                              <Label alignment="CENTER" prefHeight="63.0" prefWidth="159.0" styleClass="agent-main-label" text="Agent - ">
                                  <font>
                                     <Font name="Arial" size="29.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="agentNameLabel" alignment="CENTER">
+                              <Label fx:id="agentNameLabel" alignment="CENTER" styleClass="agent-main-label">
                                  <font>
                                     <Font name="Arial" size="29.0" />
                                  </font>
@@ -63,15 +63,7 @@
                                        <children>
                                           <SplitPane dividerPositions="0.4088628762541806" layoutX="7.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <items>
-                                                <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-                                                  <content>
-                                                    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0">
-                                                         <children>
-                                                            <fx:include fx:id="agentProgressAndDataPane" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
-                                                         </children>
-                                                      </AnchorPane>
-                                                  </content>
-                                                </ScrollPane>
+                                                <fx:include fx:id="agentProgressAndDataPane" minWidth="400.0" source="Body/AgentProgressAndStatusPane/AgentProgressAndStatusPane.fxml" />
                                                 <fx:include fx:id="agentCandidatesPane" minWidth="500.0" source="Body/AgentCandidates/AgentCandidatesPane.fxml" />
                                              </items>
                                           </SplitPane>
