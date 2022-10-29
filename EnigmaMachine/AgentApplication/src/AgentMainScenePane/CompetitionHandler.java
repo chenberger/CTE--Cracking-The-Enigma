@@ -15,7 +15,7 @@ import EnigmaMachine.Settings.StartingRotorPositionSector;
 import EnigmaMachineException.MachineNotExistsException;
 import Utils.HttpClientUtil;
 import com.google.gson.Gson;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleLongProperty;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -195,14 +195,18 @@ public class CompetitionHandler extends Thread implements Closeable {
             HttpClientUtil.runAsync(finalUrl, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    new ErrorDialog(new Exception("Failed to send candidates to server"), "Failed to send candidates to server");
+                    Platform.runLater(() -> {
+                        new ErrorDialog(new Exception("Failed to send candidates to server"), "Failed to send candidates to server");
+                    });
                 }
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.code() != 200) {
                         String responseBody = response.body().string();
-                        new ErrorDialog(new Exception("Failed to send candidates to server: " + responseBody), "Failed to send candidates to server");
+                        Platform.runLater(() -> {
+                            new ErrorDialog(new Exception("Failed to send candidates to server: " + responseBody), "Failed to send candidates to server");
+                        });
                     }
                     response.close();
                 }

@@ -74,6 +74,7 @@ public class AllieMainScenePaneController {
         }
         if(dashboardTabPaneController != null) {
             dashboardTabPaneController.setAllieMainScenePaneController(this);
+            dashboardTabPaneController.setIsReadyProperty(isReadyButtonClicked);
         }
         if(contestsTabPaneController != null) {
             contestsTabPaneController.setAllieMainScenePaneController(this);
@@ -81,7 +82,7 @@ public class AllieMainScenePaneController {
 
         //registerToBattleButton.disableProperty().bind(isContestSet);
         taskSizeTextField.disableProperty().bind(isTaskSizeSet);
-        setTaskSizeButton.disableProperty().bind(isTaskSizeSet);
+        setTaskSizeButton.disableProperty().bind(isTaskSizeSet.or(dashboardTabPaneController.getContestSetProperty().not()));
         readyToContestButton.disableProperty().bind(dashboardTabPaneController.getContestSetProperty().not().or(isTaskSizeSet.not()).or(isOneAgentAtLeastRegistered.not()).or(isReadyButtonClicked));
         setAllyName();
     }
