@@ -251,7 +251,7 @@ public class TasksProducer implements Runnable {
             }
             try {
                 currentStartingRotorsPositions.setElements(enigmaMachine.getKeyboard().increaseRotorPositions(currentStartingRotorsPositions.getElements(), (int) taskSize));
-                if(!noMoreTasks) {
+                if(!noMoreTasks && numberOfTasksProduced < totalTasksSize) {
                     ++numberOfTasksProduced;
                     allie.increaseTasksProduced(numberOfTasksProduced);
                 }
